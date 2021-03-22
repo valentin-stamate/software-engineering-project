@@ -1,13 +1,13 @@
-package com.euopendata.demo;
+package com.bfourclass.euopendata;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class EuOpenDataApplication {
+public class EuopendataApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(EuOpenDataApplication.class, args);
+        SpringApplication.run(EuopendataApplication.class, args);
     }
 
 }
