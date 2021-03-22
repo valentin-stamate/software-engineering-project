@@ -1,10 +1,10 @@
-package com.euopendata.demo;
+package com.bfourclass.euopendata;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class EuOpenDataApplicationTests {
+class EuopendataApplicationTests {
 
     @Test
     void contextLoads() {
