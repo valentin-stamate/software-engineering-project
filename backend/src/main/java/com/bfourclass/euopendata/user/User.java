@@ -1,9 +1,12 @@
 package com.bfourclass.euopendata.user;
 
+import com.bfourclass.euopendata.location.Location;
+
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
-@Table
+@Table(name = "users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -13,17 +16,13 @@ public class User {
     private String email;
     private String password;
 
+    @ManyToMany
+    private Set<Location> locations;
+
     @Transient
     private String ignoredColumn;
 
     public User(String username, String email, String password) {
-        this.username = username;
-        this.email = email;
-        this.password = password;
-    }
-
-    public User(Long id, String username, String email, String password) {
-        this.id = id;
         this.username = username;
         this.email = email;
         this.password = password;
