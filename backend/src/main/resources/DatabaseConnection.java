@@ -1,4 +1,4 @@
-package com.bfourclass.euopendata.database;
+package resources;
 
 
 @Entity
