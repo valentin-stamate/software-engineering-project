@@ -15,6 +15,8 @@ public class User {
     private String username;
     private String email;
     private String password;
+    private String displayName;
+    private String profilePhotoLink;
 
     @ManyToMany
     private Set<Location> locations;
@@ -22,10 +24,14 @@ public class User {
     @Transient
     private String ignoredColumn;
 
-    public User(String username, String email, String password) {
+    public User(String username, String email, String password, String displayName, String profilePhotoLink)
+    {
         this.username = username;
         this.email = email;
         this.password = password;
+        this.displayName = displayName;
+        this.locations = null;
+        this.profilePhotoLink = profilePhotoLink;
     }
 
     public User() { }
@@ -62,6 +68,22 @@ public class User {
         this.password = password;
     }
 
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
+    }
+
+    public String getProfilePhotoLink() {
+        return profilePhotoLink;
+    }
+
+    public void setProfilePhotoLink(String profilePhotoLink) {
+        this.profilePhotoLink = profilePhotoLink;
+    }
+
     @Override
     public String toString() {
         return "UserModel{" +
@@ -69,6 +91,8 @@ public class User {
                 ", username='" + username + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
-                '}';
+                ", displayName='" + displayName + '\'' +
+                ", profilePhotoLink='" + profilePhotoLink + '\'' +
+            '}';
     }
 }
