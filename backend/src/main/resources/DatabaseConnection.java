@@ -3,7 +3,7 @@ package resources;
 
 @Entity
 @Table(name = "database")
-public class DatabaseConnection extends SecurityComponent{
+public class DatabaseConnection{
     private Integer connectionId;
 
     public DatabaseConnection(Integer connectionId) {
