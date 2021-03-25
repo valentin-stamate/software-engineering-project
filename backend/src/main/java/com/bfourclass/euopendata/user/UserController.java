@@ -7,9 +7,12 @@ import java.util.List;
 
 @RestController
 public class UserController {
+    SecurityComponent securityComponent;
+    EmailComponent emailComponent;
 
 
     private final UserService userService;
+
 
     @Autowired
     UserController(UserService userService) {
@@ -26,6 +29,16 @@ public class UserController {
     @RequestMapping(path = "post/user")
     public void addUser(@RequestBody User user) {
         userService.addUser(user);
+    }
+
+    public User loginUser(String username,String password)
+    {
+        return new User();
+    }
+
+    public void register(String username, String password)
+    {
+        return new User(username,password);
     }
 
 }
