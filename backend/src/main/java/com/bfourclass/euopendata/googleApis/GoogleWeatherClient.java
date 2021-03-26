@@ -1,14 +1,9 @@
 package com.bfourclass.euopendata.googleApis;
 
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import com.bfourclass.euopendata.weather.Weather;
 
-@Entity
-@Table(name = "weather")
-public class GoogleWeatherClient extends DataAggregatorComponent{
+public class GoogleWeatherClient {
 
-    @Entity
     String apiKey;
 
     public GoogleWeatherClient(String apiKey) {
@@ -23,7 +18,7 @@ public class GoogleWeatherClient extends DataAggregatorComponent{
         this.apiKey = apiKey;
     }
 
-    public Weather requestWeather( String city){
+    public Weather requestWeather(String city){
         return new Weather();
     }
 

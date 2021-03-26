@@ -36,6 +36,9 @@ public class User {
 
     public User() { }
 
+    public User(String username, String password) {
+    }
+
     public Long getUserId() {
         return id;
     }

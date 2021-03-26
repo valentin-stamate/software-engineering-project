@@ -1,5 +1,9 @@
 package com.bfourclass.euopendata;
 
+import com.bfourclass.euopendata.covidRestrictions.CovidRestrictionsClient;
+import com.bfourclass.euopendata.googleApis.GoogleNewsClient;
+import com.bfourclass.euopendata.googleApis.GoogleWeatherClient;
+
 public abstract class DataAggregatorComponent{
     private GoogleWeatherClient weatherClient;
     private GoogleNewsClient newsClient;

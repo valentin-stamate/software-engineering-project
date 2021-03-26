@@ -1,4 +1,4 @@
-package com.bfourclass.euopendata.user;
+package com.bfourclass.euopendata.email;
 
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
 

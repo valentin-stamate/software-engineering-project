@@ -17,10 +17,11 @@ public class CovidRestrictionsClient {
     public CovidRestrictions requestCovidRestrictions (String city,String date){
         return null;
     }
-    public CovidRestrictions requestCovidRestrictions (String country){
-        return null;
-    }
-    public CovidRestrictions requestCovidRestrictions (String country, String date){
-        return null;
-    }
+
+//    public CovidRestrictions requestCovidRestrictions (String country){
+//        return null;
+//    }
+//    public CovidRestrictions requestCovidRestrictions (String country, String date){
+//        return null;
+//    }
 }

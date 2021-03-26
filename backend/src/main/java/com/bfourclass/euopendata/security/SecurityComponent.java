@@ -1,6 +1,5 @@
-package com.bfourclass.euopendata.user;
+package com.bfourclass.euopendata.security;
 
-import com.bfourclass.euopendata.hashingAlgo.HashingAlgo;
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
 
 public class SecurityComponent {

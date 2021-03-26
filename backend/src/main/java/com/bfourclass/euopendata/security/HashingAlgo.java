@@ -1,4 +1,4 @@
-package com.bfourclass.euopendata.hashingAlgo;
+package com.bfourclass.euopendata.security;
 
 public interface HashingAlgo
 {

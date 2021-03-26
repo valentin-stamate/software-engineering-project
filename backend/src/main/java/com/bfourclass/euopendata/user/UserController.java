@@ -1,5 +1,7 @@
 package com.bfourclass.euopendata.user;
 
+import com.bfourclass.euopendata.email.EmailComponent;
+import com.bfourclass.euopendata.security.SecurityComponent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,14 +21,12 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping
-    @RequestMapping(path = "get/users")
+    @GetMapping("get/users")
     public List<User> getUsers() {
         return userService.getUsers();
     }
 
-    @PostMapping
-    @RequestMapping(path = "post/user")
+    @PostMapping("post/user")
     public void addUser(@RequestBody User user) {
         userService.addUser(user);
     }
@@ -36,9 +36,8 @@ public class UserController {
         return new User();
     }
 
-    public void register(String username, String password)
-    {
-        return new User(username,password);
+    public User register(String username, String password) {
+        return new User(username, password);
     }
 
 }
