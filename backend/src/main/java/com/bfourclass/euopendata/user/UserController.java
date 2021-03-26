@@ -31,6 +31,11 @@ public class UserController {
         userService.addUser(user);
     }
 
+    @PostMapping("user/add_location")
+    public String addLocationToUser() {
+        return "Add location endpoint is working";
+    }
+
     public User loginUser(String username,String password)
     {
         return new User();
