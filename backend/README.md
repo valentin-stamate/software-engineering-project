@@ -14,3 +14,24 @@ The following are only for internal testing
 >   "email": value, <br>
 >   "password": value <br>
 >}
+
+* `user/get_location`
+> Get the location for a given user
+> The returned type will be decided soon
+
+* `user/add_location`
+> Add a location to user
+
+* `user/login`
+> Login the user. The returned json object will look like this if successful:
+>{<br>
+>   "key": value,<br>,
+>   "user_object": user<br>
+>}
+
+* `user/signup`
+> Signup the user. The returned json object will look like this if successful:
+>{<br>
+>   "key": value,<br>,
+>   "user_object": user<br>
+>}
