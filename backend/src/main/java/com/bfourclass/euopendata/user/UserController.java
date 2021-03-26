@@ -41,6 +41,11 @@ public class UserController {
         return new User();
     }
 
+    @PostMapping("user/register")
+    public String registerUser() {
+        return "Trying to register user... to do";
+    }
+
     public User register(String username, String password) {
         return new User(username, password);
     }

@@ -18,6 +18,10 @@ public class UserService {
         return userRepository.findAll();
     }
 
+    public boolean userExists(String username) {
+        return userRepository.findUserByUsername(username).isPresent();
+    }
+
     public void addUser(User user) {
         userRepository.save(user);
     }
