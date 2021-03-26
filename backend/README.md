@@ -15,7 +15,7 @@ The following are only for internal testing
 >   "password": value <br>
 >}
 
-* `user/get_location`
+* `user/get_locations`
 > Get the location for a given user
 > The returned type will be decided soon
 
@@ -29,7 +29,7 @@ The following are only for internal testing
 >   "user_object": user<br>
 >}
 
-* `user/signup`
+* `user/register`
 > Signup the user. The returned json object will look like this if successful:
 >{<br>
 >   "key": value,<br>,
