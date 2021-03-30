@@ -4,9 +4,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
-public class SimpleHashingAlgo implements HashingAlgo {
-
-    @Override
+public class SimpleHashingAlgo {
     public static  String hash(String text) {
         String generatedPassword = null;
         try {
