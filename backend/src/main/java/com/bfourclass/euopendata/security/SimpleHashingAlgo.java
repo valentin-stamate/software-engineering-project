@@ -11,7 +11,7 @@ public class SimpleHashingAlgo implements HashingAlgo {
         String generatedPassword = null;
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-1");
-            md.update(text.getBytes);
+            md.update(text.getBytes());
             byte[] bytes = md.digest();
             StringBuilder sb = new StringBuilder();
             for(int i=0; i< bytes.length ;i++)
