@@ -7,7 +7,7 @@ import java.security.SecureRandom;
 public class SimpleHashingAlgo implements HashingAlgo {
 
     @Override
-    public String hash(String text) {
+    public static  String hash(String text) {
         String generatedPassword = null;
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-1");
