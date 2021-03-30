@@ -22,8 +22,16 @@ public class UserService {
         return userRepository.findUserByUsername(username).isPresent();
     }
 
-    public User addUser(User user) {
-        if(!userRepository.findUserByUsername(user.getUsername()).isPresent())
+    public boolean verifySignUpCredentials(User user){
+        return true;
+    }
+    public void addUser(User user){
+        userRepository.save(user);
+    }
+    public User signUpUser(User user) {
+        if(!verifySignUpCredentials(user))
+            return null;
+        if(!userExists(user.getUsername()))
             return null;
 
         return userRepository.save(user);
