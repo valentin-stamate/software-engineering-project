@@ -25,6 +25,8 @@ public class UserService {
     public boolean verifySignUpCredentials(User user){
         return true;
     }
+
+    /* Example purpose */
     public void addUser(User user){
         userRepository.save(user);
     }

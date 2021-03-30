@@ -21,11 +21,13 @@ public class UserController {
         this.userService = userService;
     }
 
+    /* Example purpose */
     @GetMapping("get/users")
     public List<User> getUsers() {
         return userService.getUsers();
     }
 
+    /* Example purpose */
     @PostMapping("post/user")
     public void addUser(@RequestBody User user) {
         userService.addUser(user);
