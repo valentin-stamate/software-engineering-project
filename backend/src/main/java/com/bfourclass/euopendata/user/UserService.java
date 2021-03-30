@@ -22,7 +22,10 @@ public class UserService {
         return userRepository.findUserByUsername(username).isPresent();
     }
 
-    public void addUser(User user) {
-        userRepository.save(user);
+    public User addUser(User user) {
+        if(!userRepository.findUserByUsername(user.getUsername()).isPresent())
+            return null;
+
+        return userRepository.save(user);
     }
 }
