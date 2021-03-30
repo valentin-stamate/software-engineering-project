@@ -1,6 +1,7 @@
 package com.bfourclass.euopendata.googleApis;
 
 import com.bfourclass.euopendata.weather.Weather;
+import com.fasterxml.jackson.databind.util.JSONPObject;
 
 public class GoogleWeatherClient {
 
@@ -13,6 +14,11 @@ public class GoogleWeatherClient {
         this.locationName = locationName;
         this.weather = weather;
     }
+    public GoogleWeatherClient() {
+        this.apiKey=null;
+        this.locationName=null;
+        this.weather=0;
+    };
 
     public String getApiKey() {
         return apiKey;
@@ -31,5 +37,11 @@ public class GoogleWeatherClient {
         return "GoogleWeatherClient{" +
                 "apiKey='" + apiKey + '\'' +
                 '}';
+    }
+    public static GoogleWeatherClient googleWeatherJsonToInstance(JSONPObject jsonpObject)
+    {
+           GoogleWeatherClient googleWeatherClient;
+           googleWeatherClient=(GoogleWeatherClient) jsonpObject.getValue();
+           return googleWeatherClient;
     }
 }
