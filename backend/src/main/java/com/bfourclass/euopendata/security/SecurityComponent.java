@@ -4,7 +4,7 @@ import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
 
 public class SecurityComponent {
     private EmbeddedDatabaseConnection connection;
-//    private HashingAlgo hashingAlgo;
+    private SimpleHashingAlgo hashingAlgo;
 
     public boolean isValidUser(String username, String password){
         return true;
