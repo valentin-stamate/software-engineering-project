@@ -1,4 +1,4 @@
-package com.bfourclass.euopendata.googleApis;
+package com.bfourclass.euopendata.ExternalAPI;
 
 public class GoogleNewsClient {
     private String apiKey;

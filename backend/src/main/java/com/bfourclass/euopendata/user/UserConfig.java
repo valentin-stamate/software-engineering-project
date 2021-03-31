@@ -1,5 +1,6 @@
 package com.bfourclass.euopendata.user;
 
+import com.bfourclass.euopendata.ExternalAPI.OpenWeatherAPI;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

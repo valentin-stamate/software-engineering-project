@@ -1,4 +1,6 @@
-package com.bfourclass.euopendata.covidRestrictions;
+package com.bfourclass.euopendata.ExternalAPI;
+
+import com.bfourclass.euopendata.ExternalAPI.instance.covid_restrictions.CovidRestrictions;
 
 public class CovidRestrictionsClient {
     private String apiKey;
