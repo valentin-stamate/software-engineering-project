@@ -1,6 +1,8 @@
 package com.bfourclass.euopendata.user;
 
 import com.bfourclass.euopendata.security.SimpleHashingAlgo;
+import com.bfourclass.euopendata.user.forms.FormValidator;
+import com.bfourclass.euopendata.user.forms.UserRegisterForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,10 +14,20 @@ import java.util.regex.Pattern;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final FormValidator formValidator;
 
     @Autowired
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, FormValidator formValidator) {
         this.userRepository = userRepository;
+        this.formValidator = formValidator;
+    }
+
+    public boolean isValidRegisterForm(UserRegisterForm registerForm) {
+        return formValidator.isValidRegisterForm(registerForm);
+    }
+
+    public void createUserByForm(UserRegisterForm registerForm) {
+        userRepository.save(registerForm.toUser());
     }
 
     public List<User> getUsers() {
