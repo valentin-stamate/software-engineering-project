@@ -3,8 +3,8 @@
   "description": "Get the location information you need!",
   "version": "1.0",
   "manifest_version": 3,
-  "permissions": ["storage", "activeTab", "scripting"],
- 
+  "permissions": ["storage", "activeTab", "scripting", "tabs"],
+  "host_permissions": ["https://www.booking.com/*"],
   "action": {
     "default_popup": "popup.html",
     "default_icon": {
@@ -13,6 +13,9 @@
       "48": "/images/get_started48.png",
       "128": "/images/get_started128.png"
     }
+  },
+  "background": {
+    "service_worker": "background.js"
   },
   "icons": {
     "16": "/images/get_started16.png",
