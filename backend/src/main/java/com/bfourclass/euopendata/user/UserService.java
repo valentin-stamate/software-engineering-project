@@ -39,6 +39,13 @@ public class UserService {
         return true;
     }
 
+    public boolean verifyExistenceOfUser(User user) {
+        if (!verifyUserCredentials(user))
+            return false;
+        if (!userExists(user.getUsername()))
+            return false;
+        return true;
+    }
 
     /* Example purpose */
     public void addUser(User user) {
