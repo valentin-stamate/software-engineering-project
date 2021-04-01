@@ -17,6 +17,12 @@
   "background": {
     "service_worker": "background.js"
   },
+  "content_scripts": [
+    {
+      "matches": ["https://www.booking.com/hotel/*"],
+      "js": ["scripts/foreground.js"]
+    }
+  ],
   "icons": {
     "16": "/images/logo16.png",
     "32": "/images/logo32.png",
