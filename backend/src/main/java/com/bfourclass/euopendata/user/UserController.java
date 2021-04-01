@@ -46,6 +46,7 @@ public class UserController {
     public User loginUser(@RequestBody UserLoginForm userLoginForm){
         User user = userService.loginUser(userLoginForm);
         user.setPassword("");
+        user.setDisplayName("");
         return user;
     }
 
