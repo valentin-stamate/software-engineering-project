@@ -20,17 +20,19 @@ The backend is available at this url : `incomingurl.com`
 >   
 >}
 
-* `user/get_locations`
-> Get the location for a given user
-> The returned type will be decided soon
-
-* `user/add_location`
-> Add a location to user
-
-
 * `user/register`
-> Signup the user. The returned json object will look like this if successful:
+> Register the user. The body for request will look like this:<br>
 >{<br>
->   "key": value,<br>,
->   "user_object": user<br>
->}
+>   "username": value,<br>
+>   "email": value,<br>
+>   "password": value,<br>
+>   "profilePhotoLink": value,<br>
+>}<br>
+> The returned JSON:<br>
+> {<br>
+>     "status": "failed",<br>
+>     "reason": "invalid form data" (present) field on failure<br>
+>}<br>
+> 
+
+
