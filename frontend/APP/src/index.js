@@ -1,11 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import SignUpClient from './SignUpClient';
+import App from './App';
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <React.StrictMode>
-    <SignUpClient />
+    <App />
   </React.StrictMode>,
   document.getElementById('root')
 );
