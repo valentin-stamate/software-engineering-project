@@ -63,7 +63,7 @@ public class UserService {
         return false;
     }
 
-    private boolean userExists(String username) {
+    public boolean userExists(String username) {
         return userRepository.findUserByUsername(username).isPresent();
     }
 

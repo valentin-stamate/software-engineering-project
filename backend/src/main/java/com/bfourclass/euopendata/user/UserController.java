@@ -61,6 +61,10 @@ public class UserController {
 
     @PostMapping(value = "user/register", produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
     public String registerUser(@RequestBody UserRegisterForm form) {
+        if (userService.userExists(form.getUsername())) {
+            return "{\"status\": \"failed\", \"reason\": \"user already exists\"}";
+        }
+
         if (userService.isValidRegisterForm(form)) {
             userService.createUserByForm(form);
             return "{\"status\": \"success\"}";
