@@ -1,0 +1,26 @@
+#main-popup{
+	overflow:auto;
+	display:inline-block;
+	position:fixed;
+	top:0;
+	right:0;
+	opacity:95%;
+	z-index:100;
+	padding:0;
+}
+
+#hide_button{
+	height:10px; 
+	width:20px;
+	margin:0
+}
+
+#popup{
+	width:400px;
+	height:400px;
+	background-color:#f3e5f5;
+}
+
+.header{
+	background-color:#6a1b9a;
+}

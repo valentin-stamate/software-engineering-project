@@ -3,6 +3,7 @@ package com.bfourclass.euopendata.user;
 import com.bfourclass.euopendata.security.SimpleHashingAlgo;
 import com.bfourclass.euopendata.user.forms.FormValidator;
 import com.bfourclass.euopendata.user.forms.UserRegisterForm;
+import com.bfourclass.euopendata.user.forms.UserLoginForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,28 +35,32 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public User loginUser(User user) {
-        if (checkUserPassword(user)) {
-            return userRepository.findUserByUsername(user.getUsername()).get();
+    public User loginUser(UserLoginForm userLoginForm) {
+        if (!userExists(userLoginForm.username)) {
+            return null;
+        }
+
+        if (checkUserPassword(userLoginForm)) {
+            return userRepository.findUserByUsername(userLoginForm.username).get();
         }
 
         return null;
     }
 
-    private boolean checkUserPassword(User user) {
+    private boolean checkUserPassword(UserLoginForm userLoginForm) {
 
-        boolean userExists = userExists(user);
+        boolean userExists = userExists(userLoginForm.username);
         if (userExists) {
-            User dbUser = userRepository.findUserByUsername(user.getUsername()).get();
+            User dbUser = userRepository.findUserByUsername(userLoginForm.username).get();
 
-            return dbUser.getPassword().equals(SimpleHashingAlgo.hash(user.getPassword()));
+            return dbUser.getPassword().equals(SimpleHashingAlgo.hash(userLoginForm.password));
         }
 
         return false;
     }
 
-    private boolean userExists(User user) {
-        return userRepository.findUserByUsername(user.getUsername()).isPresent();
+    private boolean userExists(String username) {
+        return userRepository.findUserByUsername(username).isPresent();
     }
 
     public boolean verifyLoginUserCredentials(User user) {

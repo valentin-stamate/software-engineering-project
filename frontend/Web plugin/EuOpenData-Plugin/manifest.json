@@ -20,7 +20,8 @@
   "content_scripts": [
     {
       "matches": ["https://www.booking.com/hotel/*"],
-      "js": ["scripts/foreground.js"]
+      "js": ["scripts/foreground.js"],
+	  "css": ["styles/page_popup.css"]
     }
   ],
   "icons": {
