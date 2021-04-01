@@ -1,5 +1,6 @@
 package com.bfourclass.euopendata.user;
 
+import com.bfourclass.euopendata.security.SimpleHashingAlgo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,30 +22,50 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public boolean userExists(String username) {
-        return userRepository.findUserByUsername(username).isPresent();
+    public User loginUser(User user) {
+        if (checkUserPassword(user)) {
+            return userRepository.findUserByUsername(user.getUsername()).get();
+        }
+
+        User userf = new User();
+        userf.setUserId(4L);
+        return userf;
     }
 
-    public boolean verifyUserCredentials(User user) {
-        if (user.getUsername().length() < 8) {
+    private boolean checkUserPassword(User user) {
+
+        boolean userExists = userExists(user);
+        if (userExists) {
+            User dbUser = userRepository.findUserByUsername(user.getUsername()).get();
+
+            return dbUser.getPassword().equals(SimpleHashingAlgo.hash(user.getPassword()));
+        }
+
+        return false;
+    }
+
+    private boolean userExists(User user) {
+        return userRepository.findUserByUsername(user.getUsername()).isPresent();
+    }
+
+    public boolean verifyLoginUserCredentials(User user) {
+        if (!isUsernameValid(user.getUsername()) || !verifyEmail(user.getEmail())) {
             return false;
         }
-        String email = user.getEmail();
+
+        return true;
+    }
+
+    private boolean isUsernameValid(String username) {
+        return username.length() > 0;
+    }
+
+    private boolean verifyEmail(String email) {
         String regex = "([a-zA-Z0-9]+(?:[._+-][a-zA-Z0-9]+)*)@([a-zA-Z0-9]+(?:[.-][a-zA-Z0-9]+)*[.][a-zA-Z]{2,})";
         Pattern pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
         Matcher matcher = pattern.matcher(email);
-        if (!(matcher.matches())) {
-            return false;
-        }
-        return true;
-    }
 
-    public boolean verifyExistenceOfUser(User user) {
-        if (!verifyUserCredentials(user))
-            return false;
-        if (!userExists(user.getUsername()))
-            return false;
-        return true;
+        return matcher.matches();
     }
 
     /* Example purpose */
@@ -53,10 +74,10 @@ public class UserService {
     }
 
     public User signUpUser(User user) {
-        if (!verifyUserCredentials(user))
-            return null;
-        if (!userExists(user.getUsername()))
-            return null;
+//        if (!verifyUserCredentials(user))
+//            return null;
+//        if (!userExists(user.getUsername()))
+//            return null;
 
         return userRepository.save(user);
     }

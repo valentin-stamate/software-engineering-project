@@ -39,8 +39,8 @@ public class UserController {
     }
     
     @PostMapping("user/login")
-    public String loginUser(){
-        return "User login endpoint is working!";
+    public User loginUser(@RequestBody User user){
+        return userService.loginUser(user);
     }
 
     public User loginUser(String username,String password)

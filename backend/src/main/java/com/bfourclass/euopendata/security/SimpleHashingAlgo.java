@@ -5,7 +5,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
 public class SimpleHashingAlgo {
-    public static  String hash(String text) {
+    public static String hash(String text) {
         String generatedPassword = null;
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-1");
