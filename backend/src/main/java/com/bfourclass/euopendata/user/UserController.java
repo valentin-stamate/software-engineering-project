@@ -43,6 +43,11 @@ public class UserController {
 //        userService.addUser(user);
 //    }
 
+    @GetMapping("/")
+    public String hello() {
+        return "hello there. we're an API, not much to see here";
+    }
+
     @PostMapping("user/add_location")
     public String addLocationToUser() {
         return "Add location endpoint is working";
