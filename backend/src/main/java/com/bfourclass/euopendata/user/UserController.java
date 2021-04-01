@@ -50,15 +50,13 @@ public class UserController {
     
     @PostMapping("user/login")
     public User loginUser(@RequestBody UserLoginForm userLoginForm){
-        User user = userService.loginUser(userLoginForm);
-        user.setPassword("");
-        user.setDisplayName("");
-        return user;
-    }
-
-    public User loginUser(String username,String password)
-    {
-        return new User();
+        if (userService.isValidLoginForm(userLoginForm)) {
+            User user = userService.loginUser(userLoginForm);
+            user.setPassword("");
+            user.setDisplayName("");
+            return user;
+        }
+        return null;
     }
 
     @PostMapping(value = "user/register", produces = MimeTypeUtils.APPLICATION_JSON_VALUE)

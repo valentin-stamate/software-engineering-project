@@ -27,6 +27,10 @@ public class UserService {
         return formValidator.isValidRegisterForm(registerForm);
     }
 
+    public boolean isValidLoginForm(UserLoginForm userLoginForm) {
+        return formValidator.isValidLoginForm(userLoginForm);
+    }
+
     public void createUserByForm(UserRegisterForm registerForm) {
         userRepository.save(registerForm.toUser());
     }
@@ -96,4 +100,5 @@ public class UserService {
 
         return userRepository.save(user);
     }
+
 }

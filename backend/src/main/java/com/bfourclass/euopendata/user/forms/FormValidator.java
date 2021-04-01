@@ -12,11 +12,12 @@ public class FormValidator {
     private final Pattern linkPattern = Pattern.compile("(http|https)://(www).([a-z.]*)?(/[a-z1-9/]*)*\\??([&a-z1-9=]*)?");
 
     public boolean isValidRegisterForm(UserRegisterForm registerForm) {
+
         return isValidUsername(registerForm.getUsername())
                 && isValidEmail(registerForm.getEmail())
                 && isValidPassword(registerForm.getPassword())
-                && isValidLink(registerForm.getProfilePhotoLink())
-                ; // TODO maybe also display name
+                && true
+                ; // TODO maybe also display name and image url
     }
 
     public boolean isValidUsername(String username) {
@@ -33,5 +34,10 @@ public class FormValidator {
 
     public boolean isValidLink(String link) {
         return linkPattern.matcher(link).matches();
+    }
+
+    public boolean isValidLoginForm(UserLoginForm userLoginForm) {
+        return isValidUsername(userLoginForm.username)
+                && isValidPassword(userLoginForm.password);
     }
 }
