@@ -7,4 +7,5 @@ chrome.runtime.onMessage.addListener(request => {
         locations.push(request);
         chrome.storage.local.set({ "message": locations });
     }
+
 })
