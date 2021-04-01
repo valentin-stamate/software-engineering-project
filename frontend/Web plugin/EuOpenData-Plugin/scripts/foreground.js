@@ -8,20 +8,25 @@ document.body.insertAdjacentHTML('beforeend', `
 		<h1 style="color:green">
 			Inserat din plugin
 		</h1>
+	<button id="send_button">Add preference</button>
 	</div>
-</div>`
-);
+</div>`);
 
 var show = true;
 
 document.getElementById("hide_button").addEventListener('click', () => {
     var popup = document.getElementById("popup");
-	var btn = document.getElementById("hide_button");
-	if (show){
-		popup.style.display = "none";
-	}
-	else {
-		popup.style.display = "inline-block";
-	}
-	show = !show;
+    var btn = document.getElementById("hide_button");
+    if (show) {
+        popup.style.display = "none";
+    } else {
+        popup.style.display = "inline-block";
+    }
+    show = !show;
+});
+
+document.getElementById("send_button").addEventListener('click', () => {
+    console.log("click");
+    var hotel_name = document.getElementById('hp_hotel_name').innerText;
+    chrome.runtime.sendMessage(hotel_name);
 });
