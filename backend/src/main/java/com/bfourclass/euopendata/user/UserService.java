@@ -27,9 +27,7 @@ public class UserService {
             return userRepository.findUserByUsername(user.getUsername()).get();
         }
 
-        User userf = new User();
-        userf.setUserId(4L);
-        return userf;
+        return null;
     }
 
     private boolean checkUserPassword(User user) {
