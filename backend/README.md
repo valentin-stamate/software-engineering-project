@@ -4,15 +4,20 @@
 The backend is available at this url : `incomingurl.com`
 
 ## API Endpoints
-The following are only for internal testing
-* `get/users`
-> Gets all the users from database
-* `post/user`
-> Add a user to database. The json object from body looks like this: <br>
+
+* `user/login`
+> Login the user. The endpoint will receive the users as follows: <br>
 >{<br>
->   "username: value,<br>
->   "email": value, <br>
->   "password": value <br>
+>   "username": value,<br>
+>   "password": value<br>
+>}
+> The response will look like this if successful(empty otherwise):
+>{<br>
+>   "userId": value,<br>
+>   "username": value,<br>
+>   "email": value,<br>
+>   "profilePhotoLink": value,<br>
+>   
 >}
 
 * `user/get_locations`
@@ -22,12 +27,6 @@ The following are only for internal testing
 * `user/add_location`
 > Add a location to user
 
-* `user/login`
-> Login the user. The returned json object will look like this if successful:
->{<br>
->   "key": value,<br>,
->   "user_object": user<br>
->}
 
 * `user/register`
 > Signup the user. The returned json object will look like this if successful:

@@ -2,7 +2,11 @@ package com.bfourclass.euopendata.user;
 
 import com.bfourclass.euopendata.email.EmailComponent;
 import com.bfourclass.euopendata.security.SecurityComponent;
+import com.bfourclass.euopendata.user.forms.UserLoginForm;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -39,8 +43,10 @@ public class UserController {
     }
     
     @PostMapping("user/login")
-    public User loginUser(@RequestBody User user){
-        return userService.loginUser(user);
+    public User loginUser(@RequestBody UserLoginForm userLoginForm){
+        User user = userService.loginUser(userLoginForm);
+        user.setPassword("");
+        return user;
     }
 
     public User loginUser(String username,String password)
