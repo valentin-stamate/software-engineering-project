@@ -6,8 +6,8 @@ export default class UserController {
         //to do
 		
 		var xhr = new XMLHttpRequest();
-		var url = "url";
-		xhr.open("POST", 'http://188.34.167.200:8082/user/login', true);
+		var url = "http://188.34.167.200:8082/user/login";
+		xhr.open("POST", url, true);
 		xhr.setRequestHeader("Content-Type", "application/json");
 		xhr.onreadystatechange = function () {
 			if (xhr.readyState === 4 && xhr.status === 200) {

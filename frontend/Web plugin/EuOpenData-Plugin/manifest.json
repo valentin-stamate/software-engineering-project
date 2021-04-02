@@ -4,7 +4,7 @@
   "version": "1.0",
   "manifest_version": 3,
   "permissions": ["storage", "activeTab", "scripting", "tabs"],
-  "host_permissions": ["https://www.booking.com/*"],
+  "host_permissions": ["https://www.booking.com/*", "http://188.34.167.200:8082/*"],
   "action": {
     "default_popup": "popup.html",
     "default_icon": {
