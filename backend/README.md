@@ -1,7 +1,7 @@
 # EU Open Data (Smart Booking) Backend
 
 ## About
-The backend is available at this url : `incomingurl.com`
+The backend is available at this url : `http://188.34.167.200:8082/`
 
 ## API Endpoints
 
