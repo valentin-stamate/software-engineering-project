@@ -1,5 +1,5 @@
-import User from './User';
-import UserController from './UserController';
+import User from './User.js';
+import UserController from './UserController.js';
 
 export default class App {
     constructor(){

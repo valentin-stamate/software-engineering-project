@@ -1,5 +1,5 @@
-import LocationInfo from './LocationInfo';
-import WheaterInfo from './WheatherInfo';
+import LocationInfo from './LocationInfo.js';
+import WheaterInfo from './WheatherInfo.js';
 
 export default class Preference {
     constructor (location, wheather)

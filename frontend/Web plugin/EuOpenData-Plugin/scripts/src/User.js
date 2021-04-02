@@ -1,4 +1,4 @@
-import Preference from './Preference';
+import Preference from './Preference.js';
 
 export default class User {
     constructor (email = "", passwd = "")

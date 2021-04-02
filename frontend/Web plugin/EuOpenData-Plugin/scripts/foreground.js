@@ -8,7 +8,7 @@ document.body.insertAdjacentHTML('beforeend', `
 		<h1 style="color:green">
 			Inserat din plugin
 		</h1>
-	<button id="send_button">Add preference</button>
+	<button id="send_button" style="cursor:pointer">Add preference</button>
 	</div>
 </div>`);
 
@@ -28,5 +28,5 @@ document.getElementById("hide_button").addEventListener('click', () => {
 document.getElementById("send_button").addEventListener('click', () => {
     console.log("click");
     var hotel_name = document.getElementById('hp_hotel_name').innerText;
-    chrome.runtime.sendMessage(hotel_name);
+    chrome.runtime.sendMessage(hotel_name.trim());
 });

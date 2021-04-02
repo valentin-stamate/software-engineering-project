@@ -1,13 +1,26 @@
-import User from './User';
+import User from './User.js';
 
 export default class UserController {
-    static login (email = "", passwd = "") {
+    static login (username = "", password = "") {
         var isLogged = false;
         //to do
+		
+		var xhr = new XMLHttpRequest();
+		var url = "url";
+		xhr.open("POST", 'http://188.34.167.200:8082/user/login', true);
+		xhr.setRequestHeader("Content-Type", "application/json");
+		xhr.onreadystatechange = function () {
+			if (xhr.readyState === 4 && xhr.status === 200) {
+				var json = JSON.parse(xhr.responseText);
+				console.log(json.email + ", " + json.password);
+			}
+		};
+		var data = JSON.stringify({"username": username, "password": password});
+		xhr.send(data);
 
         if (isLogged)
         {
-            var user = User(email, passwd);
+            var user = null;
             return user;
         }
         else {
@@ -22,3 +35,9 @@ export default class UserController {
         window.location.replace('/');
     }
 }
+
+document.getElementById("send-button").addEventListener("click", () => {
+	var username = document.getElementById("username").value;
+	var password = document.getElementById("password").value;
+	UserController.login(username, password);
+});

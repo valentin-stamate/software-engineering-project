@@ -13,20 +13,21 @@
   </header>
 	
 	<main>
-    <form action="#" style="max-width:500px;margin:auto">
+    <form style="max-width:500px;margin:auto">
     <div class="input-container">
-      <input class="input-field" type="text" placeholder="Username" name="uname">
+      <input class="input-field" type="text" placeholder="Username" id="username" name="username">
       <i class="fa fa-user icon"></i>
     </div>
     
     <div class="input-container">
-      <input class="input-field" type="password" placeholder="Password" name="passwd">
+      <input class="input-field" type="password" placeholder="Password" id="password" name="password">
       <i class="fa fa-key icon"></i>
     </div>
 
-    <button type="submit" class="btn">Login</button>
+    <input type="button" id="send-button" class="btn" value="Login"/>
     </form>
   </main>
 
+  <script type="module" src="scripts/src/UserController.js"></script>
   </body>
 </html>
