@@ -9,6 +9,7 @@ public class Weather {
     public Main main;
     public int visibility;
     public Wind wind;
+    public Rain rain;
     public Clouds clouds;
     public int dt;
     public Sys sys;

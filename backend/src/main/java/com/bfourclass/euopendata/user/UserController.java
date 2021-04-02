@@ -1,5 +1,7 @@
 package com.bfourclass.euopendata.user;
 
+import com.bfourclass.euopendata.ExternalAPI.OpenWeatherAPI;
+import com.bfourclass.euopendata.ExternalAPI.instance.weather.Weather;
 import com.bfourclass.euopendata.email.EmailComponent;
 import com.bfourclass.euopendata.security.SecurityComponent;
 import com.bfourclass.euopendata.user.forms.UserRegisterForm;
@@ -76,4 +78,11 @@ public class UserController {
         }
         return "{\"status\": \"failed\", \"reason\": \"invalid form data\"}";
     }
+
+    @GetMapping("get/location")
+    public Weather getWeather(@RequestBody String locationName){
+        /* TODO find a propper location for this endpoint */
+        return OpenWeatherAPI.requestWeather(locationName);
+    }
+
 }
