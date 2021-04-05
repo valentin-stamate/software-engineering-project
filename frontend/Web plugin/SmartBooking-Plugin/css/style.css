@@ -1,0 +1,141 @@
+body {
+	width:350px;
+	
+  background-image: url("/src/images/background.jpg");
+  background-position:bottom;
+  background-size: cover;
+}
+
+* {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  box-sizing: border-box;
+	margin: 0;
+  padding: 0;
+}
+
+
+a {
+  text-decoration: none;
+  display: inline;
+  color:white;
+}
+
+a.btn-head{
+  padding: 1px 12px;
+}
+
+a:hover {
+  background-color: #ddd;
+  color:black;
+}
+
+.btn-head {
+	border-radius:5px;
+	background-color:#a7c0cd;
+	display:inline-block;
+	cursor:pointer;
+	color:white;
+	font-family:Arial;
+	font-size:20px;
+	font-weight:bold;
+	padding:10px 15px;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #3e8c33;
+	opacity: 0.9;
+}
+.btn-head:hover {
+	background-color:#4b636e;
+	color:white;
+	opacity: 1;
+}
+.btn-head:active {
+	position:relative;
+	top:1px;
+}
+
+
+.round {
+	border-radius:42px;
+}
+
+.input-container {
+  display: -ms-flexbox; /* IE10 */
+  display: flex;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.icon {
+  padding: 8px;
+  background: white;
+  color:black;
+  min-width: 50px;
+  text-align: center;
+  font-size:1.4em;
+  border: 2px solid gray;
+  border-left:none;
+  border-radius:5px;
+}
+
+.input-field {
+  width: 100%;
+  padding: 10px;
+  outline: none;
+  border: 2px solid gray;
+  border-right:none;
+  border-radius:5px;
+}
+
+.input-field:focus {
+  border: 2px solid green;
+  border-right: none;
+}
+.input-field:focus ~ .icon{
+  border: 2px solid green;
+  border-left: none;
+}
+
+/* Set a style for the submit button */
+.btn {
+  text-align: center;
+  font-size:1.2em;
+  background-color: #4b636e;
+  padding: 13px 20px;
+  border: 1px solid #4b636e;
+  border-radius:5px;
+  cursor: pointer;
+  color:white;
+  width: 100%;
+  opacity: 0.9;
+}
+
+.btn:hover {
+  opacity: 1;
+}
+
+.btn:active {
+	position:relative;
+	top:1px;
+}
+
+.header {
+	display:flex;
+	padding:15px 20px 15px 20px;
+	background-color: #78909c;
+	align-items:center;
+	color:white;
+}
+
+main {
+  width: 100%;
+	padding:40px 20px 30px 20px;
+}
+
+
+.hidden {
+  display:none;
+}

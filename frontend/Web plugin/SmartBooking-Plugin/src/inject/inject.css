@@ -1,0 +1,91 @@
+#main-popup{
+	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	overflow-Y:auto;
+	overflow-X:hidden;
+	display: inline-block;
+	position:fixed;
+	top:200px;
+	left:0px;
+	opacity:100%;
+	z-index:9999;
+	padding:0;
+	margin:0;
+	max-width:100%;
+}
+
+#hide-btn{
+	float : right;
+	border:none;
+	outline:none;
+	cursor: pointer;
+	line-height:20px;
+    overflow:hidden;
+	font-size:20px;
+	background-color:#78909c;
+	color:white;
+}
+
+#hide-btn:active {
+	position:relative;
+	top:1px;
+}
+
+#hide-btn:hover{
+	background-color:black;
+	color:white;
+}
+
+#popup{
+	text-align: center; 
+	display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    align-items: center;
+	flex-direction:column;
+	width:360px;
+	height:100%;
+	padding: 5px 0px;
+	background-position:bottom;
+	background-size: cover;
+}
+
+#send-btn {
+	border:1px solid gray;
+	border-radius:5px;
+	background-color:#a7c0cd;
+	display:inline-block;
+	cursor:pointer;
+	color:black;
+	font-family:Arial;
+	font-size:14px;
+	font-weight:bold;
+	padding:8px 13px;
+	text-decoration:none;
+	opacity: 0.9;
+}
+#send-btn:hover {
+	background-color:#4b636e;
+	color:white;
+	opacity: 1;
+}
+#send-btn:active {
+	position:relative;
+	top:1px;
+}
+
+.header{
+	overflow:hidden;
+	background-color:#78909c;
+}
+
+#hotel-name-header{
+	margin-bottom:10px;
+	color:white;
+	text-shadow: 3px 2px 3px rgba(255,255,255,.2), 0px 0px 20px #000000; !important;
+}
