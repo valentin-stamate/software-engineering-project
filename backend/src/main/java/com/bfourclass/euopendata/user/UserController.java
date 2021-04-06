@@ -16,6 +16,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import requests.APIError;
+import requests.responses.UserResponse;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -72,14 +74,26 @@ public class UserController {
     }
 
     @PostMapping("user/login")
-    public User loginUser(@RequestBody UserLoginForm userLoginForm) {
+    public ResponseEntity<Object> loginUser(@RequestBody UserLoginForm userLoginForm) {
+        String errorMessage = "";
+
         if (userService.isValidLoginForm(userLoginForm)) {
             User user = userService.loginUser(userLoginForm);
-            user.setPassword("");
-            user.setDisplayName("");
-            return user;
+
+            if (user != null) {
+                UserResponse userResponse = new UserResponse(user.getUserId(), user.getUsername(), user.getEmail(), user.getProfilePhotoLink());
+                return new ResponseEntity<>(userResponse, HttpStatus.OK);
+            } else {
+                errorMessage = "Wrong user or password";
+            }
+        } else {
+            errorMessage = "User form is not valid";
         }
-        return null;
+
+        return new ResponseEntity<>(
+                new APIError("User not found", List.of(errorMessage)),
+                HttpStatus.NOT_FOUND
+        );
     }
 
     @PostMapping(value = "user/register", produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
