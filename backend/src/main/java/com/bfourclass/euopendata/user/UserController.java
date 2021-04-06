@@ -61,6 +61,16 @@ public class UserController {
         return "Location already exists!";
     }
 
+    @DeleteMapping("user/delete_location")
+    public String deleteLocationFromUser(@RequestBody String locationName, User user) {
+        //@RequestBody user ??
+        if (!user.existingLocation(locationName)) {
+            user.deleteLocationFromFavourites(locationName);
+            return "Location deleted";
+        }
+        return "Location does not exists!";
+    }
+
     @PostMapping("user/login")
     public User loginUser(@RequestBody UserLoginForm userLoginForm) {
         if (userService.isValidLoginForm(userLoginForm)) {

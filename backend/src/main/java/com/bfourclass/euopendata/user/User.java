@@ -101,6 +101,13 @@ public class User {
         locations.add(new Location(locationName));
     }
 
+    public void deleteLocationFromFavourites(String locationName) {
+        for (Location location : this.locations) {
+            if (location.getLocationName().equals(locationName))
+                locations.remove(location);
+        }
+    }
+
     @Override
     public String toString() {
         return "UserModel{" +
