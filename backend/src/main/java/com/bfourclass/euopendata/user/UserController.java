@@ -3,6 +3,7 @@ package com.bfourclass.euopendata.user;
 import com.bfourclass.euopendata.ExternalAPI.OpenWeatherAPI;
 import com.bfourclass.euopendata.ExternalAPI.instance.weather.Weather;
 import com.bfourclass.euopendata.email.EmailComponent;
+import com.bfourclass.euopendata.location.Location;
 import com.bfourclass.euopendata.security.SecurityComponent;
 import com.bfourclass.euopendata.user.forms.UserRegisterForm;
 import org.apache.http.entity.ContentType;
@@ -51,12 +52,17 @@ public class UserController {
     }
 
     @PostMapping("user/add_location")
-    public String addLocationToUser() {
-        return "Add location endpoint is working";
+    public String addLocationToUser(@RequestBody String locationName, User user) {
+        //@RequestBody user ??
+        if (!user.existingLocation(locationName)) {
+            user.addLocationToFavourites(locationName);
+            return "Location added";
+        }
+        return "Location already exists!";
     }
-    
+
     @PostMapping("user/login")
-    public User loginUser(@RequestBody UserLoginForm userLoginForm){
+    public User loginUser(@RequestBody UserLoginForm userLoginForm) {
         if (userService.isValidLoginForm(userLoginForm)) {
             User user = userService.loginUser(userLoginForm);
             user.setPassword("");
@@ -80,7 +86,7 @@ public class UserController {
     }
 
     @GetMapping("get/location")
-    public Weather getWeather(@RequestBody String locationName){
+    public Weather getWeather(@RequestBody String locationName) {
         /* TODO find a propper location for this endpoint */
         return OpenWeatherAPI.requestWeather(locationName);
     }

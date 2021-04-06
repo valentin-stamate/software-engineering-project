@@ -24,8 +24,7 @@ public class User {
     @Transient
     private String ignoredColumn;
 
-    public User(String username, String email, String password, String displayName, String profilePhotoLink)
-    {
+    public User(String username, String email, String password, String displayName, String profilePhotoLink) {
         this.username = username;
         this.email = email;
         this.password = password;
@@ -34,7 +33,8 @@ public class User {
         this.profilePhotoLink = profilePhotoLink;
     }
 
-    public User() { }
+    public User() {
+    }
 
     public User(String username, String password) {
     }
@@ -87,6 +87,20 @@ public class User {
         this.profilePhotoLink = profilePhotoLink;
     }
 
+    public boolean existingLocation(String locationName) {
+        if (this.locations.isEmpty())
+            return false;
+        for (Location location : this.locations) {
+            if (location.getLocationName().equals(locationName))
+                return true;
+        }
+        return false;
+    }
+
+    public void addLocationToFavourites(String locationName) {
+        locations.add(new Location(locationName));
+    }
+
     @Override
     public String toString() {
         return "UserModel{" +
@@ -96,6 +110,6 @@ public class User {
                 ", password='" + password + '\'' +
                 ", displayName='" + displayName + '\'' +
                 ", profilePhotoLink='" + profilePhotoLink + '\'' +
-            '}';
+                '}';
     }
 }
