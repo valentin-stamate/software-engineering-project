@@ -2,39 +2,27 @@ package com.bfourclass.euopendata.user;
 
 import com.bfourclass.euopendata.ExternalAPI.OpenWeatherAPI;
 import com.bfourclass.euopendata.ExternalAPI.instance.weather.Weather;
-import com.bfourclass.euopendata.email.EmailComponent;
-import com.bfourclass.euopendata.location.Location;
-import com.bfourclass.euopendata.security.SecurityComponent;
+import com.bfourclass.euopendata.email.EmailService;
 import com.bfourclass.euopendata.user.forms.UserRegisterForm;
-import org.apache.http.entity.ContentType;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.RequestEntity;
 import org.springframework.util.MimeTypeUtils;
 import com.bfourclass.euopendata.user.forms.UserLoginForm;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import requests.APIError;
 import requests.responses.UserResponse;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
 public class UserController {
-    SecurityComponent securityComponent;
-    EmailComponent emailComponent;
 
-
-    private final UserService userService;
-
+    private UserService userService;
+    private EmailService emailService;
 
     @Autowired
-    UserController(UserService userService) {
-        this.userService = userService;
-    }
+    UserController(UserService userService, EmailService emailService) { }
 
     /* Example purpose */
 //    @GetMapping("get/users")
