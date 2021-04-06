@@ -1,9 +1,13 @@
 package com.bfourclass.euopendata.user;
 
+import com.bfourclass.euopendata.email.EmailService;
 import com.bfourclass.euopendata.security.SimpleHashingAlgo;
+import com.bfourclass.euopendata.security.StringGenerator;
 import com.bfourclass.euopendata.user.forms.FormValidator;
 import com.bfourclass.euopendata.user.forms.UserRegisterForm;
 import com.bfourclass.euopendata.user.forms.UserLoginForm;
+import com.bfourclass.euopendata.user_verification.UserVerification;
+import com.bfourclass.euopendata.user_verification.UserVerificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,11 +20,15 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final FormValidator formValidator;
+    private final EmailService emailService;
+    private final UserVerificationService userVerificationService;
 
     @Autowired
-    public UserService(UserRepository userRepository, FormValidator formValidator) {
+    public UserService(UserRepository userRepository, FormValidator formValidator, EmailService emailService, UserVerificationService userVerificationService) {
         this.userRepository = userRepository;
         this.formValidator = formValidator;
+        this.emailService = emailService;
+        this.userVerificationService = userVerificationService;
     }
 
     public boolean isValidRegisterForm(UserRegisterForm registerForm) {
@@ -32,7 +40,15 @@ public class UserService {
     }
 
     public void createUserByForm(UserRegisterForm registerForm) {
-        userRepository.save(registerForm.toUser());
+        User user = registerForm.toUser();
+
+        String verificationKey = StringGenerator.generate();
+        UserVerification userVerification = new UserVerification(user, verificationKey);
+
+        userVerificationService.save(userVerification);
+
+        userRepository.save(user);
+        emailService.sendEmailVerificationEmail(user.getUsername(), user.getEmail(), verificationKey);
     }
 
     public List<User> getUsers() {
@@ -87,21 +103,11 @@ public class UserService {
         return matcher.matches();
     }
 
-    /* Example purpose */
-    public void addUser(User user) {
-        userRepository.save(user);
-    }
-
-    public User signUpUser(User user) {
-//        if (!verifyUserCredentials(user))
-//            return null;
-//        if (!userExists(user.getUsername()))
-//            return null;
-
-        return userRepository.save(user);
-    }
-
     public User getUser(String username) {
         return userRepository.findUserByUsername(username).get();
+    }
+
+    public void saveUser(User user) {
+        saveUser(user);
     }
 }

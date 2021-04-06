@@ -14,10 +14,11 @@ public class UserVerification {
 
     public String verificationKey;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     public User user;
 
-    public UserVerification(String verificationKey) {
+    public UserVerification(User user, String verificationKey) {
+        this.user = user;
         this.verificationKey = verificationKey;
     }
 

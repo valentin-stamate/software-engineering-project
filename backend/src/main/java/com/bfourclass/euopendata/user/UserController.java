@@ -2,15 +2,16 @@ package com.bfourclass.euopendata.user;
 
 import com.bfourclass.euopendata.ExternalAPI.OpenWeatherAPI;
 import com.bfourclass.euopendata.ExternalAPI.instance.weather.Weather;
-import com.bfourclass.euopendata.email.EmailService;
-import com.bfourclass.euopendata.user.forms.UserRegisterForm;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.MimeTypeUtils;
 import com.bfourclass.euopendata.user.forms.UserLoginForm;
+import com.bfourclass.euopendata.user.forms.UserRegisterForm;
+import com.bfourclass.euopendata.user_verification.UserVerificationService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.MimeTypeUtils;
 import org.springframework.web.bind.annotation.*;
 import requests.APIError;
+import requests.APISuccess;
 import requests.responses.UserResponse;
 
 import java.util.List;
@@ -18,23 +19,14 @@ import java.util.List;
 @RestController
 public class UserController {
 
-    private UserService userService;
-    private EmailService emailService;
+    private final UserService userService;
+    private final UserVerificationService userVerificationService;
 
     @Autowired
-    UserController(UserService userService, EmailService emailService) { }
-
-    /* Example purpose */
-//    @GetMapping("get/users")
-//    public List<User> getUsers() {
-//        return userService.getUsers();
-//    }
-
-    /* Example purpose */
-//    @PostMapping("post/user")
-//    public void addUser(@RequestBody User user) {
-//        userService.addUser(user);
-//    }
+    UserController(UserService userService, UserVerificationService userVerificationService) {
+        this.userService = userService;
+        this.userVerificationService = userVerificationService;
+    }
 
     @GetMapping("/")
     public String hello() {
@@ -85,16 +77,41 @@ public class UserController {
     }
 
     @PostMapping(value = "user/register", produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
-    public String registerUser(@RequestBody UserRegisterForm form) {
+    public ResponseEntity<Object> registerUser(@RequestBody UserRegisterForm form) {
         if (userService.userExists(form.getUsername())) {
-            return "{\"status\": \"failed\", \"reason\": \"user already exists\"}";
+            return new ResponseEntity<>(
+                    new APIError("Failed", List.of("User already exists")),
+                    HttpStatus.NOT_FOUND
+            );
         }
 
         if (userService.isValidRegisterForm(form)) {
             userService.createUserByForm(form);
-            return "{\"status\": \"success\"}";
+
+            return new ResponseEntity<>(
+                    new APISuccess("User registered. Check your email to activate your account"),
+                    HttpStatus.OK
+            );
         }
-        return "{\"status\": \"failed\", \"reason\": \"invalid form data\"}";
+
+        return new ResponseEntity<>(
+                new APIError("Failed", List.of("Invalid form data")),
+                HttpStatus.NOT_FOUND
+        );
+    }
+
+    @PostMapping(value = "user/verify")
+    public ResponseEntity<Object> verifyUser(@RequestParam(name="verification_key") String userKey) {
+        if (userVerificationService.activateUser(userKey)) {
+            return new ResponseEntity<>(
+                    new APISuccess("User successfully activated. Now you can log in"),
+                    HttpStatus.OK
+            );
+        }
+        return new ResponseEntity<>(
+                new APIError("Wrong verification key", List.of("")),
+                HttpStatus.NOT_FOUND
+        );
     }
 
     @GetMapping("get/location")

@@ -1,20 +1,17 @@
 package com.bfourclass.euopendata.email;
 
+import com.bfourclass.euopendata.globals.Globals;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.MailMessage;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
-
-import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
 @Component
 public class EmailService {
 
-    private final JavaMailSender emailSender;
+    private JavaMailSender emailSender;
 
     @Autowired
     public EmailService(JavaMailSender emailSender) {
@@ -29,12 +26,14 @@ public class EmailService {
             helper.setFrom("noreply@euopendata.com");
             helper.setTo(destination);
             helper.setSubject("Email Verification");
-            helper.setText("Thank you for registering <b>" + username + "</b> ", true);
+            helper.setText("Thank you for registering <b>" + username + "</b> ." +
+                    "To verify your account press on the button " +
+                            "<a href='" + Globals.BACKEND_URL + "user/verify?user_verification_key=" + key +"' target='_blank'>Activate Account</button>.",
+                    true);
         } catch (MessagingException e) {
             e.printStackTrace();
         }
 
         emailSender.send(mail);
-
     }
 }

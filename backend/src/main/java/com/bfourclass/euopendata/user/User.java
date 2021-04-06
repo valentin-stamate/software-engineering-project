@@ -17,12 +17,10 @@ public class User {
     private String password;
     private String displayName;
     private String profilePhotoLink;
+    private boolean isActivated = false;
 
     @ManyToMany
     private Set<Location> locations;
-
-    @Transient
-    private String ignoredColumn;
 
     public User(String username, String email, String password, String displayName, String profilePhotoLink) {
         this.username = username;
@@ -33,11 +31,7 @@ public class User {
         this.profilePhotoLink = profilePhotoLink;
     }
 
-    public User() {
-    }
-
-    public User(String username, String password) {
-    }
+    public User() { }
 
     public Long getUserId() {
         return id;
@@ -118,5 +112,9 @@ public class User {
                 ", displayName='" + displayName + '\'' +
                 ", profilePhotoLink='" + profilePhotoLink + '\'' +
                 '}';
+    }
+
+    public void activateUser() {
+        isActivated = true;
     }
 }

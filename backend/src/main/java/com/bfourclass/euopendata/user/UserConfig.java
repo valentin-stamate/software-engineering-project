@@ -1,6 +1,5 @@
 package com.bfourclass.euopendata.user;
 
-import com.bfourclass.euopendata.ExternalAPI.OpenWeatherAPI;
 import com.bfourclass.euopendata.security.SimpleHashingAlgo;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
