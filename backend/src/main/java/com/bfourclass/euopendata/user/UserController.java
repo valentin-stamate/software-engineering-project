@@ -52,8 +52,8 @@ public class UserController {
     }
 
     @PostMapping("user/add_location")
-    public String addLocationToUser(@RequestBody String locationName, User user) {
-        //@RequestBody user ??
+    public String addLocationToUser(@RequestBody String locationName, @RequestBody String username) {
+        User user = userService.getUser(username);
         if (!user.existingLocation(locationName)) {
             user.addLocationToFavourites(locationName);
             return "Location added";
@@ -62,8 +62,8 @@ public class UserController {
     }
 
     @DeleteMapping("user/delete_location")
-    public String deleteLocationFromUser(@RequestBody String locationName, User user) {
-        //@RequestBody user ??
+    public String deleteLocationFromUser(@RequestBody String locationName, @RequestBody String username) {
+        User user = userService.getUser(username);
         if (!user.existingLocation(locationName)) {
             user.deleteLocationFromFavourites(locationName);
             return "Location deleted";
@@ -97,7 +97,7 @@ public class UserController {
 
     @GetMapping("get/location")
     public Weather getWeather(@RequestBody String locationName) {
-        /* TODO find a propper location for this endpoint */
+        /* TODO find a proper location for this endpoint */
         return OpenWeatherAPI.requestWeather(locationName);
     }
 
