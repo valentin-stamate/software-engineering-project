@@ -1,135 +1,183 @@
-.control {
-    display: block;
-    position: relative;
-    padding-left: 30px;
-    margin-bottom: 5px;
-    padding-top: 3px;
-    cursor: pointer;
-    font-size: 16px;
+.b-contain *, .b-contain *::before, .b-contain *::after {
+	box-sizing: content-box !important;
 }
 
-.control input {
-    position: absolute;
-    z-index: -1;
-    opacity: 0;
+.b-contain input {
+	position: absolute;
+	z-index: -1;
+	opacity: 0;
 }
 
-.control_indicator {
-    position: absolute;
-    top: 4px;
-    left: 0;
-    height: 20px;
-    width: 20px;
-    background: #e6e6e6;
-    border: 0px solid #000000;
-    border-radius: 5px;
+.b-contain span {
+	line-height: 1.54;
+	font-size: 1rem;
+	font-family: inherit;
 }
 
-.control:hover input~.control_indicator,
-.control input:focus~.control_indicator {
-    background: #cccccc;
+.b-contain:hover {
+	border:1px solid rgba(28,110,164,0.5);
+	border-radius:5px;
 }
 
-.control input:checked~.control_indicator {
-    background: #2aa1c0;
+.b-contain {
+	width:100%;
+	display: table;
+	position: relative;
+	padding: 0.2rem;
+	padding-top: 0.15rem;
+	padding-left: 1.85rem;
+	cursor: pointer;
+	border:1px solid transparent;
 }
 
-.control:hover input:not([disabled]):checked~.control_indicator,
-.control input:checked:focus~.control_indicator {
-    background: #0e6647;
+.b-contain input[type="checkbox"] ~ .b-input {
+	position: absolute;
+	top: 5px;
+	left: 1px;
+	height: 1.25rem;
+	width: 1.25rem;
+	background: rgba(241, 245, 248, 1);
+	transition: background 250ms;
+	border: 1px solid rgba(184, 194, 204, 1);
+	border-radius: 0.225rem;
 }
 
-.control input:disabled~.control_indicator {
-    background: #e6e6e6;
-    opacity: 1;
-    pointer-events: none;
+.b-contain input[type="checkbox"] ~ .b-input::after {
+	content: '';
+	position: absolute;
+	display: none;
+	left: .45rem;
+	top: .18rem;
+	width: .25rem;
+	height: .6rem;
+	border: solid rgba(255, 255, 255, 1);
+	border-width: 0 1px 1px 0;
+	transition: background 250ms;
+	transform: rotate(45deg);
 }
 
-.control_indicator:after {
-    box-sizing: unset;
-    content: '';
-    position: absolute;
-    display: none;
+.b-contain input:disabled ~ .b-input::after {
+	border-color: rgba(135, 149, 161, 1);
 }
 
-.control input:checked~.control_indicator:after {
-    display: block;
+.b-contain input:checked ~ .b-input::after {
+	display: block;
 }
 
-.control-checkbox .control_indicator:after {
-    left: 7px;
-    top: 4px;
-    width: 3px;
-    height: 8px;
-    border: solid #ffffff;
-    border-width: 0 2px 2px 0;
-    transform: rotate(45deg);
+.b-contain:hover input ~ .b-input,
+.b-contain input:focus ~ .b-input {
+	background: rgba(207, 240, 255, 1);
 }
 
-.control-checkbox input:disabled~.control_indicator:after {
-    border-color: #7b7b7b;
+.b-contain input:focus ~ .b-input {
+	box-shadow: 0 0 0 1px rgba(52,144,220,0.5);
 }
 
-.control-checkbox .control_indicator::before {
-    content: '';
-    display: block;
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 4.5rem;
-    height: 4.5rem;
-    margin-left: -1.4rem;
-    margin-top: -1.4rem;
-    background: #2aa1c0;
-    border-radius: 3rem;
-    opacity: 0.6;
-    z-index: 99999;
-    transform: scale(0);
+.b-contain input:checked ~ .b-input {
+	background: rgba(2, 157, 0, 1);
+	border-color: rgba(7, 161, 0, 1);
 }
 
-@keyframes s-ripple {
-    0% {
-        transform: scale(0);
-    }
-    20% {
-        transform: scale(1);
-    }
-    100% {
-        opacity: 0;
-        transform: scale(1);
-    }
+.b-contain input[type="checkbox"]:disabled ~ .b-input {
+	background: rgba(241, 245, 248, 1);
+	border-color: rgba(184, 194, 204, 1);
+	opacity: 0.6;
+	cursor: not-allowed;
 }
 
-@keyframes s-ripple-dup {
-    0% {
-        transform: scale(0);
-    }
-    30% {
-        transform: scale(1);
-    }
-    60% {
-        transform: scale(1);
-    }
-    100% {
-        opacity: 0;
-        transform: scale(1);
-    }
+.b-contain input:checked:focus ~ .b-input, .b-contain:hover input:not([disabled]):checked ~ .b-input {
+	background: rgba(0, 182, 0, 1);
+	border-color: rgba(0, 190, 5, 1);
 }
 
-.control-checkbox input+.control_indicator::before {
-    animation: s-ripple 250ms ease-out;
+.b-contain .b-input::before {
+	content: '';
+	display: block;
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 3rem;
+	height: 3rem;
+	margin-left: -0.85rem;
+	margin-top: -0.85rem;
+	background: rgba(0, 130, 243, 1);
+	border-radius: 2rem;
+	opacity: .6;
+	z-index: 99999;
+	transform: scale(0);
 }
 
-.control-checkbox input:checked+.control_indicator::before {
-    animation-name: s-ripple-dup;
+@keyframes b-ripple {
+	0% {
+		transform: scale(0);
+	}
+
+	20% {
+		transform: scale(1);
+	}
+
+	100% {
+		opacity: 0;
+		transform: scale(1);
+  	}
+}
+
+@keyframes b-ripple-duplicate {
+	0% {
+		transform: scale(0);
+	}
+
+	30% {
+		transform: scale(1);
+	}
+
+	60% {
+		transform: scale(1);
+	}
+
+	100% {
+		opacity: 0;
+		transform: scale(1);
+  	}
+}
+
+.b-contain input + .b-input::before {
+	animation: b-ripple 250ms ease-out;
+}
+
+.b-contain input:checked + .b-input::before {
+	animation-name: b-ripple-duplicate;
+}
+
+.b-contain .b-input::before {
+	visibility: hidden;
+}
+
+.b-contain input:focus + .b-input::before {
+	visibility: visible;
+}
+
+.b-contain:first-child .b-input::before {
+	visibility: hidden;
 }
 
 #control-group {
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    padding: 10px;
+    padding: 5px;
     margin: 5px 0px;
     border: 4px ridge rgba(28,110,164,0.5);
 	border-radius: 5px 5px 5px 5px;
+}
+
+.remove {
+	cursor:pointer;
+	border:none;
+	background-color:transparent;
+	z-index:9999;
+	color:white;
+	float:right;
+	margin-left:5px;
+}
+
+.remove:hover {
+	color: black;
 }

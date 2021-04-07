@@ -1,5 +1,4 @@
 export default class UserController {
-	static isLogged = false;
     static login (username = "", password = "") {
 		var xhr = new XMLHttpRequest();
 		var url = "http://188.34.167.200:8082/user/login";
@@ -7,9 +6,16 @@ export default class UserController {
 		xhr.setRequestHeader("Content-Type", "application/json");
 		xhr.onreadystatechange = function () {
 			if (xhr.readyState === 4 && xhr.status === 200) {
-				var json = JSON.parse(xhr.responseText);
-				alert(json.userId + ", " + json.username + ", " + json.email + ", " + json.profilePhotoLink);
-				this.isLogged = true;
+				if (xhr.responseText != ""){
+					var json = JSON.parse(xhr.responseText);
+					localStorage.setItem('loginstate', true);
+					alert(json.userId + ", " + json.username + ", " + json.email + ", " + json.profilePhotoLink);
+					window.location.href = "/src/pages/popup.html";
+				}
+				else {
+					localStorage.setItem('loginstate', false);
+					alert("login failed");
+				}
 			}
 		};
 		var data = JSON.stringify({"username": username, "password": password});
@@ -20,6 +26,6 @@ export default class UserController {
     {
         window.localStorage.clear();
         window.location.reload();
-        window.location.replace('/');
+        window.location.replace('/src/pages/popup.html');
     }
 }

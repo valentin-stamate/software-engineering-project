@@ -131,11 +131,11 @@ a:hover {
 }
 
 main {
-  width: 100%;
-	padding:40px 20px 30px 20px;
+	width: 100%;
+	padding:30px 20px 30px 20px;
 }
 
 
 .hidden {
-  display:none;
+	display:none;
 }
