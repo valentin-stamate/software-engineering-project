@@ -2,12 +2,6 @@ import UserController from './../login/UserController.js';
 
 const loginstate = localStorage.getItem('loginstate');
 
-var list = document.getElementById("control-group");
-if (list.children.length == 0)
-{
-	list.innerHTML = "Nothing here yet";
-}
-
 if (loginstate)
 {
 	document.getElementById('save-list').classList.remove("hidden");
@@ -20,9 +14,9 @@ else {
 
 chrome.storage.local.get('message', value => {
     var locations = value.message;
-
+	var control_group = document.getElementById("control-group");
+	
 	if (locations){
-		var control_group = document.getElementById("control-group");
 		control_group.innerHTML = "";
 		locations.forEach(element => {
 			console.log(element);
@@ -35,6 +29,7 @@ chrome.storage.local.get('message', value => {
 				</label>`)
 		});
 	}
+	control_group.innerHTML = "Nothing here yet";
 	addRemoveButton();
 });
 
