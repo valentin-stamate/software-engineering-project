@@ -3,6 +3,7 @@ package com.bfourclass.euopendata.user;
 import com.bfourclass.euopendata.email.EmailService;
 import com.bfourclass.euopendata.security.SimpleHashingAlgo;
 import com.bfourclass.euopendata.security.StringGenerator;
+import com.bfourclass.euopendata.user.auth.SecurityContext;
 import com.bfourclass.euopendata.user.forms.FormValidator;
 import com.bfourclass.euopendata.user.forms.UserRegisterForm;
 import com.bfourclass.euopendata.user.forms.UserLoginForm;
@@ -22,13 +23,15 @@ public class UserService {
     private final FormValidator formValidator;
     private final EmailService emailService;
     private final UserVerificationService userVerificationService;
+    private final SecurityContext securityContext;
 
     @Autowired
-    public UserService(UserRepository userRepository, FormValidator formValidator, EmailService emailService, UserVerificationService userVerificationService) {
+    public UserService(UserRepository userRepository, FormValidator formValidator, EmailService emailService, UserVerificationService userVerificationService, SecurityContext securityContext) {
         this.userRepository = userRepository;
         this.formValidator = formValidator;
         this.emailService = emailService;
         this.userVerificationService = userVerificationService;
+        this.securityContext = securityContext;
     }
 
     public boolean isValidRegisterForm(UserRegisterForm registerForm) {
