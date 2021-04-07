@@ -29,7 +29,10 @@ chrome.storage.local.get('message', value => {
 				</label>`)
 		});
 	}
-	control_group.innerHTML = "Nothing here yet";
+	
+	if (locations.length == 0) {
+		control_group.innerHTML = "Nothing here yet";
+	}
 	addRemoveButton();
 });
 
@@ -55,6 +58,10 @@ function removeLocation(loc)
 			if ( locations[i] == loc) { 
 				locations.splice(i, 1); 
 			}
+		}
+		
+		if (locations.length == 0) {
+			document.getElementById("control-group").innerHTML = "Nothing here yet";
 		}
 		chrome.storage.local.set({ "message": locations });
 	});
