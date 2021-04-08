@@ -2,6 +2,7 @@ package com.bfourclass.euopendata.user;
 
 import com.bfourclass.euopendata.ExternalAPI.OpenWeatherAPI;
 import com.bfourclass.euopendata.ExternalAPI.instance.weather.Weather;
+import com.bfourclass.euopendata.user.auth.AuthSuccessResponse;
 import com.bfourclass.euopendata.user.forms.UserLoginForm;
 import com.bfourclass.euopendata.user.forms.UserRegisterForm;
 import com.bfourclass.euopendata.user_verification.UserVerificationService;
@@ -34,53 +35,92 @@ public class UserController {
     }
 
     @PostMapping("user/add_location")
-    public String addLocationToUser(@RequestBody String locationName, @RequestBody String username) {
-        User user = userService.getUser(username);
+    public ResponseEntity<Object> addLocationToUser(@RequestBody String locationName, @RequestHeader(name = "Authorization", required = false) String token) {
+        // check if token exists in request
+        if (token == null) {
+            return new ResponseEntity<>(
+                new APIError("missing Authorization header"),
+                HttpStatus.UNAUTHORIZED
+            );
+        }
+        // check if token exists in SecurityContext
+        if (!userService.checkTokenIsValid(token)) {
+            return new ResponseEntity<>(
+                    new APIError("invalid Authorization header"),
+                    HttpStatus.UNAUTHORIZED
+            );
+        }
+
+        // TODO: update the database
+        User user = userService.getUserFromToken(token);
         if (!user.existingLocation(locationName)) {
             user.addLocationToFavourites(locationName);
-            return "Location added";
         }
-        return "Location already exists!";
+        return new ResponseEntity<>("success", HttpStatus.OK);
     }
 
     @DeleteMapping("user/delete_location")
-    public String deleteLocationFromUser(@RequestBody String locationName, @RequestBody String username) {
-        User user = userService.getUser(username);
+    public ResponseEntity<Object> deleteLocationFromUser(@RequestBody String locationName, @RequestHeader(name = "Authorization", required = false) String token) {
+        // check if token exists in request
+        if (token == null) {
+            return new ResponseEntity<>(
+                    new APIError("missing Authorization header"),
+                    HttpStatus.UNAUTHORIZED
+            );
+        }
+        // check if token exists in SecurityContext
+        if (!userService.checkTokenIsValid(token)) {
+            return new ResponseEntity<>(
+                    new APIError("invalid Authorization header"),
+                    HttpStatus.UNAUTHORIZED
+            );
+        }
+        // TODO: update the database
+        User user = userService.getUserFromToken(token);
         if (!user.existingLocation(locationName)) {
             user.deleteLocationFromFavourites(locationName);
-            return "Location deleted";
+            return new ResponseEntity<>("deleted successfully", HttpStatus.OK);
         }
-        return "Location does not exists!";
+        return new ResponseEntity<>("no such location found", HttpStatus.NOT_FOUND);
     }
 
     @PostMapping("user/login")
     public ResponseEntity<Object> loginUser(@RequestBody UserLoginForm userLoginForm) {
-        String errorMessage = "";
-
-        if (userService.isValidLoginForm(userLoginForm)) {
-            User user = userService.loginUser(userLoginForm);
-
-            if (user != null) {
-                UserResponse userResponse = new UserResponse(user.getUserId(), user.getUsername(), user.getEmail(), user.getProfilePhotoLink());
-                return new ResponseEntity<>(userResponse, HttpStatus.OK);
-            } else {
-                errorMessage = "Wrong user or password";
-            }
-        } else {
-            errorMessage = "User form is not valid";
+        // check if form is valid
+        if (!userService.isValidLoginForm(userLoginForm)) {
+            return new ResponseEntity<>(
+                    new APIError("invalid login form"),
+                    HttpStatus.BAD_REQUEST
+            );
+        }
+        // check if user exists
+        if (!userService.userExists(userLoginForm.getUsername())) {
+            return new ResponseEntity<>(
+                    new APIError("user does not exist"),
+                    HttpStatus.BAD_REQUEST
+            );
+        }
+        // check if password is correct
+        if (!userService.checkUserPassword(userLoginForm)) {
+            return new ResponseEntity<>(
+                    new APIError("invalid password"),
+                    HttpStatus.BAD_REQUEST
+            );
         }
 
+        String token = userService.loginUserReturnToken(userLoginForm);
+
         return new ResponseEntity<>(
-                new APIError("User not found", List.of(errorMessage)),
-                HttpStatus.NOT_FOUND
+                new AuthSuccessResponse("authentication successful", token),
+                HttpStatus.OK
         );
     }
 
-    @PostMapping(value = "user/register", produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "user/register")
     public ResponseEntity<Object> registerUser(@RequestBody UserRegisterForm form) {
         if (userService.userExists(form.getUsername())) {
             return new ResponseEntity<>(
-                    new APIError("Failed", List.of("User already exists")),
+                    new APIError("User already exists"),
                     HttpStatus.NOT_FOUND
             );
         }
@@ -95,7 +135,7 @@ public class UserController {
         }
 
         return new ResponseEntity<>(
-                new APIError("Failed", List.of("Invalid form data")),
+                new APIError("Invalid form data"),
                 HttpStatus.NOT_FOUND
         );
     }
@@ -109,7 +149,7 @@ public class UserController {
             );
         }
         return new ResponseEntity<>(
-                new APIError("Wrong verification key", List.of("")),
+                new APIError("Wrong verification key"),
                 HttpStatus.NOT_FOUND
         );
     }

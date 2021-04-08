@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -32,6 +33,15 @@ public class UserService {
         this.emailService = emailService;
         this.userVerificationService = userVerificationService;
         this.securityContext = securityContext;
+    }
+
+    public boolean checkTokenIsValid(String token) {
+        return securityContext.exists(token);
+    }
+
+    public User getUserFromToken(String token) {
+        String username = securityContext.extractUsername(token);
+        return userRepository.findUserByUsername(username).orElse(null);
     }
 
     public boolean isValidRegisterForm(UserRegisterForm registerForm) {
@@ -58,28 +68,22 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public User loginUser(UserLoginForm userLoginForm) {
-        if (!userExists(userLoginForm.username)) {
-            return null;
-        }
-
-        if (checkUserPassword(userLoginForm)) {
-            return userRepository.findUserByUsername(userLoginForm.username).get();
-        }
-
-        return null;
+    public String loginUserReturnToken(UserLoginForm userLoginForm) {
+        return securityContext.authenticateUserReturnToken(userLoginForm.getUsername());
     }
 
-    private boolean checkUserPassword(UserLoginForm userLoginForm) {
+    public boolean checkUserPassword(UserLoginForm userLoginForm) {
 
-        boolean userExists = userExists(userLoginForm.username);
-        if (userExists) {
-            User dbUser = userRepository.findUserByUsername(userLoginForm.username).get();
-
-            return dbUser.getPassword().equals(SimpleHashingAlgo.hash(userLoginForm.password));
+        boolean userExists = userExists(userLoginForm.getUsername());
+        if (!userExists) {
+            return false;
         }
-
-        return false;
+        Optional<User> optional = userRepository.findUserByUsername(userLoginForm.getUsername());
+        if (optional.isEmpty()) {
+            return false;
+        }
+        User dbUser = optional.get();
+        return dbUser.getPassword().equals(SimpleHashingAlgo.hash(userLoginForm.getPassword()));
     }
 
     public boolean userExists(String username) {
@@ -87,11 +91,7 @@ public class UserService {
     }
 
     public boolean verifyLoginUserCredentials(User user) {
-        if (!isUsernameValid(user.getUsername()) || !verifyEmail(user.getEmail())) {
-            return false;
-        }
-
-        return true;
+        return isUsernameValid(user.getUsername()) && verifyEmail(user.getEmail());
     }
 
     private boolean isUsernameValid(String username) {
@@ -108,9 +108,5 @@ public class UserService {
 
     public User getUser(String username) {
         return userRepository.findUserByUsername(username).get();
-    }
-
-    public void saveUser(User user) {
-        saveUser(user);
     }
 }

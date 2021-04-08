@@ -7,6 +7,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
@@ -14,8 +15,14 @@ import java.util.function.Function;
  * Autentificare simpla, in-memory, nu in baza de date
  */
 public class InMemorySecurityContext implements SecurityContext {
-    private String SECRET_KEY= "secret";
+    private static final String SECRET_KEY= "secret";
+    private final Map<String, String> tokens;
 
+    public InMemorySecurityContext() {
+        tokens = new HashMap<>();
+    }
+
+    @Override
     public String extractUsername(String token){
         return extractClaim(token, Claims::getSubject);
     }
@@ -36,6 +43,11 @@ public class InMemorySecurityContext implements SecurityContext {
     }
 
     @Override
+    public boolean exists(String token) {
+        return tokens.containsKey(token);
+    }
+
+    @Override
     public String generateToken(String username){
         return Jwts.builder().setSubject(username).setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis()+ 1000*60*60*12))
@@ -43,12 +55,14 @@ public class InMemorySecurityContext implements SecurityContext {
     }
 
     @Override
-    public void authenticateUser(String username, String token) {
-
+    public String authenticateUserReturnToken(String username) {
+        String token = generateToken(username);
+        tokens.put(token, username);
+        return token;
     }
 
     @Override
-    public void removeToken() {
-
+    public void removeToken(String token) {
+        tokens.remove(token);
     }
 }

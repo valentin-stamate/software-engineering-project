@@ -16,7 +16,6 @@ public class FormValidator {
         return isValidUsername(registerForm.getUsername())
                 && isValidEmail(registerForm.getEmail())
                 && isValidPassword(registerForm.getPassword())
-                && true
                 ; // TODO maybe also display name and image url
     }
 
@@ -37,7 +36,7 @@ public class FormValidator {
     }
 
     public boolean isValidLoginForm(UserLoginForm userLoginForm) {
-        return isValidUsername(userLoginForm.username)
-                && isValidPassword(userLoginForm.password);
+        return isValidUsername(userLoginForm.getUsername())
+                && isValidPassword(userLoginForm.getPassword());
     }
 }

@@ -96,10 +96,7 @@ public class User {
     }
 
     public void deleteLocationFromFavourites(String locationName) {
-        for (Location location : this.locations) {
-            if (location.getLocationName().equals(locationName))
-                locations.remove(location);
-        }
+        this.locations.removeIf(location -> location.getLocationName().equals(locationName));
     }
 
     @Override
