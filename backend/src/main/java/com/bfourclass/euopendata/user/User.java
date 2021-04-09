@@ -99,6 +99,10 @@ public class User {
         this.locations.removeIf(location -> location.getLocationName().equals(locationName));
     }
 
+    public Set<Location> getLocations() {
+        return locations;
+    }
+
     @Override
     public String toString() {
         return "UserModel{" +

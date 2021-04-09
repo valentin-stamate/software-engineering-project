@@ -2,9 +2,12 @@ package com.bfourclass.euopendata.user;
 
 import com.bfourclass.euopendata.ExternalAPI.OpenWeatherAPI;
 import com.bfourclass.euopendata.ExternalAPI.instance.weather.Weather;
+import com.bfourclass.euopendata.location.Location;
 import com.bfourclass.euopendata.user.auth.AuthSuccessResponse;
+import com.bfourclass.euopendata.user.forms.UserLocationsResponse;
 import com.bfourclass.euopendata.user.forms.UserLoginForm;
 import com.bfourclass.euopendata.user.forms.UserRegisterForm;
+import com.bfourclass.euopendata.user.forms.UserRequestPrefLocationsForm;
 import com.bfourclass.euopendata.user_verification.UserVerificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,6 +19,8 @@ import requests.APISuccess;
 import requests.responses.UserResponse;
 
 import java.util.List;
+
+import static org.hibernate.internal.util.collections.ArrayHelper.toList;
 
 @RestController
 public class UserController {
@@ -154,10 +159,24 @@ public class UserController {
         );
     }
 
-    @GetMapping("get/location")
-    public Weather getWeather(@RequestBody String locationName) {
-        /* TODO find a proper location for this endpoint */
-        return OpenWeatherAPI.requestWeather(locationName);
+    @GetMapping("user/locations")
+    public ResponseEntity<Object> getUserLocations(@RequestBody UserRequestPrefLocationsForm userRequest) {
+
+        if (!userService.checkTokenIsValid(userRequest.getUserToken())) {
+            return new ResponseEntity<>(
+                    new APIError("Invalid user token"),
+                    HttpStatus.BAD_REQUEST
+            );
+        }
+
+        User user = userService.getUserFromToken(userRequest.getUserToken());
+
+        UserLocationsResponse response = new UserLocationsResponse(toList(user.getLocations()));
+
+        return new ResponseEntity<>(
+                response,
+                HttpStatus.OK
+        );
     }
 
 }
