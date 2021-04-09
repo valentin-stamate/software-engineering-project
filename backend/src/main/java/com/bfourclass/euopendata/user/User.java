@@ -22,13 +22,14 @@ public class User {
     @ManyToMany
     private Set<Location> locations;
 
-    public User(String username, String email, String password, String displayName, String profilePhotoLink) {
+    public User(String username, String email, String password, String displayName, String profilePhotoLink, boolean isActivated) {
         this.username = username;
         this.email = email;
         this.password = password;
         this.displayName = displayName;
         this.locations = null;
         this.profilePhotoLink = profilePhotoLink;
+        this.isActivated = isActivated;
     }
 
     public User() { }
@@ -109,6 +110,10 @@ public class User {
                 ", displayName='" + displayName + '\'' +
                 ", profilePhotoLink='" + profilePhotoLink + '\'' +
                 '}';
+    }
+
+    public boolean activated() {
+        return isActivated;
     }
 
     public void activateUser() {

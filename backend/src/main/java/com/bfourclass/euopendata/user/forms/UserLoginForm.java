@@ -1,8 +1,8 @@
 package com.bfourclass.euopendata.user.forms;
 
 public class UserLoginForm {
-    private String username;
-    private String password;
+    private final String username;
+    private final String password;
 
     public UserLoginForm(String username, String password) {
         this.username = username;

@@ -12,6 +12,14 @@ public class FormValidator {
     private final Pattern linkPattern = Pattern.compile("(http|https)://(www).([a-z.]*)?(/[a-z1-9/]*)*\\??([&a-z1-9=]*)?");
 
     public boolean isValidRegisterForm(UserRegisterForm registerForm) {
+        // weird style of writing an if stmt
+        if (
+               registerForm.getUsername() == null
+            || registerForm.getDisplayName() == null
+            || registerForm.getEmail() == null
+            || registerForm.getPassword() == null
+            || registerForm.getProfilePhotoLink() == null
+        ) return false;
 
         return isValidUsername(registerForm.getUsername())
                 && isValidEmail(registerForm.getEmail())
