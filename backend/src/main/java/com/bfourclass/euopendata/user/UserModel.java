@@ -83,8 +83,8 @@ public class UserModel {
         return false;
     }
 
-    public void addLocationToFavourites(String hotelName, String location) {
-        hotels.add(new HotelModel(hotelName, location));
+    public void addLocationToFavourites(HotelModel hotelModel) {
+        hotels.add(hotelModel);
     }
 
     public void deleteLocationFromFavourites(String locationName) {

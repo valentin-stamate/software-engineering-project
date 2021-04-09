@@ -1,5 +1,6 @@
 package com.bfourclass.euopendata.user;
 
+import com.bfourclass.euopendata.hotel.json.HotelJSONRequest;
 import com.bfourclass.euopendata.user.auth.AuthSuccessResponse;
 import com.bfourclass.euopendata.user.forms.UserLocationsResponse;
 import com.bfourclass.euopendata.user.forms.UserLoginForm;
@@ -33,28 +34,28 @@ public class UserController {
     }
 
     @PostMapping("user/add_location")
-    public ResponseEntity<Object> addLocationToUser(@RequestBody String locationName, @RequestHeader(name = "Authorization", required = false) String token) {
+    public ResponseEntity<Object> addLocationToUser(@RequestBody HotelJSONRequest hotelJSONRequest, @RequestHeader(name = "Authorization", required = false) String token) {
         // check if token exists in request
         if (token == null) {
             return new ResponseEntity<>(
-                new APIError("missing Authorization header"),
+                new APIError("Missing Authorization header"),
                 HttpStatus.UNAUTHORIZED
             );
         }
         // check if token exists in SecurityContext
         if (!userService.checkTokenIsValid(token)) {
             return new ResponseEntity<>(
-                    new APIError("invalid Authorization header"),
+                    new APIError("Invalid Authorization header"),
                     HttpStatus.UNAUTHORIZED
             );
         }
 
-        // TODO: update the database
         UserModel userModel = userService.getUserFromToken(token);
-        if (!userModel.existingLocation(locationName)) {
-            userModel.addLocationToFavourites(locationName, "");
+        if (!userModel.existingLocation(hotelJSONRequest.hotelName)) {
+            userModel.addLocationToFavourites(hotelJSONRequest.toHotelModel());
+            userService.updateUser(userModel);
         }
-        return new ResponseEntity<>(new APISuccess("location added successfully"), HttpStatus.OK);
+        return new ResponseEntity<>(new APISuccess("Location added successfully"), HttpStatus.OK);
     }
 
     @DeleteMapping("user/delete_location")
@@ -73,7 +74,7 @@ public class UserController {
                     HttpStatus.UNAUTHORIZED
             );
         }
-        // TODO: update the database
+
         UserModel userModel = userService.getUserFromToken(token);
         if (!userModel.existingLocation(locationName)) {
             userModel.deleteLocationFromFavourites(locationName);
@@ -161,23 +162,26 @@ public class UserController {
     }
 
     @GetMapping("user/locations")
-    public ResponseEntity<Object> getUserLocations(@RequestBody UserRequestPrefLocationsForm userRequest) {
-
-        if (!userService.checkTokenIsValid(userRequest.getUserToken())) {
+    public ResponseEntity<Object> getUserLocations(@RequestBody UserRequestPrefLocationsForm userRequest, @RequestHeader(name = "Authorization", required = false) String token) {
+        // check if token exists in request
+        if (token == null) {
             return new ResponseEntity<>(
-                    new APIError("Invalid user token"),
-                    HttpStatus.BAD_REQUEST
+                    new APIError("Missing Authorization header"),
+                    HttpStatus.UNAUTHORIZED
+            );
+        }
+        // check if token exists in SecurityContext
+        if (!userService.checkTokenIsValid(token)) {
+            return new ResponseEntity<>(
+                    new APIError("Invalid Authorization header"),
+                    HttpStatus.UNAUTHORIZED
             );
         }
 
-        UserModel userModel = userService.getUserFromToken(userRequest.getUserToken());
-
+        UserModel userModel = userService.getUserFromToken(token);
         UserLocationsResponse response = new UserLocationsResponse(toList(userModel.getLocations()));
 
-        return new ResponseEntity<>(
-                response,
-                HttpStatus.OK
-        );
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
 }

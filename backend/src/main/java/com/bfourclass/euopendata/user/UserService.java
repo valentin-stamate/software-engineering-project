@@ -109,4 +109,8 @@ public class UserService {
         }
         return user.activated();
     }
+
+    public void updateUser(UserModel userModel) {
+        userRepository.save(userModel);
+    }
 }

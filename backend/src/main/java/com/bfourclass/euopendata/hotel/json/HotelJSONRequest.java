@@ -1,9 +1,17 @@
 package com.bfourclass.euopendata.hotel.json;
 
-public class HotelJSONRequest {
-    public final String location;
+import com.bfourclass.euopendata.hotel.HotelModel;
 
-    public HotelJSONRequest(String location) {
-        this.location = location;
+public class HotelJSONRequest {
+    public final String hotelName;
+    public final String locationName;
+
+    public HotelJSONRequest(String hotelName, String locationName) {
+        this.hotelName = hotelName;
+        this.locationName = locationName;
+    }
+
+    public HotelModel toHotelModel() {
+        return new HotelModel(hotelName, locationName);
     }
 }
