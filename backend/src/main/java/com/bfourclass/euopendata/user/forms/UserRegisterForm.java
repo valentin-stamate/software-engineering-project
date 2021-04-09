@@ -1,44 +1,26 @@
 package com.bfourclass.euopendata.user.forms;
 
 import com.bfourclass.euopendata.security.SimpleHashingAlgo;
-import com.bfourclass.euopendata.user.User;
+import com.bfourclass.euopendata.user.UserModel;
 
 public class UserRegisterForm {
-    private final String displayName;
-    private final String email;
-    private final String username;
-    private final String password;
-    private final String profilePhotoLink;
+    public final String username;
+    public final String email;
+    public final String password;
+    public final String profilePhotoLink;
 
-    public UserRegisterForm(String displayName, String email, String username, String password, String profilePhotoLink) {
-        this.displayName = displayName;
+    public UserRegisterForm(String username, String email, String password, String profilePhotoLink) {
         this.email = email;
         this.username = username;
         this.password = password;
         this.profilePhotoLink = profilePhotoLink;
     }
 
-    public User toUser() {
-        return new User(username, email, SimpleHashingAlgo.hash(password), displayName, profilePhotoLink, false);
+    public UserModel toUser() {
+        return new UserModel(username, email, SimpleHashingAlgo.hash(password), profilePhotoLink, false);
     }
 
-    public String getDisplayName() {
-        return displayName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public String getProfilePhotoLink() {
-        return profilePhotoLink;
+    public boolean isValid() {
+        return FormValidator.isValidRegisterForm(this);
     }
 }

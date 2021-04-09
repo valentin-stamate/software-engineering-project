@@ -1,6 +1,6 @@
 package com.bfourclass.euopendata.user_verification;
 
-import com.bfourclass.euopendata.user.User;
+import com.bfourclass.euopendata.user.UserModel;
 import com.bfourclass.euopendata.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,10 +31,10 @@ public class UserVerificationService {
 
         System.out.println(userVerification);
 
-        User user = userVerification.user;
-        user.activateUser();
+        UserModel userModel = userVerification.userModel;
+        userModel.activateUser();
 
-        userRepository.save(user);
+        userRepository.save(userModel);
 
         return true;
     }

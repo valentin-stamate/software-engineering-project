@@ -1,50 +1,47 @@
 package com.bfourclass.euopendata.user.forms;
 
-import org.springframework.stereotype.Component;
-
 import java.util.regex.Pattern;
 
-@Component
-public class FormValidator {
-    private final Pattern usernamePattern = Pattern.compile("(([_A-Za-z0-9]){4,15})");
-    private final Pattern emailPattern = Pattern.compile("([a-zA-Z0-9]+(?:[._+-][a-zA-Z0-9]+)*)@([a-zA-Z0-9]+(?:[.-][a-zA-Z0-9]+)*[.][a-zA-Z]{2,})");
-    private final Pattern passPattern = Pattern.compile("([_a-zA-Z@#$%!]).{6,66}");
-    private final Pattern linkPattern = Pattern.compile("(http|https)://(www).([a-z.]*)?(/[a-z1-9/]*)*\\??([&a-z1-9=]*)?");
+public abstract class FormValidator {
+    private static final Pattern usernamePattern = Pattern.compile("(([_A-Za-z0-9]){4,15})");
+    private static final Pattern emailPattern = Pattern.compile("([a-zA-Z0-9]+(?:[._+-][a-zA-Z0-9]+)*)@([a-zA-Z0-9]+(?:[.-][a-zA-Z0-9]+)*[.][a-zA-Z]{2,})");
+    private static final Pattern passPattern = Pattern.compile("([_a-zA-Z@#$%!]).{6,66}");
+    private static final Pattern linkPattern = Pattern.compile("(http|https)://(www).([a-z.]*)?(/[a-z1-9/]*)*\\??([&a-z1-9=]*)?");
 
-    public boolean isValidRegisterForm(UserRegisterForm registerForm) {
+    public static boolean isValidRegisterForm(UserRegisterForm registerForm) {
         // weird style of writing an if stmt
-        if (
-               registerForm.getUsername() == null
-            || registerForm.getDisplayName() == null
-            || registerForm.getEmail() == null
-            || registerForm.getPassword() == null
-            || registerForm.getProfilePhotoLink() == null
+        if (registerForm.username == null
+            || registerForm.email == null
+            || registerForm.password == null
+            || registerForm.profilePhotoLink == null
         ) return false;
 
-        return isValidUsername(registerForm.getUsername())
-                && isValidEmail(registerForm.getEmail())
-                && isValidPassword(registerForm.getPassword())
-                ; // TODO maybe also display name and image url
+        return FormValidator.isValidUsername(registerForm.username)
+                && FormValidator.isValidEmail(registerForm.email)
+                && FormValidator.isValidPassword(registerForm.password)
+                && FormValidator.isValidLink(registerForm.profilePhotoLink);
     }
 
-    public boolean isValidUsername(String username) {
+    public static boolean isValidLoginForm(UserLoginForm userLoginForm) {
+        return isValidUsername(userLoginForm.username)
+                && isValidPassword(userLoginForm.username);
+    }
+
+    public static boolean isValidUsername(String username) {
         return usernamePattern.matcher(username).matches();
     }
 
-    public boolean isValidEmail(String email) {
+    public static boolean isValidEmail(String email) {
         return emailPattern.matcher(email).matches();
     }
 
-    public boolean isValidPassword(String password) {
+    public static boolean isValidPassword(String password) {
         return passPattern.matcher(password).matches();
     }
 
-    public boolean isValidLink(String link) {
-        return linkPattern.matcher(link).matches();
-    }
-
-    public boolean isValidLoginForm(UserLoginForm userLoginForm) {
-        return isValidUsername(userLoginForm.getUsername())
-                && isValidPassword(userLoginForm.getPassword());
+    public static boolean isValidLink(String link) {
+        /* TODO */
+//        return linkPattern.matcher(link).matches();
+        return true;
     }
 }

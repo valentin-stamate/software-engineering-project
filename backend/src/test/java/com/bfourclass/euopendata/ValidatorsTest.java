@@ -1,42 +1,21 @@
 package com.bfourclass.euopendata;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import com.bfourclass.euopendata.user.forms.FormValidator;
+import com.bfourclass.euopendata.user.forms.UserRegisterForm;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
 public class ValidatorsTest {
+    @Test
+    void userRegistrationFormTest() {
+        UserRegisterForm userRegisterForm = new UserRegisterForm("ValentinSt", "stamatevalentin125@gmail.com", "123456789", "http://dsaljkslka.com/picture.png");
+        System.out.println(userRegisterForm.isValid());
 
-    @Autowired
-    FormValidator formValidator;
+        System.out.println("");
 
-    @Test
-    void usernamePatternGood1() {
-        assertThat(formValidator.isValidUsername("booboo_123")).isEqualTo(true);
-    }
-    @Test
-    void usernamePatternGood2() {
-        assertThat(formValidator.isValidUsername("AYAY")).isEqualTo(true);
-    }
-    @Test
-    void usernamePatternBad1() {
-        assertThat(formValidator.isValidUsername("notG()()Dyo")).isEqualTo(false);
-    }
-    @Test
-    void usernamePatternBad2() {
-        assertThat(formValidator.isValidUsername("AYA")).isEqualTo(false);
-    }
+        System.out.println(FormValidator.isValidUsername("ValentinSt"));
+        System.out.println(FormValidator.isValidEmail("stamatevalentin125@gmail.com"));
+        System.out.println(FormValidator.isValidPassword("Asd32409,.,09[$%]"));
+        System.out.println(FormValidator.isValidLink("https://dsaljkslka.com/picture.png"));
 
-    @Test
-    void passPatternGood1() {
-        assertThat(formValidator.isValidPassword("_@@@@@_")).isEqualTo(true);
-    }
-
-    @Test
-    void passPatternBad1() {
-        assertThat(formValidator.isValidPassword("_@@@@")).isEqualTo(false);
     }
 }

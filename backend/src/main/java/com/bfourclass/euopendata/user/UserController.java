@@ -1,8 +1,5 @@
 package com.bfourclass.euopendata.user;
 
-import com.bfourclass.euopendata.ExternalAPI.OpenWeatherAPI;
-import com.bfourclass.euopendata.ExternalAPI.instance.weather.Weather;
-import com.bfourclass.euopendata.location.Location;
 import com.bfourclass.euopendata.user.auth.AuthSuccessResponse;
 import com.bfourclass.euopendata.user.forms.UserLocationsResponse;
 import com.bfourclass.euopendata.user.forms.UserLoginForm;
@@ -12,13 +9,9 @@ import com.bfourclass.euopendata.user_verification.UserVerificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.MimeTypeUtils;
 import org.springframework.web.bind.annotation.*;
-import requests.APIError;
-import requests.APISuccess;
-import requests.responses.UserResponse;
-
-import java.util.List;
+import com.bfourclass.euopendata.requests.APIError;
+import com.bfourclass.euopendata.requests.APISuccess;
 
 import static org.hibernate.internal.util.collections.ArrayHelper.toList;
 
@@ -57,9 +50,9 @@ public class UserController {
         }
 
         // TODO: update the database
-        User user = userService.getUserFromToken(token);
-        if (!user.existingLocation(locationName)) {
-            user.addLocationToFavourites(locationName);
+        UserModel userModel = userService.getUserFromToken(token);
+        if (!userModel.existingLocation(locationName)) {
+            userModel.addLocationToFavourites(locationName, "");
         }
         return new ResponseEntity<>(new APISuccess("location added successfully"), HttpStatus.OK);
     }
@@ -81,9 +74,9 @@ public class UserController {
             );
         }
         // TODO: update the database
-        User user = userService.getUserFromToken(token);
-        if (!user.existingLocation(locationName)) {
-            user.deleteLocationFromFavourites(locationName);
+        UserModel userModel = userService.getUserFromToken(token);
+        if (!userModel.existingLocation(locationName)) {
+            userModel.deleteLocationFromFavourites(locationName);
             return new ResponseEntity<>("deleted successfully", HttpStatus.OK);
         }
         return new ResponseEntity<>("no such location found", HttpStatus.NOT_FOUND);
@@ -92,14 +85,14 @@ public class UserController {
     @PostMapping("user/login")
     public ResponseEntity<Object> loginUser(@RequestBody UserLoginForm userLoginForm) {
         // check if form is valid
-        if (!userService.isValidLoginForm(userLoginForm)) {
+        if (!userLoginForm.isValid()) {
             return new ResponseEntity<>(
                     new APIError("invalid login form"),
                     HttpStatus.BAD_REQUEST
             );
         }
         // check if user exists
-        if (!userService.userExists(userLoginForm.getUsername())) {
+        if (!userService.userExists(userLoginForm.username)) {
             return new ResponseEntity<>(
                     new APIError("user does not exist"),
                     HttpStatus.BAD_REQUEST
@@ -114,7 +107,7 @@ public class UserController {
         }
 
         // check if account is activated
-        if (!userService.checkUserIsActivated(userLoginForm.getUsername())) {
+        if (!userService.checkUserIsActivated(userLoginForm.username)) {
             return new ResponseEntity<>(
                     new APIError("account not activated"),
                     HttpStatus.UNAUTHORIZED
@@ -131,14 +124,14 @@ public class UserController {
 
     @PostMapping(value = "user/register")
     public ResponseEntity<Object> registerUser(@RequestBody UserRegisterForm form) {
-        if (!userService.isValidRegisterForm(form)) {
+        if (!form.isValid()) {
             return new ResponseEntity<>(
-                    new APIError("invalid form data"),
+                    new APIError("Invalid form data"),
                     HttpStatus.BAD_REQUEST
             );
         }
 
-        if (userService.userExists(form.getUsername())) {
+        if (userService.userExists(form.username)) {
             return new ResponseEntity<>(
                     new APIError("user already exists"),
                     HttpStatus.BAD_REQUEST
@@ -177,9 +170,9 @@ public class UserController {
             );
         }
 
-        User user = userService.getUserFromToken(userRequest.getUserToken());
+        UserModel userModel = userService.getUserFromToken(userRequest.getUserToken());
 
-        UserLocationsResponse response = new UserLocationsResponse(toList(user.getLocations()));
+        UserLocationsResponse response = new UserLocationsResponse(toList(userModel.getLocations()));
 
         return new ResponseEntity<>(
                 response,

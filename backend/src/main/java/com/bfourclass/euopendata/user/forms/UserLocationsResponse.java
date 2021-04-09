@@ -1,21 +1,21 @@
 package com.bfourclass.euopendata.user.forms;
 
-import com.bfourclass.euopendata.location.Location;
+import com.bfourclass.euopendata.hotel.HotelModel;
 
 import java.util.List;
 
 public class UserLocationsResponse {
-    private List<Location> locations;
+    private List<HotelModel> hotels;
 
-    public UserLocationsResponse(List<Location> locations) {
-        this.locations = locations;
+    public UserLocationsResponse(List<HotelModel> hotels) {
+        this.hotels = hotels;
     }
 
-    public List<Location> getLocations() {
-        return locations;
+    public List<HotelModel> getLocations() {
+        return hotels;
     }
 
-    public void setLocations(List<Location> locations) {
-        this.locations = locations;
+    public void setLocations(List<HotelModel> hotels) {
+        this.hotels = hotels;
     }
 }

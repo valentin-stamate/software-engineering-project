@@ -1,6 +1,6 @@
 package com.bfourclass.euopendata;
 
-import com.bfourclass.euopendata.user.User;
+import com.bfourclass.euopendata.user.UserModel;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -46,17 +46,17 @@ public class JwtUtil{
     private Boolean isTokenExpired(String token){
         return extractExpiration(token).before(new Date());
     }
-    public String generateToken(User user){
+    public String generateToken(UserModel userModel){
         Map<String, Object> claims = new HashMap<>();
-        return createToken(claims,user.getUsername());
+        return createToken(claims, userModel.getUsername());
     }
     private String createToken(Map<String,Object> claims,String subject){
         return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis()+ 1000*60*60*12))
                 .signWith(SignatureAlgorithm.HS256,SECRET_KEY).compact();
     }
-    public Boolean validateToken(String token, User user){
+    public Boolean validateToken(String token, UserModel userModel){
         final String username=extractUsername(token);
-        return (username.equals(user.getUsername()) && !isTokenExpired(token));
+        return (username.equals(userModel.getUsername()) && !isTokenExpired(token));
     }
 }

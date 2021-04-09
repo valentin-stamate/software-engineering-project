@@ -21,15 +21,13 @@ import java.util.regex.Pattern;
 public class UserService {
 
     private final UserRepository userRepository;
-    private final FormValidator formValidator;
     private final EmailService emailService;
     private final UserVerificationService userVerificationService;
     private final SecurityContext securityContext;
 
     @Autowired
-    public UserService(UserRepository userRepository, FormValidator formValidator, EmailService emailService, UserVerificationService userVerificationService, SecurityContext securityContext) {
+    public UserService(UserRepository userRepository, EmailService emailService, UserVerificationService userVerificationService, SecurityContext securityContext) {
         this.userRepository = userRepository;
-        this.formValidator = formValidator;
         this.emailService = emailService;
         this.userVerificationService = userVerificationService;
         this.securityContext = securityContext;
@@ -39,59 +37,53 @@ public class UserService {
         return securityContext.exists(token);
     }
 
-    public User getUserFromToken(String token) {
+    public UserModel getUserFromToken(String token) {
         String username = securityContext.extractUsername(token);
-        return userRepository.findUserByUsername(username).orElse(null);
-    }
-
-    public boolean isValidRegisterForm(UserRegisterForm registerForm) {
-        return formValidator.isValidRegisterForm(registerForm);
-    }
-
-    public boolean isValidLoginForm(UserLoginForm userLoginForm) {
-        return formValidator.isValidLoginForm(userLoginForm);
+        return userRepository.findUserByUsername(username);
     }
 
     public void createUserByForm(UserRegisterForm registerForm) {
-        User user = registerForm.toUser();
+        UserModel userModel = registerForm.toUser();
 
         String verificationKey = StringGenerator.generate();
-        UserVerification userVerification = new UserVerification(user, verificationKey);
+        UserVerification userVerification = new UserVerification(userModel, verificationKey);
 
         userVerificationService.save(userVerification);
 
-        userRepository.save(user);
-        emailService.sendEmailVerificationEmail(user.getUsername(), user.getEmail(), verificationKey);
+        userRepository.save(userModel);
+        emailService.sendEmailVerificationEmail(userModel.getUsername(), userModel.getEmail(), verificationKey);
     }
 
-    public List<User> getUsers() {
+    public List<UserModel> getUsers() {
         return userRepository.findAll();
     }
 
     public String loginUserReturnToken(UserLoginForm userLoginForm) {
-        return securityContext.authenticateUserReturnToken(userLoginForm.getUsername());
+        return securityContext.authenticateUserReturnToken(userLoginForm.username);
     }
 
     public boolean checkUserPassword(UserLoginForm userLoginForm) {
 
-        boolean userExists = userExists(userLoginForm.getUsername());
+        boolean userExists = userExists(userLoginForm.username);
         if (!userExists) {
             return false;
         }
-        Optional<User> optional = userRepository.findUserByUsername(userLoginForm.getUsername());
-        if (optional.isEmpty()) {
+
+        UserModel dbUserModel = userRepository.findUserByUsername(userLoginForm.username);
+
+        if (dbUserModel == null) {
             return false;
         }
-        User dbUser = optional.get();
-        return dbUser.getPassword().equals(SimpleHashingAlgo.hash(userLoginForm.getPassword()));
+
+        return dbUserModel.getPassword().equals(SimpleHashingAlgo.hash(userLoginForm.username));
     }
 
     public boolean userExists(String username) {
-        return userRepository.findUserByUsername(username).isPresent();
+        return userRepository.findUserByUsername(username) != null;
     }
 
-    public boolean verifyLoginUserCredentials(User user) {
-        return isUsernameValid(user.getUsername()) && verifyEmail(user.getEmail());
+    public boolean verifyLoginUserCredentials(UserModel userModel) {
+        return isUsernameValid(userModel.getUsername()) && verifyEmail(userModel.getEmail());
     }
 
     private boolean isUsernameValid(String username) {
@@ -106,15 +98,15 @@ public class UserService {
         return matcher.matches();
     }
 
-    public User getUser(String username) {
-        return userRepository.findUserByUsername(username).get();
+    public UserModel getUser(String username) {
+        return userRepository.findUserByUsername(username);
     }
 
     public boolean checkUserIsActivated(String username) {
-        Optional<User> user = userRepository.findUserByUsername(username);
-        if (user.isEmpty()) {
+        UserModel user = userRepository.findUserByUsername(username);
+        if (user == null) {
             return false;
         }
-        return user.get().activated();
+        return user.activated();
     }
 }

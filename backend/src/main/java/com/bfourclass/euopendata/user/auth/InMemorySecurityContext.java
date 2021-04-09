@@ -1,6 +1,5 @@
 package com.bfourclass.euopendata.user.auth;
 
-import com.bfourclass.euopendata.user.User;
 import com.bfourclass.euopendata.user.UserService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

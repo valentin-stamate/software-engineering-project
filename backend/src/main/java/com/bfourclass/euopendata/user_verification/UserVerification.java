@@ -1,6 +1,6 @@
 package com.bfourclass.euopendata.user_verification;
 
-import com.bfourclass.euopendata.user.User;
+import com.bfourclass.euopendata.user.UserModel;
 
 import javax.persistence.*;
 
@@ -15,10 +15,10 @@ public class UserVerification {
     public String verificationKey;
 
     @OneToOne(cascade = CascadeType.ALL)
-    public User user;
+    public UserModel userModel;
 
-    public UserVerification(User user, String verificationKey) {
-        this.user = user;
+    public UserVerification(UserModel userModel, String verificationKey) {
+        this.userModel = userModel;
         this.verificationKey = verificationKey;
     }
 
