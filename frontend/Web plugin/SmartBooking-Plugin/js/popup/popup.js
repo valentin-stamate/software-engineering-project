@@ -2,7 +2,7 @@ import UserController from "./../../src/pages/login/UserController.js";
 
 const loginstate = localStorage.getItem('loginstate');
 
-if (loginstate)
+if (loginstate == "true")
 {
 	document.getElementById('logout-btn').classList.remove("hidden");
 	document.getElementById('login-btn').classList.add('hidden');

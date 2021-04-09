@@ -2,7 +2,7 @@ import UserController from './../login/UserController.js';
 
 const loginstate = localStorage.getItem('loginstate');
 
-if (loginstate)
+if (loginstate == "true")
 {
 	document.getElementById('save-list').classList.remove("hidden");
 	document.getElementById('log-to-save').classList.add('hidden');
@@ -12,8 +12,9 @@ else {
 	document.getElementById('log-to-save').classList.remove('hidden');
 }
 
+var locations = [];
 chrome.storage.local.get('message', value => {
-    var locations = value.message;
+    locations = value.message;
 	var control_group = document.getElementById("control-group");
 	
 	if (locations){
@@ -28,11 +29,11 @@ chrome.storage.local.get('message', value => {
 					<div class="b-input"></div>
 				</label>`)
 		});
+		if (locations.length == 0) {
+			control_group.innerHTML = "Nothing here yet";
+		}
 	}
 	
-	if (locations.length == 0) {
-		control_group.innerHTML = "Nothing here yet";
-	}
 	addRemoveButton();
 });
 
