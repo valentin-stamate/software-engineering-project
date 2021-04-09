@@ -18,6 +18,7 @@ public class LocationController {
         this.locationService = locationService;
     }
 
+    // TODO: make this secure
     @GetMapping("user/get_locations")
     public List<Location> getLocations(){
         return Arrays.asList(new Location("User location list"));
