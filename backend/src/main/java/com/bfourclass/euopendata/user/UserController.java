@@ -35,19 +35,10 @@ public class UserController {
 
     @PostMapping("user/add_location")
     public ResponseEntity<Object> addLocationToUser(@RequestBody HotelJSONRequest hotelJSONRequest, @RequestHeader(name = "Authorization", required = false) String token) {
-        // check if token exists in request
-        if (token == null) {
-            return new ResponseEntity<>(
-                new APIError("Missing Authorization header"),
-                HttpStatus.UNAUTHORIZED
-            );
-        }
-        // check if token exists in SecurityContext
-        if (!userService.checkTokenIsValid(token)) {
-            return new ResponseEntity<>(
-                    new APIError("Invalid Authorization header"),
-                    HttpStatus.UNAUTHORIZED
-            );
+
+        ResponseEntity<Object> errorResponse = userService.checkUserToken(token);
+        if (errorResponse != null) {
+            return errorResponse;
         }
 
         UserModel userModel = userService.getUserFromToken(token);
@@ -60,19 +51,9 @@ public class UserController {
 
     @DeleteMapping("user/delete_location")
     public ResponseEntity<Object> deleteLocationFromUser(@RequestBody String locationName, @RequestHeader(name = "Authorization", required = false) String token) {
-        // check if token exists in request
-        if (token == null) {
-            return new ResponseEntity<>(
-                    new APIError("missing Authorization header"),
-                    HttpStatus.UNAUTHORIZED
-            );
-        }
-        // check if token exists in SecurityContext
-        if (!userService.checkTokenIsValid(token)) {
-            return new ResponseEntity<>(
-                    new APIError("invalid Authorization header"),
-                    HttpStatus.UNAUTHORIZED
-            );
+        ResponseEntity<Object> errorResponse = userService.checkUserToken(token);
+        if (errorResponse != null) {
+            return errorResponse;
         }
 
         UserModel userModel = userService.getUserFromToken(token);
@@ -87,95 +68,55 @@ public class UserController {
     public ResponseEntity<Object> loginUser(@RequestBody UserLoginForm userLoginForm) {
         // check if form is valid
         if (!userLoginForm.isValid()) {
-            return new ResponseEntity<>(
-                    new APIError("invalid login form"),
-                    HttpStatus.BAD_REQUEST
-            );
+            return new ResponseEntity<>(new APIError("invalid login form"), HttpStatus.BAD_REQUEST);
         }
         // check if user exists
         if (!userService.userExists(userLoginForm.username)) {
-            return new ResponseEntity<>(
-                    new APIError("user does not exist"),
-                    HttpStatus.BAD_REQUEST
-            );
+            return new ResponseEntity<>(new APIError("user does not exist"), HttpStatus.BAD_REQUEST);
         }
         // check if password is correct
         if (!userService.checkUserPassword(userLoginForm)) {
-            return new ResponseEntity<>(
-                    new APIError("invalid password"),
-                    HttpStatus.UNAUTHORIZED
-            );
+            return new ResponseEntity<>(new APIError("invalid password"), HttpStatus.UNAUTHORIZED);
         }
 
         // check if account is activated
         if (!userService.checkUserIsActivated(userLoginForm.username)) {
-            return new ResponseEntity<>(
-                    new APIError("account not activated"),
-                    HttpStatus.UNAUTHORIZED
-            );
+            return new ResponseEntity<>(new APIError("account not activated"), HttpStatus.UNAUTHORIZED);
         }
 
         String token = userService.loginUserReturnToken(userLoginForm);
 
-        return new ResponseEntity<>(
-                new AuthSuccessResponse("authentication successful", token),
-                HttpStatus.OK
-        );
+        return new ResponseEntity<>(new AuthSuccessResponse("authentication successful", token), HttpStatus.OK);
     }
 
     @PostMapping(value = "user/register")
     public ResponseEntity<Object> registerUser(@RequestBody UserRegisterForm form) {
         if (!form.isValid()) {
-            return new ResponseEntity<>(
-                    new APIError("Invalid form data"),
-                    HttpStatus.BAD_REQUEST
-            );
+            return new ResponseEntity<>(new APIError("Invalid form data"), HttpStatus.BAD_REQUEST);
         }
 
         if (userService.userExists(form.username)) {
-            return new ResponseEntity<>(
-                    new APIError("user already exists"),
-                    HttpStatus.BAD_REQUEST
-            );
+            return new ResponseEntity<>(new APIError("user already exists"), HttpStatus.BAD_REQUEST);
         }
 
         userService.createUserByForm(form);
 
-        return new ResponseEntity<>(
-                new APISuccess("registration successful"),
-                HttpStatus.OK
-        );
+        return new ResponseEntity<>(new APISuccess("registration successful"), HttpStatus.OK);
     }
 
     @GetMapping(value = "user/verify")
     public ResponseEntity<Object> verifyUser(@RequestParam(name="user_verification_key") String userKey) {
         if (userVerificationService.activateUser(userKey)) {
-            return new ResponseEntity<>(
-                    new APISuccess("User successfully activated. Now you can log in"),
-                    HttpStatus.OK
-            );
+            return new ResponseEntity<>(new APISuccess("User successfully activated. Now you can log in"), HttpStatus.OK);
         }
-        return new ResponseEntity<>(
-                new APIError("Wrong verification key"),
-                HttpStatus.NOT_FOUND
-        );
+        return new ResponseEntity<>(new APIError("Wrong verification key"), HttpStatus.NOT_FOUND);
     }
 
-    @GetMapping("user/locations")
+    @GetMapping("user/hotels")
     public ResponseEntity<Object> getUserLocations(@RequestBody UserRequestPrefLocationsForm userRequest, @RequestHeader(name = "Authorization", required = false) String token) {
-        // check if token exists in request
-        if (token == null) {
-            return new ResponseEntity<>(
-                    new APIError("Missing Authorization header"),
-                    HttpStatus.UNAUTHORIZED
-            );
-        }
-        // check if token exists in SecurityContext
-        if (!userService.checkTokenIsValid(token)) {
-            return new ResponseEntity<>(
-                    new APIError("Invalid Authorization header"),
-                    HttpStatus.UNAUTHORIZED
-            );
+        ResponseEntity<Object> errorResponse = userService.checkUserToken(token);
+        if (errorResponse != null) {
+            return errorResponse;
         }
 
         UserModel userModel = userService.getUserFromToken(token);

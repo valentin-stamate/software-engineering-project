@@ -1,6 +1,7 @@
 package com.bfourclass.euopendata.user;
 
 import com.bfourclass.euopendata.email.EmailService;
+import com.bfourclass.euopendata.requests.APIError;
 import com.bfourclass.euopendata.security.SimpleHashingAlgo;
 import com.bfourclass.euopendata.security.StringGenerator;
 import com.bfourclass.euopendata.user.auth.SecurityContext;
@@ -10,6 +11,8 @@ import com.bfourclass.euopendata.user.forms.UserLoginForm;
 import com.bfourclass.euopendata.user_verification.UserVerification;
 import com.bfourclass.euopendata.user_verification.UserVerificationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -33,7 +36,7 @@ public class UserService {
         this.securityContext = securityContext;
     }
 
-    public boolean checkTokenIsValid(String token) {
+    private boolean checkTokenIsValid(String token) {
         return securityContext.exists(token);
     }
 
@@ -112,5 +115,25 @@ public class UserService {
 
     public void updateUser(UserModel userModel) {
         userRepository.save(userModel);
+    }
+
+    public ResponseEntity<Object> checkUserToken(String token) {
+        // check if token exists in request
+        if (token == null) {
+            return new ResponseEntity<>(
+                    new APIError("Missing Authorization header"),
+                    HttpStatus.UNAUTHORIZED
+            );
+        }
+
+        // check if token exists in SecurityContext
+        if (!checkTokenIsValid(token)) {
+            return new ResponseEntity<>(
+                    new APIError("Invalid Authorization header"),
+                    HttpStatus.UNAUTHORIZED
+            );
+        }
+
+        return null;
     }
 }
