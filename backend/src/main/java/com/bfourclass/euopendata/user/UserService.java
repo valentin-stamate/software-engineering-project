@@ -109,4 +109,12 @@ public class UserService {
     public User getUser(String username) {
         return userRepository.findUserByUsername(username).get();
     }
+
+    public boolean checkUserIsActivated(String username) {
+        Optional<User> user = userRepository.findUserByUsername(username);
+        if (user.isEmpty()) {
+            return false;
+        }
+        return user.get().activated();
+    }
 }

@@ -108,6 +108,14 @@ public class UserController {
             );
         }
 
+        // check if account is activated
+        if (!userService.checkUserIsActivated(userLoginForm.getUsername())) {
+            return new ResponseEntity<>(
+                    new APIError("account not activated"),
+                    HttpStatus.UNAUTHORIZED
+            );
+        }
+
         String token = userService.loginUserReturnToken(userLoginForm);
 
         return new ResponseEntity<>(
