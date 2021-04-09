@@ -13,7 +13,7 @@ else {
 }
 
 var locations = [];
-chrome.storage.local.get('message', value => {
+chrome.storage.sync.get('message', value => {
     locations = value.message;
 	var control_group = document.getElementById("control-group");
 	
@@ -52,9 +52,7 @@ function addRemoveButton(){
 
 function removeLocation(loc)
 {
-	chrome.storage.local.get('message', value => {
-		var locations = value.message;
-		
+	chrome.storage.sync.get('message', value => {
 		for( var i = 0; i < locations.length; i++){
 			if ( locations[i] == loc) { 
 				locations.splice(i, 1); 
@@ -64,7 +62,7 @@ function removeLocation(loc)
 		if (locations.length == 0) {
 			document.getElementById("control-group").innerHTML = "Nothing here yet";
 		}
-		chrome.storage.local.set({ "message": locations });
+		chrome.storage.sync.set({ "message": locations });
 	});
 }
 
