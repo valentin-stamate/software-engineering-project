@@ -13,4 +13,14 @@ public class HotelService {
         this.hotelRepository = hotelRepository;
     }
 
+    public void createHotelIfNotExists(HotelModel hotelModel) {
+        if (!locationExists(hotelModel.getHotelName())) {
+            hotelRepository.save(hotelModel);
+        }
+    }
+
+    private boolean locationExists(String hotelName) {
+        return hotelRepository.checkHotelExistence(hotelName) != null;
+    }
+
 }

@@ -1,8 +1,11 @@
 package com.bfourclass.euopendata.user;
 
 import com.bfourclass.euopendata.hotel.HotelModel;
+import com.bfourclass.euopendata.security.SimpleHashingAlgo;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -20,15 +23,13 @@ public class UserModel {
     private boolean isActivated = false;
 
     @ManyToMany
-    private Set<HotelModel> hotels;
+    private final Set<HotelModel> hotels = new HashSet<>();
 
-    public UserModel(String username, String email, String password, String profilePhotoLink, boolean isActivated) {
+    public UserModel(String username, String email, String password, String profilePhotoLink) {
         this.username = username;
         this.email = email;
         this.password = password;
-        this.hotels = null;
         this.profilePhotoLink = profilePhotoLink;
-        this.isActivated = isActivated;
     }
 
     public UserModel() { }
@@ -73,7 +74,7 @@ public class UserModel {
         this.profilePhotoLink = profilePhotoLink;
     }
 
-    public boolean existingLocation(String hotelName) {
+    public boolean hasHotel(String hotelName) {
         if (this.hotels.isEmpty())
             return false;
         for (HotelModel hotelModel : this.hotels) {
@@ -83,23 +84,27 @@ public class UserModel {
         return false;
     }
 
-    public void addLocationToFavourites(HotelModel hotelModel) {
+    public void addHotel(HotelModel hotelModel) {
         hotels.add(hotelModel);
     }
 
-    public void deleteLocationFromFavourites(String locationName) {
+    public void deleteUserHotel(String locationName) {
         this.hotels.removeIf(hotelModel -> hotelModel.getHotelName().equals(locationName));
     }
 
-    public Set<HotelModel> getLocations() {
-        return hotels;
+    public List<HotelModel> getUserHotels() {
+        return List.copyOf(hotels);
     }
 
-    public boolean activated() {
+    public boolean isActivated() {
         return isActivated;
     }
 
     public void activateUser() {
         isActivated = true;
+    }
+
+    public boolean checkUserPassword(String password) {
+        return this.password.equals(SimpleHashingAlgo.hash(password));
     }
 }

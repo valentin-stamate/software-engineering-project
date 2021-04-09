@@ -17,7 +17,7 @@ public class UserRegisterForm {
     }
 
     public UserModel toUser() {
-        return new UserModel(username, email, SimpleHashingAlgo.hash(password), profilePhotoLink, false);
+        return new UserModel(username, email, SimpleHashingAlgo.hash(password), profilePhotoLink);
     }
 
     public boolean isValid() {

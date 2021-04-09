@@ -9,6 +9,7 @@ public class HotelModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(unique = true)
     private String hotelName;
     private String locationName;
 

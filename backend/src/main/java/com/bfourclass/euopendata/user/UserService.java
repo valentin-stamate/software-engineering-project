@@ -2,21 +2,16 @@ package com.bfourclass.euopendata.user;
 
 import com.bfourclass.euopendata.email.EmailService;
 import com.bfourclass.euopendata.requests.APIError;
-import com.bfourclass.euopendata.security.SimpleHashingAlgo;
 import com.bfourclass.euopendata.security.StringGenerator;
 import com.bfourclass.euopendata.user.auth.SecurityContext;
-import com.bfourclass.euopendata.user.forms.FormValidator;
-import com.bfourclass.euopendata.user.forms.UserRegisterForm;
 import com.bfourclass.euopendata.user.forms.UserLoginForm;
+import com.bfourclass.euopendata.user.forms.UserRegisterForm;
 import com.bfourclass.euopendata.user_verification.UserVerification;
 import com.bfourclass.euopendata.user_verification.UserVerificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -57,40 +52,12 @@ public class UserService {
         emailService.sendEmailVerificationEmail(userModel.getUsername(), userModel.getEmail(), verificationKey);
     }
 
-    public List<UserModel> getUsers() {
-        return userRepository.findAll();
-    }
-
     public String loginUserReturnToken(UserLoginForm userLoginForm) {
         return securityContext.authenticateUserReturnToken(userLoginForm.username);
     }
 
-    public boolean checkUserPassword(UserLoginForm userLoginForm) {
-
-        boolean userExists = userExists(userLoginForm.username);
-        if (!userExists) {
-            return false;
-        }
-
-        UserModel dbUserModel = userRepository.findUserByUsername(userLoginForm.username);
-
-        if (dbUserModel == null) {
-            return false;
-        }
-
-        return dbUserModel.getPassword().equals(SimpleHashingAlgo.hash(userLoginForm.username));
-    }
-
     public boolean userExists(String username) {
         return userRepository.findUserByUsername(username) != null;
-    }
-
-    public boolean verifyLoginUserCredentials(UserModel userModel) {
-        return isUsernameValid(userModel.getUsername()) && verifyEmail(userModel.getEmail());
-    }
-
-    private boolean isUsernameValid(String username) {
-        return username.length() > 0;
     }
 
     private boolean verifyEmail(String email) {
@@ -99,18 +66,6 @@ public class UserService {
         Matcher matcher = pattern.matcher(email);
 
         return matcher.matches();
-    }
-
-    public UserModel getUser(String username) {
-        return userRepository.findUserByUsername(username);
-    }
-
-    public boolean checkUserIsActivated(String username) {
-        UserModel user = userRepository.findUserByUsername(username);
-        if (user == null) {
-            return false;
-        }
-        return user.activated();
     }
 
     public void updateUser(UserModel userModel) {
@@ -135,5 +90,9 @@ public class UserService {
         }
 
         return null;
+    }
+
+    public UserModel getUserByUsername(String username) {
+        return userRepository.findUserByUsername(username);
     }
 }

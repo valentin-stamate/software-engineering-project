@@ -4,10 +4,10 @@ import com.bfourclass.euopendata.hotel.HotelModel;
 
 import java.util.List;
 
-public class UserLocationsResponse {
+public class UserHotelsResponse {
     private List<HotelModel> hotels;
 
-    public UserLocationsResponse(List<HotelModel> hotels) {
+    public UserHotelsResponse(List<HotelModel> hotels) {
         this.hotels = hotels;
     }
 
