@@ -18,7 +18,6 @@ public class UserModel {
     private String username;
     private String email;
     private String password;
-    private String displayName;
     private String profilePhotoLink;
     private boolean isActivated = false;
 
@@ -56,14 +55,6 @@ public class UserModel {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getDisplayName() {
-        return displayName;
-    }
-
-    public void setDisplayName(String displayName) {
-        this.displayName = displayName;
     }
 
     public String getProfilePhotoLink() {

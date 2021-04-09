@@ -1,14 +1,14 @@
 package com.bfourclass.euopendata;
 
 import com.bfourclass.euopendata.user.forms.FormValidator;
-import com.bfourclass.euopendata.user.forms.UserRegisterForm;
+import com.bfourclass.euopendata.user.json.UserRegisterJSONRequest;
 import org.junit.jupiter.api.Test;
 
 public class ValidatorsTest {
     @Test
     void userRegistrationFormTest() {
-        UserRegisterForm userRegisterForm = new UserRegisterForm("ValentinSt", "stamatevalentin125@gmail.com", "123456789", "http://dsaljkslka.com/picture.png");
-        System.out.println(userRegisterForm.isValid());
+        UserRegisterJSONRequest userRegisterJSONRequest = new UserRegisterJSONRequest("ValentinSt", "stamatevalentin125@gmail.com", "123456789", "http://dsaljkslka.com/picture.png");
+        System.out.println(userRegisterJSONRequest.isValid());
 
         System.out.println("");
 

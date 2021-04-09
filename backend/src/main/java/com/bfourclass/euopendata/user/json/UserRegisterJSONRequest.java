@@ -1,15 +1,16 @@
-package com.bfourclass.euopendata.user.forms;
+package com.bfourclass.euopendata.user.json;
 
 import com.bfourclass.euopendata.security.SimpleHashingAlgo;
 import com.bfourclass.euopendata.user.UserModel;
+import com.bfourclass.euopendata.user.forms.FormValidator;
 
-public class UserRegisterForm {
+public class UserRegisterJSONRequest {
     public final String username;
     public final String email;
     public final String password;
     public final String profilePhotoLink;
 
-    public UserRegisterForm(String username, String email, String password, String profilePhotoLink) {
+    public UserRegisterJSONRequest(String username, String email, String password, String profilePhotoLink) {
         this.email = email;
         this.username = username;
         this.password = password;

@@ -1,5 +1,8 @@
 package com.bfourclass.euopendata.user.forms;
 
+import com.bfourclass.euopendata.user.json.UserLoginJSONRequest;
+import com.bfourclass.euopendata.user.json.UserRegisterJSONRequest;
+
 import java.util.regex.Pattern;
 
 public abstract class FormValidator {
@@ -8,7 +11,7 @@ public abstract class FormValidator {
     private static final Pattern passPattern = Pattern.compile("([_a-zA-Z@#$%!]).{6,66}");
     private static final Pattern linkPattern = Pattern.compile("(http|https)://(www).([a-z.]*)?(/[a-z1-9/]*)*\\??([&a-z1-9=]*)?");
 
-    public static boolean isValidRegisterForm(UserRegisterForm registerForm) {
+    public static boolean isValidRegisterForm(UserRegisterJSONRequest registerForm) {
         // weird style of writing an if stmt
         if (registerForm.username == null
             || registerForm.email == null
@@ -22,9 +25,9 @@ public abstract class FormValidator {
                 && FormValidator.isValidLink(registerForm.profilePhotoLink);
     }
 
-    public static boolean isValidLoginForm(UserLoginForm userLoginForm) {
-        return isValidUsername(userLoginForm.username)
-                && isValidPassword(userLoginForm.username);
+    public static boolean isValidLoginForm(UserLoginJSONRequest userLoginJSONRequest) {
+        return isValidUsername(userLoginJSONRequest.username)
+                && isValidPassword(userLoginJSONRequest.username);
     }
 
     public static boolean isValidUsername(String username) {

@@ -1,17 +1,28 @@
 package com.bfourclass.euopendata.user;
 
 import com.bfourclass.euopendata.email.EmailService;
+import com.bfourclass.euopendata.external_api.ExternalAPI;
+import com.bfourclass.euopendata.external_api.instance.aqicn_data.AirPollution;
+import com.bfourclass.euopendata.external_api.instance.covid_information.CovidInformation;
+import com.bfourclass.euopendata.external_api.instance.weather.Weather;
+import com.bfourclass.euopendata.hotel.HotelModel;
+import com.bfourclass.euopendata.hotel.json.Hotel;
+import com.bfourclass.euopendata.hotel.json.HotelJSONRequest;
 import com.bfourclass.euopendata.requests.APIError;
 import com.bfourclass.euopendata.security.StringGenerator;
 import com.bfourclass.euopendata.user.auth.SecurityContext;
-import com.bfourclass.euopendata.user.forms.UserLoginForm;
-import com.bfourclass.euopendata.user.forms.UserRegisterForm;
+import com.bfourclass.euopendata.user.json.HotelInformationJSON;
+import com.bfourclass.euopendata.user.json.UserLoginJSONRequest;
+import com.bfourclass.euopendata.user.json.UserRegisterJSONRequest;
 import com.bfourclass.euopendata.user_verification.UserVerification;
 import com.bfourclass.euopendata.user_verification.UserVerificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -40,7 +51,7 @@ public class UserService {
         return userRepository.findUserByUsername(username);
     }
 
-    public void createUserByForm(UserRegisterForm registerForm) {
+    public void createUserByForm(UserRegisterJSONRequest registerForm) {
         UserModel userModel = registerForm.toUser();
 
         String verificationKey = StringGenerator.generate();
@@ -52,8 +63,8 @@ public class UserService {
         emailService.sendEmailVerificationEmail(userModel.getUsername(), userModel.getEmail(), verificationKey);
     }
 
-    public String loginUserReturnToken(UserLoginForm userLoginForm) {
-        return securityContext.authenticateUserReturnToken(userLoginForm.username);
+    public String loginUserReturnToken(UserLoginJSONRequest userLoginJSONRequest) {
+        return securityContext.authenticateUserReturnToken(userLoginJSONRequest.username);
     }
 
     public boolean userExists(String username) {
@@ -94,5 +105,27 @@ public class UserService {
 
     public UserModel getUserByUsername(String username) {
         return userRepository.findUserByUsername(username);
+    }
+
+    public List<HotelInformationJSON> getHotelInformation(UserModel userModel) {
+        List<HotelInformationJSON> response = new ArrayList<>();
+
+        List<HotelModel> hotels = userModel.getUserHotels();
+
+        for (HotelModel hotelModel : hotels) {
+            HotelJSONRequest hotelJSONRequest = new HotelJSONRequest(hotelModel.getHotelName(), hotelModel.getLocationName());
+            response.add(getHotelInformation(hotelJSONRequest));
+        }
+
+        return response;
+    }
+
+    public HotelInformationJSON getHotelInformation(HotelJSONRequest hotelJSONRequest) {
+        Hotel hotel = new Hotel(hotelJSONRequest.hotelName, hotelJSONRequest.locationName);
+        Weather weather = ExternalAPI.getWeather(hotelJSONRequest.locationName);
+        CovidInformation covidInformation = ExternalAPI.getCovidInformation(hotelJSONRequest.locationName);
+        AirPollution airPollution = ExternalAPI.getAirPollution(hotelJSONRequest.locationName);
+
+        return new HotelInformationJSON(hotel, weather, covidInformation, airPollution);
     }
 }

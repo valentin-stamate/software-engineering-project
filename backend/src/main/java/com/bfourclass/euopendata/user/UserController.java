@@ -3,11 +3,7 @@ package com.bfourclass.euopendata.user;
 import com.bfourclass.euopendata.hotel.HotelModel;
 import com.bfourclass.euopendata.hotel.HotelService;
 import com.bfourclass.euopendata.hotel.json.HotelJSONRequest;
-import com.bfourclass.euopendata.user.auth.AuthSuccessResponse;
-import com.bfourclass.euopendata.user.forms.UserHotelsResponse;
-import com.bfourclass.euopendata.user.forms.UserLoginForm;
-import com.bfourclass.euopendata.user.forms.UserRegisterForm;
-import com.bfourclass.euopendata.user.json.DeleteHotelJSONRequest;
+import com.bfourclass.euopendata.user.json.*;
 import com.bfourclass.euopendata.user_verification.UserVerificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.bfourclass.euopendata.requests.APIError;
 import com.bfourclass.euopendata.requests.APISuccess;
+
+import java.util.List;
 
 @RestController
 public class UserController {
@@ -79,20 +77,20 @@ public class UserController {
     }
 
     @PostMapping("user/login")
-    public ResponseEntity<Object> loginUser(@RequestBody UserLoginForm userLoginForm) {
+    public ResponseEntity<Object> loginUser(@RequestBody UserLoginJSONRequest request) {
         // check if form is valid
-        if (!userLoginForm.isValid()) {
+        if (!request.isValid()) {
             return new ResponseEntity<>(new APIError("Invalid login form"), HttpStatus.BAD_REQUEST);
         }
         // check if user exists
-        if (!userService.userExists(userLoginForm.username)) {
+        if (!userService.userExists(request.username)) {
             return new ResponseEntity<>(new APIError("User does not exist"), HttpStatus.BAD_REQUEST);
         }
 
-        UserModel userModel = userService.getUserByUsername(userLoginForm.username);
+        UserModel userModel = userService.getUserByUsername(request.username);
 
         // check if password is correct
-        if (!userModel.checkUserPassword(userLoginForm.password)) {
+        if (!userModel.checkUserPassword(request.password)) {
             return new ResponseEntity<>(new APIError("Invalid password"), HttpStatus.UNAUTHORIZED);
         }
 
@@ -101,13 +99,13 @@ public class UserController {
             return new ResponseEntity<>(new APIError("Account not activated"), HttpStatus.UNAUTHORIZED);
         }
 
-        String token = userService.loginUserReturnToken(userLoginForm);
+        String token = userService.loginUserReturnToken(request);
 
-        return new ResponseEntity<>(new AuthSuccessResponse("Authentication successful", token), HttpStatus.OK);
+        return new ResponseEntity<>(new UserJSONResponse(userModel.getUsername(), userModel.getEmail(), userModel.getProfilePhotoLink(), token), HttpStatus.OK);
     }
 
     @PostMapping(value = "user/register")
-    public ResponseEntity<Object> registerUser(@RequestBody UserRegisterForm form) {
+    public ResponseEntity<Object> registerUser(@RequestBody UserRegisterJSONRequest form) {
         if (!form.isValid()) {
             return new ResponseEntity<>(new APIError("Invalid form data"), HttpStatus.BAD_REQUEST);
         }
@@ -130,16 +128,24 @@ public class UserController {
     }
 
     @GetMapping("user/hotels")
-    public ResponseEntity<Object> getUserLocations(@RequestHeader(name = "Authorization", required = false) String token) {
+    public ResponseEntity<Object> getUserHotels(@RequestHeader(name = "Authorization", required = false) String token) {
         ResponseEntity<Object> errorResponse = userService.checkUserToken(token);
         if (errorResponse != null) {
             return errorResponse;
         }
 
         UserModel userModel = userService.getUserFromToken(token);
-        UserHotelsResponse userLocationsResponse = new UserHotelsResponse(userModel.getUserHotels());
 
-        return new ResponseEntity<>(userLocationsResponse, HttpStatus.OK);
+        List<HotelInformationJSON> response = userService.getHotelInformation(userModel);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("user/hotel_information")
+    public ResponseEntity<Object> getInformation(@RequestBody HotelJSONRequest hotelJSONRequest) {
+        HotelInformationJSON response = userService.getHotelInformation(hotelJSONRequest);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
 }

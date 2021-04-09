@@ -1,10 +1,12 @@
-package com.bfourclass.euopendata.user.forms;
+package com.bfourclass.euopendata.user.json;
 
-public class UserLoginForm {
+import com.bfourclass.euopendata.user.forms.FormValidator;
+
+public class UserLoginJSONRequest {
     public final String username;
     public final String password;
 
-    public UserLoginForm(String username, String password) {
+    public UserLoginJSONRequest(String username, String password) {
         this.username = username;
         this.password = password;
     }
