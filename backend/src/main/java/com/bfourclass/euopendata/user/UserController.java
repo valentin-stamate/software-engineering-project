@@ -61,7 +61,7 @@ public class UserController {
         if (!user.existingLocation(locationName)) {
             user.addLocationToFavourites(locationName);
         }
-        return new ResponseEntity<>("success", HttpStatus.OK);
+        return new ResponseEntity<>(new APISuccess("location added successfully"), HttpStatus.OK);
     }
 
     @DeleteMapping("user/delete_location")
@@ -109,7 +109,15 @@ public class UserController {
         if (!userService.checkUserPassword(userLoginForm)) {
             return new ResponseEntity<>(
                     new APIError("invalid password"),
-                    HttpStatus.BAD_REQUEST
+                    HttpStatus.UNAUTHORIZED
+            );
+        }
+
+        // check if account is activated
+        if (!userService.checkUserIsActivated(userLoginForm.getUsername())) {
+            return new ResponseEntity<>(
+                    new APIError("account not activated"),
+                    HttpStatus.UNAUTHORIZED
             );
         }
 
@@ -123,30 +131,30 @@ public class UserController {
 
     @PostMapping(value = "user/register")
     public ResponseEntity<Object> registerUser(@RequestBody UserRegisterForm form) {
+        if (!userService.isValidRegisterForm(form)) {
+            return new ResponseEntity<>(
+                    new APIError("invalid form data"),
+                    HttpStatus.BAD_REQUEST
+            );
+        }
+
         if (userService.userExists(form.getUsername())) {
             return new ResponseEntity<>(
-                    new APIError("User already exists"),
-                    HttpStatus.NOT_FOUND
+                    new APIError("user already exists"),
+                    HttpStatus.BAD_REQUEST
             );
         }
 
-        if (userService.isValidRegisterForm(form)) {
-            userService.createUserByForm(form);
-
-            return new ResponseEntity<>(
-                    new APISuccess("User registered. Check your email to activate your account"),
-                    HttpStatus.OK
-            );
-        }
+        userService.createUserByForm(form);
 
         return new ResponseEntity<>(
-                new APIError("Invalid form data"),
-                HttpStatus.NOT_FOUND
+                new APISuccess("registration successful"),
+                HttpStatus.OK
         );
     }
 
-    @PostMapping(value = "user/verify")
-    public ResponseEntity<Object> verifyUser(@RequestParam(name="verification_key") String userKey) {
+    @GetMapping(value = "user/verify")
+    public ResponseEntity<Object> verifyUser(@RequestParam(name="user_verification_key") String userKey) {
         if (userVerificationService.activateUser(userKey)) {
             return new ResponseEntity<>(
                     new APISuccess("User successfully activated. Now you can log in"),

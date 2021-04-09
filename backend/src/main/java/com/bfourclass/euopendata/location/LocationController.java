@@ -26,8 +26,6 @@ public class LocationController {
     @GetMapping("location/get_location_info")
     public ResponseEntity<Object> getLocation(@RequestBody LocationRegisterForm locationRegisterForm){
 
-
-
         return new ResponseEntity<>(
                 new APIError("invalid dsadasd"),
                 HttpStatus.BAD_REQUEST
