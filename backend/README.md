@@ -322,7 +322,10 @@ The response will look like this if successful, with status code 200:
     "cod": 200
   },
   "covidInformation": {
-    "information": "API still in development"
+    "title": "title",
+    "link": "link",
+    "displayLink": "display-link",
+    "snippet": "about"
   },
   "airPollution": {
     "airQualityIndex": 1,

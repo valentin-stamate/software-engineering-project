@@ -1,7 +1,8 @@
 package com.bfourclass.euopendata.external_api;
 
 import com.bfourclass.euopendata.external_api.instance.aqicn_data.AirPollution;
-import com.bfourclass.euopendata.external_api.instance.covid_information.CovidInformation;
+import com.bfourclass.euopendata.external_api.instance.covid_information.CovidInformationJSON;
+import com.bfourclass.euopendata.external_api.instance.covid_information.Item;
 import com.bfourclass.euopendata.external_api.instance.weather.Weather;
 
 import java.io.IOException;
@@ -12,9 +13,8 @@ public abstract class ExternalAPI {
         return OpenWeatherAPI.requestWeather(location);
     }
 
-    public static CovidInformation getCovidInformation(String location) {
-        /* TODO */
-        return new CovidInformation("API still in development");
+    public static CovidInformationJSON getCovidInformation(String location) {
+        return CovidInformationAPI.requestCovidInformation(location);
     }
     
     public static AirPollution getAirPollution(String location) {

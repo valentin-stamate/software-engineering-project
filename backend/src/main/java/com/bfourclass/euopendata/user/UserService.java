@@ -3,7 +3,8 @@ package com.bfourclass.euopendata.user;
 import com.bfourclass.euopendata.email.EmailService;
 import com.bfourclass.euopendata.external_api.ExternalAPI;
 import com.bfourclass.euopendata.external_api.instance.aqicn_data.AirPollution;
-import com.bfourclass.euopendata.external_api.instance.covid_information.CovidInformation;
+import com.bfourclass.euopendata.external_api.instance.covid_information.CovidInformationJSON;
+import com.bfourclass.euopendata.external_api.instance.covid_information.Item;
 import com.bfourclass.euopendata.external_api.instance.weather.Weather;
 import com.bfourclass.euopendata.hotel.HotelModel;
 import com.bfourclass.euopendata.hotel.json.Hotel;
@@ -123,7 +124,7 @@ public class UserService {
     public HotelInformationJSON getHotelInformation(HotelJSONRequest hotelJSONRequest) {
         Hotel hotel = new Hotel(hotelJSONRequest.hotelName, hotelJSONRequest.locationName);
         Weather weather = ExternalAPI.getWeather(hotelJSONRequest.locationName);
-        CovidInformation covidInformation = ExternalAPI.getCovidInformation(hotelJSONRequest.locationName);
+        CovidInformationJSON covidInformation = ExternalAPI.getCovidInformation(hotelJSONRequest.locationName);
         AirPollution airPollution = ExternalAPI.getAirPollution(hotelJSONRequest.locationName);
 
         return new HotelInformationJSON(hotel, weather, covidInformation, airPollution);
