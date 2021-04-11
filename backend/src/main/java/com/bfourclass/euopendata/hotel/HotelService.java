@@ -20,7 +20,10 @@ public class HotelService {
     }
 
     private boolean locationExists(String hotelName) {
-        return hotelRepository.checkHotelExistence(hotelName) != null;
+        return hotelRepository.getHotelByName(hotelName) != null;
     }
 
+    public HotelModel getHotelByName(String hotelName) {
+        return hotelRepository.getHotelByName(hotelName);
+    }
 }

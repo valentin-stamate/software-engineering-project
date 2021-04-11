@@ -1,4 +1,4 @@
-package com.bfourclass.euopendata;
+package com.bfourclass.euopendata.security;
 
 import com.bfourclass.euopendata.user.UserModel;
 import io.jsonwebtoken.Claims;

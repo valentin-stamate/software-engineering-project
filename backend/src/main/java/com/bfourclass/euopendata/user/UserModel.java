@@ -45,24 +45,8 @@ public class UserModel {
         return email;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     public String getProfilePhotoLink() {
         return profilePhotoLink;
-    }
-
-    public void setProfilePhotoLink(String profilePhotoLink) {
-        this.profilePhotoLink = profilePhotoLink;
     }
 
     public boolean hasHotel(String hotelName) {

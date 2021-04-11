@@ -8,5 +8,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface HotelRepository extends JpaRepository<HotelModel, Long> {
     @Query("SELECT h FROM HotelModel h WHERE h.hotelName = ?1")
-    HotelModel checkHotelExistence(String hotelName);
+    HotelModel getHotelByName(String hotelName);
 }
