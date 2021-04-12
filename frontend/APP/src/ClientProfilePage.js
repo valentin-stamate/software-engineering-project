@@ -12,7 +12,7 @@ class ClientProfilePage extends react.Component{
 
     render(){
         return(
-<div>
+<div class="client-profile">
     <div class="topnav">
         <a class="active" href="#home">Home</a>
         <a href="#about">See Recommendation</a>
@@ -179,12 +179,6 @@ class ClientProfilePage extends react.Component{
             </div>
         </div>
     </div>
-    <Helmet>
-        <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
-    </Helmet>
-    <Helmet>
-        <script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    </Helmet>
 </div>
         );
     }

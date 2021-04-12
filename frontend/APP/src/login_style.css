@@ -1,16 +1,16 @@
-*,
-*:before,
-*:after {
+.login-page *,
+.login-page *:before,
+.login-page *:after {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     font-family: 'Playfair Display', serif;
 }
-.loginElements
+.login-page .loginElements
 {
  top:120px;
 }
-.main
+.login-page
 {
   width: 100%;
   height: 100vh;
@@ -20,7 +20,7 @@
   background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.4)), url('images/banner-img.jpg') center/cover no-repeat fixed;
   position: relative;
 }
-.loginBox
+.login-page .loginBox
 {
   overflow: hidden;
   position: relative;
@@ -29,33 +29,33 @@
   background: #b1f9fe;
   box-shadow: 0 19px 38px rgba(0, 0, 0, 0.30), 0 15px 12px rgba(0, 0, 0, 0.22);
 }
-.titleLogin
+.login-page .titleLogin
 {
   color: black;
   font-family: 'Playfair Display', serif;
   top: 30px;
   left: 12px;
 }
-.box
+.login-page .box
 {
   position: relative;
   width: 640px;
   height: 100%;
   padding: 50px 30px;
 }
-h2
+.login-page h2
 {
   width: 100%;
   font-size: 30px;
   text-align: center;
 }
-label {
+.login-page label {
     display: block;
     width: 250px;
     margin: 15px auto 0;
     text-align: center;
 }
-label h4 {
+.login-page label h4 {
     font-size: 14px;
     font-weight: 550;
     color: #505f75;
@@ -63,7 +63,7 @@ label h4 {
     margin-top: 30px;
     margin-bottom: 30px;
 }
-input {
+.login-page input {
     display: block;
     width: 100%;
     margin-top: 6px;
@@ -76,7 +76,7 @@ input {
     outline: none;
     background: none;
 }
-.btn-Login
+.login-page .btn-Login
 {
   border: none;
   outline: none;
@@ -90,7 +90,7 @@ input {
   font-size: 15px;
   cursor: pointer;
 }
-.loginButton
+.login-page .loginButton
 {
   margin-top: 40px;
   margin-bottom: 30px;
@@ -99,11 +99,11 @@ input {
   font-family: 'Playfair Display', serif;
   background: -webkit-linear-gradient(left, #75efff, #24c0ef);
 }
-.loginButton:hover
+.login-page .loginButton:hover
 {
   background: -webkit-linear-gradient(left, #24c0ef, #75efff);
 }
-.forgotButton
+.login-page .forgotButton
 {
   margin-top: 40px;
   margin-bottom: 30px;
@@ -112,11 +112,11 @@ input {
   font-family: 'Playfair Display', serif;
   background: -webkit-linear-gradient(left, #75efff, #24c0ef);
 }
-.forgotButton:hover
+.login-page .forgotButton:hover
 {
   background: -webkit-linear-gradient(left, #24c0ef, #75efff);
 }
-.registerSegment
+.login-page .registerSegment
 {
   overflow: hidden;
   position: absolute;
@@ -127,7 +127,7 @@ input {
   padding-left: 260px;
   background: #6e999c;
 }
-.registerTitle
+.login-page .registerTitle
 {
   overflow: hidden;
   z-index: 2;
@@ -138,7 +138,7 @@ input {
   height: 100%;
   padding-top: 360px;
 }
-.register-Text
+.login-page .register-Text
 {
   z-index: 2;
   position: absolute;
@@ -155,7 +155,7 @@ input {
   font-size: 14px;
   line-height: 1.5;
 }
-.registerButton
+.login-page .registerButton
 {
   margin-top: 40px;
   margin-bottom: 30px;
@@ -164,7 +164,7 @@ input {
   font-family: 'Playfair Display', serif;
 
 }
-.btn-register
+.login-page .btn-register
 {
   display: block;
   margin: 0 auto;
@@ -179,7 +179,7 @@ input {
   outline: white;
   border:1px solid white;
 }
-a
+.login-page a
 {
   text-decoration: none;
   color: white;

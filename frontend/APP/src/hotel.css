@@ -1,0 +1,172 @@
+.hotel-page * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Playfair Display', serif;
+}
+
+.hotel-page {
+    background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.4)), './images/backround.jpg' center/cover no-repeat fixed;
+    margin-top: 20px;
+}
+
+.hotel-page .thumb-lg {
+    height: 110px;
+    width: 110px;
+}
+.hotel-page .profile-user-box {
+    position: relative;
+    border-radius: 5px
+}
+.hotel-page .bg-custom {
+    background-color: #9df8ff!important;
+}
+.hotel-page .profile-user-box {
+    position: relative;
+    border-radius: 5px;
+}
+
+.hotel-page .card-box {
+    padding: 20px;
+    border-radius: 3px;
+    margin-bottom: 30px;
+    background-color: #fff;
+}
+
+.hotel-page .bui-review-score__badge {
+    background: #003580;
+    color: #fff;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+    vertical-align: baseline;
+    border-radius: 5.81818px 5.81818px 5.81818px 0;
+    height: 22px;
+    width: 22px;
+    min-width: 32px;
+}
+
+.hotel-page .inbox-widget .inbox-item img {
+    width: 40px;
+}
+
+.hotel-page .inbox-widget .inbox-item {
+    border-bottom: 1px solid #f3f6f8;
+    overflow: hidden;
+    padding: 10px 0;
+    position: relative
+}
+
+.hotel-page .inbox-widget .inbox-item .inbox-item-img {
+    display: block;
+    float: left;
+    margin-right: 15px;
+    width: 40px
+}
+
+.hotel-page .inbox-widget .inbox-item img {
+    width: 40px
+}
+
+.hotel-page .inbox-widget .inbox-item .inbox-item-author {
+    color: #313a46;
+    display: block;
+    margin: 0
+}
+
+.hotel-page .inbox-widget .inbox-item .inbox-item-text {
+    color: #98a6ad;
+    display: block;
+    font-size: 14px;
+    margin: 0
+}
+
+.hotel-page .inbox-widget .inbox-item .inbox-item-date {
+    color: #98a6ad;
+    font-size: 11px;
+    position: absolute;
+    right: 7px;
+    top: 12px
+}
+.hotel-page .checked {
+    color: orange;
+  }
+
+  .hotel-page .comment-list .comment-box-item {
+    position: relative
+}
+
+.hotel-page.comment-list .comment-box-item .commnet-item-date {
+    color: #98a6ad;
+    font-size: 11px;
+    position: absolute;
+    right: 7px;
+    top: 2px
+}
+
+.hotel-page .comment-list .comment-box-item .commnet-item-msg {
+    color: #313a46;
+    display: block;
+    margin: 10px 0;
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 24px
+}
+
+.hotel-page .comment-list .comment-box-item .commnet-item-user {
+    color: #98a6ad;
+    display: block;
+    font-size: 14px;
+    margin: 0
+}
+
+.hotel-page .comment-list a+a {
+    margin-top: 15px;
+    display: block
+}
+
+.hotel-page .ribbon-box .ribbon-primary {
+    background: #2d7bf4;
+}
+
+.hotel-page .ribbon-box .ribbon {
+    position: relative;
+    float: left;
+    clear: both;
+    padding: 5px 12px 5px 12px;
+    margin-left: -30px;
+    margin-bottom: 15px;
+    font-family: Rubik,sans-serif;
+    -webkit-box-shadow: 2px 5px 10px rgba(49,58,70,.15);
+    -o-box-shadow: 2px 5px 10px rgba(49,58,70,.15);
+    box-shadow: 2px 5px 10px rgba(49,58,70,.15);
+    color: #fff;
+    font-size: 13px;
+}
+.hotel-page .text-custom {
+    color: #02c0ce!important;
+}
+
+.hotel-page .badge-custom {
+    background: #02c0ce;
+    color: #fff;
+}
+.hotel-page .badge {
+    font-family: Rubik,sans-serif;
+    -webkit-box-shadow: 0 0 24px 0 rgba(0,0,0,.06), 0 1px 0 0 rgba(0,0,0,.02);
+    box-shadow: 0 0 24px 0 rgba(0, 0, 0, 0.06), 0 1px 0 0 rgba(0,0,0,.02);
+    padding: .35em .5em;
+    font-weight: 500;
+}
+.hotel-page .text-muted {
+    color: #98a6ad!important;
+}
+
+.hotel-page .font-13 {
+    font-size: 13px!important;
+}

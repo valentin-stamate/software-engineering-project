@@ -34,7 +34,9 @@ class SignUpPage extends react.Component{
     }
 
     render(){
-        return <div class="cont">
+        return( 
+        <div class="sign-up-page-container">
+        <div class="sign-up-page">
            <div class="form sign-user">
               <h2>Sign Up as a User</h2>
               <label>
@@ -115,7 +117,8 @@ class SignUpPage extends react.Component{
                  <button type="button" class="submit">Register Now</button>
                 </div>
             </div>
-        </div>;
+        </div>
+        </div>);
     }
 }
 

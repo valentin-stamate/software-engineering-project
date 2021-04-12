@@ -1,30 +1,30 @@
-*,
-*:before,
-*:after {
+.sign-up-page *,
+.sign-up-page *:before,
+.sign-up-page *:after {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     font-family: 'Playfair Display', serif;
 }
 
-body {
+.sign-up-page-container {
     width: 100%;
     height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.4)), url('images\\backround.jpg') center/cover no-repeat fixed;
+    background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.4)), url('./images/backround.jpg') center/cover no-repeat fixed;
     font-family: 'Playfair Display', serif;
 }
 
-input,
-button {
+.sign-up-page input,
+.sign-up-page button {
     border: none;
     outline: none;
     background: none;
 }
 
-.cont {
+.sign-up-page {
     overflow: hidden;
     position: relative;
     width: 900px;
@@ -33,7 +33,7 @@ button {
     box-shadow: 0 19px 38px rgba(0, 0, 0, 0.30), 0 15px 12px rgba(0, 0, 0, 0.22);
 }
 
-.form {
+.sign-up-page .form {
     position: relative;
     width: 640px;
     height: 100%;
@@ -44,27 +44,27 @@ button {
     transition: transform 1.2s ease-in-out, -webkit-transform 1.2s ease-in-out;
 }
 
-h2 {
+.sign-up-page h2 {
     width: 100%;
     font-size: 30px;
     text-align: center;
 }
 
-label {
+.sign-up-page label {
     display: block;
     width: 250px;
     margin: 15px auto 0;
     text-align: center;
 }
 
-label span {
+.sign-up-page label span {
     font-size: 14px;
     font-weight: 550;
     color: #505f75;
     text-transform: uppercase;
 }
 
-input {
+.sign-up-page input {
     display: block;
     width: 100%;
     margin-top: 1px;
@@ -75,7 +75,7 @@ input {
     font-family: 'Playfair Display', serif;
 }
 
-button {
+.sign-up-page button {
     display: block;
     margin: 0 auto;
     width: 260px;
@@ -86,7 +86,7 @@ button {
     cursor: pointer;
 }
 
-.submit {
+.sign-up-page .submit {
     margin-top: 40px;
     margin-bottom: 30px;
     text-transform: uppercase;
@@ -95,11 +95,11 @@ button {
     background: -webkit-linear-gradient(left, #75efff, #24c0ef);
 }
 
-.submit:hover {
+.sign-up-page .submit:hover {
     background: -webkit-linear-gradient(left, #24c0ef, #75efff);
 }
 
-.sub-cont {
+.sign-up-page .sub-cont {
     overflow: hidden;
     position: absolute;
     left: 640px;
@@ -113,12 +113,12 @@ button {
     transition: transform 1.2s ease-in-out;
 }
 
-.cont.s-signup .sub-cont {
+.sign-up-page.s-signup .sub-cont {
     -webkit-transform: translate3d(-640px, 0, 0);
     transform: translate3d(-640px, 0, 0);
 }
 
-.img {
+.sign-up-page .img {
     overflow: hidden;
     z-index: 2;
     position: absolute;
@@ -129,7 +129,7 @@ button {
     padding-top: 360px;
 }
 
-.img:before {
+.sign-up-page .img:before {
     content: '';
     position: absolute;
     right: 0;
@@ -141,7 +141,7 @@ button {
     transition: transform 1.2s ease-in-out, -webkit-transform 1.2s ease-in-out;
 }
 
-.img:after {
+.sign-up-page .img:after {
     content: '';
     position: absolute;
     left: 0;
@@ -151,12 +151,12 @@ button {
     background: rgba(0, 0, 0, 0.3);
 }
 
-.cont.s-signup .img:before {
+.sign-up-page.s-signup .img:before {
     -webkit-transform: translate3d(640px, 0, 0);
     transform: translate3d(640px, 0, 0);
 }
 
-.img-text {
+.sign-up-page .img-text {
     z-index: 2;
     position: absolute;
     left: 0;
@@ -172,42 +172,42 @@ button {
     transition: transform 1.2s ease-in-out, -webkit-transform 1.2s ease-in-out;
 }
 
-.img-text h2 {
+.sign-up-page .img-text h2 {
     margin-bottom: 10px;
     font-weight: normal;
 }
 
-.img-text p {
+.sign-up-page .img-text p {
     font-size: 14px;
     line-height: 1.5;
 }
 
-.cont.s-signup .img-text.m-up {
+.sign-up-page.s-signup .img-text.m-up {
     -webkit-transform: translateX(520px);
     transform: translateX(520px);
 }
 
-.img-text.m-in {
+.sign-up-page .img-text.m-in {
     -webkit-transform: translateX(-520px);
     transform: translateX(-520px);
 }
 
-.cont.s-signup .img-text.m-in {
+.sign-up-page.s-signup .img-text.m-in {
     -webkit-transform: translateX(0);
     transform: translateX(0);
 }
 
-.sign-user {
+.sign-up-page .sign-user {
     padding-top: 25px;
     -webkit-transition-timing-function: ease-out;
     transition-timing-function: ease-out;
 }
 
-.sign-admin {
+.sign-up-page .sign-admin {
     padding-top: 25px;
 }
 
-.cont.s-signup .sign-user {
+.sign-up-page.s-signup .sign-user {
     -webkit-transition-timing-function: ease-in-out;
     transition-timing-function: ease-in-out;
     -webkit-transition-duration: 1.2s;
@@ -216,7 +216,7 @@ button {
     transform: translate3d(640px, 0, 0);
 }
 
-.img-btn {
+.sign-up-page .img-btn {
     overflow: hidden;
     z-index: 2;
     position: relative;
@@ -230,7 +230,7 @@ button {
     cursor: pointer;
 }
 
-.img-btn:after {
+.sign-up-page .img-btn:after {
     content: '';
     z-index: 2;
     position: absolute;
@@ -242,7 +242,7 @@ button {
     border-radius: 30px;
 }
 
-.img-btn span {
+.sign-up-page .img-btn span {
     position: absolute;
     left: 0;
     top: 0;
@@ -260,27 +260,27 @@ button {
     ;
 }
 
-.img-btn span.m-in {
+.sign-up-page .img-btn span.m-in {
     -webkit-transform: translateY(-72px);
     transform: translateY(-72px);
 }
 
-.cont.s-signup .img-btn span.m-in {
+.sign-up-page .s-signup .img-btn span.m-in {
     -webkit-transform: translateY(0);
     transform: translateY(0);
 }
 
-.cont.s-signup .img-btn span.m-up {
+.sign-up-page.s-signup .img-btn span.m-up {
     -webkit-transform: translateY(72px);
     transform: translateY(72px);
 }
 
-.sign-admin {
+.sign-up-page.sign-admin {
     -webkit-transform: translate3d(-900px, 0, 0);
     transform: translate3d(-900px, 0, 0);
 }
 
-.cont.s-signup .sign-admin {
+.sign-up-page.s-signup .sign-admin {
     -webkit-transform: translate3d(0, 0, 0);
     transform: translate3d(0, 0, 0);
 }

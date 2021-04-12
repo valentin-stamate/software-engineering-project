@@ -1,24 +1,24 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&display=swap');
+
 
 :root{
     --transition: all 0.7s ease;
     --yellow: #f9d342;
     --dark: #292826;
 }
-*{
+.home-page *{
     box-sizing: border-box;
     padding: 0;
     margin: 0;
     font-family: 'Playfair Display', serif;
 }
-html{
+.home-page{
     scroll-behavior: smooth;
 }
-body{
+.home-page{
     height: auto;
     line-height: 1.6;
 }
-.btn{
+.home-page .btn{
     font-size: 16px;
     text-transform: uppercase;
     font-weight: 600;
@@ -31,31 +31,32 @@ body{
     cursor: pointer;
     transition: var(--transition);
 }
-.btn:hover{
+
+.home-page .btn:hover{
     opacity: 0.85;
 }
-.flex{
+.home-page .flex{
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 }
-h1, h2, h3, h4, h5, h6{
+.home-page h1,.home-page h2,.home-page h3,.home-page h4,.home-page h5,.home-page h6{
     padding: 8px 0;
 }
-img{
+.home-page img{
     width: 100%;
     display: block;
 }
 @media(max-width: 500px){
-    body{
+    .home-page{
         font-size: 14px;
     }
 }
 
 /* header */
-.header{
-    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.2)), './images/banner-img.jpg' center/cover no-repeat;
+.home-page .header{
+    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.2)), url('./images/banner-img.jpg') center/cover no-repeat;
     min-height: 100vh;
     color: #fff;
     padding: 25px;
@@ -63,39 +64,39 @@ img{
     flex-direction: column;
     align-content: stretch;
 }
-.head-top{
+.home-page .head-top{
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
-.head-top span{
+.home-page .head-top span{
     cursor: pointer;
     letter-spacing: 2px;
     transition: var(--transition);
 }
-.head-top span:hover{
+.home-page .head-top span:hover{
     color: var(--yellow);
 }
-.head-bottom{
+.home-page .head-bottom{
     flex: 1;
     text-align: center;
     width: 80vw;
     margin: 0 auto;
 }
-.head-bottom h2{
+.home-page .head-bottom h2{
     padding: 22px 0;
     font-size: 45px;
     border-bottom: 1px solid #fff;
 }
-.head-bottom p{
+.home-page .head-bottom p{
     opacity: 0.7;
     font-size: 20px;
     margin: 45px auto;
     width: 60vw;
 }
-.head-btn{
+.home-page .head-btn{
     margin: 20px 0;
-    font-size: 20px;
+    font-size: 30px;
     font-weight: bold;
     border: 3px solid #fff;
     background: transparent;
@@ -104,28 +105,28 @@ img{
     cursor: pointer;
     transition: var(--transition);
 }
-.head-btn:hover{
+.home-page .head-btn:hover{
     background: transparent;
 }
-.site-logo{
+.home-page .site-logo{
     width: 2%;
     height:auto;
 }
 @media(max-width: 500px){
-    .head-btn{
+    .home-page .head-btn{
         font-size: 17px;
     }
-    .head-bottom h2{
+    .home-page .head-bottom h2{
         font-size: 28px;
     }
-    .head-bottom p{
+    .home-page .head-bottom p{
         font-size: 17px;
         margin: 20px auto;
     }
 }
 
 /* side nav */
-.sidenav{
+.home-page .sidenav{
     background: var(--dark);
     color: #fff;
     position: fixed;
@@ -139,26 +140,26 @@ img{
 }
 
 /********/
-.sidenav.show{
+.home-page .sidenav.show{
     right: 0;
 }
 /*************/
-.cancel-btn{
+.home-page .cancel-btn{
     position: absolute;
     right: 25px;
     font-size: 22px;
     cursor: pointer;
     transition: var(--transition);
 }
-.cancel-btn:hover{
+.home-page .cancel-btn:hover{
     opacity: 0.7;
 }
-.navbar{
+.home-page .navbar{
     margin-top: 50px;
     list-style: none;
     padding: 12px;
 }
-.navbar li a{
+.home-page .navbar li a{
     color: #fff;
     text-transform: capitalize;
     text-decoration: none;
@@ -169,21 +170,21 @@ img{
     letter-spacing: 1.5px;
     transition: var(--transition);
 }
-.navbar li a:hover{
+.home-page .navbar li a:hover{
     padding-left: 12px;
 }
-.sign-up, .log-in{
+.home-page .sign-up,.home-page .log-in{
     background: var(--yellow);
     color: #fff;
 }
 @media(max-width: 400px){
-    .sidenav{
+    .home-page .sidenav{
         width: 100vw;
     }
 }
 
 /** title */
-.title{
+.home-page .title{
     text-transform: uppercase;
     letter-spacing: 3px;
     font-size: 30px;
@@ -193,117 +194,117 @@ img{
     margin: 15px 0;
 }
 
-.sec-width{
+.home-page .sec-width{
     width: 85vw;
     margin: 0 auto!important;
 }
 
 /* service */
-.services{
+.home-page .services{
     margin: 40px 0;
 }
-.service{
+.home-page .service{
     display: flex;
     margin: 30px 0;
 }
-.service-icon{
+.home-page .service-icon{
     flex: 30%;
     align-self: flex-start;
     font-size: 48px;
     color: #252525;
 }
-.service-content{
+.home-page .service-content{
     padding-left: 20px;
 }
-.service-content h2{
+.home-page .service-content h2{
     opacity: 0.7;
 }
-.service-content button{
+.home-page .service-content button{
     margin-left: 0;
     margin-right: 0;
     background: var(--yellow);
     color: #fff;
 }
 @media(min-width: 992px){
-    .services-container{
+    .home-page .services-container{
         display: grid;
         grid-template-columns: repeat(2, 1fr);
         grid-column-gap: 30px;
     }
-    .title h2{
+    .home-page .title h2{
         font-size: 10px!important;
     }
 }
 @media(max-width: 500px){
-    .title h2{
+    .home-page .title h2{
         font-size: 24px;
     }
 }
 
 /* booking form */
-.book{
+.home-page .book{
     background: linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.85)), url("images/header_frontpage_2.jpg") center/cover no-repeat;
     color: #fff;
     padding: 40px 60px;
 }
-.book-form{
+.home-page .book-form{
     display: grid;
 }
-.form-item input{
+.home-page .form-item input{
     background-color: white;
 }
-.form-item{
+.home-page .form-item{
     display: flex;
     flex-direction: column;
     justify-content: center;
 }
-.book-form input[type = "submit"]{
+.home-page .book-form input[type = "submit"]{
     margin: 18px 0 0 0;
     background: var(--dark);
     color: #fff;
     border: 1px solid #fff;
 }
-.book-form label, .book-form input{
+.home-page .book-form label, .book-form input{
     width: 100%;
 }
-.book-form label{
+.home-page .book-form label{
     font-weight: 600;
     word-spacing: 5px;
     padding-bottom: 8px;
 }
-.book-form input:not(.btn){
+.home-page .book-form input:not(.btn){
     margin: 4px 0 16px 0;
     padding: 12px 15px;
     border-radius: 5px;
     font-size: 17px;
     border: none;
 }
-.book-form input:focus{
+.home-page .book-form input:focus{
     outline: 0;
     box-shadow: 0 0 7px rgba(0, 0, 0, 0.4);
 }
 @media(min-width: 768px){
-    .book-form{
+    .home-page .book-form{
         grid-template-columns: repeat(2, 1fr);
         grid-gap: 24px;
     }
 }
 @media(min-width: 1170px){
-    .book-form{
+    .home-page .book-form{
         grid-template-columns: repeat(3, 1fr);
     }
 }
 @media(min-width: 1370px){
-    .book-form{
+    .home-page .book-form{
         grid-template-columns: 2fr 2fr 1fr 1fr 1fr 2fr;
     }
-    .book{
+    .home-page .book{
         height: 40vh;
         display: grid;
     }
 }
 @media(max-width: 500px){
-    .book{
+    .home-page .book{
         padding-left: 20px;
         padding-right: 20px;
     }
@@ -311,88 +312,88 @@ img{
 
 /* room */
 
-.suggestions{
+.home-page .suggestions{
     margin: 40px 0;
 }
-.suggestion{
+.home-page .suggestion{
     margin: 45px 0;
     padding-bottom: 25px;
     background: var(--dark);
     color: #fff;
 }
-.suggestion-text{
+.home-page .suggestion-text{
     padding: 5px 20px;
 }
-.suggestion-text h3{
+.home-page .suggestion-text h3{
     font-size: 24px;
 }
 
-.suggestion-text p{
+.home-page .suggestion-text p{
     font-size: 18px;
 }
 
-.suggestion-text ul{
+.home-page .suggestion-text ul{
     list-style-type: none;
     margin: 15px 0;
 }
-.suggestion-text ul li{
+.home-page .suggestion-text ul li{
     padding: 7px 0;
 }
-.suggestion-text ul li i{
+.home-page .suggestion-text ul li i{
     color: var(--yellow);
     margin-right: 10px;
 }
 
-.suggestion-image{
+.home-page .suggestion-image{
     overflow: hidden;
 }
-.suggestion-image img{
+.home-page .suggestion-image img{
     transition: var(--transition);
 }
-.suggestion-image:hover img{
+.home-page .suggestion-image:hover img{
     transform: scale(1.1);
 }
 @media (min-width: 900px){
-    .suggestions-container{
+    .home-page .suggestions-container{
         display: flex;
         flex-wrap: wrap;
     }
-    .suggestion{
+    .home-page .suggestion{
         flex: 0 0 calc(50% - 20px);
         margin: 10px;
     }
 }
 @media(min-width: 1370px){
-    .suggestions-container{
+    .home-page .suggestions-container{
         flex-direction: column;
     }
-    .suggestion{
+    .home-page .suggestion{
         display: flex;
         padding-bottom: 0;
         margin: 5px 0;
     }
-    .suggestion-image{
+    .home-page .suggestion-image{
         flex: 1;
     }
-    .suggestion-image img{
+    .home-page .suggestion-image img{
         height: 100%;
     }
-    .suggestion-text{
+    .home-page .suggestion-text{
         flex: 1;
     }
-    .suggestion:nth-child(even){
+    .home-page .suggestion:nth-child(even){
         flex-direction: row-reverse;
     }
 }
 
 /* customers */
 
-.customers{
+.home-page .customers{
     margin-top: 40px;
     padding: 40px 0;
     background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("images/header_frontpage_2.jpg") center/cover no-repeat fixed;
 }
-.customer{
+.home-page .customer{
     background: #fff;
     padding: 35px;
     text-align: center;
@@ -401,81 +402,81 @@ img{
     cursor: pointer;
     transition: var(--transition);
 }
-.rating{
+.home-page .rating{
     margin: 10px 0;
     color: var(--yellow);
 }
-.customer h3{
+.home-page .customer h3{
     font-size: 25px;
 }
-.customer p{
+.home-page .customer p{
     opacity: 0.7;
     line-height: 1.8;
     width: 60%;
     margin: 0 auto;
 }
-.customer img{
+.home-page .customer img{
     width: 170px;
     height: 170px;
     border-radius: 50%;
     margin: 25px auto;
 }
-.customer span{
+.home-page .customer span{
     font-weight: 700;
     opacity: 0.7;
 }
-.customer:hover{
+.home-page .customer:hover{
     transform: translateY(-18px);
 }
 @media(min-width: 992px){
-    .customers-container{
+    .home-page .customers-container{
         display: grid;
         grid-template-columns: repeat(2, 1fr);
         grid-gap: 30px;
     }
 }
 @media(min-width: 1370px){
-    .customers-container{
+    .home-page .customers-container{
         display: grid;
         grid-template-columns: repeat(3, 1fr);
     }
 }
 @media(max-width: 500px){
-    .customer p{
+    .home-page .customer p{
         width: 100%;
     }
-    .customer img{
+    .home-page .customer img{
         width: 100px;
         height: 100px;
     }
 }
 
 /* footer */
-.footer{
+.home-page .footer{
     background: var(--dark);
     color: #fff;
     text-align: center;
 }
-.footer-container{
+.home-page .footer-container{
     width: 85vw;
     margin: 0 auto;
     padding: 30px 0;
 }
-.footer-container p, .footer-container a, .footer-container span{
+.home-page .footer-container p,.home-page .footer-container a,.home-page .footer-container span{
     opacity: 0.8;
 }
-.footer a{
+.home-page .footer a{
     display: block;
     color: #fff;
     text-decoration: none;
 }
-.social-icons{
+.home-page .social-icons{
     list-style: none;
     display: flex;
     justify-content: center;
     padding: 15px 0;
 }
-.social-icons li{
+.home-page .social-icons li{
     margin: 0 10px;
     width: 50px;
     height: 50px;
@@ -484,31 +485,31 @@ img{
     transition: var(--transition);
     cursor: pointer;
 }
-.social-icons li:hover{
+.home-page .social-icons li:hover{
     background: #fff;
     color: #2e2e2e;
 }
-.contact-item span{
+.home-page .contact-item span{
     display: block;
 }
 @media(min-width: 900px){
-    .footer-container{
+    .home-page .footer-container{
         display: grid;
         grid-template-columns: repeat(2, 1fr);
         grid-gap: 20px;
     }
 }
 @media(min-width: 1170px){
-    .footer{
+    .home-page .footer{
         text-align: left;
     }
-    .footer-container{
+    .home-page .footer-container{
         grid-template-columns: repeat(4, 1fr);
     }
-    .footer-container div:nth-child(1) p{
+    .home-page .footer-container div:nth-child(1) p{
         padding-right: 20px;
     }
-    .contact-item{
+    .home-page .contact-item{
         display: grid;
         grid-template-columns: 10% 90%;
         margin-bottom: 15px;
@@ -516,7 +517,7 @@ img{
     }
 }
 
-.showModal{
+.home-page .showModal{
     position: fixed;
     background: transparent;
     top: 0;

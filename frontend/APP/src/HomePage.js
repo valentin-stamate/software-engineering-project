@@ -1,10 +1,11 @@
 import React from 'react';
 import './home.css';
+import { Helmet } from 'react-helmet';
 
 class HomePage extends React.Component{
     render(){
         return (
-            <div>
+            <div class="home-page">
             <header class="header" id="header">
                 <div class="head-top">
                     <div class="site-logo">
@@ -14,7 +15,7 @@ class HomePage extends React.Component{
                         <p>Smart Booking</p>
                     </div>
                     <div class="site-nav">
-                        <a href="/login"><span id="nav-btn">Login <i class="fas fa-bars"></i></span></a>
+                        <a href="/login" style={{textDecoration:'none',fontSize:'150%',color:'white'}}><span class="nav-btn">Login <i class="fas fa-bars"></i></span></a>
                     </div>
                 </div>
         
@@ -322,7 +323,9 @@ class HomePage extends React.Component{
                     </div>
                 </div>
             </footer>
+            <Helmet>
             <script src="https://kit.fontawesome.com/dbed6b6114.js" crossorigin="anonymous"></script>
+            </Helmet>
             </div>
         );
     }

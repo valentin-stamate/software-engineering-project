@@ -9,7 +9,7 @@ class AdminProfilePage extends React.Component{
 
     render(){
         return(
-<div>
+<div class="admin-profile-page">
 <hr/>
 <div class="container bootstrap snippets bootdey">
 
@@ -174,12 +174,7 @@ class AdminProfilePage extends React.Component{
 
 </div>
 </div>
-<Helmet>
-    <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
-</Helmet>
-<Helmet>
-    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
-</Helmet>
+
 </div>
         );
     }

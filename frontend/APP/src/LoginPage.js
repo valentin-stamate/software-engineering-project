@@ -26,7 +26,7 @@ class LoginPage extends react.Component{
     }
 
     render(){
-        return <div class="main">
+        return <div class="login-page">
       <div class="loginBox">
           <div class="box loginAction">
             <div class="loginElements">
