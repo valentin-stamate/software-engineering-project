@@ -1,7 +1,7 @@
 body {
 	width:350px;
 	
-  background-image: url("/src/images/background.jpg");
+  background-image: url("/src/images/background.webp");
   background-position:bottom;
   background-size: cover;
 }

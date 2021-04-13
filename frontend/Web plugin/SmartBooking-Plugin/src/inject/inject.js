@@ -18,7 +18,7 @@ document.body.insertAdjacentHTML('afterbegin', `
 
 
 
-var imgURL = chrome.extension.getURL("/src/images/background.jpg");
+var imgURL = chrome.extension.getURL("/src/images/background.webp");
 document.getElementById("popup").style.backgroundImage = `url(${imgURL})`;
 
 var show = true;

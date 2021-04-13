@@ -9,7 +9,6 @@
     "48": "icons/logo48.png",
     "128": "icons/logo128.png"
   },
-  "default_locale": "en",
   "background": {
     "scripts": [
       "src/bg/background.js"

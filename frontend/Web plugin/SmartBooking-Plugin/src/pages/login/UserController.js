@@ -8,8 +8,8 @@ export default class UserController {
 		xhr.onreadystatechange = function () {
 			if (xhr.readyState === 4 && xhr.status === 200) {
 				var json = JSON.parse(xhr.responseText);
-				localStorage.setItem('loginstate', "true");
-				localStorage.setItem('token', json.token);
+				window.localStorage.setItem('loginstate', "true");
+				window.localStorage.setItem('token', json.token);
 				alert(json.message + ", " + json.token);
 				window.location.href = "/src/pages/popup.html";
 			}else if (xhr.readyState === 4) {
@@ -26,6 +26,6 @@ export default class UserController {
     {
         window.localStorage.clear();
         window.location.reload();
-        window.location.replace('/src/pages/popup.html');
+        window.location.href = '/src/pages/popup.html';
     }
 }
