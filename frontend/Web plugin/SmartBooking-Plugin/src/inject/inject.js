@@ -1,7 +1,19 @@
-console.log('sal');
+var getLocation = function(){
+    var location_element= document.getElementsByClassName("hp_address_subtitle");
+    var location = location_element[0].innerText;
+    console.log(location);
+    return location;
+};
 
-var name_element = document.getElementById('hp_hotel_name');
-var name = name_element ? name_element.innerText : "";
+var getName = function(){
+    var name_element = document.getElementById('hp_hotel_name');
+    var name = name_element ? name_element.innerText : "";
+    console.log(name);
+    return name;
+}
+
+console.log('sal');
+getLocation();
 
 document.body.insertAdjacentHTML('afterbegin', `
 <div id="main-popup">
@@ -10,7 +22,7 @@ document.body.insertAdjacentHTML('afterbegin', `
 	</header>
 	<div id="popup">
 	    <h1 id="hotel-name-header">
-			${name}
+			${getName()}
 		</h1>
 		<button id="send-btn" style="cursor:pointer">Add preference</button>
 	</div>
@@ -35,6 +47,6 @@ document.getElementById("hide-btn").addEventListener('click', () => {
 
 document.getElementById("send-btn").addEventListener('click', () => {
     console.log("click");
-    var hotel_name = document.getElementById('hp_hotel_name').innerText;
+    var hotel_name = getName();
     chrome.extension.sendMessage(hotel_name.trim());
 });

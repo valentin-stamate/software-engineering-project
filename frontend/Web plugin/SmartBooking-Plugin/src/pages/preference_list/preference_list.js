@@ -52,18 +52,16 @@ function addRemoveButton(){
 
 function removeLocation(loc)
 {
-	chrome.storage.sync.get('message', value => {
-		for( var i = 0; i < locations.length; i++){
-			if ( locations[i] == loc) { 
-				locations.splice(i, 1); 
-			}
+	for( var i = 0; i < locations.length; i++){
+		if ( locations[i] == loc) { 
+			locations.splice(i, 1); 
 		}
-		
-		if (locations.length == 0) {
-			document.getElementById("control-group").innerHTML = "Nothing here yet";
-		}
-		chrome.storage.sync.set({ "message": locations });
-	});
+	}
+	
+	if (locations.length == 0) {
+		document.getElementById("control-group").innerHTML = "Nothing here yet";
+	}
+	chrome.storage.sync.set({ "message": locations });
 }
 
 document.getElementById("log-to-save").addEventListener('click', () => {

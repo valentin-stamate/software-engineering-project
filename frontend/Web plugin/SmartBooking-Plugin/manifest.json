@@ -34,7 +34,8 @@
         "https://www.booking.com/hotel/*"
       ],
 	  "js": [
-		"src/inject/inject.js"
+		"src/inject/inject.js",
+		"src/inject/data.js"
 	  ],
       "css": [
         "src/inject/inject.css"

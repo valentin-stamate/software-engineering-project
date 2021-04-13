@@ -10,7 +10,7 @@ export default class UserController {
 				var json = JSON.parse(xhr.responseText);
 				window.localStorage.setItem('loginstate', "true");
 				window.localStorage.setItem('token', json.token);
-				alert(json.message + ", " + json.token);
+				showAlert(json.message + ", " + json.token);
 				window.location.href = "/src/pages/popup.html";
 			}else if (xhr.readyState === 4) {
 				var json = JSON.parse(xhr.responseText ? xhr.responseText : "{message:error}");
