@@ -8,13 +8,13 @@ document.getElementById("send-button").addEventListener("click", () => {
 			UserController.login(username, password);
 		}
 		else {
-			alert("The password must be at least 8 characters long!");
+			showAlert("The password must be at least 8 characters long!");
 		}
 	}
 	else if (username === ""){
-		alert("Please complete your username!");
+		showAlert("Please complete your username!");
 	}
 	else {
-		alert("Please complete your password!");
+		showAlert("Please complete your password!");
 	}
 });

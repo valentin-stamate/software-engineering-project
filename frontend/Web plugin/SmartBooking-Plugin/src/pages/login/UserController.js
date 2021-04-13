@@ -15,7 +15,7 @@ export default class UserController {
 			}else if (xhr.readyState === 4) {
 				var json = JSON.parse(xhr.responseText ? xhr.responseText : "{message:error}");
 				localStorage.setItem('loginstate', "false");
-				alert("login failed - " + json.message);
+				showAlert("login failed - " + json.message);
 			}
 		};
 		var data = JSON.stringify({"username": username, "password": password});
