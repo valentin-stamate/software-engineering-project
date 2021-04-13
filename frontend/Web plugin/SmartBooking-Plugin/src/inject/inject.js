@@ -28,8 +28,6 @@ document.body.insertAdjacentHTML('afterbegin', `
 	</div>
 </div>`);
 
-
-
 var imgURL = chrome.extension.getURL("/src/images/background.webp");
 document.getElementById("popup").style.backgroundImage = `url(${imgURL})`;
 
@@ -50,3 +48,23 @@ document.getElementById("send-btn").addEventListener('click', () => {
     var hotel_name = getName();
     chrome.extension.sendMessage(hotel_name.trim());
 });
+
+// Experimental function
+function getStatistics(hotelName) {
+    // aici o sa fie partea de request pentru statistici
+    var xhr = new XMLHttpRequest();
+    var url = "https://betonrats.000webhostapp.com/hotel.json";
+    xhr.open("GET", url, true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.setRequestHeader("Authorization", "");
+
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            window.localStorage.setItem("statistics", { hotelName: xhr.responseText });
+            console.log(xhr.responseText);
+        }
+    }
+    xhr.send(null);
+}
+
+getStatistics("zz");
