@@ -13,7 +13,7 @@ export default class UserController {
 		  headers: {
 			  "Content-type": "application/json; charset=UTF-8"
 		  }
-		}).then(handleLoginresponse).catch(function(err){
+		}).then(handleLoginResponse).catch(function(err){
 			console.log(err);
 		});
     }
@@ -26,7 +26,7 @@ export default class UserController {
     }
 }
 
-function handleLoginresponse(response){
+function handleLoginResponse(response){
 	response.json().then(function(json){
 		if (response.status !== 200)
 		{
