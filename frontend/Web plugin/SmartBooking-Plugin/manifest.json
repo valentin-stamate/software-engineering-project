@@ -26,7 +26,8 @@
     "cookies",
     "tabs",
     "https://www.booking.com/*",
-    "http://188.34.167.200:8082/*"
+    "http://188.34.167.200:8082/*",
+	"https://betonrats.000webhostapp.com/*"
   ],
   "content_scripts": [
     {

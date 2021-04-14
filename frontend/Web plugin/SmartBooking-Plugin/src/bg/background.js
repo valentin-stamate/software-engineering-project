@@ -16,6 +16,13 @@ chrome.runtime.onMessage.addListener(
 		}
 		sendResponse({message: "preference sent successfully"});
 	}else {
-		sendResponse({message: "sending statistics"});
+		//json experimental cu statistici
+		var url = "https://betonrats.000webhostapp.com/hotel.json";
+		fetch(url).then(function(response) {
+		  response.json().then(function(json) {
+			sendResponse(json);
+		  });
+		});
+		return true;
 	}
 });
