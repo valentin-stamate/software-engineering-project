@@ -1,28 +1,12 @@
 var statistics = {};
 
-function getLocation(){
-    var location_element= document.getElementsByClassName("hp_address_subtitle");
-    var location = location_element[0].innerText;
-    console.log(location);
-    return location;
-};
-
-function getName(){
-    var name_element = document.getElementById('hp_hotel_name');
-    var name = name_element ? name_element.innerText : "";
-    console.log(name);
-    return name;
-}
-var hotelName = getName().trim();
-var hotelLocation = getLocation().trim();
-
 // Experimental function
 function getStatistics() {
     console.log("requesting statistics");
 	var _data = {
 		sendStatistics: true,
 	    hotelName : hotelName,
-		hotelLocation: hotelLocation
+		hotelLocation: destination
 	}
     chrome.runtime.sendMessage(_data, function(response) {
 		statistics = response;
@@ -61,7 +45,7 @@ var sendPreferences = function() {
 	var _data = {
 		sendStatistics: false,
 	    hotelName : hotelName,
-		hotelLocation: hotelLocation
+		hotelLocation: destination
 	}
     chrome.runtime.sendMessage(_data, function(response) {
 		console.log(JSON.stringify(response));
