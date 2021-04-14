@@ -1,17 +1,21 @@
 var locations = []
 chrome.runtime.onInstalled.addListener(() => {
-  chrome.storage.sync.set({ "message": locations });
+  chrome.storage.sync.set({ "locations": locations });
 });
 
 //example of using a message handler from the inject scripts
-chrome.extension.onMessage.addListener(
+chrome.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {
-	chrome.storage.sync.get('message', value => {
-		locations = value.message;
-	});
-  	console.log(request);
-	if (!locations.includes(request)){
-		locations.push(request);
-		chrome.storage.sync.set({ "message": locations });
+	if (!request.sendStatistics) {
+		chrome.storage.sync.get('locations', value => {
+			locations = value.locations;
+		});
+		if (!locations.includes(request.hotelName)){
+			locations.push(request.hotelName);
+			chrome.storage.sync.set({ "locations": locations });
+		}
+		sendResponse({message: "preference sent successfully"});
+	}else {
+		sendResponse({message: "sending statistics"});
 	}
-  });
+});

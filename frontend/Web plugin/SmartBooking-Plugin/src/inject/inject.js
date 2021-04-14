@@ -1,18 +1,35 @@
-var getLocation = function(){
+var statistics = {};
+
+function getLocation(){
     var location_element= document.getElementsByClassName("hp_address_subtitle");
     var location = location_element[0].innerText;
     console.log(location);
     return location;
 };
 
-var getName = function(){
+function getName(){
     var name_element = document.getElementById('hp_hotel_name');
     var name = name_element ? name_element.innerText : "";
     console.log(name);
     return name;
 }
+var hotelName = getName().trim();
+var hotelLocation = getLocation().trim();
 
-console.log('sal');
+// Experimental function
+function getStatistics() {
+    console.log("requesting statistics");
+	var _data = {
+		sendStatistics: true,
+	    hotelName : hotelName,
+		hotelLocation: hotelLocation
+	}
+    chrome.runtime.sendMessage(_data, function(response) {
+		statistics = response;
+		console.log(JSON.stringify(response));
+	});
+}
+getStatistics();
 
 document.body.getElementsByClassName("hp-description")[0].insertAdjacentHTML('beforebegin', `
 <div id="main-popup">
@@ -39,31 +56,17 @@ var hidePopup = function(){
     show = !show;
 }
 
-getLocation();
 var sendPreferences = function() {
-	console.log("click");
-    var hotel_name = getName();
-    chrome.extension.sendMessage(hotel_name.trim());
+	console.log("sending preference");
+	var _data = {
+		sendStatistics: false,
+	    hotelName : hotelName,
+		hotelLocation: hotelLocation
+	}
+    chrome.runtime.sendMessage(_data, function(response) {
+		console.log(JSON.stringify(response));
+	});
 }
 
 document.getElementById("hide-btn").addEventListener('click', hidePopup);
 document.getElementById("send-btn").addEventListener('click', sendPreferences);
-
-// Experimental function
-function getStatistics(hotelName) {
-    // aici o sa fie partea de request pentru statistici
-    var xhr = new XMLHttpRequest();
-    var url = "https://betonrats.000webhostapp.com/hotel.json";
-	
-    xhr.open("GET", url, true);
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState === 4 && xhr.status === 200) {
-			var json = JSON.parse(xhr.responseText);
-            window.localStorage.setItem("statistics", xhr.responseText);
-            console.log(xhr.responseText);
-        }
-    }
-    xhr.send();
-}
-
-getStatistics(getName());

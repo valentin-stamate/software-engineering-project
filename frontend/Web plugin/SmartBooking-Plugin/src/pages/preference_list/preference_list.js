@@ -11,8 +11,8 @@ else {
 }
 
 var locations = [];
-chrome.storage.sync.get('message', value => {
-    locations = value.message;
+chrome.storage.sync.get('locations', value => {
+    locations = value.locations;
 	var control_group = document.getElementById("control-group");
 	
 	if (locations){
@@ -59,7 +59,7 @@ function removeLocation(loc)
 	if (locations.length == 0) {
 		document.getElementById("control-group").innerHTML = "Nothing here yet";
 	}
-	chrome.storage.sync.set({ "message": locations });
+	chrome.storage.sync.set({ "locations": locations });
 }
 
 document.getElementById("log-to-save").addEventListener('click', () => {
