@@ -148,4 +148,47 @@ public class UserController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @PostMapping("admin/add_hotel")
+    public ResponseEntity<Object> addLocationAdmin(@RequestBody HotelJSONRequest hotelJSONRequest, @RequestHeader(name = "Authorization", required = true) String token) {
+
+        ResponseEntity<Object> errorResponse = userService.checkUserToken(token);
+        if (errorResponse != null) {
+            return errorResponse;
+        }
+
+        UserModel userModel = userService.getUserFromToken(token);
+
+        if (!userModel.hasHotel(hotelJSONRequest.hotelName)) {
+            HotelModel hotelModel = hotelJSONRequest.toHotelModel();
+
+            hotelService.createHotelIfNotExists(hotelModel);
+
+            userModel.addHotel(hotelModel);
+
+            userService.updateUser(userModel);
+        } else {
+            return new ResponseEntity<>(new APIError("Hotel is already saved"), HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        return new ResponseEntity<>(new APISuccess("Location added successfully"), HttpStatus.OK);
+    }
+
+    @DeleteMapping("admin/delete_hotel")
+    public ResponseEntity<Object> deleteLocationAdmin(@RequestBody DeleteHotelJSONRequest request, @RequestHeader(name = "Authorization", required = true) String token, String username) {
+        ResponseEntity<Object> errorResponse = userService.checkUserToken(token);
+        if (errorResponse != null) {
+            return errorResponse;
+        }
+
+        UserModel userModel = userService.getUserByUsername(username);
+
+        if (userModel.hasHotel(request.hotelName)) {
+            userModel.deleteUserHotel(request.hotelName);
+            userService.updateUser(userModel);
+            return new ResponseEntity<>("Hotel from the user specified is deleted successfully", HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>("Specified user doesn't have the location", HttpStatus.NOT_FOUND);
+    }
+
 }
