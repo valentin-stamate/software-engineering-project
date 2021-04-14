@@ -13,17 +13,13 @@ var getName = function(){
 }
 
 console.log('sal');
-getLocation();
 
-document.body.insertAdjacentHTML('afterbegin', `
+document.body.getElementsByClassName("hp-description")[0].insertAdjacentHTML('beforebegin', `
 <div id="main-popup">
     <header class="header">
 		<button id="hide-btn">&#8213</button>
 	</header>
 	<div id="popup">
-	    <h1 id="hotel-name-header">
-			${getName()}
-		</h1>
 		<button id="send-btn" style="cursor:pointer">Add preference</button>
 	</div>
 </div>`);
@@ -33,38 +29,46 @@ document.getElementById("popup").style.backgroundImage = `url(${imgURL})`;
 
 var show = true;
 
-document.getElementById("hide-btn").addEventListener('click', () => {
-    var popup = document.getElementById("popup");
+var hidePopup = function(){
+	var popup = document.getElementById("popup");
+	var main = document.getElementById("main-popup"); 
     if (show) {
+		main.style.width = "25px";
         popup.style.display = "none";
     } else {
-        popup.style.display = "inline-block";
+		main.style.width = "100%";
+        popup.style.display = "block";
     }
     show = !show;
-});
+}
 
-document.getElementById("send-btn").addEventListener('click', () => {
-    console.log("click");
+getLocation();
+var sendPreferences = function() {
+	console.log("click");
     var hotel_name = getName();
     chrome.extension.sendMessage(hotel_name.trim());
-});
+}
+
+document.getElementById("hide-btn").addEventListener('click', hidePopup);
+document.getElementById("send-btn").addEventListener('click', sendPreferences);
 
 // Experimental function
 function getStatistics(hotelName) {
     // aici o sa fie partea de request pentru statistici
     var xhr = new XMLHttpRequest();
     var url = "https://betonrats.000webhostapp.com/hotel.json";
+	
     xhr.open("GET", url, true);
     xhr.setRequestHeader("Content-Type", "application/json");
-    xhr.setRequestHeader("Authorization", "");
 
     xhr.onreadystatechange = function() {
         if (xhr.readyState === 4 && xhr.status === 200) {
-            window.localStorage.setItem("statistics", { hotelName: xhr.responseText });
+			var json = JSON.parse(xhr.responseText);
+            window.localStorage.setItem("statistics", xhr.responseText);
             console.log(xhr.responseText);
         }
     }
-    xhr.send(null);
+    xhr.send();
 }
 
-getStatistics("zz");
+getStatistics(getName());

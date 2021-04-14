@@ -1,5 +1,3 @@
-import UserController from './../login/UserController.js';
-
 const loginstate = localStorage.getItem('loginstate');
 
 if (loginstate == "true")
