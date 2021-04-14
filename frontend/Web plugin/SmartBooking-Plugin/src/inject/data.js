@@ -1,5 +1,3 @@
-console.log("data script");
-
 var checkin = document.getElementsByClassName("sb-date-field__display")[0];
 var checkout = document.getElementsByClassName("sb-date-field__display")[1];
 
@@ -36,5 +34,3 @@ function setInValues(){
 }
 
 setInValues();
-
-console.log(dayOfWeekIn);
