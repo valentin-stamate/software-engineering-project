@@ -22,13 +22,13 @@ chrome.storage.sync.get('locations', value => {
 			control_group.insertAdjacentHTML('beforeend',
 				`<label class="b-contain">
 					<span class="remove">X</span>
-					<span>${element}</span>
+					<span class="hotel-name">${element}</span>
 					<input type="checkbox">
 					<div class="b-input"></div>
 				</label>`)
 		});
 		if (locations.length == 0) {
-			control_group.innerHTML = "Nothing here yet";
+			control_group.innerText = "Nothing here yet";
 		}
 	}
 	
@@ -43,7 +43,8 @@ function addRemoveButton(){
 		remove[i].addEventListener('click', (el) => {
 			var label = el.target.parentElement;
 			label.style.display = "none";
-			removeLocation(label.children[1].innerHTML);
+			removeLocation(label.getElementsByClassName("hotel-name")[0].innerText);
+			label.remove();
 		});
 	}
 }
@@ -57,7 +58,7 @@ function removeLocation(loc)
 	}
 	
 	if (locations.length == 0) {
-		document.getElementById("control-group").innerHTML = "Nothing here yet";
+		document.getElementById("control-group").innerText = "Nothing here yet";
 	}
 	chrome.storage.sync.set({ "locations": locations });
 }
