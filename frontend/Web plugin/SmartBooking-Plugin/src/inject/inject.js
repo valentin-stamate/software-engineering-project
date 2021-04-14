@@ -31,12 +31,9 @@ var show = true;
 
 var hidePopup = function(){
 	var popup = document.getElementById("popup");
-	var main = document.getElementById("main-popup"); 
     if (show) {
-		main.style.width = "25px";
         popup.style.display = "none";
     } else {
-		main.style.width = "100%";
         popup.style.display = "block";
     }
     show = !show;
