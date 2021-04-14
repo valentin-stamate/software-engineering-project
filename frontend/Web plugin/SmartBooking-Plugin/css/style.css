@@ -1,5 +1,6 @@
 body {
 	width: 360px;
+	height: fit-content;
 	background-image: url("/src/images/background.webp");
 	background-position: bottom;
 	background-size: cover;
@@ -146,17 +147,20 @@ main {
 /*custom alert box*/
 .banner {
 	position: absolute;
-	display: flex;
-	flex-direction:column;
-	align-items: center;
+	text-align:center;
 	width:90%;
-	font-weight:bold;
 	z-index: 9999;
 	padding: 10px;
 	margin:auto;
 	border: 1px solid transparent;
 	border-radius: 10px;
+}
+
+#alert-msg {
+	display:block;
+	width:100%;
 	font-size:14px;
+	word-wrap: break-word;
 }
 
 .banner-top {
@@ -174,6 +178,7 @@ main {
 .banner-close {
 	pointer-events: auto;
 	display:block;
+	height:fit-content;
 	width:80%;
 	margin:auto;
 	margin-top:15px;

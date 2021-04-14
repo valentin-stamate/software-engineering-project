@@ -28,15 +28,16 @@ export default class UserController {
 
 function handleLoginResponse(response){
 	response.json().then(function(json){
-		if (response.status !== 200)
-		{
+		if (response.status == 200){
+			console.log(json);
+			var token = json.authorizationToken;
+			var username = json.username;
+			window.localStorage.setItem('loginstate', "true");
+			window.localStorage.setItem('token', token);
+			showAlert("login succesful - " + username + ", " + token, true);
+		}else {
 			localStorage.setItem('loginstate', "false");
 			showAlert("login failed - " + json.message);
-		}else {
-			window.localStorage.setItem('loginstate', "true");
-			window.localStorage.setItem('token', json.token);
-			showAlert(json.message + ", " + json.token);
-			window.location.href = "/src/pages/popup.html";
 		}
 	});
 }

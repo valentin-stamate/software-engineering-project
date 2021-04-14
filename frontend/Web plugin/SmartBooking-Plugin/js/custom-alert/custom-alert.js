@@ -6,13 +6,13 @@ function includeAlert(){
 	}
 	document.getElementById("main").insertAdjacentHTML("beforeend", 
 		`<div class="banner banner-top alert-primary" role="alert">
-			<p id="alert-msg"></p>
+			<span id="alert-msg"></span>
 			<span class="banner-close">OK</span>
 		</div>`
 	);
 }
 
-function showAlert(msg)
+function showAlert(msg, goHome = false)
 {
 	includeAlert();
 	document.getElementById("main").style.pointerEvents = "none";
@@ -23,5 +23,8 @@ function showAlert(msg)
         var banner = document.querySelector(".banner");
         banner.parentNode.removeChild(banner);
 		document.getElementById("main").style.pointerEvents = "auto";
+		if (goHome){
+			window.location.href = "/src/pages/popup.html";
+		}
     });
 }
