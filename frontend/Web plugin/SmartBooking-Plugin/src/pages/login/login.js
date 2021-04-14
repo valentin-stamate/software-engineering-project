@@ -4,12 +4,7 @@ document.getElementById("send-button").addEventListener("click", () => {
 	var username = document.getElementById("username").value;
 	var password = document.getElementById("password").value;
 	if (!(username === "" || password === "")) {
-		if (password.length > 7) {
-			UserController.login(username, password);
-		}
-		else {
-			showAlert("The password must be at least 8 characters long!");
-		}
+		UserController.login(username, password);
 	}
 	else if (username === ""){
 		showAlert("Please complete your username!");
