@@ -17,11 +17,24 @@ chrome.runtime.onMessage.addListener(
 		sendResponse({message: "preference sent successfully"});
 	}else {
 		//json experimental cu statistici
+		let _data = {
+			"hotelName": request.hotelName, 
+			"locationName": request.hotelLocation
+		};
+		
 		var url = "https://betonrats.000webhostapp.com/hotel.json";
-		fetch(url).then(function(response) {
-		  response.json().then(function(json) {
-			sendResponse(json);
-		  });
+		//var urlTmp = "http://188.34.167.200:8082/user/hotel_information";
+		
+		fetch(url, {
+			method: 'GET'
+		}).then(response => {
+			response.json().then(json => {
+				sendResponse(json);
+			}).catch(err => {
+				console.log(err);
+			});
+		}).catch(err => {
+			console.log(err);
 		});
 		return true;
 	}
