@@ -43,7 +43,7 @@ public class UserService {
         this.securityContext = securityContext;
     }
 
-    private boolean checkTokenIsValid(String token) {
+    public boolean checkTokenIsValid(String token) {
         return securityContext.exists(token);
     }
 
@@ -62,6 +62,18 @@ public class UserService {
 
         userRepository.save(userModel);
         emailService.sendEmailVerificationEmail(userModel.getUsername(), userModel.getEmail(), verificationKey);
+    }
+
+    public void makeAdmin(String username) {
+        UserModel userModel = getUserByUsername(username);
+        userModel.setAdmin(true);
+        userRepository.save(userModel);
+    }
+
+    public void removeAdmin(String username) {
+        UserModel userModel = getUserByUsername(username);
+        userModel.setAdmin(false);
+        userRepository.save(userModel);
     }
 
     public String loginUserReturnToken(UserLoginJSONRequest userLoginJSONRequest) {

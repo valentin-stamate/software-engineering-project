@@ -191,4 +191,47 @@ public class UserController {
         return new ResponseEntity<>("Specified user doesn't have the location", HttpStatus.NOT_FOUND);
     }
 
+    @PatchMapping("admin/make_admin")
+    public ResponseEntity<Object> makeAdmin(
+            @RequestParam String username,
+            @RequestHeader(name = "Authorization", required = true) String token) {
+
+        if (!userService.checkTokenIsValid(token)) {
+            return new ResponseEntity<>(new APIError("unauthorized"), HttpStatus.UNAUTHORIZED);
+        }
+        UserModel admin = userService.getUserFromToken(token);
+        if (!admin.isAdmin()) {
+            return new ResponseEntity<>(new APIError("unauthorized"), HttpStatus.UNAUTHORIZED);
+        }
+        if (username == null) {
+            return new ResponseEntity<>(new APIError("username query unspecified"), HttpStatus.BAD_REQUEST);
+        }
+        if (!userService.userExists(username)) {
+            return new ResponseEntity<>(new APIError("username doesn't exist"), HttpStatus.NOT_FOUND);
+        }
+        userService.makeAdmin(username);
+        return new ResponseEntity<>(new APISuccess("successfully added admin"), HttpStatus.OK);
+    }
+
+    @PatchMapping("admin/remove_admin")
+    public ResponseEntity<Object> removeAdmin(
+            @RequestParam String username,
+            @RequestHeader(name = "Authorization", required = true) String token) {
+
+        if (!userService.checkTokenIsValid(token)) {
+            return new ResponseEntity<>(new APIError("unauthorized"), HttpStatus.UNAUTHORIZED);
+        }
+        UserModel admin = userService.getUserFromToken(token);
+        if (!admin.isAdmin()) {
+            return new ResponseEntity<>(new APIError("unauthorized"), HttpStatus.UNAUTHORIZED);
+        }
+        if (username == null) {
+            return new ResponseEntity<>(new APIError("username query unspecified"), HttpStatus.BAD_REQUEST);
+        }
+        if (!userService.userExists(username)) {
+            return new ResponseEntity<>(new APIError("username doesn't exist"), HttpStatus.NOT_FOUND);
+        }
+        userService.removeAdmin(username);
+        return new ResponseEntity<>(new APISuccess("successfully added admin"), HttpStatus.OK);
+    }
 }
