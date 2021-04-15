@@ -14,6 +14,7 @@ var hotelAdress = getHotelAdress();
 console.log("Hotel name = " + hotelName);
 console.log("Hotel adress = " + hotelAdress);
 
+var popupAdded = false;
 function addPopupHtml()
 {
 	let popup_str =
@@ -29,12 +30,14 @@ function addPopupHtml()
 	document.body.getElementsByClassName("hp-description")[0].insertAdjacentHTML('beforebegin', popup_str);
 	document.getElementById("send-btn").addEventListener('click', sendPreferences);
 	document.getElementById("hide-btn").addEventListener('click', hidePopup);
+	popupAdded = true;
 }
 
 function addStatistics(_stats)
 {
 	let stats_div = document.getElementById("statistics-container");
-	
+	stats_div.innerHTML = "";
+
 	let hotelInfoSection =
 `<section id="hotel-info">
 	<h3>${_stats.hotel.hotelName}</h3>
@@ -86,7 +89,9 @@ function getStatistics() {
 	}
     chrome.runtime.sendMessage(_data, function(response) {
 		console.log(response);
-		addPopupHtml();
+		if (!popupAdded){
+			addPopupHtml();
+		}
 		addStatistics(response);
 	});
 }
