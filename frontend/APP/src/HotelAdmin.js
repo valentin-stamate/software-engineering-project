@@ -2,8 +2,8 @@ import User from './User'
 import Hotel from './Hotel'
 
 class HotelAdmin extends User{
-    constructor(username,password){
-        super(username,password);
+    constructor(username,password,profilePic,auth){
+        super(username,password,profilePic,auth);
         hotels=[];
     }
 

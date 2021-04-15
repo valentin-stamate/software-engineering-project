@@ -1,7 +1,8 @@
 class Credentials{
-    constructor(uname,pword,email){
+    constructor(uname,pword){
         this.uname=uname;
         this.pword=pword;
-        this.email=email;
     }
 }
+
+export default Credentials;

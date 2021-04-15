@@ -1,8 +1,9 @@
 class User{
-    constructor(username,password){
+    constructor(username,email,profilePic,auth){
         this.username=username;
-        this.password=password;
-        this.loginStatus=false;
+        this.email=email;
+        this.profilePic=profilePic;
+        this.auth=auth;
     }
 
     login(){

@@ -2,19 +2,10 @@ import User from './User';
 import FavoritesList from './FavoritesList'
 
 class Client extends User{
-    constructor(username,password){
-        super(username,password);
+    constructor(username,email,profilePic,auth){
+        super(username,email,profilePic,auth);
         this.favorites=new FavoritesList();
     }
-
-    login(){
-        //TO DO ...
-    }
-
-    signup(){
-        //TO DO ...
-    }
-
     makeBooking(){
         //TO DO ...
     }

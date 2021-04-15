@@ -1,6 +1,10 @@
 import react from 'react';
 import './login_style.css';
+import Credentials from './Credentials';
+import ClientLogin from './ClientLogin';
+import Client from './Client';
 
+var data=require('./Data.js');
 
 class LoginPage extends react.Component{
     constructor(props){
@@ -18,7 +22,16 @@ class LoginPage extends react.Component{
     }
 
     login = () =>{
-        alert('(credentials) '+this.state.username + ' '+ this.state.password);
+        var credentials=new Credentials(this.state.username,this.state.password);
+        var result=ClientLogin.login(credentials);
+        if(typeof(result)==="string"){
+          alert(result);
+        }
+        else{
+          alert("Login succesfull");
+          data.user=result;
+          window.location="/profile";
+        }
     }
 
     changePassword = () => {

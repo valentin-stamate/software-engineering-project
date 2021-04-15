@@ -8,6 +8,7 @@ import HotelPage from './HotelPage';
 import { BrowserRouter as Router, Route, Switch, Link } from "react-router-dom";
 import React from 'react';
 import './App.css';
+import Client from './Client';
 
 class App extends React.Component{
   constructor(props){
