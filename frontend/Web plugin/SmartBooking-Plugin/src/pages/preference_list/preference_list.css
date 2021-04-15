@@ -66,7 +66,7 @@
 
 .b-contain:hover input ~ .b-input,
 .b-contain input:focus ~ .b-input {
-	background: rgba(207, 240, 255, 1);
+	background: rgba(241, 245, 248, 1);
 }
 
 .b-contain input:focus ~ .b-input {
