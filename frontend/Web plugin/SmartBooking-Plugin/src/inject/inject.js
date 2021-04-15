@@ -25,13 +25,21 @@ function getStatistics() {
 		hotelLocation: destination
 	}
     chrome.runtime.sendMessage(_data, function(response) {
-		statistics = response;
+		addStatistics(response);
 		console.log(JSON.stringify(response));
 	});
 }
 getStatistics();
 
-function getPopupHtml(statistics)
+
+function addStatistics(statistics)
+{
+	statistics = response;
+	var stats_div = document.getElementById("statistics-container");
+}
+
+
+function getPopupHtml()
 {
 	let popup_str =
 `<div id="main-popup">
@@ -39,13 +47,16 @@ function getPopupHtml(statistics)
 		<button id="hide-btn">&#8213</button>
 	</header>
 	<div id="popup">
+		<div id="statistics-container">
+
+		</div>
 		<button id="send-btn" style="cursor:pointer">Add preference</button>
 	</div>
 </div>`
 	return popup_str;
 }
 
-document.body.getElementsByClassName("hp-description")[0].insertAdjacentHTML('beforebegin', getPopupHtml(statistics));
+document.body.getElementsByClassName("hp-description")[0].insertAdjacentHTML('beforebegin', getPopupHtml());
 
 var show = true;
 
