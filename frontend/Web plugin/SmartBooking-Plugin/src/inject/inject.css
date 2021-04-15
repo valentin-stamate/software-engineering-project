@@ -72,6 +72,12 @@
 	background-color:#78909c;
 }
 
+#statistics-container{
+	width: 100%;
+	height: fit-content;
+	overflow: auto;
+}
+
 #statistics-container *{
 	margin: 1px;
 	padding: 1px;
