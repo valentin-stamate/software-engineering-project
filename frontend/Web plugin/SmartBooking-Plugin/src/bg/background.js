@@ -36,6 +36,6 @@ chrome.runtime.onMessage.addListener(
 		}).catch(err => {
 			console.log(err);
 		});
-		return true;
 	}
+	return true;
 });

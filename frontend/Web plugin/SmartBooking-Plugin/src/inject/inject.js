@@ -14,8 +14,6 @@ var hotelAdress = getHotelAdress().trim();
 console.log("Hotel name = " + hotelName);
 console.log("Hotel adress = " + hotelAdress);
 
-var statistics = {};
-
 // Experimental function
 function getStatistics() {
     console.log("requesting statistics");
@@ -34,7 +32,6 @@ getStatistics();
 
 function addStatistics(statistics)
 {
-	statistics = response;
 	var stats_div = document.getElementById("statistics-container");
 }
 
