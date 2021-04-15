@@ -1,3 +1,19 @@
+function getHotelAdress(){
+    var location_element= document.getElementsByClassName("hp_address_subtitle");
+    var adress = location_element[0].innerText;
+    return adress;
+};
+
+function getName(){
+    var name_element = document.getElementById('hp_hotel_name');
+    var name = name_element ? name_element.innerText : "";
+    return name;
+}
+var hotelName = getName().trim();
+var hotelAdress = getHotelAdress().trim();
+console.log("Hotel name = " + hotelName);
+console.log("Hotel adress = " + hotelAdress);
+
 var statistics = {};
 
 // Experimental function
@@ -15,32 +31,40 @@ function getStatistics() {
 }
 getStatistics();
 
-document.body.getElementsByClassName("hp-description")[0].insertAdjacentHTML('beforebegin', `
-<div id="main-popup">
-    <header class="header">
+function getPopupHtml(statistics)
+{
+	let popup_str =
+`<div id="main-popup">
+	<header class="header">
 		<button id="hide-btn">&#8213</button>
 	</header>
 	<div id="popup">
 		<button id="send-btn" style="cursor:pointer">Add preference</button>
 	</div>
-</div>`);
+</div>`
+	return popup_str;
+}
 
-var imgURL = chrome.extension.getURL("/src/images/background.webp");
-document.getElementById("popup").style.backgroundImage = `url(${imgURL})`;
+document.body.getElementsByClassName("hp-description")[0].insertAdjacentHTML('beforebegin', getPopupHtml(statistics));
 
 var show = true;
 
-var hidePopup = function(){
+function hidePopup(){
 	var popup = document.getElementById("popup");
+	var btn = document.getElementById("hide-btn");
     if (show) {
+		btn.innerHTML = "+"
         popup.style.display = "none";
     } else {
+		btn.innerHTML = "&#8213";
         popup.style.display = "block";
     }
     show = !show;
 }
 
-var sendPreferences = function() {
+document.getElementById("hide-btn").addEventListener('click', hidePopup);
+
+function sendPreferences() {
 	console.log("sending preference");
 	var _data = {
 		sendStatistics: false,
@@ -52,5 +76,4 @@ var sendPreferences = function() {
 	});
 }
 
-document.getElementById("hide-btn").addEventListener('click', hidePopup);
 document.getElementById("send-btn").addEventListener('click', sendPreferences);

@@ -41,22 +41,6 @@ function setInValues(){
 }
 setInValues();
 
-function getHotelAdress(){
-    var location_element= document.getElementsByClassName("hp_address_subtitle");
-    var adress = location_element[0].innerText;
-    return adress;
-};
-
-function getName(){
-    var name_element = document.getElementById('hp_hotel_name');
-    var name = name_element ? name_element.innerText : "";
-    return name;
-}
-var hotelName = getName().trim();
-var hotelAdress = getHotelAdress().trim();
-
-console.log("Hotel name = " + hotelName);
-console.log("Hotel adress = " + hotelAdress);
 console.log("Date In = " + checkInText);
 console.log("Date Out = " + checkOutText);
 console.log("Destination = " + destination);

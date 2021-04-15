@@ -1,17 +1,12 @@
 #main-popup{
-	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	overflow-Y:auto;
 	overflow-X:hidden;
 	display: block;
 	width:100%;
-	right:0;
-	opacity:100%;
 	z-index:9999;
-	padding:0;
+	padding:5;
 	margin:0;
 }
 
@@ -22,7 +17,6 @@
 	cursor: pointer;
 	line-height:20px;
     overflow:hidden;
-	font-size:20px;
 	background-color:#78909c;
 	color:white;
 }
@@ -38,6 +32,7 @@
 }
 
 #popup{
+	background-color: #ebf3ff;
 	text-align: center; 
 	display: block;
     align-items: center;
@@ -45,28 +40,26 @@
 	height:100%;
 	width:100%;
 	padding: 5px 0px;
-	background-position:bottom;
-	background-size: cover;
 }
 
 #send-btn {
-	border:1px solid gray;
-	border-radius:5px;
-	background-color:#a7c0cd;
-	display:inline-block;
+	border:none;
+	border-radius: 2px;
+	background-color:#2161bb;
+	display:inline-flex;
+	justify-content: center;
+	align-items: center;
 	cursor:pointer;
-	color:black;
-	font-family:Arial;
-	font-size:14px;
-	font-weight:bold;
-	padding:8px 13px;
+	color:white;
+	height:35px;
+	width: 25%;
+	margin:auto;
+	font-weight: bold;
 	text-decoration:none;
-	opacity: 0.9;
 }
 #send-btn:hover {
-	background-color:#4b636e;
+	background-color:#003d92;
 	color:white;
-	opacity: 1;
 }
 #send-btn:active {
 	position:relative;
@@ -76,10 +69,4 @@
 .header{
 	overflow:hidden;
 	background-color:#78909c;
-}
-
-#hotel-name-header{
-	margin-bottom:10px;
-	color:black;
-	font-weight:800;
 }
