@@ -25,18 +25,18 @@ class ClientLogin extends LoginUtility{
         var url="http://188.34.167.200:8082/user/login";
 
         /*
-        eroare CORS
+        CORS error
         fetch(url,{
             method:"POST",
             body:JSON.stringify(data)
         })
         .then(response =>response.json())
         .then(data => {
-            //...TO DO
+            alert("Data "+data);
         })
         .catch(error => {
-            console.log(error);
-        })*/
+            alert("Error "+error);
+        });*/
 
         /*return {
             message:"Login failed"

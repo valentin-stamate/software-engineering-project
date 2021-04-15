@@ -1,0 +1,294 @@
+    .search-page {
+        margin-top: 20px;
+        background: #eee;
+    }
+    
+    .search-page .btn {
+        margin-bottom: 5px;
+    }
+    /* NAV*/
+    
+    .search-page .topnav {
+        overflow: hidden;
+        background-color: #e9e9e9;
+    }
+    
+    .search-page .topnav a {
+        float: left;
+        display: block;
+        color: black;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+        font-size: 17px;
+    }
+    
+    .search-page .topnav a:hover {
+        background-color: #ddd;
+        color: black;
+    }
+    
+    .search-page .topnav a.active {
+        background-color: #2196F3;
+        color: white;
+    }
+    
+    .search-page .topnav input[type=text] {
+        float: right;
+        padding: 6px;
+        border: none;
+        margin-top: 8px;
+        margin-right: 16px;
+        font-size: 17px;
+    }
+    
+    .search-page .user {
+        margin-left: 1170px;
+    }
+    
+    @media screen and (max-width: 600px) {
+        .search-page .topnav a,
+        .search-page .topnav input[type=text] {
+            float: none;
+            display: block;
+            text-align: left;
+            width: 100%;
+            margin: 0;
+            padding: 14px;
+        }
+        .search-page .topnav input[type=text] {
+            border: 1px solid #ccc;
+        }
+    }
+    /*NAV*/
+    
+    .search-page .grid {
+        position: relative;
+        width: 100%;
+        background: #fff;
+        color: #666666;
+        border-radius: 2px;
+        margin-bottom: 25px;
+        box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.1);
+    }
+    
+    .search-page .grid .grid-body {
+        padding: 15px 20px 15px 20px;
+        font-size: 0.9em;
+        line-height: 1.9em;
+    }
+    
+    .search-page .search table tr td.rate {
+        color: #f39c12;
+        line-height: 50px;
+    }
+    
+    .search-page .search table tr:hover {
+        cursor: pointer;
+    }
+    
+    .search-page .search table tr td.image {
+        width: 50px;
+    }
+    
+    .search-page .search table tr td img {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .search-page .search table tr td.rate {
+        color: #f39c12;
+        line-height: 50px;
+    }
+    
+    .search-page .search table tr td.price {
+        font-size: 1.5em;
+        line-height: 50px;
+    }
+    
+    .search-page .search #price1,
+    .search-page .search #price2 {
+        display: inline;
+        font-weight: 600;
+    }
+    
+    .search-page .book-form {
+        display: grid;
+    }
+    
+    .search-page .form-item {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+    
+    .search-page .book-form input[type="submit"] {
+        margin: 18px 0 0 0;
+        background: var(--dark);
+        color: #fff;
+        border: 1px solid #fff;
+    }
+    
+    .search-page .book-form input[type="text"] {
+        width: max-content;
+    }
+    
+    .search-page .book-form label,
+    .search-page .book-form input {
+        width: 100%;
+    }
+    
+    .search-page .book-form label {
+        font-weight: 600;
+        word-spacing: 5px;
+        padding-bottom: 8px;
+    }
+    
+    .search-page .book-form input:not(.btn) {
+        margin: 4px 0 16px 0;
+        padding: 12px 15px;
+        border-radius: 5px;
+        font-size: 17px;
+        border: none;
+    }
+    
+    .search-page .book-form input:focus {
+        outline: 0;
+        box-shadow: 0 0 7px rgba(0, 0, 0, 0.4);
+    }
+    
+    .search-page .rating {
+        position: relative;
+        width: 40px;
+        vertical-align: middle;
+    }
+    
+    .search-page .fab {
+        position: absolute;
+        color: #2196F3;
+        font-size: 200%;
+        float: right;
+        margin-right: 5px;
+    }
+    
+    .search-page td .fas {
+        position: absolute;
+        color: red;
+        font-size: 150%;
+        margin-top: 1px;
+        margin-left: 5px;
+        display: none;
+    }
+    
+    @media(min-width: 768px) {
+        .search-page .book-form {
+            grid-template-columns: repeat(2, 1fr);
+            grid-gap: 24px;
+        }
+    }
+    
+    @media(min-width: 1170px) {
+        .search-page .book-form {
+            grid-template-columns: repeat(3, 1fr);
+        }
+    }
+    
+    @media(min-width: 1370px) {
+        .search-page .book-form {
+            grid-template-columns: 2fr 2fr 1fr 1fr 1fr 2fr;
+        }
+        .search-page .book {
+            height: 40vh;
+            display: grid;
+        }
+    }
+    
+    @media(max-width: 767px) {
+        .search-page .table-responsive>.table>tbody>tr>td {
+            white-space: normal;
+        }
+    }
+    
+    @media screen and (max-width: 414px) {
+        .search-page .table-responsive>.table>tbody>tr>td {
+            white-space: nowrap;
+        }
+    }
+
+
+
+    /* footer */
+    .search-page .footer{
+    background:#2e2e2e;
+    color: rgb(255, 255, 255);
+    text-align: center;
+}
+.search-page .footer-container{
+    width: 85vw;
+    margin: 0 auto;
+    padding: 30px 0;
+}
+.search-page .footer-container p, .search-page .footer-container a, .search-page .footer-container span{
+    opacity: 0.8;
+}
+.search-page .footer a{
+    display: block;
+    color: #fff;
+    text-decoration: none;
+}
+.search-page .social-icons{
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    padding: 15px 0;
+}
+.search-page .social-icons li{
+    margin: 0 10px;
+    width: 50px;
+    height: 50px;
+    background: #2e2e2e;
+    border-radius: 50%;
+    transition: var(--transition);
+    cursor: pointer;
+}
+.search-page .social-icons li:hover{
+    background: #fff;
+    color: #2e2e2e;
+}
+.search-page .contact-item span{
+    display: block;
+}
+@media(min-width: 900px){
+    .search-page .footer-container{
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-gap: 20px;
+    }
+}
+@media(min-width: 1170px){
+    .search-page .footer{
+        text-align: left;
+    }
+    .search-page .footer-container{
+        grid-template-columns: repeat(4, 1fr);
+    }
+    .search-page .footer-container div:nth-child(1) p{
+        padding-right: 20px;
+    }
+    .search-page .contact-item{
+        display: grid;
+        grid-template-columns: 10% 90%;
+        margin-bottom: 15px;
+        align-items: center;
+    }
+}
+
+.search-page .showModal{
+    position: fixed;
+    background: transparent;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 5;
+}

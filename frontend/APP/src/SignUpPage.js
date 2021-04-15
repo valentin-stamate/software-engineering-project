@@ -7,12 +7,11 @@ class SignUpPage extends react.Component{
     constructor(props){
         super(props);
         this.state={
-            fname : '',
-            lname : '',
-            email : '',
-            tel : '' ,
-            password : '',
-            confirmPassword : ''
+            username:'',
+            email:'',
+            password:'',
+            confirmPassword:'',
+            profilePhotoLink:''
         }
     }
 
@@ -23,14 +22,13 @@ class SignUpPage extends react.Component{
     }
 
     signupClient = () => {
-        alert('Not yet implemented!');
         if(this.state.password != this.state.confirmPassword){
             alert("Passwords don t match!");
         }
 
-        ClientSignUp.signup(new ClientInfo(this.state.fname,this.state.lname,this.state.password,this.state.email,this.state.tel));
-        //TO DO ...
-
+        var message=ClientSignUp.signup(new ClientInfo(this.state.username,this.state.email,this.state.password,this.state.profilePhotoLink));
+        alert(message);
+        window.location="/login";
     }
 
     render(){
@@ -40,20 +38,12 @@ class SignUpPage extends react.Component{
            <div class="form sign-user">
               <h2>Sign Up as a User</h2>
               <label>
-              <span>First Name</span>
-              <input type="text" name="fname" onChange={this.myChangeHandler}/>
-              </label>
-              <label>
-              <span>Last Name</span>
-              <input type="text" name="lname" onChange={this.myChangeHandler} />
+              <span>Username</span>
+              <input type="text" name="username" onChange={this.myChangeHandler}/>
               </label>
               <label>
               <span>Email</span>
               <input type="email" name="email" onChange={this.myChangeHandler} />
-              </label>
-              <label>
-              <span>Phone Number</span>
-              <input type="tel" name="tel" onChange={this.myChangeHandler} />
               </label>
               <label>
               <span>Password</span>
@@ -62,6 +52,10 @@ class SignUpPage extends react.Component{
               <label>
               <span>Confirm Password</span>
               <input type="password" name="confirmPassword" onChange={this.myChangeHandler}/>
+              </label>
+              <label>
+              <span>Profile Photo Link</span>
+              <input type="text" name="profilePhotoLink" onChange={this.myChangeHandler}/>
               </label>
               <button class="submit" type="button" onClick={this.signupClient}>Register Now</button>
            </div>

@@ -4,8 +4,6 @@ import Credentials from './Credentials';
 import ClientLogin from './ClientLogin';
 import Client from './Client';
 
-var data=require('./Data.js');
-
 class LoginPage extends react.Component{
     constructor(props){
         super(props);
@@ -28,9 +26,9 @@ class LoginPage extends react.Component{
           alert(result);
         }
         else{
+          localStorage.setItem("user",JSON.stringify({user:result}));
           alert("Login succesfull");
-          data.user=result;
-          window.location="/profile";
+          window.location="/search";
         }
     }
 

@@ -38,6 +38,10 @@ class Client extends User{
     writeReview(){
         //TO DO ...
     }
+
+    copyInto(other){
+        other=this;
+    }
 }
 
 export default Client;

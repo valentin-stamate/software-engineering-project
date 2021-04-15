@@ -1,0 +1,395 @@
+
+.hotel-info * {
+    margin: 3px;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Playfair Display', serif;
+    font-size: medium;
+}
+
+.hotel-info {
+    margin-top:20px;
+    background:rgba(223, 221, 221, 0.938);
+}
+    /* NAV*/
+    .hotel-info .topnav {
+        overflow: hidden;
+        background-color: #cac7c7;
+    }
+    
+    .hotel-info .topnav a {
+        float: left;
+        display: block;
+        color: black;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+        font-size: 17px;
+    }
+    
+    .hotel-info .topnav a:hover {
+        background-color: #ddd;
+        color: black;
+    }
+    
+    .hotel-info .topnav a.active {
+        background-color: #2196F3;
+        color: white;
+    }
+    
+    .hotel-info .topnav input[type=text] {
+        float: right;
+        padding: 6px;
+        border: none;
+        margin-top: 8px;
+        margin-right: 16px;
+        font-size: 17px;
+    }
+    
+    @media screen and (max-width: 600px) {
+        .hotel-info .topnav a,
+        .hotel-info .topnav input[type=text] {
+            float: none;
+            display: block;
+            text-align: left;
+            width: 100%;
+            margin: 0;
+            padding: 14px;
+        }
+        .hotel-info .topnav input[type=text] {
+            border: 1px solid #ccc;
+        }
+    }
+    /*NAV*/
+
+    .hotel-info .product-content {
+    border: 1px solid #dfe5e9;
+    margin-bottom: 20px;
+    margin-top: 5px;
+    background: #fff
+}
+
+.hotel-info .product-content .carousel-control.left {
+    margin-left: 0
+}
+
+.hotel-info .product-content .product-image {
+    background-color: #fff;
+    display: block;
+    min-height: 238px;
+    overflow: hidden;
+    position: relative
+}
+
+.hotel-info .product-content .product-deatil {
+    border-bottom: 1px solid #dfe5e9;
+    padding-bottom: 17px;
+    padding-left: 16px;
+    padding-top: 16px;
+    position: relative;
+    background: #fff
+}
+
+.hotel-info .product-content .product-deatil h5 a {
+    color: #2f383d;
+    font-size: 15px;
+    line-height: 19px;
+    text-decoration: none;
+    padding-left: 0;
+    margin-left: 0
+}
+
+.hotel-info .product-content .product-deatil h5 a span {
+    color: #9aa7af;
+    display: block;
+    font-size: 13px
+}
+
+.hotel-info .product-content .product-deatil span.tag1 {
+    border-radius: 50%;
+    color: #fff;
+    font-size: 15px;
+    height: 50px;
+    padding: 13px 0;
+    position: absolute;
+    right: 10px;
+    text-align: center;
+    top: 10px;
+    width: 50px
+}
+
+.hotel-info .product-content .product-deatil span.sale {
+    background-color: #21c2f8
+}
+
+.hotel-info .product-content .product-deatil span.discount {
+    background-color: #71e134
+}
+
+.hotel-info .product-content .product-deatil span.hot {
+    background-color: #fa9442
+}
+
+.hotel-info .product-content .description {
+    font-size: 12.5px;
+    line-height: 20px;
+    padding: 10px 14px 16px 19px;
+    background: #fff
+}
+
+.hotel-info .product-content .product-info {
+    padding: 11px 19px 10px 20px
+}
+
+.hotel-info .product-content .product-info a.add-to-cart {
+    color: #2f383d;
+    font-size: 13px;
+    padding-left: 16px
+}
+
+.hotel-info .product-content name.a {
+    padding: 5px 10px;
+    margin-left: 16px
+}
+
+.hotel-info .product-info.smart-form .btn {
+    padding: 6px 12px;
+    margin-left: 12px;
+    margin-top: -10px
+}
+
+.hotel-info .product-entry .product-deatil {
+    border-bottom: 1px solid #dfe5e9;
+    padding-bottom: 17px;
+    padding-left: 16px;
+    padding-top: 16px;
+    position: relative
+}
+
+.hotel-info .product-entry .product-deatil h5 a {
+    color: #2f383d;
+    font-size: 15px;
+    line-height: 19px;
+    text-decoration: none
+}
+
+.hotel-info .product-entry .product-deatil h5 a span {
+    color: #9aa7af;
+    display: block;
+    font-size: 13px
+}
+
+.hotel-info .load-more-btn {
+    background-color: #21c2f8;
+    border-bottom: 2px solid #037ca5;
+    border-radius: 2px;
+    border-top: 2px solid #0cf;
+    margin-top: 20px;
+    padding: 9px 0;
+    width: 100%
+}
+
+.hotel-info .product-block .product-deatil p.price-container span,
+.hotel-info .product-content .product-deatil p.price-container span,
+.hotel-info .product-entry .product-deatil p.price-container span,
+.hotel-info .shipping table tbody tr td p.price-container span,
+.hotel-info .shopping-items table tbody tr td p.price-container span {
+    color: #21c2f8;
+    font-family: Lato, sans-serif;
+    font-size: 24px;
+    line-height: 20px
+}
+
+.hotel-info .product-info.smart-form .rating label {
+    margin-top: 0
+}
+
+.hotel-info .product-wrap .product-image span.tag2 {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    padding: 10px 0;
+    color: #fff;
+    font-size: 11px;
+    text-align: center
+}
+
+.hotel-info .product-wrap .product-image span.sale {
+    background-color: #57889c
+}
+
+.product-wrap .product-image span.hot {
+    background-color: #a90329
+}
+
+.hotel-info .shop-btn {
+    position: relative
+}
+
+.hotel-info .shop-btn>span {
+    background: #a90329;
+    display: inline-block;
+    font-size: 10px;
+    box-shadow: inset 1px 1px 0 rgba(0, 0, 0, .1), inset 0 -1px 0 rgba(0, 0, 0, .07);
+    font-weight: 700;
+    border-radius: 50%;
+    padding: 2px 4px 3px!important;
+    text-align: center;
+    line-height: normal;
+    width: 19px;
+    top: -7px;
+    left: -7px
+}
+
+.hotel-info .description-tabs {
+    padding: 30px 0 5px!important
+}
+
+.hotel-info .description-tabs .tab-content {
+    padding: 10px 0
+}
+
+.hotel-info .product-deatil {
+    padding: 30px 30px 50px
+}
+
+.hotel-info .product-deatil hr+.description-tabs {
+    padding: 0 0 5px!important
+}
+
+.hotel-info .product-deatil .carousel-control.left,
+.hotel-info .product-deatil .carousel-control.right {
+    background: none!important
+}
+
+.hotel-info .product-deatil .glyphicon {
+    color: #3276b1
+}
+
+.hotel-info .product-deatil .product-image {
+    border-right: none!important
+}
+
+.hotel-info .product-deatil .name {
+    margin-top: 0;
+    margin-bottom: 0
+}
+
+.product-deatil .name small {
+    display: block
+}
+
+.hotel-info .product-deatil .name a {
+    margin-left: 0
+}
+
+.hotel-info .product-deatil .price-container {
+    font-size: 24px;
+    margin: 0;
+    font-weight: 300
+}
+
+.hotel-info .product-deatil .price-container small {
+    font-size: 12px
+}
+.hotel-info .fa-2x{
+    color:orange
+}
+.hotel-info .product-deatil .fa-2x {
+    font-size: 16px!important;
+    
+}
+
+.hotel-info .product-deatil .fa-2x>h5 {
+    font-size: 12px;
+    margin: 0
+}
+
+.hotel-info .product-deatil .fa-2x+a,
+.hotel-info .product-deatil .fa-2x+a+a {
+    font-size: 13px
+   
+}
+
+.hotel-info .profile-message ul {
+  list-style: none ;  
+}
+
+.hotel-info .product-deatil .certified {
+    margin-top: 10px
+}
+
+.hotel-info .product-deatil .certified ul {
+    padding-left: 0
+}
+
+.hotel-info .product-deatil .certified ul li:not(first-child) {
+    margin-left: -3px
+}
+
+.hotel-info .product-deatil .certified ul li {
+    display: inline-block;
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    padding: 13px 19px
+}
+
+.hotel-info .product-deatil .certified ul li:first-child {
+    border-right: none
+}
+
+.hotel-info .product-deatil .certified ul li i {
+    text-align: center;
+    font-size: 18px;
+    color: #6d7a83;
+    line-height: 16px;
+    text-decoration: none
+}
+
+.hotel-info .product-deatil .certified ul li i span {
+    display: block;
+
+    font-size: 13px;
+    font-weight: 700;
+    text-align: center
+}
+
+.hotel-info .product-deatil .message-text {
+    width: calc(100% - 70px)
+}
+
+@media only screen and (min-width:1024px) {
+    .hotel-info .product-content div[class*=col-md-4] {
+        padding-right: 0
+    }
+    .hotel-info .product-content div[class*=col-md-8] {
+        padding: 0 13px 0 0
+    }
+    .hotel-info .product-wrap div[class*=col-md-5] {
+        padding-right: 0
+    }
+    .hotel-info .product-wrap div[class*=col-md-7] {
+        padding: 0 13px 0 0
+    }
+    .hotel-info .product-content .product-image {
+        border-right: 1px solid #dfe5e9
+    }
+    .hotel-info .product-content .product-info {
+        position: relative
+    }
+}
+
+.hotel-info .message img.online {
+    width:40px;
+    height:40px;
+}
+
+.hotel-info .card-box {
+    padding: 20px;
+    border-radius: 3px;
+    margin-bottom: 30px;
+    background-color: #fff;
+}
