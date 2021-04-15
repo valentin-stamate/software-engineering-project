@@ -21,6 +21,7 @@ public class UserModel {
     private String password;
     private String profilePhotoLink;
     private boolean isActivated = false;
+    private boolean isAdmin = false;
 
     @OneToMany
     private Set<HotelReviewModel> userReviews;
@@ -82,6 +83,15 @@ public class UserModel {
 
     public void activateUser() {
         isActivated = true;
+    }
+
+    public boolean isAdmin(){ return isAdmin; }
+
+    /*
+        this function is for testing only 
+    * */
+    public void setAdmin(boolean admin) {
+        isAdmin = admin;
     }
 
     public boolean checkUserPassword(String password) {
