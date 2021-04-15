@@ -73,15 +73,19 @@
 }
 
 #statistics-container *{
-	margin: 2px;
-	padding: 2px;
+	margin: 1px;
+	padding: 1px;
 }
 
 #statistics-container ul{ 
-	list-style-type: disc;
-	list-style-position: outside;
+	list-style: none;
 	margin-left:30px;
 }
+
+#statistics-container li::before {
+	content: "• ";
+	color: blue; /* or whatever color you prefer */
+  }
 
 #hotel-info{
 	text-align: center;
