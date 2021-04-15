@@ -51,14 +51,22 @@ function addStatistics(_stats)
 	<h4>Weather information:</h4>
 	<ul id="weather_info_list">
 		<li>Coordonates - { Latitude: ${_stats.weather.coord.lat}, Longitude: ${_stats.weather.coord.lon} }</li>
+		<li>Temperature data:
+			<ul>
+				<li>Avg. temperature: ${_stats.weather.main.temp}&#186;C</li>
+				<li>Max temperature: ${_stats.weather.main.temp_max}&#186;C</li>
+				<li>Min temperature: ${_stats.weather.main.temp_min}&#186;C</li>
+				<li>Feels like: ${_stats.weather.main.feels_like}&#186;C</li>
+			</ul>
+		</li>
 	</ul>
 </section>`;
 	let airPolutionSection =
 `<section id="air-pollution">
 	<h4>Air pollution information:</h4>
 	<ul id="air_info_list">
-		<li>Air humidity: ${_stats.airPollution.airHumidity}</li>
-		<li>Air pressure: ${_stats.airPollution.airPressure}</li>
+		<li>Air humidity: ${_stats.weather.main.humidity}</li>
+		<li>Air pressure: ${_stats.weather.main.pressure}</li>
 		<li>Air quality index: ${_stats.airPollution.airQualityIndex}</li>
 		<li>Air particle matter (up to 10 micrometers): ${_stats.airPollution.pm10Value}</li>
 	</ul>
