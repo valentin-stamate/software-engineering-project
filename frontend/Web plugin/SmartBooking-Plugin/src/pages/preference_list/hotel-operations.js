@@ -1,5 +1,6 @@
 import UserController from '../login/UserController.js';
 
+//experimental function
 document.getElementById('save-list').addEventListener('click', () => {
     chrome.storage.sync.get('locations', value => {
         console.log(value);
