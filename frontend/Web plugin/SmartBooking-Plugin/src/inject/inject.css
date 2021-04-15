@@ -11,13 +11,14 @@
 }
 
 #hide-btn{
-	float : right;
+	width: 100%;
 	border:none;
 	outline:none;
 	cursor: pointer;
 	line-height:20px;
     overflow:hidden;
-	background-color:#78909c;
+	text-align: right;
+	background-color:#2161bb;
 	color:white;
 }
 
@@ -27,15 +28,14 @@
 }
 
 #hide-btn:hover{
-	background-color:black;
+	background-color:#78909c;
 	color:white;
 }
 
 #popup{
 	background-color: #ebf3ff;
 	text-align: center; 
-	display: block;
-    align-items: center;
+	display: flex;
 	flex-direction:column;
 	height:100%;
 	width:100%;
@@ -54,6 +54,7 @@
 	height:35px;
 	width: 25%;
 	margin:auto;
+	margin-top:15px;
 	font-weight: bold;
 	text-decoration:none;
 }
@@ -69,4 +70,34 @@
 .header{
 	overflow:hidden;
 	background-color:#78909c;
+}
+
+#statistics-container *{
+	margin: 2px;
+	padding: 2px;
+}
+
+#statistics-container ul{ 
+	list-style-type: disc;
+	list-style-position: outside;
+	margin-left:30px;
+}
+
+#hotel-info{
+	text-align: center;
+}
+
+#covid-info {
+	text-align: left;
+	border: 1px solid gray;
+}
+
+#weather-info {
+	text-align: left;
+	border: 1px solid gray;
+}
+
+#air-pollution {
+	text-align: left;
+	border: 1px solid gray;
 }
