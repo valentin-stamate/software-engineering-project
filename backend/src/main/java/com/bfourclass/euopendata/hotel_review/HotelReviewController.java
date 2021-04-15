@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,7 +32,7 @@ public class HotelReviewController {
     }
 
     @GetMapping("hotel/reviews")
-    public ResponseEntity<Object> addLocationToUser(@RequestBody String hotelName) {
+    public ResponseEntity<Object> getHotelReviews(@RequestBody String hotelName) {
 
         List<HotelReviewJSONResponse> hotelReviews = new ArrayList<>();
 
@@ -45,7 +46,7 @@ public class HotelReviewController {
     }
 
     @PostMapping("hotel/add_review")
-    public ResponseEntity<Object> addLocationToUser(@RequestBody HotelJSONRequest hotelJSONRequest, @RequestHeader(name = "Authorization", required = false) String token) {
+    public ResponseEntity<Object> addHotelReview(@RequestBody HotelJSONRequest hotelJSONRequest, @RequestHeader(name = "Authorization", required = false) String token) {
 
         ResponseEntity<Object> errorResponse = userService.checkUserToken(token);
         if (errorResponse != null) {
@@ -60,12 +61,13 @@ public class HotelReviewController {
         }
 
         /* TODO - Valentin, use hotelReview and hotel service to add a review */
+        hotelService.addReview(userModel, hotelModel, hotelJSONRequest.message, hotelJSONRequest.rating);
 
         return new ResponseEntity<>(new APISuccess("Review added successfully"), HttpStatus.OK);
     }
 
     @DeleteMapping("hotel/delete_review")
-    public ResponseEntity<Object> addLocationToUser(@RequestBody Long reviewId, @RequestHeader(name = "Authorization", required = false) String token) {
+    public ResponseEntity<Object> deleteHotelReview(@RequestBody Long reviewId, @RequestHeader(name = "Authorization", required = false) String token) {
 
         ResponseEntity<Object> errorResponse = userService.checkUserToken(token);
         if (errorResponse != null) {
@@ -88,11 +90,12 @@ public class HotelReviewController {
     }
 
     @PostMapping("hotel/update_review")
-    public ResponseEntity<Object> addLocationToUser(@RequestBody HotelReviewJSONUpdateRequest request, @RequestHeader(name = "Authorization", required = false) String token) {
+    public ResponseEntity<Object> updateHotelReview(@RequestBody HotelReviewJSONUpdateRequest request, @RequestHeader(name = "Authorization", required = false) String token) {
 
         ResponseEntity<Object> errorResponse = userService.checkUserToken(token);
         if (errorResponse != null) {
             return errorResponse;
+
         }
 
         UserModel userModel = userService.getUserFromToken(token);

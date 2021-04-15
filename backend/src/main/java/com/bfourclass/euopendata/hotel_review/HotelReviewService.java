@@ -1,13 +1,22 @@
 package com.bfourclass.euopendata.hotel_review;
 
 import com.bfourclass.euopendata.hotel.HotelModel;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class HotelReviewService {
 
-    /* TODO, return the hotelModel instance from review id */
+    private final HotelReviewRepository hotelReviewRepository;
+
+    @Autowired
+    public HotelReviewService(HotelReviewRepository hotelReviewRepository) {
+        this.hotelReviewRepository = hotelReviewRepository;
+    }
+
     public HotelModel getHotelByReviewId(Long reviewId) {
-        return null;
+        return hotelReviewRepository.findById(reviewId).isPresent() ?
+                hotelReviewRepository.findById(reviewId).get().getHotel() :
+                null;
     }
 }

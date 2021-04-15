@@ -1,16 +1,24 @@
 package com.bfourclass.euopendata.hotel;
 
+import com.bfourclass.euopendata.hotel.json.HotelJSONRequest;
+import com.bfourclass.euopendata.hotel_review.HotelReviewModel;
+import com.bfourclass.euopendata.hotel_review.HotelReviewRepository;
+import com.bfourclass.euopendata.user.UserModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
 
 @Service
 public class HotelService {
 
     private final HotelRepository hotelRepository;
+    private final HotelReviewRepository hotelReviewRepository;
 
     @Autowired
-    HotelService(HotelRepository hotelRepository) {
+    HotelService(HotelRepository hotelRepository, HotelReviewRepository hotelReviewRepository) {
         this.hotelRepository = hotelRepository;
+        this.hotelReviewRepository = hotelReviewRepository;
     }
 
     public void createHotelIfNotExists(HotelModel hotelModel) {
@@ -25,5 +33,16 @@ public class HotelService {
 
     public HotelModel getHotelByName(String hotelName) {
         return hotelRepository.getHotelByName(hotelName);
+    }
+
+    public boolean addReview(UserModel userModel, HotelModel hotelModel, String requestMessage, int rating) {
+        if (requestMessage.length() < 10 || rating == 0)
+            return false;
+        if (userModel.hasAlreadyReviewedHotel(hotelModel))
+            return false;
+        HotelReviewModel hotelReview = new HotelReviewModel(rating, requestMessage, LocalDateTime.now().toString(), userModel, hotelModel);
+        hotelModel.updateHotelRating(hotelReview);
+        hotelReviewRepository.save(hotelReview);
+        return true;
     }
 }

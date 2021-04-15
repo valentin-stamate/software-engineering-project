@@ -1,6 +1,7 @@
 package com.bfourclass.euopendata.user;
 
 import com.bfourclass.euopendata.hotel.HotelModel;
+import com.bfourclass.euopendata.hotel_review.HotelReviewModel;
 import com.bfourclass.euopendata.security.SimpleHashingAlgo;
 
 import javax.persistence.*;
@@ -21,6 +22,9 @@ public class UserModel {
     private String profilePhotoLink;
     private boolean isActivated = false;
 
+    @OneToMany
+    private Set<HotelReviewModel> userReviews;
+
     @ManyToMany
     private final Set<HotelModel> hotels = new HashSet<>();
 
@@ -31,7 +35,8 @@ public class UserModel {
         this.profilePhotoLink = profilePhotoLink;
     }
 
-    public UserModel() { }
+    public UserModel() {
+    }
 
     public String getUsername() {
         return username;
@@ -81,5 +86,14 @@ public class UserModel {
 
     public boolean checkUserPassword(String password) {
         return this.password.equals(SimpleHashingAlgo.hash(password));
+    }
+
+    public boolean hasAlreadyReviewedHotel(HotelModel hotelModel) {
+        for (HotelReviewModel reviewModel : userReviews) {
+            if (reviewModel.getHotel().getId().equals(hotelModel.getId())) {
+                return true;
+            }
+        }
+        return false;
     }
 }
