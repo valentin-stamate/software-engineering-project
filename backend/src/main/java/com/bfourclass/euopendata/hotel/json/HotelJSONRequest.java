@@ -15,6 +15,7 @@ public class HotelJSONRequest {
         this.rating = rating;
     }
 
+
     public HotelModel toHotelModel() {
         return new HotelModel(hotelName, locationName);
     }

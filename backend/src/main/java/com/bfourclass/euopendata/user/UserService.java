@@ -114,7 +114,8 @@ public class UserService {
         List<HotelModel> hotels = userModel.getUserHotels();
 
         for (HotelModel hotelModel : hotels) {
-            HotelJSONRequest hotelJSONRequest = new HotelJSONRequest(hotelModel.getHotelName(), hotelModel.getLocationName());
+            /* TODO  */
+            HotelJSONRequest hotelJSONRequest = new HotelJSONRequest(hotelModel.getHotelName(), hotelModel.getLocationName(), null, null);
             response.add(getHotelInformation(hotelJSONRequest));
         }
 
