@@ -1,9 +1,12 @@
 package com.bfourclass.euopendata.hotel;
 
 import com.bfourclass.euopendata.hotel_review.HotelReviewModel;
+import com.bfourclass.euopendata.hotel_review.json.HotelReviewJSON;
 import com.bfourclass.euopendata.hotel_review.json.HotelReviewJSONUpdateRequest;
+import com.bfourclass.euopendata.user.UserModel;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -20,7 +23,7 @@ public class HotelModel {
     @Column(unique = true)
     private String hotelName;
     private String locationName;
-    private Double averageRating;
+    private Double averageRating = 0.0D;
 
     public HotelModel(String hotelName, String locationName) {
         this.hotelName = hotelName;
@@ -46,8 +49,25 @@ public class HotelModel {
         return List.copyOf(hotelReviews);
     }
 
+    public List<HotelReviewJSON> getReviewsAsJSON() {
+        List<HotelReviewJSON> hotelReviewJSONList = new ArrayList<>();
+
+        List<HotelReviewModel> hotelReviewModelList = getReviews();
+
+        for (HotelReviewModel hotelReviewModel : hotelReviewModelList) {
+            UserModel userModel = hotelReviewModel.getUser();
+            hotelReviewJSONList.add(new HotelReviewJSON(hotelReviewModel.getId(),
+                    userModel.getUsername(),
+                    hotelReviewModel.getRating(),
+                    hotelReviewModel.getReviewMessage(),
+                    hotelReviewModel.getReviewDate()));
+        }
+
+        return hotelReviewJSONList;
+    }
+
     public void updateHotelRating(HotelReviewModel hotelReview) {
-        this.averageRating = (averageRating * hotelReviews.size() + hotelReview.getRating()) / (hotelReviews.size() + 1);
+        averageRating = (averageRating * hotelReviews.size() + hotelReview.getRating()) / (hotelReviews.size() + 1);
         hotelReviews.add(hotelReview);
     }
 

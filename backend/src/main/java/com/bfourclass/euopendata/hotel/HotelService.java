@@ -36,23 +36,33 @@ public class HotelService {
         return hotelRepository.getHotelByName(hotelName);
     }
 
-    public boolean addReview(UserModel userModel, HotelModel hotelModel, String requestMessage, int rating) {
-        if (requestMessage.length() < 10 || rating == 0)
+    public boolean addReview(UserModel userModel, HotelModel hotelModel, String message, int rating) {
+
+        if (message.length() < 10 || rating == 0) {
+            System.out.println("alrsflkn.sfsfj.ksfsfdsfdsfdbjkbjkbjksdsfeady");
             return false;
-        if (userModel.hasAlreadyReviewedHotel(hotelModel))
+        }
+
+        if (userModel.hasAlreadyReviewedHotel(hotelModel)) {
+            System.out.println("already");
             return false;
-        HotelReviewModel hotelReview = new HotelReviewModel(rating, requestMessage, LocalDateTime.now().toString(), userModel, hotelModel);
-        hotelModel.updateHotelRating(hotelReview);
-        hotelReviewRepository.save(hotelReview);
+        }
+
+        HotelReviewModel hotelReviewModel = new HotelReviewModel(rating, message, LocalDateTime.now().toString(), userModel, hotelModel);
+
+        hotelModel.updateHotelRating(hotelReviewModel);
+        hotelReviewRepository.save(hotelReviewModel);
         return true;
     }
 
     public void deleteHotelReview(HotelModel hotelModel, Long reviewId) {
         hotelModel.deleteReviewById(reviewId);
+        hotelRepository.save(hotelModel);
     }
 
     public void updateHotelReview(HotelModel hotelModel, Long reviewId, HotelReviewJSONUpdateRequest request) {
         hotelModel.updateHotelReview(reviewId, request);
+        hotelRepository.save(hotelModel);
     }
 
 }
