@@ -19,4 +19,5 @@ public class HotelReviewService {
                 hotelReviewRepository.findById(reviewId).get().getHotel() :
                 null;
     }
+
 }

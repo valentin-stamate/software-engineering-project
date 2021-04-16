@@ -77,12 +77,8 @@ public class HotelReviewController {
         UserModel userModel = userService.getUserFromToken(token);
         HotelModel hotelModel = hotelReviewService.getHotelByReviewId(reviewId);
 
-        if (hotelModel == null) {
-            return new ResponseEntity<>(new APIError("Hotel doesn't exist"), HttpStatus.NOT_FOUND);
-        }
-
-        hotelModel.removeReview(reviewId);
-        /* TODO - Valentin, delete the hotelModel and see if the review still remains in the table */
+        userService.deleteHotelReview(userModel, reviewId);
+        hotelService.deleteHotelReview(hotelModel, reviewId);
 
         /* TODO - Valentin, use hotelReview and hotel service to add a review */
 

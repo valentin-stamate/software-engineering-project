@@ -106,4 +106,13 @@ public class UserModel {
         }
         return false;
     }
+
+    public void deleteReviewById(Long reviewId) {
+        for(HotelReviewModel review : userReviews) {
+            if(review.getId().equals(reviewId)) {
+                userReviews.remove(review);
+                break;
+            }
+        }
+    }
 }

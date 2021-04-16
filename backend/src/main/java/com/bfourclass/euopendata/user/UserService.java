@@ -9,6 +9,7 @@ import com.bfourclass.euopendata.external_api.instance.weather.Weather;
 import com.bfourclass.euopendata.hotel.HotelModel;
 import com.bfourclass.euopendata.hotel.json.Hotel;
 import com.bfourclass.euopendata.hotel.json.HotelJSONRequest;
+import com.bfourclass.euopendata.hotel_review.HotelReviewModel;
 import com.bfourclass.euopendata.requests.APIError;
 import com.bfourclass.euopendata.security.StringGenerator;
 import com.bfourclass.euopendata.user.auth.SecurityContext;
@@ -141,5 +142,9 @@ public class UserService {
         AirPollution airPollution = ExternalAPI.getAirPollution(hotelJSONRequest.locationName);
 
         return new HotelInformationJSON(hotel, weather, covidInformation, airPollution);
+    }
+
+    public void deleteHotelReview(UserModel userModel, Long reviewId) {
+        userModel.deleteReviewById(reviewId);
     }
 }

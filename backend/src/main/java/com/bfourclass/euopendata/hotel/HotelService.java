@@ -45,4 +45,7 @@ public class HotelService {
         hotelReviewRepository.save(hotelReview);
         return true;
     }
+
+    public  deleteHotelReview( ,  ) {
+    }
 }
