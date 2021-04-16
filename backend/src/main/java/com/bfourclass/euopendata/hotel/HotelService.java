@@ -3,6 +3,7 @@ package com.bfourclass.euopendata.hotel;
 import com.bfourclass.euopendata.hotel.json.HotelJSONRequest;
 import com.bfourclass.euopendata.hotel_review.HotelReviewModel;
 import com.bfourclass.euopendata.hotel_review.HotelReviewRepository;
+import com.bfourclass.euopendata.hotel_review.json.HotelReviewJSONUpdateRequest;
 import com.bfourclass.euopendata.user.UserModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -46,6 +47,12 @@ public class HotelService {
         return true;
     }
 
-    public  deleteHotelReview( ,  ) {
+    public void deleteHotelReview(HotelModel hotelModel, Long reviewId) {
+        hotelModel.deleteReviewById(reviewId);
     }
+
+    public void updateHotelReview(HotelModel hotelModel, Long reviewId, HotelReviewJSONUpdateRequest request) {
+        hotelModel.updateHotelReview(reviewId, request);
+    }
+
 }

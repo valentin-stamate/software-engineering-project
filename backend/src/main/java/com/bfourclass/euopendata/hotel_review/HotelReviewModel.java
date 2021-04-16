@@ -60,4 +60,24 @@ public class HotelReviewModel {
     public int getRating() {
         return rating;
     }
+
+    public String getReviewMessage() {
+        return reviewMessage;
+    }
+
+    public String getReviewDate() {
+        return reviewDate;
+    }
+
+    public void setRating(int rating) {
+        this.rating = rating;
+    }
+
+    public void setReviewMessage(String reviewMessage) {
+        this.reviewMessage = reviewMessage;
+    }
+
+    public void setReviewDate(String reviewDate) {
+        this.reviewDate = reviewDate;
+    }
 }

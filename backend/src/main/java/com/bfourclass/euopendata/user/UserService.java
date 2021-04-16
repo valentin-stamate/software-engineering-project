@@ -10,6 +10,7 @@ import com.bfourclass.euopendata.hotel.HotelModel;
 import com.bfourclass.euopendata.hotel.json.Hotel;
 import com.bfourclass.euopendata.hotel.json.HotelJSONRequest;
 import com.bfourclass.euopendata.hotel_review.HotelReviewModel;
+import com.bfourclass.euopendata.hotel_review.json.HotelReviewJSONUpdateRequest;
 import com.bfourclass.euopendata.requests.APIError;
 import com.bfourclass.euopendata.security.StringGenerator;
 import com.bfourclass.euopendata.user.auth.SecurityContext;
@@ -146,5 +147,9 @@ public class UserService {
 
     public void deleteHotelReview(UserModel userModel, Long reviewId) {
         userModel.deleteReviewById(reviewId);
+    }
+
+    public void updateHotelReview(UserModel userModel, Long reviewId, HotelReviewJSONUpdateRequest request) {
+        userModel.updateHotelReview(reviewId, request);
     }
 }

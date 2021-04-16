@@ -2,6 +2,7 @@ package com.bfourclass.euopendata.user;
 
 import com.bfourclass.euopendata.hotel.HotelModel;
 import com.bfourclass.euopendata.hotel_review.HotelReviewModel;
+import com.bfourclass.euopendata.hotel_review.json.HotelReviewJSONUpdateRequest;
 import com.bfourclass.euopendata.security.SimpleHashingAlgo;
 
 import javax.persistence.*;
@@ -111,6 +112,17 @@ public class UserModel {
         for(HotelReviewModel review : userReviews) {
             if(review.getId().equals(reviewId)) {
                 userReviews.remove(review);
+                break;
+            }
+        }
+    }
+
+    public void updateHotelReview(Long reviewId, HotelReviewJSONUpdateRequest request) {
+        for(HotelReviewModel review : userReviews) {
+            if(review.getId().equals(reviewId)) {
+                review.setReviewMessage(request.message);
+                review.setReviewDate(request.dateAdded);
+                review.setRating(request.rating);
                 break;
             }
         }

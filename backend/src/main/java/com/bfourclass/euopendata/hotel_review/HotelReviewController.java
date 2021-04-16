@@ -101,6 +101,9 @@ public class HotelReviewController {
             return new ResponseEntity<>(new APIError("Hotel doesn't exist"), HttpStatus.NOT_FOUND);
         }
 
+        userService.updateHotelReview(userModel, request.reviewId, request);
+        hotelService.updateHotelReview(hotelModel, request.reviewId, request);
+
         /* TODO - Valentin, update the hotelModel and see if the review still remains in the table */
 
         return new ResponseEntity<>(new APISuccess("Review updated successfully"), HttpStatus.OK);

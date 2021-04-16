@@ -1,6 +1,7 @@
 package com.bfourclass.euopendata.hotel;
 
 import com.bfourclass.euopendata.hotel_review.HotelReviewModel;
+import com.bfourclass.euopendata.hotel_review.json.HotelReviewJSONUpdateRequest;
 
 import javax.persistence.*;
 import java.util.List;
@@ -45,17 +46,32 @@ public class HotelModel {
         return List.copyOf(hotelReviews);
     }
 
-    public void removeReview(Long reviewId) {
-        for (HotelReviewModel hotelReview : hotelReviews) {
-            if (hotelReview.getId().equals(reviewId)) {
-                hotelReviews.remove(hotelReview);
-                return;
+    public void updateHotelRating(HotelReviewModel hotelReview) {
+        this.averageRating = (averageRating * hotelReviews.size() + hotelReview.getRating()) / (hotelReviews.size() + 1);
+        hotelReviews.add(hotelReview);
+    }
+
+    public void deleteReviewById(Long reviewId) {
+        for (HotelReviewModel review : hotelReviews) {
+            if (review.getId().equals(reviewId)) {
+                int reviewRating = review.getRating();
+                this.averageRating = (averageRating * hotelReviews.size() - reviewRating) / (hotelReviews.size() - 1);
+                hotelReviews.remove(review);
             }
         }
     }
 
-    public void updateHotelRating(HotelReviewModel hotelReview) {
-        this.averageRating = (averageRating * hotelReviews.size() + hotelReview.getRating()) / (hotelReviews.size() + 1);
-        hotelReviews.add(hotelReview);
+    public void updateHotelReview(Long reviewId, HotelReviewJSONUpdateRequest request) {
+        for (HotelReviewModel review : hotelReviews) {
+            if (review.getId().equals(reviewId)) {
+                int oldRating = review.getRating();
+                int newRating = request.rating;
+                averageRating = (averageRating * hotelReviews.size() - oldRating + newRating) / hotelReviews.size();
+                review.setReviewMessage(request.message);
+                review.setReviewDate(request.dateAdded);
+                review.setRating(newRating);
+                break;
+            }
+        }
     }
 }
