@@ -13,6 +13,7 @@ public class Item {
     public String cacheId;
     public String formattedUrl;
     public String htmlFormattedUrl;
+
     @JsonIgnoreProperties
     public Pagemap pagemap;
 }

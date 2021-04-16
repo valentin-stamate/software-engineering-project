@@ -1,5 +1,7 @@
 package com.bfourclass.euopendata.external_api.instance.covid_information;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.util.List;
 
 public class Pagemap {
@@ -12,4 +14,11 @@ public class Pagemap {
     public List<Person> person;
     public List<Itemlist> itemlist;
     public List<Listitem> listitem;
+
+    @JsonIgnoreProperties
+    public Object WebPage;
+    @JsonIgnoreProperties
+    public Object Organization;
+    @JsonIgnoreProperties
+    public Object BreadcrumbList;
 }
