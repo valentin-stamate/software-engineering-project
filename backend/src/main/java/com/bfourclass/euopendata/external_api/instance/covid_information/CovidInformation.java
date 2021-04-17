@@ -16,6 +16,8 @@ public class CovidInformation {
     public Object searchInformation;
     @JsonIgnoreProperties
     public Object error;
+    @JsonIgnoreProperties
+    public Object spelling;
 
     public List<Item> items;
 }

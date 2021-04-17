@@ -33,7 +33,7 @@ public class UserController {
     }
 
     @PostMapping("user/add_hotel")
-    public ResponseEntity<Object> addLocationToUser(@RequestParam String hotelName, @RequestParam String locationName, @RequestHeader(name = "Authorization") String token) {
+    public ResponseEntity<Object> addLocationToUser(@RequestParam(name = "hotel_name") String hotelName, @RequestParam(name = "location_name") String locationName, @RequestHeader(name = "Authorization") String token) {
 
         ResponseEntity<Object> errorResponse = userService.checkUserToken(token);
         if (errorResponse != null) {
@@ -56,16 +56,16 @@ public class UserController {
     }
 
     @DeleteMapping("user/delete_hotel")
-    public ResponseEntity<Object> deleteLocationFromUser(@RequestBody DeleteHotelJSONRequest request, @RequestHeader(name = "Authorization") String token) {
+    public ResponseEntity<Object> deleteLocationFromUser(@RequestParam(name = "hotel_name") String hotelName, @RequestHeader(name = "Authorization") String token) {
         ResponseEntity<Object> errorResponse = userService.checkUserToken(token);
         if (errorResponse != null) {
             return errorResponse;
         }
 
         UserModel userModel = userService.getUserFromToken(token);
-        HotelModel hotelModel = hotelService.getHotelByName(request.hotelName);
+        HotelModel hotelModel = hotelService.getHotelByName(hotelName);
 
-        if (userModel.hasHotel(request.hotelName)) {
+        if (userModel.hasHotel(hotelName)) {
             userService.deleteUserHotel(userModel, hotelModel);
             return new ResponseEntity<>("Hotel deleted successfully", HttpStatus.OK);
         }
@@ -126,6 +126,8 @@ public class UserController {
 
     @GetMapping("user/hotels")
     public ResponseEntity<Object> getUserHotels(@RequestHeader(name = "Authorization") String token) {
+
+        System.out.println(token);
         ResponseEntity<Object> errorResponse = userService.checkUserToken(token);
         if (errorResponse != null) {
             return errorResponse;
