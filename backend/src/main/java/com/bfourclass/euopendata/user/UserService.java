@@ -4,11 +4,10 @@ import com.bfourclass.euopendata.email.EmailService;
 import com.bfourclass.euopendata.external_api.ExternalAPI;
 import com.bfourclass.euopendata.external_api.instance.aqicn_data.AirPollution;
 import com.bfourclass.euopendata.external_api.instance.covid_information.CovidInformationJSON;
-import com.bfourclass.euopendata.external_api.instance.covid_information.Item;
 import com.bfourclass.euopendata.external_api.instance.weather.Weather;
 import com.bfourclass.euopendata.hotel.HotelModel;
-import com.bfourclass.euopendata.hotel.json.Hotel;
-import com.bfourclass.euopendata.hotel.json.HotelJSONRequest;
+import com.bfourclass.euopendata.hotel.HotelRepository;
+import com.bfourclass.euopendata.hotel.json.HotelJSON;
 import com.bfourclass.euopendata.hotel_review.HotelReviewModel;
 import com.bfourclass.euopendata.hotel_review.json.HotelReviewJSONUpdateRequest;
 import com.bfourclass.euopendata.requests.APIError;
@@ -19,6 +18,7 @@ import com.bfourclass.euopendata.user.json.UserLoginJSONRequest;
 import com.bfourclass.euopendata.user.json.UserRegisterJSONRequest;
 import com.bfourclass.euopendata.user_verification.UserVerification;
 import com.bfourclass.euopendata.user_verification.UserVerificationService;
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,13 +36,15 @@ public class UserService {
     private final EmailService emailService;
     private final UserVerificationService userVerificationService;
     private final SecurityContext securityContext;
+    private final HotelRepository hotelRepository;
 
     @Autowired
-    public UserService(UserRepository userRepository, EmailService emailService, UserVerificationService userVerificationService, SecurityContext securityContext) {
+    public UserService(UserRepository userRepository, EmailService emailService, UserVerificationService userVerificationService, SecurityContext securityContext, HotelRepository hotelRepository) {
         this.userRepository = userRepository;
         this.emailService = emailService;
         this.userVerificationService = userVerificationService;
         this.securityContext = securityContext;
+        this.hotelRepository = hotelRepository;
     }
 
     public boolean checkTokenIsValid(String token) {
@@ -86,18 +88,6 @@ public class UserService {
         return userRepository.findUserByUsername(username) != null;
     }
 
-    private boolean verifyEmail(String email) {
-        String regex = "([a-zA-Z0-9]+(?:[._+-][a-zA-Z0-9]+)*)@([a-zA-Z0-9]+(?:[.-][a-zA-Z0-9]+)*[.][a-zA-Z]{2,})";
-        Pattern pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
-        Matcher matcher = pattern.matcher(email);
-
-        return matcher.matches();
-    }
-
-    public void updateUser(UserModel userModel) {
-        userRepository.save(userModel);
-    }
-
     public ResponseEntity<Object> checkUserToken(String token) {
         // check if token exists in request
         if (token == null) {
@@ -128,28 +118,28 @@ public class UserService {
         List<HotelModel> hotels = userModel.getUserHotels();
 
         for (HotelModel hotelModel : hotels) {
-            /* TODO  */
-            HotelJSONRequest hotelJSONRequest = new HotelJSONRequest(hotelModel.getHotelName(), hotelModel.getLocationName(), null, null);
-            response.add(getHotelInformation(hotelJSONRequest));
+            response.add(getHotelInformation(hotelModel));
         }
 
         return response;
     }
 
-    public HotelInformationJSON getHotelInformation(HotelJSONRequest hotelJSONRequest) {
-        Hotel hotel = new Hotel(hotelJSONRequest.hotelName, hotelJSONRequest.locationName);
-        Weather weather = ExternalAPI.getWeather(hotelJSONRequest.locationName);
-        CovidInformationJSON covidInformation = ExternalAPI.getCovidInformation(hotelJSONRequest.locationName);
-        AirPollution airPollution = ExternalAPI.getAirPollution(hotelJSONRequest.locationName);
+    public HotelInformationJSON getHotelInformation(HotelModel hotelModel) {
+        HotelJSON hotelJSON = new HotelJSON(hotelModel.getHotelName(), hotelModel.getLocationName(), hotelModel.getAverageRating(), hotelModel.getVotes());
+        Weather weather = ExternalAPI.getWeather(hotelJSON.locationName);
+        CovidInformationJSON covidInformation = ExternalAPI.getCovidInformation(hotelJSON.locationName);
+        AirPollution airPollution = ExternalAPI.getAirPollution(hotelJSON.locationName);
 
-        return new HotelInformationJSON(hotel, weather, covidInformation, airPollution);
+        return new HotelInformationJSON(hotelJSON, weather, covidInformation, airPollution);
     }
 
-    public void deleteHotelReview(UserModel userModel, Long reviewId) {
-        userModel.deleteReviewById(reviewId);
+    public void addHotel(UserModel userModel, HotelModel hotelModel) {
+        userModel.addHotel(hotelModel);
+        hotelRepository.save(hotelModel);
     }
 
-    public void updateHotelReview(UserModel userModel, Long reviewId, HotelReviewJSONUpdateRequest request) {
-        userModel.updateHotelReview(reviewId, request);
+    public void deleteUserHotel(UserModel userModel, HotelModel hotelModel) {
+        userModel.deleteUserHotel(hotelModel);
+        userRepository.save(userModel);
     }
 }

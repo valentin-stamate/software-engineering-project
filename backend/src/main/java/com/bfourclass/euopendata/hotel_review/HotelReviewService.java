@@ -4,6 +4,8 @@ import com.bfourclass.euopendata.hotel.HotelModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class HotelReviewService {
 
@@ -14,10 +16,13 @@ public class HotelReviewService {
         this.hotelReviewRepository = hotelReviewRepository;
     }
 
-    public HotelModel getHotelByReviewId(Long reviewId) {
-        return hotelReviewRepository.findById(reviewId).isPresent() ?
-                hotelReviewRepository.findById(reviewId).get().getHotel() :
-                null;
-    }
+    public HotelReviewModel getHotelReviewById(Long reviewId) {
+        Optional<HotelReviewModel> hotelModelOptional = hotelReviewRepository.findById(reviewId);
 
+        if (hotelModelOptional.isPresent()) {
+            return hotelModelOptional.get();
+        }
+
+        return null;
+    }
 }

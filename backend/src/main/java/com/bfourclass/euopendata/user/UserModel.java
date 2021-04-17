@@ -25,7 +25,7 @@ public class UserModel {
     private boolean isAdmin = false;
 
     @OneToMany
-    private Set<HotelReviewModel> userReviews;
+    private Set<HotelReviewModel> userReviews = new HashSet<>();
 
     @ManyToMany
     private final Set<HotelModel> hotels = new HashSet<>();
@@ -66,12 +66,16 @@ public class UserModel {
         return false;
     }
 
+    public Long getId() {
+        return id;
+    }
+
     public void addHotel(HotelModel hotelModel) {
         hotels.add(hotelModel);
     }
 
-    public void deleteUserHotel(String locationName) {
-        this.hotels.removeIf(hotelModel -> hotelModel.getHotelName().equals(locationName));
+    public void deleteUserHotel(HotelModel hotelModel) {
+        hotels.removeIf(hotel -> hotel.getHotelName().equals(hotelModel.getHotelName()));
     }
 
     public List<HotelModel> getUserHotels() {
@@ -108,21 +112,14 @@ public class UserModel {
         return false;
     }
 
-    public void deleteReviewById(Long reviewId) {
-        for(HotelReviewModel review : userReviews) {
-            if(review.getId().equals(reviewId)) {
-                userReviews.remove(review);
-                break;
-            }
-        }
+    public void addHotelReview(HotelReviewModel hotelReviewModel) {
+        userReviews.add(hotelReviewModel);
     }
 
-    public void updateHotelReview(Long reviewId, HotelReviewJSONUpdateRequest request) {
-        for(HotelReviewModel review : userReviews) {
-            if(review.getId().equals(reviewId)) {
-                review.setReviewMessage(request.message);
-                review.setReviewDate(request.dateAdded);
-                review.setRating(request.rating);
+    public void removeHotelReview(HotelReviewModel hotelReviewModel) {
+        for (HotelReviewModel review : userReviews) {
+            if (review.getId().equals(hotelReviewModel.getId())) {
+                userReviews.remove(hotelReviewModel);
                 break;
             }
         }

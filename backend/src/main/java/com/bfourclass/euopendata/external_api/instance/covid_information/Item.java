@@ -15,5 +15,5 @@ public class Item {
     public String htmlFormattedUrl;
 
     @JsonIgnoreProperties
-    public Pagemap pagemap;
+    public Object pagemap;
 }

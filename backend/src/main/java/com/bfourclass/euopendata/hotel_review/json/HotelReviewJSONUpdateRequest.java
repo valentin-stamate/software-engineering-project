@@ -5,5 +5,4 @@ public class HotelReviewJSONUpdateRequest {
 
     public String message;
     public int rating;
-    public String dateAdded;
 }

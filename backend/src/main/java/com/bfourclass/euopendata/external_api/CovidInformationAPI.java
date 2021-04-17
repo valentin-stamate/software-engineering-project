@@ -15,8 +15,6 @@ abstract class CovidInformationAPI {
     protected static CovidInformationJSON requestCovidInformation(String locationName) {
         String requestURL = "https://www.googleapis.com/customsearch/v1?key=" + Secrets.googleCustomSearchKey + "&cx=183e9c932cf280453&q=" + locationName + "%20covid";
 
-        System.out.println(requestURL);
-
         ObjectMapper mapper = new ObjectMapper();
 
         try (CloseableHttpClient client = HttpClients.createDefault()) {

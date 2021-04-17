@@ -101,9 +101,9 @@ When the user is activated it can log in.
 ```json
 [
   {
-    "hotel": {
-      "hotelName": "hotel-name",
-      "locationName": "hotel-location"
+    "hotelJSON": {
+      "hotelName": "hotelJSON-name",
+      "locationName": "hotelJSON-location"
     },
     "weather": {
       "coord": {
@@ -176,9 +176,9 @@ The response will look like this if unsuccessful, with status code 400:
 ```
 </details>
 
-### Save a hotel
+### Save a hotelJSON
 * `user/add_hotel`
-  Add a hotel from a specified. The Authorization header with the user token should be present.
+  Add a hotelJSON from a specified. The Authorization header with the user token should be present.
   The body for request will look like this:
 
 <details>
@@ -186,7 +186,7 @@ The response will look like this if unsuccessful, with status code 400:
 
 ```json
 {
-   "hotelName": "the-hotel-name",
+   "hotelName": "the-hotelJSON-name",
    "locationName": "the-email"
 }
 ```
@@ -214,16 +214,16 @@ The response will look like this if unsuccessful, with status code 401, 406:
 ```
 </details>
 
-### Delete a hotel
+### Delete a hotelJSON
 * `user/delete_hotel`
-  Delete a hotel from a specified. The Authorization header with the user token should be present.
+  Delete a hotelJSON from a specified. The Authorization header with the user token should be present.
 
 <details>
 <summary>Request body</summary>
 
 ```json
 {
-   "hotelName": "the-hotel-name"
+   "hotelName": "the-hotelJSON-name"
 }
 ```
 </details>
@@ -250,17 +250,17 @@ The response will look like this if unsuccessful, with status code 401, 404, 406
 ```
 </details>
 
-### See information about a hotel
+### See information about a hotelJSON
 * `user/hotel_information`
-  See the hotel information. The endpoint will receive hotel data as follows in the request body:
+  See the hotelJSON information. The endpoint will receive hotelJSON data as follows in the request body:
 
 <details>
 <summary>Request body</summary>
 
 ```json
 {
-  "hotelName": "hotel-name",
-  "locationName": "hotel-location"
+  "hotelName": "hotelJSON-name",
+  "locationName": "hotelJSON-location"
 }
 ```
 </details>
@@ -271,9 +271,9 @@ The response will look like this if successful, with status code 200:
 
 ```json
 {
-  "hotel": {
-    "hotelName": "hotel-name",
-    "locationName": "hotel-location"
+  "hotelJSON": {
+    "hotelName": "hotelJSON-name",
+    "locationName": "hotelJSON-location"
   },
   "weather": {
     "coord": {

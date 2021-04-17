@@ -3,12 +3,20 @@ package com.bfourclass.euopendata.external_api;
 import com.bfourclass.euopendata.external_api.instance.aqicn_data.AirPollution;
 
 import java.io.*;
+import java.text.Normalizer;
 import java.util.stream.Collectors;
 
 abstract class AQICNDataAPI
 {
     protected static AirPollution requestAirPollution(String location) throws IOException
     {
+        /* Getting rid of diacritics */
+        location = Normalizer.normalize(location, Normalizer.Form.NFD);
+        location = location.replaceAll("[^\\p{ASCII}]", "");
+        location = location.replaceAll("\\p{M}", "");
+
+        System.out.println(location);
+
         // Fetching data
         String command = "curl https://api.waqi.info/feed/" + location + "/?token=d69eed0409fd85ce77805bc2b5b5217c7fcc456f";
         ProcessBuilder processBuilder = new ProcessBuilder(command.split(" "));
@@ -42,4 +50,5 @@ abstract class AQICNDataAPI
 
         return airPollution;
     }
+
 }
