@@ -39,6 +39,17 @@ public class HotelService {
         return hotelRepository.getHotelByName(hotelName);
     }
 
+    public List<HotelJSON> getHotels() {
+        List<HotelModel> hotelModels = hotelRepository.getAll();
+        List<HotelJSON> hotelJSONList = new ArrayList<>();
+
+        for (HotelModel hotelModel : hotelModels) {
+            hotelJSONList.add(new HotelJSON(hotelModel.getHotelName(), hotelModel.getLocationName(), hotelModel.getAverageRating(), hotelModel.getVotes()));
+        }
+
+        return hotelJSONList;
+    }
+
     public boolean addReview(UserModel userModel, HotelModel hotelModel, String message, int rating) {
 
         if (message.length() < 10 || rating == 0) {
@@ -68,20 +79,12 @@ public class HotelService {
         return true;
     }
 
-    public List<HotelJSON> getHotels() {
-        List<HotelModel> hotelModels = hotelRepository.getAll();
-        List<HotelJSON> hotelJSONList = new ArrayList<>();
-
-        for (HotelModel hotelModel : hotelModels) {
-            hotelJSONList.add(new HotelJSON(hotelModel.getHotelName(), hotelModel.getLocationName(), hotelModel.getAverageRating(), hotelModel.getVotes()));
-        }
-
-        return hotelJSONList;
-    }
-
     public void updateHotelReview(HotelModel hotelModel, HotelReviewModel oldReviewModel, HotelReviewJSONUpdateRequest request) {
         hotelModel.updateHotelReviewNumber(oldReviewModel.getRating(), true);
         hotelModel.updateHotelReviewNumber(request.rating, false);
+
+        oldReviewModel.setReviewMessage(request.message);
+        oldReviewModel.setRating(request.rating);
 
         hotelReviewRepository.save(oldReviewModel);
         hotelRepository.save(hotelModel);
