@@ -21,6 +21,15 @@ public class UserConfig {
             hotelRepository.save(hotelModel);
 
             userRepository.save(userModelA);
+
+            UserModel admin = new UserModel(
+                    "admin",
+                    "admin@gmail.com",
+                    SimpleHashingAlgo.hash("adminis"),
+                    "",
+                    true,
+                    true);
+            userRepository.save(admin);
         };
     }
 
