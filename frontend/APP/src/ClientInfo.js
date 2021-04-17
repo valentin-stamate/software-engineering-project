@@ -1,10 +1,9 @@
 class ClientInfo{
-    constructor(fname,lname,pword,email,phone){
-        this.fname=fname;
-        this.lname=lname;
-        this.pword=pword;
-        this.email=email;
-        this.phone=phone;
+    constructor(username, email, password, profilePhotoLink){
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.profilePhotoLink = profilePhotoLink;
     }
 }
 

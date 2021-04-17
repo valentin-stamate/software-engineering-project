@@ -17,6 +17,7 @@ public class Weather {
     public int id;
     public String name;
     public int cod;
+    public String message;
 
 }
 

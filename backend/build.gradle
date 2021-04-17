@@ -18,6 +18,7 @@ dependencies {
     implementation 'org.apache.httpcomponents:httpclient:4.5'
     implementation 'io.jsonwebtoken:jjwt:0.2'
     implementation 'org.springframework.boot:spring-boot-starter-mail:2.4.4'
+    implementation 'org.jsoup:jsoup:1.13.1'
 
     runtimeOnly 'org.postgresql:postgresql'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'

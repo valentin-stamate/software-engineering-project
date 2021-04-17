@@ -1,5 +1,7 @@
 package com.bfourclass.euopendata.external_api.instance.covid_information;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 public class Item {
     public String kind;
     public String title;
@@ -11,5 +13,7 @@ public class Item {
     public String cacheId;
     public String formattedUrl;
     public String htmlFormattedUrl;
-    public Pagemap pagemap;
+
+    @JsonIgnoreProperties
+    public Object pagemap;
 }

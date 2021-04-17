@@ -1,13 +1,13 @@
 package com.bfourclass.euopendata.hotel;
 
-import com.bfourclass.euopendata.hotel.json.HotelJSONRequest;
+import com.bfourclass.euopendata.hotel.json.HotelJSON;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import com.bfourclass.euopendata.requests.APIError;
+
+import java.util.List;
 
 @RestController
 public class HotelController {
@@ -19,14 +19,11 @@ public class HotelController {
         this.hotelService = hotelService;
     }
 
-    /* TODO */
-    @GetMapping("hotel/get_hotel")
-    public ResponseEntity<Object> getLocation(@RequestBody HotelJSONRequest locationRegisterForm){
+    @GetMapping("hotel/all_hotels")
+    public ResponseEntity<Object> getLocation(){
+        List<HotelJSON> hotels = hotelService.getHotels();
 
-        return new ResponseEntity<>(
-                new APIError("invalid dsadasd"),
-                HttpStatus.BAD_REQUEST
-        );
+        return new ResponseEntity<>(hotels, HttpStatus.OK);
     }
 
 }

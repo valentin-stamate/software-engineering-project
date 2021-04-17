@@ -2,6 +2,7 @@ package com.bfourclass.euopendata.user;
 
 import com.bfourclass.euopendata.hotel.HotelModel;
 import com.bfourclass.euopendata.hotel_review.HotelReviewModel;
+import com.bfourclass.euopendata.hotel_review.json.HotelReviewJSONUpdateRequest;
 import com.bfourclass.euopendata.security.SimpleHashingAlgo;
 
 import javax.persistence.*;
@@ -24,7 +25,7 @@ public class UserModel {
     private boolean isAdmin = false;
 
     @OneToMany
-    private Set<HotelReviewModel> userReviews;
+    private Set<HotelReviewModel> userReviews = new HashSet<>();
 
     @ManyToMany
     private final Set<HotelModel> hotels = new HashSet<>();
@@ -74,12 +75,16 @@ public class UserModel {
         return false;
     }
 
+    public Long getId() {
+        return id;
+    }
+
     public void addHotel(HotelModel hotelModel) {
         hotels.add(hotelModel);
     }
 
-    public void deleteUserHotel(String locationName) {
-        this.hotels.removeIf(hotelModel -> hotelModel.getHotelName().equals(locationName));
+    public void deleteUserHotel(HotelModel hotelModel) {
+        hotels.removeIf(hotel -> hotel.getHotelName().equals(hotelModel.getHotelName()));
     }
 
     public List<HotelModel> getUserHotels() {
@@ -114,5 +119,18 @@ public class UserModel {
             }
         }
         return false;
+    }
+
+    public void addHotelReview(HotelReviewModel hotelReviewModel) {
+        userReviews.add(hotelReviewModel);
+    }
+
+    public void removeHotelReview(HotelReviewModel hotelReviewModel) {
+        for (HotelReviewModel review : userReviews) {
+            if (review.getId().equals(hotelReviewModel.getId())) {
+                userReviews.remove(hotelReviewModel);
+                break;
+            }
+        }
     }
 }

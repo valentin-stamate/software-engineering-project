@@ -2,8 +2,9 @@ package com.bfourclass.euopendata.hotel_review;
 
 import com.bfourclass.euopendata.hotel.HotelModel;
 import com.bfourclass.euopendata.user.UserModel;
-
 import javax.persistence.*;
+import java.sql.Timestamp;
+import java.util.Date;
 
 @Entity
 @Table(name = "hotel_reviews")
@@ -22,16 +23,18 @@ public class HotelReviewModel {
     private String reviewMessage = "";
     private String reviewDate;
 
-    public HotelReviewModel(int rating, String reviewMessage, String reviewDate, UserModel user, HotelModel hotelModel) {
+    public HotelReviewModel(UserModel user, HotelModel hotelModel, String reviewMessage, int rating) {
         this.rating = rating;
         this.reviewMessage = reviewMessage;
-        this.reviewDate = reviewDate;
+        this.reviewDate = new Timestamp((new Date()).getTime()).toString();
         this.user = user;
         this.hotel = hotelModel;
+
+        user.addHotelReview(this);
+        hotelModel.addHotelReview(this);
     }
 
-    public HotelReviewModel() {
-    }
+    public HotelReviewModel() { }
 
     public Long getId() {
         return id;
@@ -59,5 +62,25 @@ public class HotelReviewModel {
 
     public int getRating() {
         return rating;
+    }
+
+    public String getReviewMessage() {
+        return reviewMessage;
+    }
+
+    public String getReviewDate() {
+        return reviewDate;
+    }
+
+    public void setRating(int rating) {
+        this.rating = rating;
+    }
+
+    public void setReviewMessage(String reviewMessage) {
+        this.reviewMessage = reviewMessage;
+    }
+
+    public void setReviewDate(String reviewDate) {
+        this.reviewDate = reviewDate;
     }
 }

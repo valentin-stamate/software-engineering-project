@@ -9,12 +9,6 @@ function getName() {
     var name = name_element ? name_element.childNodes[2].nodeValue : "";
     return name.trim().replace("\n", "");
 }
-var hotelName = getName();
-var hotelAdress = getHotelAdress();
-console.log("Hotel name = " + hotelName);
-console.log("Hotel adress = " + hotelAdress);
-
-var popupAdded = false;
 
 function addPopupHtml() {
     let popup_str =
@@ -30,9 +24,13 @@ function addPopupHtml() {
     document.body.getElementsByClassName("hp-description")[0].insertAdjacentHTML('beforebegin', popup_str);
     document.getElementById("send-btn").addEventListener('click', sendPreferences);
     document.getElementById("hide-btn").addEventListener('click', hidePopup);
-    popupAdded = true;
 }
+addPopupHtml();
 
+var hotelName = getName();
+var hotelAdress = getHotelAdress();
+console.log("Hotel name = " + hotelName);
+console.log("Hotel adress = " + hotelAdress);
 function addStatistics(_stats) {
     let stats_div = document.getElementById("statistics-container");
     stats_div.innerHTML = "";
@@ -88,12 +86,10 @@ function getStatistics() {
     }
     chrome.runtime.sendMessage(_data, function(response) {
         console.log(response);
-        if (!popupAdded) {
-            addPopupHtml();
-        }
         addStatistics(response);
     });
 }
+getStatistics();
 
 var show = true;
 
@@ -121,5 +117,3 @@ function sendPreferences() {
         console.log(JSON.stringify(response));
     });
 }
-
-getStatistics();

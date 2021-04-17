@@ -2,20 +2,16 @@ import react from 'react';
 import { Helmet } from 'react-helmet';
 import './user.css';
 
-var data=require('./Data.js');
-
 class ClientProfilePage extends react.Component{
     constructor(props){
         super(props);
         this.state={
-            client:data.user
         };
     }
 
     render(){
         return(
 <div class="client-profile">
-    <p>Hello, {this.state.client.username}</p>
     <div class="topnav">
         <a class="active" href="#home">Home</a>
         <a href="#about">See Recommendation</a>
