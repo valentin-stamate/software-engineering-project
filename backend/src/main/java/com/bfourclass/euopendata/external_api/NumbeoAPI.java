@@ -8,6 +8,7 @@ import org.jsoup.select.Elements;
 
 import java.io.*;
 import java.text.Normalizer;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 public class NumbeoAPI {
@@ -53,9 +54,14 @@ public class NumbeoAPI {
     }
 
     public static CriminalityStatistics requestCriminalityStatistics(String cityName) throws IOException {
-        /* Getting rid of diacritics */
+        // Getting rid of diacritics
         cityName = Normalizer.normalize(cityName, Normalizer.Form.NFD);
         cityName = cityName.replaceAll("\\p{M}", "");
+        cityName = cityName.toLowerCase(Locale.ROOT);
+
+        // Non-english name bug fix
+        if(cityName.equals("bucuresti"))
+            cityName = "bucharest";
 
         // Requesting HTML page
         cityName = cityName.substring(0, 1).toUpperCase() + cityName.substring(1);
