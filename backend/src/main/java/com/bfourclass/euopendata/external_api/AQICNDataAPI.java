@@ -12,7 +12,6 @@ abstract class AQICNDataAPI
     {
         /* Getting rid of diacritics */
         location = Normalizer.normalize(location, Normalizer.Form.NFD);
-        location = location.replaceAll("[^\\p{ASCII}]", "");
         location = location.replaceAll("\\p{M}", "");
 
         System.out.println(location);

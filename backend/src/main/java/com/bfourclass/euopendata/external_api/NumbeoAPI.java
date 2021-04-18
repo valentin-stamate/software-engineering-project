@@ -7,11 +7,11 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.*;
+import java.text.Normalizer;
 import java.util.stream.Collectors;
 
 public class NumbeoAPI {
-    private static CriminalityStatistics parseHTMLCode(String htmlCode)
-    {
+    private static CriminalityStatistics parseHTMLCode(String htmlCode) {
         Document htmlParser = Jsoup.parse(htmlCode);
 
         // Verifying if "City not found" exception was raised
@@ -52,8 +52,11 @@ public class NumbeoAPI {
         return criminalityStatistics;
     }
 
-    public static CriminalityStatistics requestCriminalityStatistics(String cityName) throws IOException
-    {
+    public static CriminalityStatistics requestCriminalityStatistics(String cityName) throws IOException {
+        /* Getting rid of diacritics */
+        cityName = Normalizer.normalize(cityName, Normalizer.Form.NFD);
+        cityName = cityName.replaceAll("\\p{M}", "");
+
         // Requesting HTML page
         cityName = cityName.substring(0, 1).toUpperCase() + cityName.substring(1);
         String command = "curl https://www.numbeo.com/crime/in/" + cityName + "/";
