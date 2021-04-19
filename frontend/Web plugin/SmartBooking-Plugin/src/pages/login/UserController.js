@@ -1,5 +1,5 @@
 export default class UserController {
-    static login(username = "", password = "") {
+    static async login(username = "", password = "") {
         let url = "http://188.34.167.200:8082/user/login";
 
         let _data = {
@@ -7,24 +7,27 @@ export default class UserController {
             "password": password
         };
 
-        fetch(url, {
+        return await fetch(url, {
             method: "POST",
             body: JSON.stringify(_data),
             headers: {
                 "Content-type": "application/json; charset=UTF-8"
             }
-        }).then(handleLoginResponse).catch(err => {
+        }).then(response => { 
+            return handleLoginResponse(response); 
+        }).catch(err => {
             console.log(err);
+            return err;
         });
     }
 
-    static logout() {
+    static async logout() {
         window.localStorage.clear();
         window.location.reload();
         window.location.href = '/src/pages/popup.html';
     }
 
-    static saveHotel(hotel) {
+    static async saveUserHotel(hotel) {
         let token = window.localStorage.getItem('token');
         let url = "http://188.34.167.200:8082/user/add_hotel";
 
@@ -33,34 +36,39 @@ export default class UserController {
             "locationName": hotel.hotelLocation
         };
 
-        fetch(url, {
+        return await fetch(url, {
             method: "POST",
             body: JSON.stringify(_data),
             headers: {
                 "Content-type": "application/json; charset=UTF-8",
                 "Authorization": token
             }
-        }).then(handleSaveResponse).catch(err => {
+        }).then(response => { 
+            return handleSaveResponse(response); 
+        }).catch(err => {
             console.log(err);
+            return err;
         });
     }
 
-    static getHotels() {
+    static async getUserHotels() {
         let token = window.localStorage.getItem('token');
         let url = "http://188.34.167.200:8082/user/hotels";
 
-        fetch(url, {
+        return await fetch(url, {
             method: "GET",
             headers: {
                 "Content-type": "application/json; charset=UTF-8",
                 "Authorization": token
             }
-        }).then(handleLoadResponse).catch(err => {
+        }).then(response => {
+            return handleLoadResponse(response); 
+        }).catch(err => {
             console.log(err);
         });
     }
 
-    static deleteHotel(hotel) {
+    static async deleteUserHotel(hotel) {
         let token = window.localStorage.getItem('token');
         let url = "http://188.34.167.200:8082/user/delete_hotel";
 
@@ -68,21 +76,23 @@ export default class UserController {
             "hotelName": hotel.hotelName
         };
 
-        fetch(url, {
+        return await fetch(url, {
             method: "DELETE",
             body: JSON.stringify(_data),
             headers: {
                 "Content-type": "application/json; charset=UTF-8",
                 "Authorization": token
             }
-        }).then(handleDeleteResponse).catch(err => {
+        }).then(response => {
+            return handleDeleteResponse(response);
+        }).catch(err => {
             console.log(err);
         });
     }
 }
 
-function handleLoginResponse(response) {
-    response.json().then(function(json) {
+async function handleLoginResponse(response) {
+    return await response.json().then(function(json) {
         if (response.status == 200) {
             console.log(json);
             let token = json.authorizationToken;
@@ -90,39 +100,47 @@ function handleLoginResponse(response) {
             window.localStorage.setItem('loginstate', "true");
             window.localStorage.setItem('token', token);
             showAlert("login succesful - " + username + ", " + token, true);
+            return true;
         } else {
-            localStorage.setItem('loginstate', "false");
+            window.localStorage.setItem('loginstate', "false");
             showAlert("login failed - " + json.message);
+            return false;
         }
     });
 }
 
-function handleSaveResponse(response) {
-    response.json().then(function(json) {
+async function handleSaveResponse(response) {
+    return await response.json().then(function(json) {
         if (response.status == 200) {
             showAlert(json.message);
+            return true;
         } else {
-            showAlert("saving failed - " + json.message)
+            showAlert("saving failed - " + json.message);
+            return false;
         }
     });
 }
 
-function handleLoadResponse(response) {
-    response.json().then(function(json) {
+async function handleLoadResponse(response) {
+    return await response.json().then(function(json) {
         if (response.status == 200) {
-            console.log(JSON.stringify(json));
+            alert(JSON.stringify(json));
+            return JSON.stringify(json);
         } else {
-            console.log("Failed to get the hotels - " + json.message)
+            showAlert("Failed to get the hotels - " + json.message);
+            return JSON.stringify(json);
         }
     });
 }
 
-function handleDeleteResponse(response) {
-    response.json().then(function(json) {
+async function handleDeleteResponse(response) {
+    return await response.json().then(function(json) {
         if (response.status == 200) {
-            console.log(json.message);
+            alert(json.message);
+            return true;
         } else {
-            console.log("saving failed - " + json.message)
+            alert("deleting failed - " + json.message);
+            return false;
         }
     });
 }

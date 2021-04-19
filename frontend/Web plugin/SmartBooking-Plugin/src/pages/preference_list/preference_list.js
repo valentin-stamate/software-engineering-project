@@ -12,6 +12,10 @@ function checkCheckbox(listElem) {
     listElem.children[3].setAttribute("checked", "checked");
 }
 
+function uncheckCheckbox(listElem) {
+    listElem.children[3].removeAttribute("checked");
+}
+
 function getListElem(element = "hotel name", adress = "hotel adress") {
     let list_elem =
         `<div class="b-contain">
