@@ -6,11 +6,12 @@ chrome.runtime.onInstalled.addListener(() => {
 //example of using a message handler from the inject scripts
 chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
-        var _data = {
-            "hotelName": request.hotelName,
-            "hotelLocation": request.hotelLocation
-        };
         if (!request.sendStatistics) {
+            var _data = {
+                "hotelName": request.hotelName,
+                "hotelLocation": request.hotelLocation,
+                "bookingLink": request.bookingLink
+            };
             chrome.storage.sync.get('locations', value => {
                 locations = value.locations;
 
@@ -21,9 +22,13 @@ chrome.runtime.onMessage.addListener(
                 sendResponse({ message: "preference sent successfully" });
             });
         } else {
+            var _data = {
+                "hotelName": request.hotelName,
+                "hotelLocation": request.hotelLocation
+            };
             //json experimental cu statistici
             var url = "https://betonrats.000webhostapp.com/hotel.json";
-            //var urlTmp = "http://188.34.167.200:8082/user/hotel_information";
+            //var urlTmp = "https://euopendata.herokuapp.com/user/hotel_information";
 
             fetch(url, {
                 method: 'GET'

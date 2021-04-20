@@ -30,6 +30,15 @@ public class UserModel {
     @ManyToMany
     private final Set<HotelModel> hotels = new HashSet<>();
 
+    public UserModel(String username, String email, String password, String profilePhotoLink, boolean isActivated, boolean isAdmin) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.profilePhotoLink = profilePhotoLink;
+        this.isActivated = isActivated;
+        this.isAdmin = isAdmin;
+    }
+
     public UserModel(String username, String email, String password, String profilePhotoLink) {
         this.username = username;
         this.email = email;

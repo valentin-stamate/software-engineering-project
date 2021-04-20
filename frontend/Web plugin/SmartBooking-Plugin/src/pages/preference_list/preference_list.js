@@ -1,49 +1,65 @@
+import UserController from '../login/UserController.js';
+
+var loadedHotelList = [];
 const loginstate = localStorage.getItem('loginstate');
 
 if (loginstate == "true") {
     document.getElementById('save-list').classList.remove("hidden");
     document.getElementById('log-to-save').classList.add('hidden');
+    loadedHotelList = await UserController.getUserHotels();
 } else {
     document.getElementById('save-list').classList.add("hidden");
     document.getElementById('log-to-save').classList.remove('hidden');
+    loadedHotelList = [];
 }
 
 function checkCheckbox(listElem) {
     listElem.children[3].setAttribute("checked", "checked");
 }
 
-function getListElem(element = "hotel name", adress = "hotel adress") {
+function uncheckCheckbox(listElem) {
+    listElem.children[3].removeAttribute("checked");
+}
+
+function getListElem(element = "hotel name", adress = "hotel adress", link = "#") {
+    let hotel_list_elem = document.createElement("div");
+    hotel_list_elem.classList.add("b-contain");
     let list_elem =
-        `<div class="b-contain">
-	<span class="remove">X</span>
-	<span class="hotel-name">${element}</span>
+        `<span class="remove">X</span>
+    <a href=${link} target="_blank" rel="noopener"><span class="hotel-name">${element}</span></a>
 	<span class="hotel-adress" style="display:none">${adress}</span>
 	<input type="checkbox" onclick="return false">
-	<div class="b-input"></div>
-</div>`
-    return list_elem;
+<div class="b-input"></div>`
+
+    hotel_list_elem.innerHTML = list_elem;
+    return hotel_list_elem;
 }
 
-function addLocationList() {
-    chrome.storage.sync.get('locations', value => {
-        var hotelList = value.locations;
-        var control_group = document.getElementById("control-group");
+var hotelList = [];
+function addUserHotelList() {
+    chrome.storage.sync.get('locations', handleUserHotelsLoad);
+}
+addUserHotelList();
 
-        control_group.innerText = "Nothing here yet";
-        if (hotelList) {
-            control_group.innerText = "";
-            hotelList.forEach(element => {
-                console.log(element.hotelName);
-                control_group.insertAdjacentHTML('beforeend', getListElem(element.hotelName, element.hotelLocation));
-            });
-            if (hotelList.length == 0) {
-                control_group.innerText = "Nothing here yet";
-            }
+async function handleUserHotelsLoad(value) {
+    hotelList = value.locations;
+    var control_group = document.getElementById("control-group");
+
+    control_group.innerHTML = "Nothing here yet";
+    if (hotelList) {
+        control_group.innerHTML = "";
+        hotelList.forEach(element => {
+            console.log(element.hotelName);
+            let hotel_list_elem = getListElem(element.hotelName, element.hotelLocation, element.bookingLink);
+            uncheckCheckbox(hotel_list_elem);
+            control_group.append(hotel_list_elem);
+        });
+        if (hotelList.length == 0) {
+            control_group.innerHTML = "Nothing here yet";
         }
-        addRemoveButton();
-    });
+    }
+    addRemoveButton();
 }
-addLocationList();
 
 function addRemoveButton() {
     var remove = document.getElementsByClassName("remove");

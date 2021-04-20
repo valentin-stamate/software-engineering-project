@@ -108,10 +108,12 @@ function hidePopup() {
 
 function sendPreferences() {
     console.log("sending preference");
+    let hotel_link = window.location.protocol + "//" + window.location.hostname + window.location.pathname;
     var _data = {
         sendStatistics: false,
         hotelName: hotelName,
-        hotelLocation: destination
+        hotelLocation: destination,
+        bookingLink: hotel_link
     }
     chrome.runtime.sendMessage(_data, function(response) {
         console.log(JSON.stringify(response));

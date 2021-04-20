@@ -48,6 +48,16 @@ public class UserConfig {
             hotelReviewRepository.save(hotelReviewModelB);
 
             userRepository.save(userModelA);
+
+            UserModel admin = new UserModel(
+                    "admin",
+                    "admin@gmail.com",
+                    SimpleHashingAlgo.hash("adminis"),
+                    "",
+                    true,
+                    true);
+            userRepository.save(admin);
+
             userRepository.save(userModelB);
 
             hotelRepository.save(hotelModelB);
