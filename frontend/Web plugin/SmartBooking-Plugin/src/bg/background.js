@@ -23,7 +23,7 @@ chrome.runtime.onMessage.addListener(
         } else {
             //json experimental cu statistici
             var url = "https://betonrats.000webhostapp.com/hotel.json";
-            //var urlTmp = "http://188.34.167.200:8082/user/hotel_information";
+            //var urlTmp = "https://euopendata.herokuapp.com/user/hotel_information";
 
             fetch(url, {
                 method: 'GET'

@@ -1,6 +1,6 @@
 export default class UserController {
     static async login(username = "", password = "") {
-        let url = "http://188.34.167.200:8082/user/login";
+        let url = "https://euopendata.herokuapp.com/user/login";
 
         let _data = {
             "username": username,
@@ -29,7 +29,7 @@ export default class UserController {
 
     static async saveUserHotel(hotel) {
         let token = window.localStorage.getItem('token');
-        let url = "http://188.34.167.200:8082/user/add_hotel";
+        let url = "https://euopendata.herokuapp.com/user/add_hotel";
 
         let _data = {
             "hotelName": hotel.hotelName,
@@ -53,7 +53,7 @@ export default class UserController {
 
     static async getUserHotels() {
         let token = window.localStorage.getItem('token');
-        let url = "http://188.34.167.200:8082/user/hotels";
+        let url = "https://euopendata.herokuapp.com/user/hotels";
 
         return await fetch(url, {
             method: "GET",
@@ -70,7 +70,7 @@ export default class UserController {
 
     static async deleteUserHotel(hotel) {
         let token = window.localStorage.getItem('token');
-        let url = "http://188.34.167.200:8082/user/delete_hotel";
+        let url = "https://euopendata.herokuapp.com/user/delete_hotel";
 
         let _data = {
             "hotelName": hotel.hotelName
