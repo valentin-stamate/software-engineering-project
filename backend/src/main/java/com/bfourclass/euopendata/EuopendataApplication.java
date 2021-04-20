@@ -13,7 +13,7 @@ public class EuopendataApplication {
         Thread thread = new Thread(ins);
         thread.start();
 
-        Thread.sleep(5000);
+        Thread.sleep(4000);
 
         SpringApplication.run(EuopendataApplication.class, args);
     }
