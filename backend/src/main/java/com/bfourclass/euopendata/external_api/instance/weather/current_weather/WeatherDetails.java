@@ -1,4 +1,4 @@
-package com.bfourclass.euopendata.external_api.instance.weather;
+package com.bfourclass.euopendata.external_api.instance.weather.current_weather;
 
 public class WeatherDetails {
     public int id;

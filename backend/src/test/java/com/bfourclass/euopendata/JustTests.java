@@ -7,7 +7,7 @@ public class JustTests {
 
     @Test
     public void test() {
-        System.out.println(ExternalAPI.getCovidInformation("iasi"));
+//        System.out.println(ExternalAPI.getForecast("Iasi"));
     }
 
 }

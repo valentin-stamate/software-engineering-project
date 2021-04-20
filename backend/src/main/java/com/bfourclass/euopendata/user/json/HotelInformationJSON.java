@@ -2,7 +2,7 @@ package com.bfourclass.euopendata.user.json;
 
 import com.bfourclass.euopendata.external_api.instance.aqicn_data.AirPollution;
 import com.bfourclass.euopendata.external_api.instance.covid_information.CovidInformationJSON;
-import com.bfourclass.euopendata.external_api.instance.weather.Weather;
+import com.bfourclass.euopendata.external_api.instance.weather.current_weather.Weather;
 import com.bfourclass.euopendata.hotel.json.HotelJSON;
 
 public class HotelInformationJSON {

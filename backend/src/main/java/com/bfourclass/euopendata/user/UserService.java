@@ -4,12 +4,10 @@ import com.bfourclass.euopendata.email.EmailService;
 import com.bfourclass.euopendata.external_api.ExternalAPI;
 import com.bfourclass.euopendata.external_api.instance.aqicn_data.AirPollution;
 import com.bfourclass.euopendata.external_api.instance.covid_information.CovidInformationJSON;
-import com.bfourclass.euopendata.external_api.instance.weather.Weather;
+import com.bfourclass.euopendata.external_api.instance.weather.current_weather.Weather;
 import com.bfourclass.euopendata.hotel.HotelModel;
 import com.bfourclass.euopendata.hotel.HotelRepository;
 import com.bfourclass.euopendata.hotel.json.HotelJSON;
-import com.bfourclass.euopendata.hotel_review.HotelReviewModel;
-import com.bfourclass.euopendata.hotel_review.json.HotelReviewJSONUpdateRequest;
 import com.bfourclass.euopendata.requests.APIError;
 import com.bfourclass.euopendata.security.StringGenerator;
 import com.bfourclass.euopendata.user.auth.SecurityContext;
@@ -18,7 +16,6 @@ import com.bfourclass.euopendata.user.json.UserLoginJSONRequest;
 import com.bfourclass.euopendata.user.json.UserRegisterJSONRequest;
 import com.bfourclass.euopendata.user_verification.UserVerification;
 import com.bfourclass.euopendata.user_verification.UserVerificationService;
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,8 +23,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @Service
 public class UserService {
