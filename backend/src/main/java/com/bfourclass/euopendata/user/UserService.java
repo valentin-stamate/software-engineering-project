@@ -122,7 +122,7 @@ public class UserService {
     public HotelInformationJSON getHotelInformation(HotelModel hotelModel) {
         HotelJSON hotelJSON = new HotelJSON(hotelModel.getHotelName(), hotelModel.getLocationName(), hotelModel.getAverageRating(), hotelModel.getVotes());
         Weather weather = ExternalAPI.getWeather(hotelJSON.locationName);
-        CovidInformationJSON covidInformation = ExternalAPI.getCovidInformation(hotelJSON.locationName);
+        CovidInformationJSON covidInformation = ExternalAPI.getCovidNews(hotelJSON.locationName);
         AirPollution airPollution = ExternalAPI.getAirPollution(hotelJSON.locationName);
 
         return new HotelInformationJSON(hotelJSON, weather, covidInformation, airPollution);

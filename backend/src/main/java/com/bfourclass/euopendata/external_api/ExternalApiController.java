@@ -1,5 +1,6 @@
 package com.bfourclass.euopendata.external_api;
 
+import com.bfourclass.euopendata.external_api.instance.covid_statistics.CovidStatistics;
 import com.bfourclass.euopendata.external_api.instance.weather.week_weather.Forecast;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +25,19 @@ public class ExternalApiController {
         }
 
         return new ResponseEntity<>(forecasts, HttpStatus.OK);
+    }
+
+    @GetMapping("/covid_statistics")
+    public ResponseEntity<Object> getLocationCovidStatistics(@RequestParam(name = "countries") String countriesString) {
+        String[] countries = countriesString.split(",");
+
+        List<CovidStatistics> covidStatistics = new ArrayList<>();
+
+        for (String country : countries) {
+            covidStatistics.add(ExternalAPI.getCovidStatistics(country));
+        }
+
+        return new ResponseEntity<>(covidStatistics, HttpStatus.OK);
     }
 
 }

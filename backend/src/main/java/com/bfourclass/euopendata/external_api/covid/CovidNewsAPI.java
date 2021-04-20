@@ -1,4 +1,4 @@
-package com.bfourclass.euopendata.external_api;
+package com.bfourclass.euopendata.external_api.covid;
 
 import com.bfourclass.euopendata.external_api.instance.covid_information.CovidInformation;
 import com.bfourclass.euopendata.external_api.instance.covid_information.CovidInformationJSON;
@@ -10,9 +10,9 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import java.io.IOException;
 
-abstract class CovidInformationAPI {
+public abstract class CovidNewsAPI {
 
-    protected static CovidInformationJSON requestCovidInformation(String locationName) {
+    public static CovidInformationJSON requestCovidInformation(String locationName) {
         String requestURL = "https://www.googleapis.com/customsearch/v1?key=" + Secrets.googleCustomSearchKey + "&cx=183e9c932cf280453&q=" + locationName + "%20covid";
 
         ObjectMapper mapper = new ObjectMapper();
