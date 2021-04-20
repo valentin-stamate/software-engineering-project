@@ -111,7 +111,8 @@ function sendPreferences() {
     var _data = {
         sendStatistics: false,
         hotelName: hotelName,
-        hotelLocation: destination
+        hotelLocation: destination,
+        bookingLink: window.location.href
     }
     chrome.runtime.sendMessage(_data, function(response) {
         console.log(JSON.stringify(response));

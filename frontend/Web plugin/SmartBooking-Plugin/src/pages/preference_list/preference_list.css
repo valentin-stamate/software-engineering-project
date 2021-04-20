@@ -1,3 +1,15 @@
+.b-contain a {
+	cursor:pointer;
+	text-decoration: none;
+	color:black;
+	padding:5px;
+}
+
+.b-contain a:hover {
+	background-color: #ffffff90;
+	text-decoration: underline;
+}
+
 .b-contain *, .b-contain *::before, .b-contain *::after {
 	box-sizing: content-box !important;
 }

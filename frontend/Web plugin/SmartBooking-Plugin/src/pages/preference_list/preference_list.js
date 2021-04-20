@@ -21,12 +21,12 @@ function uncheckCheckbox(listElem) {
     listElem.children[3].removeAttribute("checked");
 }
 
-function getListElem(element = "hotel name", adress = "hotel adress") {
+function getListElem(element = "hotel name", adress = "hotel adress", link = "#") {
     let hotel_list_elem = document.createElement("div");
     hotel_list_elem.classList.add("b-contain");
     let list_elem =
         `<span class="remove">X</span>
-	<span class="hotel-name">${element}</span>
+    <a href=${link} target="_blank" rel="noopener"><span class="hotel-name">${element}</span></a>
 	<span class="hotel-adress" style="display:none">${adress}</span>
 	<input type="checkbox" onclick="return false">
 <div class="b-input"></div>`
@@ -50,7 +50,7 @@ async function handleUserHotelsLoad(value) {
         control_group.innerHTML = "";
         hotelList.forEach(element => {
             console.log(element.hotelName);
-            let hotel_list_elem = getListElem(element.hotelName, element.hotelLocation);
+            let hotel_list_elem = getListElem(element.hotelName, element.hotelLocation, element.bookingLink);
             uncheckCheckbox(hotel_list_elem);
             control_group.append(hotel_list_elem);
         });
