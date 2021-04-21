@@ -77,16 +77,15 @@ function addStatistics(_stats) {
 }
 
 // Experimental function
-function getStatistics() {
+async function getStatistics() {
     console.log("requesting statistics");
     var _data = {
         sendStatistics: true,
-        hotelName: hotelName,
-        hotelLocation: destination
+        hotelLocation: destination,
     }
     chrome.runtime.sendMessage(_data, function(response) {
         console.log(response);
-        addStatistics(response);
+        //addStatistics(response);
     });
 }
 getStatistics();
@@ -109,7 +108,6 @@ function hidePopup() {
 function sendPreferences() {
     console.log("sending preference");
     let hotel_path = window.location.pathname;
-    alert(hotel_id);
     var _data = {
         sendStatistics: false,
         hotelName: hotelName,

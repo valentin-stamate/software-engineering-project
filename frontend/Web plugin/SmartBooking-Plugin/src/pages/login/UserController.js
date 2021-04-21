@@ -18,7 +18,7 @@ export default class UserController {
             return handleLoginResponse(response); 
         }).catch(err => {
             console.log(err);
-            return err;
+            return false;
         });
     }
 
@@ -40,10 +40,10 @@ export default class UserController {
                 "Authorization": token
             }
         }).then(response => { 
-            return handleSaveResponse(response); 
+            return handleSaveResponse(response);
         }).catch(err => {
             console.log(err);
-            return err;
+            return false;
         });
     }
 
@@ -61,6 +61,7 @@ export default class UserController {
             return handleLoadResponse(response); 
         }).catch(err => {
             console.log(err);
+            return {message:"Error loading user hotel list"};
         });
     }
 
@@ -83,6 +84,7 @@ export default class UserController {
             return handleDeleteResponse(response);
         }).catch(err => {
             console.log(err);
+            return false;
         });
     }
 }
@@ -121,10 +123,10 @@ async function handleLoadResponse(response) {
     return await response.json().then(function(json) {
         if (response.status == 200) {
             alert(JSON.stringify(json));
-            return JSON.stringify(json);
+            return json;
         } else {
             showAlert("Failed to get the hotels - " + json.message);
-            return JSON.stringify(json);
+            return json;
         }
     });
 }
