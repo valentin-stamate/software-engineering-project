@@ -3,7 +3,7 @@ import UserController from './UserController.js';
 document.getElementById("send-button").addEventListener("click", sendLoginRequest);
 
 async function sendLoginRequest(){
-	var username = document.getElementById("username").value;
+	var username = document.getElementById("usr_email").value;
 	var password = document.getElementById("password").value;
 	if (!(username === "" || password === "")) {
 		var msg = await UserController.login(username, password);

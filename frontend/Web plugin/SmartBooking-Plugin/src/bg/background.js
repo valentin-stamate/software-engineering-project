@@ -1,4 +1,5 @@
 var locations = [];
+var host_url = `https://euopendata.herokuapp.com/`;
 chrome.runtime.onInstalled.addListener(() => {
     chrome.storage.sync.set({ "locations": locations });
 });
@@ -28,7 +29,6 @@ chrome.runtime.onMessage.addListener(
             };
             //json experimental cu statistici
             var url = "https://betonrats.000webhostapp.com/hotel.json";
-            //var urlTmp = "https://euopendata.herokuapp.com/user/hotel_information";
 
             fetch(url, {
                 method: 'GET'

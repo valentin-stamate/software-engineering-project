@@ -3,7 +3,6 @@
   "version": "0.5.1",
   "manifest_version": 2,
   "description": "Get various additional details about hotels on booking.com",
-  "homepage_url": "http://extensionizr.com",
   "icons": {
     "16": "icons/logo16.png",
     "48": "icons/logo48.png",
@@ -26,7 +25,7 @@
     "cookies",
     "tabs",
     "https://www.booking.com/*",
-    "http://188.34.167.200:8082/*",
+    "https://euopendata.herokuapp.com/*",
 	"https://betonrats.000webhostapp.com/*"
   ],
   "content_scripts": [
