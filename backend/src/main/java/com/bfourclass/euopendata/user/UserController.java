@@ -32,8 +32,8 @@ public class UserController {
         return "Hello there. we're an API, not much to see here";
     }
 
-    @PostMapping("user/add_hotel")
-    public ResponseEntity<Object> addLocationToUser(@RequestBody HotelJSON request, @RequestHeader(name = "Authorization") String token) {
+    @PostMapping("user/add_hotels")
+    public ResponseEntity<Object> addLocationToUser(@RequestBody List<HotelJSON> request, @RequestHeader(name = "Authorization") String token) {
 
         ResponseEntity<Object> errorResponse = userService.checkUserToken(token);
         if (errorResponse != null) {
@@ -42,18 +42,17 @@ public class UserController {
 
         UserModel userModel = userService.getUserFromToken(token);
 
-        /* TODO the new identifier */
-        if (!userModel.hasHotel(request.hotelName)) {
-            HotelModel hotelModel = new HotelModel(request.identifier, request.hotelName, request.locationName);
+        for (HotelJSON hotelJSON : request) {
+            if (!userModel.hasHotel(hotelJSON.hotelName)) {
+                HotelModel hotelModel = new HotelModel(hotelJSON.identifier, hotelJSON.hotelName, hotelJSON.locationName);
 
-            hotelService.createHotelIfNotExists(hotelModel);
+                hotelService.createHotelIfNotExists(hotelModel);
 
-            userService.addHotel(userModel, hotelModel);
-        } else {
-            return new ResponseEntity<>(new APIError("Hotel is already saved"), HttpStatus.NOT_ACCEPTABLE);
+                userService.addHotel(userModel, hotelModel);
+            }
         }
 
-        return new ResponseEntity<>(new APISuccess("Location added successfully"), HttpStatus.OK);
+        return new ResponseEntity<>(new APISuccess("Locations added successfully"), HttpStatus.OK);
     }
 
     @DeleteMapping("user/delete_hotel")
