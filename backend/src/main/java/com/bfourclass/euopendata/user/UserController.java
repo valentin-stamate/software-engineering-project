@@ -11,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.bfourclass.euopendata.requests.APIError;
 import com.bfourclass.euopendata.requests.APISuccess;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -42,6 +44,8 @@ public class UserController {
 
         UserModel userModel = userService.getUserFromToken(token);
 
+        List<HotelJSON> alreadySavedHotels = new ArrayList<>();
+
         for (HotelJSON hotelJSON : request) {
             if (!userModel.hasHotel(hotelJSON.hotelName)) {
                 HotelModel hotelModel = new HotelModel(hotelJSON.identifier, hotelJSON.hotelName, hotelJSON.locationName);
@@ -49,7 +53,21 @@ public class UserController {
                 hotelService.createHotelIfNotExists(hotelModel);
 
                 userService.addHotel(userModel, hotelModel);
+            } else {
+                alreadySavedHotels.add(hotelJSON);
             }
+        }
+
+        if (!alreadySavedHotels.isEmpty()) {
+            StringBuilder responseError = new StringBuilder();
+
+            for (int i = 0; i < alreadySavedHotels.size(); i++) {
+                HotelJSON hotelJSON = alreadySavedHotels.get(i);
+                String append = i == alreadySavedHotels.size() - 1 ? "</b>" : "</b>, ";
+                responseError.append("<b>").append(hotelJSON.hotelName).append(append);
+            }
+
+            return new ResponseEntity<>(new APIError(String.format("Hotels: %s are already saved", responseError)), HttpStatus.NOT_ACCEPTABLE);
         }
 
         return new ResponseEntity<>(new APISuccess("Locations added successfully"), HttpStatus.OK);
