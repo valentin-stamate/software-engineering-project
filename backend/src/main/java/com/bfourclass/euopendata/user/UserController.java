@@ -136,6 +136,12 @@ public class UserController {
 
         userService.createUserByForm(form);
 
+        UserModel userModel = userService.getUserByLogin(form.email);
+
+        if (!userService.sendUserActivationEmail(userModel)) {
+            return new ResponseEntity<>(new APIError("Error sending verification email"), HttpStatus.NOT_ACCEPTABLE);
+        }
+
         return new ResponseEntity<>(new APISuccess("Registration successful"), HttpStatus.OK);
     }
 

@@ -52,8 +52,6 @@ public class UserService {
         UserModel userModel = registerForm.toUser();
 
         userRepository.save(userModel);
-
-        sendUserActivationEmail(userModel);
     }
 
     public boolean sendUserActivationEmail(UserModel userModel) {
