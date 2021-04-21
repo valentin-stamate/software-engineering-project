@@ -126,7 +126,11 @@ public class UserController {
         }
 
         if (userService.userExists(form.username)) {
-            return new ResponseEntity<>(new APIError("User already exists"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new APIError("Username is taken"), HttpStatus.BAD_REQUEST);
+        }
+
+        if (userService.userExists(form.email)) {
+            return new ResponseEntity<>(new APIError("Username already used"), HttpStatus.BAD_REQUEST);
         }
 
         userService.createUserByForm(form);
