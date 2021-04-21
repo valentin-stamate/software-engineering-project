@@ -41,5 +41,5 @@ public class ExternalApiController {
     }
 
     /* TODO, location data */
-
+    /* TODO add current weather */
 }
