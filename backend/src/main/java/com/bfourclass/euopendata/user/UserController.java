@@ -106,12 +106,13 @@ public class UserController {
         UserModel userModel = userService.getUserByLogin(request.login);
 
         if (!userModel.checkUserPassword(request.password)) {
-            return new ResponseEntity<>(new APIError("Invalid password"), HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(new APIError("Wrong password"), HttpStatus.UNAUTHORIZED);
         }
 
         if (!userModel.isActivated()) {
             return new ResponseEntity<>(new APIError("Account not activated"), HttpStatus.UNAUTHORIZED);
         }
+
         String token = userService.loginUserReturnToken(userModel.getUsername());
 
         return new ResponseEntity<>(new UserJSON(userModel.getUsername(), userModel.getEmail(), userModel.getProfilePhotoLink(), token), HttpStatus.OK);
@@ -130,12 +131,36 @@ public class UserController {
         }
 
         if (userService.userExists(form.email)) {
-            return new ResponseEntity<>(new APIError("Username already used"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new APIError("Email already used"), HttpStatus.BAD_REQUEST);
         }
 
         userService.createUserByForm(form);
 
         return new ResponseEntity<>(new APISuccess("Registration successful"), HttpStatus.OK);
+    }
+
+    @PostMapping(value = "user/resent_activation_token")
+    public ResponseEntity<Object> resendActivationToken(@RequestBody UserLoginJSON request) {
+
+        if (!userService.userExists(request.login)) {
+            return new ResponseEntity<>(new APIError("User does not exist"), HttpStatus.BAD_REQUEST);
+        }
+
+        UserModel userModel = userService.getUserByLogin(request.login);
+
+        if (!userModel.checkUserPassword(request.password)) {
+            return new ResponseEntity<>(new APIError("Wrong password"), HttpStatus.UNAUTHORIZED);
+        }
+
+        if (userModel.isActivated()) {
+            return new ResponseEntity<>(new APIError("Your account is already activated"), HttpStatus.UNAUTHORIZED);
+        }
+
+        if (!userService.sendUserActivationEmail(userModel)) {
+            return new ResponseEntity<>(new APIError("Error sending email"), HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<>(new APISuccess("Verification token resend"), HttpStatus.OK);
     }
 
     @GetMapping(value = "user/verify")

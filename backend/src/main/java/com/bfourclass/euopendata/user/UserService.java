@@ -7,10 +7,12 @@ import com.bfourclass.euopendata.hotel.json.HotelJSON;
 import com.bfourclass.euopendata.requests.APIError;
 import com.bfourclass.euopendata.security.StringGenerator;
 import com.bfourclass.euopendata.user.auth.SecurityContext;
+import com.bfourclass.euopendata.user.json.UserJSON;
 import com.bfourclass.euopendata.user.json.UserLoginJSON;
 import com.bfourclass.euopendata.user.json.UserRegisterJSONRequest;
 import com.bfourclass.euopendata.user_verification.UserVerification;
 import com.bfourclass.euopendata.user_verification.UserVerificationService;
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -49,13 +51,23 @@ public class UserService {
     public void createUserByForm(UserRegisterJSONRequest registerForm) {
         UserModel userModel = registerForm.toUser();
 
+        userRepository.save(userModel);
+
+        sendUserActivationEmail(userModel);
+    }
+
+    public boolean sendUserActivationEmail(UserModel userModel) {
+        String activationToken = generateUserActivationToken(userModel);
+        return emailService.sendEmailVerificationEmail(userModel.getUsername(), userModel.getEmail(), activationToken);
+    }
+
+    public String generateUserActivationToken(UserModel userModel) {
         String verificationKey = StringGenerator.generate();
         UserVerification userVerification = new UserVerification(userModel, verificationKey);
 
         userVerificationService.save(userVerification);
 
-        userRepository.save(userModel);
-        emailService.sendEmailVerificationEmail(userModel.getUsername(), userModel.getEmail(), verificationKey);
+        return verificationKey;
     }
 
     public void makeAdmin(String username) {

@@ -29,8 +29,6 @@ public class UserVerificationService {
             return false;
         }
 
-        System.out.println(userVerification);
-
         UserModel userModel = userVerification.userModel;
         userModel.activateUser();
 

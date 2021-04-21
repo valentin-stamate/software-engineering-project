@@ -2,6 +2,7 @@ package com.bfourclass.euopendata.email;
 
 import com.bfourclass.euopendata.globals.Globals;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
@@ -18,7 +19,7 @@ public class EmailService {
         this.emailSender = emailSender;
     }
 
-    public void sendEmailVerificationEmail(String username, String destination, String key) {
+    public boolean sendEmailVerificationEmail(String username, String destination, String key) {
         MimeMessage mail = emailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(mail);
 
@@ -32,8 +33,16 @@ public class EmailService {
                     true);
         } catch (MessagingException e) {
             e.printStackTrace();
+            return false;
         }
 
-        emailSender.send(mail);
+        try {
+            emailSender.send(mail);
+        } catch (MailException e) {
+            e.printStackTrace();
+            return false;
+        }
+
+        return true;
     }
 }
