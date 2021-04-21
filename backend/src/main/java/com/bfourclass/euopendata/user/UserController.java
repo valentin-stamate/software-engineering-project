@@ -2,6 +2,7 @@ package com.bfourclass.euopendata.user;
 
 import com.bfourclass.euopendata.hotel.HotelModel;
 import com.bfourclass.euopendata.hotel.HotelService;
+import com.bfourclass.euopendata.hotel.json.HotelJSON;
 import com.bfourclass.euopendata.user.json.*;
 import com.bfourclass.euopendata.user_verification.UserVerificationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.bfourclass.euopendata.requests.APIError;
 import com.bfourclass.euopendata.requests.APISuccess;
-
 import java.util.List;
 
 @RestController
@@ -33,7 +33,7 @@ public class UserController {
     }
 
     @PostMapping("user/add_hotel")
-    public ResponseEntity<Object> addLocationToUser(@RequestParam(name = "hotel_name") String hotelName, @RequestParam(name = "location_name") String locationName, @RequestHeader(name = "Authorization") String token) {
+    public ResponseEntity<Object> addLocationToUser(@RequestBody HotelJSON request, @RequestHeader(name = "Authorization") String token) {
 
         ResponseEntity<Object> errorResponse = userService.checkUserToken(token);
         if (errorResponse != null) {
@@ -42,8 +42,9 @@ public class UserController {
 
         UserModel userModel = userService.getUserFromToken(token);
 
-        if (!userModel.hasHotel(hotelName)) {
-            HotelModel hotelModel = new HotelModel(hotelName, locationName);
+        /* TODO the new identifier */
+        if (!userModel.hasHotel(request.hotelName)) {
+            HotelModel hotelModel = new HotelModel(request.identifier, request.hotelName, request.locationName);
 
             hotelService.createHotelIfNotExists(hotelModel);
 
@@ -56,16 +57,16 @@ public class UserController {
     }
 
     @DeleteMapping("user/delete_hotel")
-    public ResponseEntity<Object> deleteLocationFromUser(@RequestParam(name = "hotel_name") String hotelName, @RequestHeader(name = "Authorization") String token) {
+    public ResponseEntity<Object> deleteLocationFromUser(@RequestParam(name = "hotel_id") long id, @RequestHeader(name = "Authorization") String token) {
         ResponseEntity<Object> errorResponse = userService.checkUserToken(token);
         if (errorResponse != null) {
             return errorResponse;
         }
 
         UserModel userModel = userService.getUserFromToken(token);
-        HotelModel hotelModel = hotelService.getHotelByName(hotelName);
+        HotelModel hotelModel = hotelService.getHotelById(id);
 
-        if (userModel.hasHotel(hotelName)) {
+        if (userModel.hasHotel(id)) {
             userService.deleteUserHotel(userModel, hotelModel);
             return new ResponseEntity<>("Hotel deleted successfully", HttpStatus.OK);
         }
@@ -98,7 +99,7 @@ public class UserController {
 
         String token = userService.loginUserReturnToken(request);
 
-        return new ResponseEntity<>(new UserJSONResponse(userModel.getUsername(), userModel.getEmail(), userModel.getProfilePhotoLink(), token), HttpStatus.OK);
+        return new ResponseEntity<>(new UserJSON(userModel.getUsername(), userModel.getEmail(), userModel.getProfilePhotoLink(), token), HttpStatus.OK);
     }
 
     @PostMapping(value = "user/register")
@@ -135,22 +136,14 @@ public class UserController {
 
         UserModel userModel = userService.getUserFromToken(token);
 
-        List<HotelInformationJSON> response = userService.getHotelInformation(userModel);
+        List<HotelJSON> response = userService.getUserHotels(userModel);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @GetMapping("user/hotel_information")
-    public ResponseEntity<Object> getInformation(@RequestParam String hotelName) {
-        HotelModel hotelModel = hotelService.getHotelByName(hotelName);
-
-        HotelInformationJSON response = userService.getHotelInformation(hotelModel);
-
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
-
+    /* User as admin */
     @PostMapping("admin/add_hotel")
-    public ResponseEntity<Object> addLocationAdmin(@RequestBody String hotelName, @RequestBody String locationName, @RequestHeader(name = "Authorization") String token) {
+    public ResponseEntity<Object> addLocationAdmin(@RequestParam HotelJSON request, @RequestHeader(name = "Authorization") String token) {
 
         ResponseEntity<Object> errorResponse = userService.checkUserToken(token);
         if (errorResponse != null) {
@@ -159,8 +152,8 @@ public class UserController {
 
         UserModel userModel = userService.getUserFromToken(token);
 
-        if (!userModel.hasHotel(hotelName)) {
-            HotelModel hotelModel = new HotelModel(hotelName, locationName);
+        if (!userModel.hasHotel(request.hotelName)) {
+            HotelModel hotelModel = new HotelModel(request.identifier, request.hotelName, request.locationName);
 
             hotelService.createHotelIfNotExists(hotelModel);
 
@@ -173,14 +166,14 @@ public class UserController {
     }
 
     @DeleteMapping("admin/delete_hotel")
-    public ResponseEntity<Object> deleteLocationAdmin(@RequestBody DeleteHotelJSONRequest request, @RequestHeader(name = "Authorization") String token, String username) {
+    public ResponseEntity<Object> deleteLocationAdmin(@RequestBody HotelJSON request, @RequestHeader(name = "Authorization") String token, String username) {
         ResponseEntity<Object> errorResponse = userService.checkUserToken(token);
         if (errorResponse != null) {
             return errorResponse;
         }
 
         UserModel userModel = userService.getUserByUsername(username);
-        HotelModel hotelModel = hotelService.getHotelByName(request.hotelName);
+        HotelModel hotelModel = hotelService.getHotelById(request.id);
 
         if (userModel.hasHotel(request.hotelName)) {
             userService.deleteUserHotel(userModel, hotelModel);

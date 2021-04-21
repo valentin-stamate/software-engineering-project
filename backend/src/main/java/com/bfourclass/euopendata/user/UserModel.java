@@ -2,7 +2,6 @@ package com.bfourclass.euopendata.user;
 
 import com.bfourclass.euopendata.hotel.HotelModel;
 import com.bfourclass.euopendata.hotel_review.HotelReviewModel;
-import com.bfourclass.euopendata.hotel_review.json.HotelReviewJSONUpdateRequest;
 import com.bfourclass.euopendata.security.SimpleHashingAlgo;
 
 import javax.persistence.*;
@@ -65,11 +64,21 @@ public class UserModel {
         return profilePhotoLink;
     }
 
-    public boolean hasHotel(String hotelName) {
+    public boolean hasHotel(long hotelId) {
         if (this.hotels.isEmpty())
             return false;
         for (HotelModel hotelModel : this.hotels) {
-            if (hotelModel.getHotelName().equals(hotelName))
+            if (hotelModel.getId() == hotelId)
+                return true;
+        }
+        return false;
+    }
+
+    public boolean hasHotel(String identity) {
+        if (this.hotels.isEmpty())
+            return false;
+        for (HotelModel hotelModel : this.hotels) {
+            if (hotelModel.getHotelName().equals(identity))
                 return true;
         }
         return false;

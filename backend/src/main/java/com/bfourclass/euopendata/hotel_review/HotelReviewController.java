@@ -2,9 +2,8 @@ package com.bfourclass.euopendata.hotel_review;
 
 import com.bfourclass.euopendata.hotel.HotelModel;
 import com.bfourclass.euopendata.hotel.HotelService;
+import com.bfourclass.euopendata.hotel_review.json.HotelNewReviewJSON;
 import com.bfourclass.euopendata.hotel_review.json.HotelReviewJSON;
-import com.bfourclass.euopendata.hotel_review.json.HotelReviewJSONRequest;
-import com.bfourclass.euopendata.hotel_review.json.HotelReviewJSONUpdateRequest;
 import com.bfourclass.euopendata.requests.APIError;
 import com.bfourclass.euopendata.requests.APISuccess;
 import com.bfourclass.euopendata.user.UserModel;
@@ -31,11 +30,11 @@ public class HotelReviewController {
     }
 
     @GetMapping("hotel/reviews")
-    public ResponseEntity<Object> getHotelReviews(@RequestParam String hotelName) {
+    public ResponseEntity<Object> getHotelReviews(@RequestParam(name = "hotel_id") long id) {
 
         List<HotelReviewJSON> hotelReviews = null;
 
-        HotelModel hotelModel = hotelService.getHotelByName(hotelName);
+        HotelModel hotelModel = hotelService.getHotelById(id);
 
         if (hotelModel != null) {
             hotelReviews = hotelModel.getReviewsAsJSON();
@@ -46,7 +45,7 @@ public class HotelReviewController {
     }
 
     @PostMapping("hotel/add_review")
-    public ResponseEntity<Object> addHotelReview(@RequestBody HotelReviewJSONRequest request, @RequestHeader(name = "Authorization") String token) {
+    public ResponseEntity<Object> addHotelReview(@RequestBody HotelNewReviewJSON request, @RequestHeader(name = "Authorization") String token) {
 
         ResponseEntity<Object> errorResponse = userService.checkUserToken(token);
         if (errorResponse != null) {
@@ -54,7 +53,7 @@ public class HotelReviewController {
         }
 
         UserModel userModel = userService.getUserFromToken(token);
-        HotelModel hotelModel = hotelService.getHotelByName(request.hotelName);
+        HotelModel hotelModel = hotelService.getHotelById(request.hotelId);
 
         if (hotelModel == null) {
             return new ResponseEntity<>(new APIError("Hotel doesn't exist"), HttpStatus.NOT_FOUND);
@@ -68,7 +67,7 @@ public class HotelReviewController {
     }
 
     @DeleteMapping("hotel/delete_review")
-    public ResponseEntity<Object> deleteHotelReview(@RequestParam Long reviewId, @RequestHeader(name = "Authorization") String token) {
+    public ResponseEntity<Object> deleteHotelReview(@RequestParam(name = "review_id") long reviewId, @RequestHeader(name = "Authorization") String token) {
 
         ResponseEntity<Object> errorResponse = userService.checkUserToken(token);
         if (errorResponse != null) {
@@ -92,7 +91,7 @@ public class HotelReviewController {
     }
 
     @PostMapping("hotel/update_review")
-    public ResponseEntity<Object> updateHotelReview(@RequestBody HotelReviewJSONUpdateRequest request, @RequestHeader(name = "Authorization") String token) {
+    public ResponseEntity<Object> updateHotelReview(@RequestBody HotelReviewJSON request, @RequestHeader(name = "Authorization") String token) {
 
         ResponseEntity<Object> errorResponse = userService.checkUserToken(token);
         if (errorResponse != null) {
@@ -100,7 +99,7 @@ public class HotelReviewController {
         }
 
         UserModel userModel = userService.getUserFromToken(token);
-        HotelReviewModel hotelReviewModel = hotelReviewService.getHotelReviewById(request.reviewId);
+        HotelReviewModel hotelReviewModel = hotelReviewService.getHotelReviewById(request.id);
 
         if (hotelReviewModel == null) {
             return new ResponseEntity<>(new APIError("This review doesn't exist"), HttpStatus.NOT_FOUND);
@@ -112,7 +111,6 @@ public class HotelReviewController {
 
         HotelModel hotelModel = hotelReviewModel.getHotel();
 
-        System.out.println("Aflkasjfas " + hotelReviewModel.getRating());
         hotelService.updateHotelReview(hotelModel, hotelReviewModel, request);
 
         return new ResponseEntity<>(new APISuccess("Review updated successfully"), HttpStatus.OK);

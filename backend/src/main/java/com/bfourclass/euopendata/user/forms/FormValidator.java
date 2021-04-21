@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 public abstract class FormValidator {
     private static final Pattern usernamePattern = Pattern.compile("(([_A-Za-z0-9]){4,15})");
     private static final Pattern emailPattern = Pattern.compile("([a-zA-Z0-9]+(?:[._+-][a-zA-Z0-9]+)*)@([a-zA-Z0-9]+(?:[.-][a-zA-Z0-9]+)*[.][a-zA-Z]{2,})");
-    private static final Pattern passPattern = Pattern.compile("([_a-zA-Z@#$%!]){6,66}");
+    private static final Pattern passPattern = Pattern.compile("([_a-zA-Z0-9@#$%!]){6,66}");
     private static final Pattern linkPattern = Pattern.compile("(http|https)://(www).([a-z.]*)?(/[a-z1-9/]*)*\\??([&a-z1-9=]*)?");
 
     public static boolean isValidRegisterForm(UserRegisterJSONRequest registerForm) {

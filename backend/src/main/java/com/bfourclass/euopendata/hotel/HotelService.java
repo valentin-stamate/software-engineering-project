@@ -3,7 +3,7 @@ package com.bfourclass.euopendata.hotel;
 import com.bfourclass.euopendata.hotel.json.HotelJSON;
 import com.bfourclass.euopendata.hotel_review.HotelReviewModel;
 import com.bfourclass.euopendata.hotel_review.HotelReviewRepository;
-import com.bfourclass.euopendata.hotel_review.json.HotelReviewJSONUpdateRequest;
+import com.bfourclass.euopendata.hotel_review.json.HotelReviewJSON;
 import com.bfourclass.euopendata.user.UserModel;
 import com.bfourclass.euopendata.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,16 +35,12 @@ public class HotelService {
         return hotelRepository.getHotelByName(hotelName) != null;
     }
 
-    public HotelModel getHotelByName(String hotelName) {
-        return hotelRepository.getHotelByName(hotelName);
-    }
-
     public List<HotelJSON> getHotels() {
         List<HotelModel> hotelModels = hotelRepository.getAll();
         List<HotelJSON> hotelJSONList = new ArrayList<>();
 
         for (HotelModel hotelModel : hotelModels) {
-            hotelJSONList.add(new HotelJSON(hotelModel.getHotelName(), hotelModel.getLocationName(), hotelModel.getAverageRating(), hotelModel.getVotes()));
+            hotelJSONList.add(new HotelJSON(hotelModel.getId(), hotelModel.getIdentifier(), hotelModel.getHotelName(), hotelModel.getLocationName(), hotelModel.getAverageRating(), hotelModel.getVotes()));
         }
 
         return hotelJSONList;
@@ -79,14 +75,22 @@ public class HotelService {
         return true;
     }
 
-    public void updateHotelReview(HotelModel hotelModel, HotelReviewModel oldReviewModel, HotelReviewJSONUpdateRequest request) {
+    public void updateHotelReview(HotelModel hotelModel, HotelReviewModel oldReviewModel, HotelReviewJSON request) {
         hotelModel.updateHotelReviewNumber(oldReviewModel.getRating(), true);
-        hotelModel.updateHotelReviewNumber(request.rating, false);
+        hotelModel.updateHotelReviewNumber(request.userRating, false);
 
-        oldReviewModel.setReviewMessage(request.message);
-        oldReviewModel.setRating(request.rating);
+        oldReviewModel.setReviewMessage(request.reviewMessage);
+        oldReviewModel.setRating(request.userRating);
 
         hotelReviewRepository.save(oldReviewModel);
         hotelRepository.save(hotelModel);
+    }
+
+    public HotelModel getHotelById(long id) {
+        if (hotelRepository.findById(id).isPresent()) {
+            return hotelRepository.findById(id).get();
+        }
+
+        return null;
     }
 }

@@ -1,17 +1,12 @@
 package com.bfourclass.euopendata.user;
 
 import com.bfourclass.euopendata.email.EmailService;
-import com.bfourclass.euopendata.external_api.ExternalAPI;
-import com.bfourclass.euopendata.external_api.instance.aqicn_data.AirPollution;
-import com.bfourclass.euopendata.external_api.instance.covid_information.CovidInformationJSON;
-import com.bfourclass.euopendata.external_api.instance.weather.current_weather.Weather;
 import com.bfourclass.euopendata.hotel.HotelModel;
 import com.bfourclass.euopendata.hotel.HotelRepository;
 import com.bfourclass.euopendata.hotel.json.HotelJSON;
 import com.bfourclass.euopendata.requests.APIError;
 import com.bfourclass.euopendata.security.StringGenerator;
 import com.bfourclass.euopendata.user.auth.SecurityContext;
-import com.bfourclass.euopendata.user.json.HotelInformationJSON;
 import com.bfourclass.euopendata.user.json.UserLoginJSONRequest;
 import com.bfourclass.euopendata.user.json.UserRegisterJSONRequest;
 import com.bfourclass.euopendata.user_verification.UserVerification;
@@ -107,30 +102,23 @@ public class UserService {
         return userRepository.findUserByUsername(username);
     }
 
-    public List<HotelInformationJSON> getHotelInformation(UserModel userModel) {
-        List<HotelInformationJSON> response = new ArrayList<>();
+    public List<HotelJSON> getUserHotels(UserModel userModel) {
+        List<HotelJSON> response = new ArrayList<>();
 
         List<HotelModel> hotels = userModel.getUserHotels();
 
         for (HotelModel hotelModel : hotels) {
-            response.add(getHotelInformation(hotelModel));
+            response.add(new HotelJSON(hotelModel.getId(), hotelModel.getIdentifier(), hotelModel.getHotelName(), hotelModel.getLocationName(), hotelModel.getAverageRating(), hotelModel.getVotes()));
         }
 
         return response;
     }
 
-    public HotelInformationJSON getHotelInformation(HotelModel hotelModel) {
-        HotelJSON hotelJSON = new HotelJSON(hotelModel.getHotelName(), hotelModel.getLocationName(), hotelModel.getAverageRating(), hotelModel.getVotes());
-        Weather weather = ExternalAPI.getWeather(hotelJSON.locationName);
-        CovidInformationJSON covidInformation = ExternalAPI.getCovidNews(hotelJSON.locationName);
-        AirPollution airPollution = ExternalAPI.getAirPollution(hotelJSON.locationName);
-
-        return new HotelInformationJSON(hotelJSON, weather, covidInformation, airPollution);
-    }
-
     public void addHotel(UserModel userModel, HotelModel hotelModel) {
         userModel.addHotel(hotelModel);
-        hotelRepository.save(hotelModel);
+        if (hotelRepository.findById(hotelModel.getId()).isEmpty()) {
+            hotelRepository.save(hotelModel);
+        }
     }
 
     public void deleteUserHotel(UserModel userModel, HotelModel hotelModel) {

@@ -8,7 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class EuopendataApplication {
 
     public static void main(String[] args) throws InterruptedException {
-        /* This thread is updating covid statistics one a day */
+        /* This thread is updating covid statistics once a day */
         CovidStatisticsAPI ins = new CovidStatisticsAPI();
         Thread thread = new Thread(ins);
         thread.start();

@@ -2,7 +2,6 @@ package com.bfourclass.euopendata.hotel;
 
 import com.bfourclass.euopendata.hotel_review.HotelReviewModel;
 import com.bfourclass.euopendata.hotel_review.json.HotelReviewJSON;
-import com.bfourclass.euopendata.hotel_review.json.HotelReviewJSONUpdateRequest;
 import com.bfourclass.euopendata.user.UserModel;
 
 import javax.persistence.*;
@@ -18,8 +17,11 @@ public class HotelModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(unique = true)
+    private String identifier;
+
     @OneToMany
-    private Set<HotelReviewModel> hotelReviews = new HashSet<>();
+    private final Set<HotelReviewModel> hotelReviews = new HashSet<>();
 
     @Column(unique = true)
     private String hotelName;
@@ -28,7 +30,8 @@ public class HotelModel {
     private double averageRating = 0.0D;
     private int votes = 0;
 
-    public HotelModel(String hotelName, String locationName) {
+    public HotelModel(String identifier, String hotelName, String locationName) {
+        this.identifier = identifier;
         this.hotelName = hotelName;
         this.locationName = locationName;
     }
@@ -108,4 +111,7 @@ public class HotelModel {
         return id;
     }
 
+    public String getIdentifier() {
+        return identifier;
+    }
 }

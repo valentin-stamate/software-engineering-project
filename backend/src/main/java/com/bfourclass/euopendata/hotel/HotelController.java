@@ -26,4 +26,6 @@ public class HotelController {
         return new ResponseEntity<>(hotels, HttpStatus.OK);
     }
 
+    /* TODO Hotel Information */
+
 }

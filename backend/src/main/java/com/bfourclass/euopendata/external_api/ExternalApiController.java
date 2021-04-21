@@ -40,4 +40,6 @@ public class ExternalApiController {
         return new ResponseEntity<>(covidStatistics, HttpStatus.OK);
     }
 
+    /* TODO, location data */
+
 }
