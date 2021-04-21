@@ -7,7 +7,7 @@ import com.bfourclass.euopendata.hotel.json.HotelJSON;
 import com.bfourclass.euopendata.requests.APIError;
 import com.bfourclass.euopendata.security.StringGenerator;
 import com.bfourclass.euopendata.user.auth.SecurityContext;
-import com.bfourclass.euopendata.user.json.UserLoginJSONRequest;
+import com.bfourclass.euopendata.user.json.UserLoginJSON;
 import com.bfourclass.euopendata.user.json.UserRegisterJSONRequest;
 import com.bfourclass.euopendata.user_verification.UserVerification;
 import com.bfourclass.euopendata.user_verification.UserVerificationService;
@@ -70,8 +70,8 @@ public class UserService {
         userRepository.save(userModel);
     }
 
-    public String loginUserReturnToken(UserLoginJSONRequest userLoginJSONRequest) {
-        return securityContext.authenticateUserReturnToken(userLoginJSONRequest.username);
+    public String loginUserReturnToken(UserLoginJSON userLoginJSON) {
+        return securityContext.authenticateUserReturnToken(userLoginJSON.username);
     }
 
     public boolean userExists(String username) {

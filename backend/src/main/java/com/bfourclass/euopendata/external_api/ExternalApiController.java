@@ -1,7 +1,6 @@
 package com.bfourclass.euopendata.external_api;
 
 import com.bfourclass.euopendata.external_api.instance.aqicn_data.AirPollution;
-import com.bfourclass.euopendata.external_api.instance.covid_news.CovidNews;
 import com.bfourclass.euopendata.external_api.instance.covid_news.CovidNewsJSON;
 import com.bfourclass.euopendata.external_api.instance.covid_statistics.CovidStatistics;
 import com.bfourclass.euopendata.external_api.instance.location.LocationStatisticsJSON;
@@ -10,14 +9,12 @@ import com.bfourclass.euopendata.external_api.instance.weather.current_weather.W
 import com.bfourclass.euopendata.external_api.instance.weather.week_weather.Forecast;
 import com.bfourclass.euopendata.hotel.HotelService;
 import com.bfourclass.euopendata.hotel.json.HotelJSON;
-import com.bfourclass.euopendata.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.ArrayList;
 import java.util.List;

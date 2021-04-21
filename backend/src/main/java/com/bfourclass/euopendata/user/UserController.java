@@ -92,28 +92,26 @@ public class UserController {
     }
 
     @PostMapping("user/login")
-    public ResponseEntity<Object> loginUser(@RequestBody UserLoginJSONRequest request) {
-        // check if form is valid
-        if (!request.isValid()) {
-            return new ResponseEntity<>(new APIError("Invalid login form"), HttpStatus.BAD_REQUEST);
+    public ResponseEntity<Object> loginUser(@RequestBody UserLoginJSON request) {
+
+        String errorMessage = request.isValid();
+        if (errorMessage != null) {
+            return new ResponseEntity<>(new APIError(errorMessage), HttpStatus.BAD_REQUEST);
         }
-        // check if user exists
+
         if (!userService.userExists(request.username)) {
             return new ResponseEntity<>(new APIError("User does not exist"), HttpStatus.BAD_REQUEST);
         }
 
         UserModel userModel = userService.getUserByUsername(request.username);
 
-        // check if password is correct
         if (!userModel.checkUserPassword(request.password)) {
             return new ResponseEntity<>(new APIError("Invalid password"), HttpStatus.UNAUTHORIZED);
         }
 
-        // check if account is activated
         if (!userModel.isActivated()) {
             return new ResponseEntity<>(new APIError("Account not activated"), HttpStatus.UNAUTHORIZED);
         }
-
         String token = userService.loginUserReturnToken(request);
 
         return new ResponseEntity<>(new UserJSON(userModel.getUsername(), userModel.getEmail(), userModel.getProfilePhotoLink(), token), HttpStatus.OK);
@@ -121,8 +119,10 @@ public class UserController {
 
     @PostMapping(value = "user/register")
     public ResponseEntity<Object> registerUser(@RequestBody UserRegisterJSONRequest form) {
-        if (!form.isValid()) {
-            return new ResponseEntity<>(new APIError("Invalid form data"), HttpStatus.BAD_REQUEST);
+
+        String errorMessage = form.isValid();
+        if (errorMessage != null) {
+            return new ResponseEntity<>(new APIError(errorMessage), HttpStatus.BAD_REQUEST);
         }
 
         if (userService.userExists(form.username)) {

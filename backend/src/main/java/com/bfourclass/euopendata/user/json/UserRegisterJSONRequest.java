@@ -21,7 +21,7 @@ public class UserRegisterJSONRequest {
         return new UserModel(username, email, SimpleHashingAlgo.hash(password), profilePhotoLink);
     }
 
-    public boolean isValid() {
+    public String isValid() {
         return FormValidator.isValidRegisterForm(this);
     }
 }
