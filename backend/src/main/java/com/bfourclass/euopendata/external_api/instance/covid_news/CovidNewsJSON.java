@@ -1,12 +1,12 @@
-package com.bfourclass.euopendata.external_api.instance.covid_information;
+package com.bfourclass.euopendata.external_api.instance.covid_news;
 
-public class CovidInformationJSON {
+public class CovidNewsJSON {
     public String title;
     public String link;
     public String displayLink;
     public String snippet;
 
-    public CovidInformationJSON(String title, String link, String displayLink, String snippet) {
+    public CovidNewsJSON(String title, String link, String displayLink, String snippet) {
         this.title = title;
         this.link = link;
         this.displayLink = displayLink;

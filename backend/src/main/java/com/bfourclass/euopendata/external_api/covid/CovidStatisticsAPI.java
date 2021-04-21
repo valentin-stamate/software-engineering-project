@@ -28,6 +28,7 @@ public class CovidStatisticsAPI implements Runnable {
         return null;
     }
 
+
     private void updateData() {
         downloadData();
 
