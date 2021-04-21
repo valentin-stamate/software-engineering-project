@@ -99,11 +99,11 @@ public class UserController {
             return new ResponseEntity<>(new APIError(errorMessage), HttpStatus.BAD_REQUEST);
         }
 
-        if (!userService.userExists(request.username)) {
+        if (!userService.userExists(request.login)) {
             return new ResponseEntity<>(new APIError("User does not exist"), HttpStatus.BAD_REQUEST);
         }
 
-        UserModel userModel = userService.getUserByUsername(request.username);
+        UserModel userModel = userService.getUserByLogin(request.login);
 
         if (!userModel.checkUserPassword(request.password)) {
             return new ResponseEntity<>(new APIError("Invalid password"), HttpStatus.UNAUTHORIZED);
@@ -112,7 +112,7 @@ public class UserController {
         if (!userModel.isActivated()) {
             return new ResponseEntity<>(new APIError("Account not activated"), HttpStatus.UNAUTHORIZED);
         }
-        String token = userService.loginUserReturnToken(request);
+        String token = userService.loginUserReturnToken(userModel.getUsername());
 
         return new ResponseEntity<>(new UserJSON(userModel.getUsername(), userModel.getEmail(), userModel.getProfilePhotoLink(), token), HttpStatus.OK);
     }
@@ -189,7 +189,7 @@ public class UserController {
             return errorResponse;
         }
 
-        UserModel userModel = userService.getUserByUsername(username);
+        UserModel userModel = userService.getUserByLogin(username);
         HotelModel hotelModel = hotelService.getHotelById(request.id);
 
         if (userModel.hasHotel(request.hotelName)) {

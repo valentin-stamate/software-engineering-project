@@ -59,23 +59,23 @@ public class UserService {
     }
 
     public void makeAdmin(String username) {
-        UserModel userModel = getUserByUsername(username);
+        UserModel userModel = getUserByLogin(username);
         userModel.setAdmin(true);
         userRepository.save(userModel);
     }
 
     public void removeAdmin(String username) {
-        UserModel userModel = getUserByUsername(username);
+        UserModel userModel = getUserByLogin(username);
         userModel.setAdmin(false);
         userRepository.save(userModel);
     }
 
-    public String loginUserReturnToken(UserLoginJSON userLoginJSON) {
-        return securityContext.authenticateUserReturnToken(userLoginJSON.username);
+    public String loginUserReturnToken(String username) {
+        return securityContext.authenticateUserReturnToken(username);
     }
 
-    public boolean userExists(String username) {
-        return userRepository.findUserByUsername(username) != null;
+    public boolean userExists(String login) {
+        return userRepository.findUserByUsername(login) != null || userRepository.findUserByEmail(login) != null;
     }
 
     public ResponseEntity<Object> checkUserToken(String token) {
@@ -98,8 +98,14 @@ public class UserService {
         return null;
     }
 
-    public UserModel getUserByUsername(String username) {
-        return userRepository.findUserByUsername(username);
+    public UserModel getUserByLogin(String login) {
+        UserModel userModel = userRepository.findUserByUsername(login);
+
+        if (userModel != null) {
+            return userModel;
+        }
+
+        return userRepository.findUserByEmail(login);
     }
 
     public List<HotelJSON> getUserHotels(UserModel userModel) {

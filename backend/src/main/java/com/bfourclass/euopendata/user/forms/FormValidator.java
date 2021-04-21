@@ -40,8 +40,8 @@ public abstract class FormValidator {
 
     public static String isValidLoginForm(UserLoginJSON userLoginJSON) {
 
-        if (!isValidUsername(userLoginJSON.username)) {
-            return "Invalid username";
+        if (!isValidUsername(userLoginJSON.login) && !isValidEmail(userLoginJSON.login)) {
+            return "Invalid username or email";
         }
 
         if (!isValidPassword(userLoginJSON.password)) {
