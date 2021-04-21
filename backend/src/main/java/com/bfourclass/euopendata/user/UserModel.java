@@ -3,6 +3,7 @@ package com.bfourclass.euopendata.user;
 import com.bfourclass.euopendata.hotel.HotelModel;
 import com.bfourclass.euopendata.hotel_review.HotelReviewModel;
 import com.bfourclass.euopendata.security.SimpleHashingAlgo;
+import com.bfourclass.euopendata.user_history.UserHistoryModel;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -25,6 +26,9 @@ public class UserModel {
 
     @OneToMany
     private Set<HotelReviewModel> userReviews = new HashSet<>();
+
+    @OneToMany
+    private Set<UserHistoryModel> userHistory = new HashSet<>();
 
     @ManyToMany
     private final Set<HotelModel> hotels = new HashSet<>();
@@ -108,7 +112,9 @@ public class UserModel {
         isActivated = true;
     }
 
-    public boolean isAdmin(){ return isAdmin; }
+    public boolean isAdmin() {
+        return isAdmin;
+    }
 
     /*
         this function is for testing only 
@@ -141,5 +147,9 @@ public class UserModel {
                 break;
             }
         }
+    }
+
+    public void addHistory(UserHistoryModel userHistoryModel) {
+        userHistory.add(userHistoryModel);
     }
 }
