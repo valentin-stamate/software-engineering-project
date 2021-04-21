@@ -2,6 +2,7 @@ package com.bfourclass.euopendata.user;
 
 import com.bfourclass.euopendata.hotel.HotelModel;
 import com.bfourclass.euopendata.hotel.HotelService;
+import com.bfourclass.euopendata.hotel.json.HotelJSON;
 import com.bfourclass.euopendata.user.json.*;
 import com.bfourclass.euopendata.user_verification.UserVerificationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import com.bfourclass.euopendata.requests.APIError;
 import com.bfourclass.euopendata.requests.APISuccess;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -32,8 +34,8 @@ public class UserController {
         return "Hello there. we're an API, not much to see here";
     }
 
-    @PostMapping("user/add_hotel")
-    public ResponseEntity<Object> addLocationToUser(@RequestParam(name = "hotel_name") String hotelName, @RequestParam(name = "location_name") String locationName, @RequestHeader(name = "Authorization") String token) {
+    @PostMapping("user/add_hotels")
+    public ResponseEntity<Object> addLocationToUser(@RequestBody List<HotelJSON> request, @RequestHeader(name = "Authorization") String token) {
 
         ResponseEntity<Object> errorResponse = userService.checkUserToken(token);
         if (errorResponse != null) {
@@ -42,30 +44,46 @@ public class UserController {
 
         UserModel userModel = userService.getUserFromToken(token);
 
-        if (!userModel.hasHotel(hotelName)) {
-            HotelModel hotelModel = new HotelModel(hotelName, locationName);
+        List<HotelJSON> alreadySavedHotels = new ArrayList<>();
 
-            hotelService.createHotelIfNotExists(hotelModel);
+        for (HotelJSON hotelJSON : request) {
+            if (!userModel.hasHotel(hotelJSON.hotelName)) {
+                HotelModel hotelModel = new HotelModel(hotelJSON.identifier, hotelJSON.hotelName, hotelJSON.locationName);
 
-            userService.addHotel(userModel, hotelModel);
-        } else {
-            return new ResponseEntity<>(new APIError("Hotel is already saved"), HttpStatus.NOT_ACCEPTABLE);
+                hotelService.createHotelIfNotExists(hotelModel);
+
+                userService.addHotel(userModel, hotelModel);
+            } else {
+                alreadySavedHotels.add(hotelJSON);
+            }
         }
 
-        return new ResponseEntity<>(new APISuccess("Location added successfully"), HttpStatus.OK);
+        if (!alreadySavedHotels.isEmpty()) {
+            StringBuilder responseError = new StringBuilder();
+
+            for (int i = 0; i < alreadySavedHotels.size(); i++) {
+                HotelJSON hotelJSON = alreadySavedHotels.get(i);
+                String append = i == alreadySavedHotels.size() - 1 ? "</b>" : "</b>, ";
+                responseError.append("<b>").append(hotelJSON.hotelName).append(append);
+            }
+
+            return new ResponseEntity<>(new APIError(String.format("Hotels: %s are already saved", responseError)), HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        return new ResponseEntity<>(new APISuccess("Locations added successfully"), HttpStatus.OK);
     }
 
     @DeleteMapping("user/delete_hotel")
-    public ResponseEntity<Object> deleteLocationFromUser(@RequestParam(name = "hotel_name") String hotelName, @RequestHeader(name = "Authorization") String token) {
+    public ResponseEntity<Object> deleteLocationFromUser(@RequestParam(name = "hotel_id") long id, @RequestHeader(name = "Authorization") String token) {
         ResponseEntity<Object> errorResponse = userService.checkUserToken(token);
         if (errorResponse != null) {
             return errorResponse;
         }
 
         UserModel userModel = userService.getUserFromToken(token);
-        HotelModel hotelModel = hotelService.getHotelByName(hotelName);
+        HotelModel hotelModel = hotelService.getHotelById(id);
 
-        if (userModel.hasHotel(hotelName)) {
+        if (userModel.hasHotel(id)) {
             userService.deleteUserHotel(userModel, hotelModel);
             return new ResponseEntity<>("Hotel deleted successfully", HttpStatus.OK);
         }
@@ -74,46 +92,81 @@ public class UserController {
     }
 
     @PostMapping("user/login")
-    public ResponseEntity<Object> loginUser(@RequestBody UserLoginJSONRequest request) {
-        // check if form is valid
-        if (!request.isValid()) {
-            return new ResponseEntity<>(new APIError("Invalid login form"), HttpStatus.BAD_REQUEST);
+    public ResponseEntity<Object> loginUser(@RequestBody UserLoginJSON request) {
+
+        String errorMessage = request.isValid();
+        if (errorMessage != null) {
+            return new ResponseEntity<>(new APIError(errorMessage), HttpStatus.BAD_REQUEST);
         }
-        // check if user exists
-        if (!userService.userExists(request.username)) {
+
+        if (!userService.userExists(request.login)) {
             return new ResponseEntity<>(new APIError("User does not exist"), HttpStatus.BAD_REQUEST);
         }
 
-        UserModel userModel = userService.getUserByUsername(request.username);
+        UserModel userModel = userService.getUserByLogin(request.login);
 
-        // check if password is correct
         if (!userModel.checkUserPassword(request.password)) {
-            return new ResponseEntity<>(new APIError("Invalid password"), HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(new APIError("Wrong password"), HttpStatus.UNAUTHORIZED);
         }
 
-        // check if account is activated
         if (!userModel.isActivated()) {
             return new ResponseEntity<>(new APIError("Account not activated"), HttpStatus.UNAUTHORIZED);
         }
 
-        String token = userService.loginUserReturnToken(request);
+        String token = userService.loginUserReturnToken(userModel.getUsername());
 
-        return new ResponseEntity<>(new UserJSONResponse(userModel.getUsername(), userModel.getEmail(), userModel.getProfilePhotoLink(), token), HttpStatus.OK);
+        return new ResponseEntity<>(new UserJSON(userModel.getUsername(), userModel.getEmail(), userModel.getProfilePhotoLink(), token), HttpStatus.OK);
     }
 
     @PostMapping(value = "user/register")
     public ResponseEntity<Object> registerUser(@RequestBody UserRegisterJSONRequest form) {
-        if (!form.isValid()) {
-            return new ResponseEntity<>(new APIError("Invalid form data"), HttpStatus.BAD_REQUEST);
+
+        String errorMessage = form.isValid();
+        if (errorMessage != null) {
+            return new ResponseEntity<>(new APIError(errorMessage), HttpStatus.BAD_REQUEST);
         }
 
         if (userService.userExists(form.username)) {
-            return new ResponseEntity<>(new APIError("User already exists"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new APIError("Username is taken"), HttpStatus.BAD_REQUEST);
+        }
+
+        if (userService.userExists(form.email)) {
+            return new ResponseEntity<>(new APIError("Email already used"), HttpStatus.BAD_REQUEST);
         }
 
         userService.createUserByForm(form);
 
+        UserModel userModel = userService.getUserByLogin(form.email);
+
+        if (!userService.sendUserActivationEmail(userModel)) {
+            return new ResponseEntity<>(new APIError("Error sending verification email"), HttpStatus.NOT_ACCEPTABLE);
+        }
+
         return new ResponseEntity<>(new APISuccess("Registration successful"), HttpStatus.OK);
+    }
+
+    @PostMapping(value = "user/resent_activation_token")
+    public ResponseEntity<Object> resendActivationToken(@RequestBody UserLoginJSON request) {
+
+        if (!userService.userExists(request.login)) {
+            return new ResponseEntity<>(new APIError("User does not exist"), HttpStatus.BAD_REQUEST);
+        }
+
+        UserModel userModel = userService.getUserByLogin(request.login);
+
+        if (!userModel.checkUserPassword(request.password)) {
+            return new ResponseEntity<>(new APIError("Wrong password"), HttpStatus.UNAUTHORIZED);
+        }
+
+        if (userModel.isActivated()) {
+            return new ResponseEntity<>(new APIError("Your account is already activated"), HttpStatus.UNAUTHORIZED);
+        }
+
+        if (!userService.sendUserActivationEmail(userModel)) {
+            return new ResponseEntity<>(new APIError("Error sending email"), HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<>(new APISuccess("Verification token resend"), HttpStatus.OK);
     }
 
     @GetMapping(value = "user/verify")
@@ -135,22 +188,14 @@ public class UserController {
 
         UserModel userModel = userService.getUserFromToken(token);
 
-        List<HotelInformationJSON> response = userService.getHotelInformation(userModel);
+        List<HotelJSON> response = userService.getUserHotels(userModel);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @GetMapping("user/hotel_information")
-    public ResponseEntity<Object> getInformation(@RequestParam String hotelName) {
-        HotelModel hotelModel = hotelService.getHotelByName(hotelName);
-
-        HotelInformationJSON response = userService.getHotelInformation(hotelModel);
-
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
-
+    /* User as admin */
     @PostMapping("admin/add_hotel")
-    public ResponseEntity<Object> addLocationAdmin(@RequestBody String hotelName, @RequestBody String locationName, @RequestHeader(name = "Authorization") String token) {
+    public ResponseEntity<Object> addLocationAdmin(@RequestParam HotelJSON request, @RequestHeader(name = "Authorization") String token) {
 
         ResponseEntity<Object> errorResponse = userService.checkUserToken(token);
         if (errorResponse != null) {
@@ -159,8 +204,8 @@ public class UserController {
 
         UserModel userModel = userService.getUserFromToken(token);
 
-        if (!userModel.hasHotel(hotelName)) {
-            HotelModel hotelModel = new HotelModel(hotelName, locationName);
+        if (!userModel.hasHotel(request.hotelName)) {
+            HotelModel hotelModel = new HotelModel(request.identifier, request.hotelName, request.locationName);
 
             hotelService.createHotelIfNotExists(hotelModel);
 
@@ -173,14 +218,14 @@ public class UserController {
     }
 
     @DeleteMapping("admin/delete_hotel")
-    public ResponseEntity<Object> deleteLocationAdmin(@RequestBody DeleteHotelJSONRequest request, @RequestHeader(name = "Authorization") String token, String username) {
+    public ResponseEntity<Object> deleteLocationAdmin(@RequestBody HotelJSON request, @RequestHeader(name = "Authorization") String token, String username) {
         ResponseEntity<Object> errorResponse = userService.checkUserToken(token);
         if (errorResponse != null) {
             return errorResponse;
         }
 
-        UserModel userModel = userService.getUserByUsername(username);
-        HotelModel hotelModel = hotelService.getHotelByName(request.hotelName);
+        UserModel userModel = userService.getUserByLogin(username);
+        HotelModel hotelModel = hotelService.getHotelById(request.id);
 
         if (userModel.hasHotel(request.hotelName)) {
             userService.deleteUserHotel(userModel, hotelModel);

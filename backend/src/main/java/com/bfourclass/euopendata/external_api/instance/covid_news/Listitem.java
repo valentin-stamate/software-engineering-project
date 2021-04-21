@@ -1,4 +1,4 @@
-package com.bfourclass.euopendata.external_api.instance.covid_information;
+package com.bfourclass.euopendata.external_api.instance.covid_news;
 
 public class Listitem {
     public String item;

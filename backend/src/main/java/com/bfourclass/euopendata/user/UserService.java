@@ -1,21 +1,18 @@
 package com.bfourclass.euopendata.user;
 
 import com.bfourclass.euopendata.email.EmailService;
-import com.bfourclass.euopendata.external_api.ExternalAPI;
-import com.bfourclass.euopendata.external_api.instance.aqicn_data.AirPollution;
-import com.bfourclass.euopendata.external_api.instance.covid_information.CovidInformationJSON;
-import com.bfourclass.euopendata.external_api.instance.weather.current_weather.Weather;
 import com.bfourclass.euopendata.hotel.HotelModel;
 import com.bfourclass.euopendata.hotel.HotelRepository;
 import com.bfourclass.euopendata.hotel.json.HotelJSON;
 import com.bfourclass.euopendata.requests.APIError;
 import com.bfourclass.euopendata.security.StringGenerator;
 import com.bfourclass.euopendata.user.auth.SecurityContext;
-import com.bfourclass.euopendata.user.json.HotelInformationJSON;
-import com.bfourclass.euopendata.user.json.UserLoginJSONRequest;
+import com.bfourclass.euopendata.user.json.UserJSON;
+import com.bfourclass.euopendata.user.json.UserLoginJSON;
 import com.bfourclass.euopendata.user.json.UserRegisterJSONRequest;
 import com.bfourclass.euopendata.user_verification.UserVerification;
 import com.bfourclass.euopendata.user_verification.UserVerificationService;
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -54,33 +51,41 @@ public class UserService {
     public void createUserByForm(UserRegisterJSONRequest registerForm) {
         UserModel userModel = registerForm.toUser();
 
+        userRepository.save(userModel);
+    }
+
+    public boolean sendUserActivationEmail(UserModel userModel) {
+        String activationToken = generateUserActivationToken(userModel);
+        return emailService.sendEmailVerificationEmail(userModel.getUsername(), userModel.getEmail(), activationToken);
+    }
+
+    public String generateUserActivationToken(UserModel userModel) {
         String verificationKey = StringGenerator.generate();
         UserVerification userVerification = new UserVerification(userModel, verificationKey);
 
         userVerificationService.save(userVerification);
 
-        userRepository.save(userModel);
-        emailService.sendEmailVerificationEmail(userModel.getUsername(), userModel.getEmail(), verificationKey);
+        return verificationKey;
     }
 
     public void makeAdmin(String username) {
-        UserModel userModel = getUserByUsername(username);
+        UserModel userModel = getUserByLogin(username);
         userModel.setAdmin(true);
         userRepository.save(userModel);
     }
 
     public void removeAdmin(String username) {
-        UserModel userModel = getUserByUsername(username);
+        UserModel userModel = getUserByLogin(username);
         userModel.setAdmin(false);
         userRepository.save(userModel);
     }
 
-    public String loginUserReturnToken(UserLoginJSONRequest userLoginJSONRequest) {
-        return securityContext.authenticateUserReturnToken(userLoginJSONRequest.username);
+    public String loginUserReturnToken(String username) {
+        return securityContext.authenticateUserReturnToken(username);
     }
 
-    public boolean userExists(String username) {
-        return userRepository.findUserByUsername(username) != null;
+    public boolean userExists(String login) {
+        return userRepository.findUserByUsername(login) != null || userRepository.findUserByEmail(login) != null;
     }
 
     public ResponseEntity<Object> checkUserToken(String token) {
@@ -103,34 +108,34 @@ public class UserService {
         return null;
     }
 
-    public UserModel getUserByUsername(String username) {
-        return userRepository.findUserByUsername(username);
+    public UserModel getUserByLogin(String login) {
+        UserModel userModel = userRepository.findUserByUsername(login);
+
+        if (userModel != null) {
+            return userModel;
+        }
+
+        return userRepository.findUserByEmail(login);
     }
 
-    public List<HotelInformationJSON> getHotelInformation(UserModel userModel) {
-        List<HotelInformationJSON> response = new ArrayList<>();
+    public List<HotelJSON> getUserHotels(UserModel userModel) {
+        List<HotelJSON> response = new ArrayList<>();
 
         List<HotelModel> hotels = userModel.getUserHotels();
 
         for (HotelModel hotelModel : hotels) {
-            response.add(getHotelInformation(hotelModel));
+            response.add(new HotelJSON(hotelModel.getId(), hotelModel.getIdentifier(), hotelModel.getHotelName(), hotelModel.getLocationName(), hotelModel.getAverageRating(), hotelModel.getVotes()));
         }
 
         return response;
     }
 
-    public HotelInformationJSON getHotelInformation(HotelModel hotelModel) {
-        HotelJSON hotelJSON = new HotelJSON(hotelModel.getHotelName(), hotelModel.getLocationName(), hotelModel.getAverageRating(), hotelModel.getVotes());
-        Weather weather = ExternalAPI.getWeather(hotelJSON.locationName);
-        CovidInformationJSON covidInformation = ExternalAPI.getCovidInformation(hotelJSON.locationName);
-        AirPollution airPollution = ExternalAPI.getAirPollution(hotelJSON.locationName);
-
-        return new HotelInformationJSON(hotelJSON, weather, covidInformation, airPollution);
-    }
-
     public void addHotel(UserModel userModel, HotelModel hotelModel) {
         userModel.addHotel(hotelModel);
-        hotelRepository.save(hotelModel);
+        userRepository.save(userModel);
+        if (hotelRepository.findById(hotelModel.getId()).isEmpty()) {
+            hotelRepository.save(hotelModel);
+        }
     }
 
     public void deleteUserHotel(UserModel userModel, HotelModel hotelModel) {

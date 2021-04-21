@@ -1,9 +1,9 @@
-package com.bfourclass.euopendata.external_api.instance.covid_information;
+package com.bfourclass.euopendata.external_api.instance.covid_news;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.List;
 
-public class CovidInformation {
+public class CovidNews {
     @JsonIgnoreProperties
     public Object kind;
     @JsonIgnoreProperties

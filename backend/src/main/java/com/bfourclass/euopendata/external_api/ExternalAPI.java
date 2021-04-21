@@ -1,7 +1,10 @@
 package com.bfourclass.euopendata.external_api;
 
+import com.bfourclass.euopendata.external_api.covid.CovidNewsAPI;
+import com.bfourclass.euopendata.external_api.covid.CovidStatisticsAPI;
 import com.bfourclass.euopendata.external_api.instance.aqicn_data.AirPollution;
-import com.bfourclass.euopendata.external_api.instance.covid_information.CovidInformationJSON;
+import com.bfourclass.euopendata.external_api.instance.covid_news.CovidNewsJSON;
+import com.bfourclass.euopendata.external_api.instance.covid_statistics.CovidStatistics;
 import com.bfourclass.euopendata.external_api.instance.numbeo_data.CriminalityStatistics;
 import com.bfourclass.euopendata.external_api.instance.weather.current_weather.Weather;
 import com.bfourclass.euopendata.external_api.instance.weather.week_weather.Forecast;
@@ -24,8 +27,12 @@ public abstract class ExternalAPI {
         return null;
     }
 
-    public static CovidInformationJSON getCovidInformation(String location) {
-        return CovidInformationAPI.requestCovidInformation(location);
+    public static CovidNewsJSON getCovidNews(String location) {
+        return CovidNewsAPI.requestCovidInformation(location);
+    }
+
+    public static CovidStatistics getCovidStatistics(String country) {
+        return CovidStatisticsAPI.getCovidStatistics(country);
     }
 
     public static AirPollution getAirPollution(String location) {

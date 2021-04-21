@@ -1,16 +1,18 @@
-package com.bfourclass.euopendata.user;
+package com.bfourclass.euopendata;
 
 import com.bfourclass.euopendata.hotel.HotelModel;
 import com.bfourclass.euopendata.hotel.HotelRepository;
 import com.bfourclass.euopendata.hotel_review.HotelReviewModel;
 import com.bfourclass.euopendata.hotel_review.HotelReviewRepository;
 import com.bfourclass.euopendata.security.SimpleHashingAlgo;
+import com.bfourclass.euopendata.user.UserModel;
+import com.bfourclass.euopendata.user.UserRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class UserConfig {
+public class InitialConfiguration {
 
     @Bean
     CommandLineRunner commandLineRunner(UserRepository userRepository, HotelRepository hotelRepository, HotelReviewRepository hotelReviewRepository) {
@@ -18,10 +20,9 @@ public class UserConfig {
             UserModel userModelA = new UserModel("ValentinSt", "valentinstamate@gmail.com", SimpleHashingAlgo.hash("dcy3w8r7ds4lr329"), "~/vali.png");
             UserModel userModelB = new UserModel("Lorenzo", "lorenzo@gmail.com", SimpleHashingAlgo.hash("dasdasd"), "~/lorenzo.png");
 
-            HotelModel hotelModelA = new HotelModel("Unirea", "Iași");
-            HotelModel hotelModelB = new HotelModel("Grand Hotel Continental", "București");
-            HotelModel hotelModelC = new HotelModel("Apollonia", "Brașov");
-            HotelModel hotelModelD = new HotelModel("Hotel Orient", "Brăila");
+            HotelModel hotelModelA = new HotelModel("ro/arnia", "Hotel Arnia", "Iași");
+            HotelModel hotelModelB = new HotelModel("ro/terra-iasi-valea-lupului", "Hotel Terra Iasi", "Iași");
+            HotelModel hotelModelC = new HotelModel("hotel/ro/b-house-rooms", "B House Rooms", "Iași");
 
             userModelA.activateUser();
             userModelB.activateUser();
@@ -35,7 +36,6 @@ public class UserConfig {
             hotelRepository.save(hotelModelA);
             hotelRepository.save(hotelModelB);
             hotelRepository.save(hotelModelC);
-            hotelRepository.save(hotelModelD);
 
             userRepository.save(userModelA);
             userRepository.save(userModelB);

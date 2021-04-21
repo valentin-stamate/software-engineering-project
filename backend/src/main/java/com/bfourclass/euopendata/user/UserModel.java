@@ -2,8 +2,8 @@ package com.bfourclass.euopendata.user;
 
 import com.bfourclass.euopendata.hotel.HotelModel;
 import com.bfourclass.euopendata.hotel_review.HotelReviewModel;
-import com.bfourclass.euopendata.hotel_review.json.HotelReviewJSONUpdateRequest;
 import com.bfourclass.euopendata.security.SimpleHashingAlgo;
+import com.bfourclass.euopendata.user_history.UserHistoryModel;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -17,7 +17,9 @@ public class UserModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(unique = true)
     private String username;
+    @Column(unique = true)
     private String email;
     private String password;
     private String profilePhotoLink;
@@ -26,6 +28,9 @@ public class UserModel {
 
     @OneToMany
     private Set<HotelReviewModel> userReviews = new HashSet<>();
+
+    @OneToMany
+    private Set<UserHistoryModel> userHistory = new HashSet<>();
 
     @ManyToMany
     private final Set<HotelModel> hotels = new HashSet<>();
@@ -65,11 +70,21 @@ public class UserModel {
         return profilePhotoLink;
     }
 
-    public boolean hasHotel(String hotelName) {
+    public boolean hasHotel(long hotelId) {
         if (this.hotels.isEmpty())
             return false;
         for (HotelModel hotelModel : this.hotels) {
-            if (hotelModel.getHotelName().equals(hotelName))
+            if (hotelModel.getId() == hotelId)
+                return true;
+        }
+        return false;
+    }
+
+    public boolean hasHotel(String identity) {
+        if (this.hotels.isEmpty())
+            return false;
+        for (HotelModel hotelModel : this.hotels) {
+            if (hotelModel.getHotelName().equals(identity))
                 return true;
         }
         return false;
@@ -99,7 +114,9 @@ public class UserModel {
         isActivated = true;
     }
 
-    public boolean isAdmin(){ return isAdmin; }
+    public boolean isAdmin() {
+        return isAdmin;
+    }
 
     /*
         this function is for testing only 
@@ -132,5 +149,9 @@ public class UserModel {
                 break;
             }
         }
+    }
+
+    public void addHistory(UserHistoryModel userHistoryModel) {
+        userHistory.add(userHistoryModel);
     }
 }

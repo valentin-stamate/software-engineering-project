@@ -2,16 +2,16 @@ package com.bfourclass.euopendata.user.json;
 
 import com.bfourclass.euopendata.user.forms.FormValidator;
 
-public class UserLoginJSONRequest {
-    public final String username;
+public class UserLoginJSON {
+    public final String login;
     public final String password;
 
-    public UserLoginJSONRequest(String username, String password) {
-        this.username = username;
+    public UserLoginJSON(String login, String password) {
+        this.login = login;
         this.password = password;
     }
 
-    public boolean isValid() {
+    public String isValid() {
         return FormValidator.isValidLoginForm(this);
     }
 }

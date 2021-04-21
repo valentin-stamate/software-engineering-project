@@ -1,7 +1,7 @@
 # EU Open Data (Smart Booking) Backend
 
 ## About
-The backend is available at this url : `http://188.34.167.200:8082/`
+The backend is available at this url : `https://euopendata.herokuapp.com`
 
 ## API Endpoints
 In order to access user data, the client must log in first and for every request it should have an "Authorization" header, with the value containing the token.
