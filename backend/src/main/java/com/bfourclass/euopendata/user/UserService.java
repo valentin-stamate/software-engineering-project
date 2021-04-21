@@ -116,6 +116,7 @@ public class UserService {
 
     public void addHotel(UserModel userModel, HotelModel hotelModel) {
         userModel.addHotel(hotelModel);
+        userRepository.save(userModel);
         if (hotelRepository.findById(hotelModel.getId()).isEmpty()) {
             hotelRepository.save(hotelModel);
         }

@@ -60,8 +60,11 @@ public class UserController {
 
         if (!alreadySavedHotels.isEmpty()) {
             StringBuilder responseError = new StringBuilder();
-            for (HotelJSON hotelJSON : alreadySavedHotels) {
-                responseError.append(hotelJSON.hotelName).append(" ");
+
+            for (int i = 0; i < alreadySavedHotels.size(); i++) {
+                HotelJSON hotelJSON = alreadySavedHotels.get(i);
+                String append = i == alreadySavedHotels.size() - 1 ? "</b>" : "</b>, ";
+                responseError.append("<b>").append(hotelJSON.hotelName).append(append);
             }
 
             return new ResponseEntity<>(new APIError(String.format("Hotels: %s are already saved", responseError)), HttpStatus.NOT_ACCEPTABLE);
