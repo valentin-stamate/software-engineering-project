@@ -11,7 +11,7 @@ chrome.runtime.onMessage.addListener(
             var _data = {
                 "hotelName": request.hotelName,
                 "hotelLocation": request.hotelLocation,
-                "bookingLink": request.bookingLink
+                "hotelPath": request.hotelPath
             };
             chrome.storage.sync.get('locations', value => {
                 locations = value.locations;

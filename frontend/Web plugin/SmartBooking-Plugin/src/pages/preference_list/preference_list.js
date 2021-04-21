@@ -26,7 +26,7 @@ function getListElem(element = "hotel name", adress = "hotel adress", link = "#"
     hotel_list_elem.classList.add("b-contain");
     let list_elem =
         `<span class="remove">X</span>
-    <a href=${link} target="_blank" rel="noopener"><span class="hotel-name">${element}</span></a>
+    <a class="hotel-link" href=${link} target="_blank" rel="noopener"><span class="hotel-name">${element}</span></a>
 	<span class="hotel-adress" style="display:none">${adress}</span>
 	<input type="checkbox" onclick="return false">
 <div class="b-input"></div>`
@@ -50,7 +50,8 @@ async function handleUserHotelsLoad(value) {
         control_group.innerHTML = "";
         hotelList.forEach(element => {
             console.log(element.hotelName);
-            let hotel_list_elem = getListElem(element.hotelName, element.hotelLocation, element.bookingLink);
+            let hotel_link = "https://booking.com" + element.hotelPath;
+            let hotel_list_elem = getListElem(element.hotelName, element.hotelLocation, hotel_link);
             uncheckCheckbox(hotel_list_elem);
             control_group.append(hotel_list_elem);
         });

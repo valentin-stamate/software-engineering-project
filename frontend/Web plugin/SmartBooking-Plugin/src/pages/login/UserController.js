@@ -28,18 +28,13 @@ export default class UserController {
         window.location.href = '/src/pages/popup.html';
     }
 
-    static async saveUserHotel(hotel) {
+    static async saveUserHotel(hotels) {
         let token = window.localStorage.getItem('token');
-        let url = host_url + "user/add_hotel";
-
-        let _data = {
-            "hotelName": hotel.hotelName,
-            "locationName": hotel.hotelLocation
-        };
+        let url = host_url + "user/add_hotels";
 
         return await fetch(url, {
             method: "POST",
-            body: JSON.stringify(_data),
+            body: JSON.stringify(hotels),
             headers: {
                 "Content-type": "application/json; charset=UTF-8",
                 "Authorization": token
