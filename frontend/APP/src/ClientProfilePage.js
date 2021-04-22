@@ -6,6 +6,7 @@ class ClientProfilePage extends react.Component{
     constructor(props){
         super(props);
         this.state={
+            client:JSON.parse(localStorage.user).user
         };
     }
 
@@ -16,6 +17,7 @@ class ClientProfilePage extends react.Component{
         <a class="active" href="#home">Home</a>
         <a href="#about">See Recommendation</a>
         <a href="#">Sign Out</a>
+        <a href="/fav">Favorites</a>
         <input type="text" placeholder="Search location" />
     </div>
 
@@ -25,21 +27,21 @@ class ClientProfilePage extends react.Component{
                 <div class="text-center card-box">
                     <div class="member-card">
                         <div class="thumb-xl member-thumb m-b-10 center-block">
-                            <img src={require("./images/boy.jpeg").default} class="img-circle img-thumbnail" alt="profile-image" />
+                            <img src={this.state.client.profilePhotoLink} class="img-circle img-thumbnail" alt="profile-image" />
                         </div>
 
                         <div class="">
-                            <h4 class="m-b-5">Ion</h4>
-                            <p class="text-muted">ion@gmail.com</p>
+                            <h4 class="m-b-5">{this.state.client.username}</h4>
+                            <p class="text-muted">{this.state.client.email}</p>
                         </div>
 
                         <button type="button" class="btn btn-danger btn-sm w-sm waves-effect m-t-10 waves-light">History</button>
                         <button type="button" class="btn btn-danger btn-sm w-sm waves-effect m-t-10 waves-light">Favorites</button>
 
                         <div class="text-left m-t-40">
-                            <p class="text-muted font-13"><strong>Full Name :</strong> <span class="m-l-15">Ion Mihai</span></p>
+                            <p class="text-muted font-13"><strong>Full Name :</strong> <span class="m-l-15">{this.state.client.username}</span></p>
                             <p class="text-muted font-13"><strong>Mobile :</strong><span class="m-l-15">0788888888</span></p>
-                            <p class="text-muted font-13"><strong>Email :</strong> <span class="m-l-15">ion@gmail.com</span></p>
+                            <p class="text-muted font-13"><strong>Email :</strong> <span class="m-l-15">{this.state.client.email}</span></p>
                             <p class="text-muted font-13"><strong>Location :</strong> <span class="m-l-15">Iasi</span></p>
                         </div>
 

@@ -26,7 +26,7 @@ class HomePage extends React.Component{
                 </div>
             </header>
             <div id="book." class="book">
-                <form class="book-form">
+                <form class="book-form" method="GET" action="/search">
                     <div class="form-item">
                         <label for="checkin-date">Check In Date: </label>
                         <input type="date" id="chekin-date" />

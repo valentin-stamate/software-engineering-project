@@ -84,7 +84,7 @@ class AdminProfilePage extends React.Component{
 
                 <ul class="list-group">
                     <li class="list-group-item text-muted">Hotels</li>
-                    <li class="list-group-item"><h1>Grand Hotel Continental</h1><img class="img-rounded" src={require("./images/hotel1.webp").default}/><a href="#" class="pull-right btn btn-info btn-lg" style={{position: 'absolute',right: '0',bottom: '0'}}>View Hotel</a></li>
+                    <li class="list-group-item"><h1>Grand Hotel Continental</h1><img class="img-rounded" src={require("./images/hotel1.webp").default}/><a href="/hotel" class="pull-right btn btn-info btn-lg" style={{position: 'absolute',right: '0',bottom: '0'}}>View Hotel</a></li>
                     <li class="list-group-item"><h1>Pensiunea Poiana Izvoarelor</h1><img class="img-rounded" src={require("./images/hotel2.webp").default}/><a href="#" class="pull-right btn btn-info btn-lg" style={{position: 'absolute',right: '0',bottom: '0'}}>View Hotel</a></li>
                     <li class="list-group-item"><h1>Hotel Bavaria Blu</h1><img class="img-rounded" src={require("./images/hotel3.webp").default}/><a href="#" class="pull-right btn btn-info btn-lg" style={{position: 'absolute',right: '0',bottom: '0'}}>View Hotel</a></li>
 
