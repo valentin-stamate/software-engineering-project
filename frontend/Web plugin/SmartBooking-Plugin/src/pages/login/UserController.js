@@ -29,6 +29,9 @@ export default class UserController {
     }
 
     static async saveUserHotel(hotels) {
+        if (hotels.length == 0) {
+            return true;
+        }
         let token = window.localStorage.getItem('token');
         let url = host_url + "user/add_hotels";
 

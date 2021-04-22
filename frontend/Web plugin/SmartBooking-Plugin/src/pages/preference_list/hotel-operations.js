@@ -5,11 +5,10 @@ document.getElementById('save-list').addEventListener('click', handleUserHotelLi
 
 var hotels = [];
 async function handleUserHotelList() {
-    console.log(hotelList);
     var hotelNodeList = document.getElementsByClassName("b-contain");
     if (hotelNodeList) {
         Array.prototype.slice.call(hotelNodeList).forEach(handleUserHotelElement);
-        if (await UserController.save(hotels)) {
+        if (await UserController.saveUserHotel(hotels)) {
             showAlert("Save was succesful");
         }
         else {

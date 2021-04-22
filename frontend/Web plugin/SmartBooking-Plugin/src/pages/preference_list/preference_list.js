@@ -7,6 +7,7 @@ if (loginstate == "true") {
     document.getElementById('save-list').classList.remove("hidden");
     document.getElementById('log-to-save').classList.add('hidden');
     loadedHotelList = await UserController.getUserHotels();
+    console.log(loadedHotelList);
 } else {
     document.getElementById('save-list').classList.add("hidden");
     document.getElementById('log-to-save').classList.remove('hidden');
