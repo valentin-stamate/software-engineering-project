@@ -1,16 +1,74 @@
 import react from 'react';
 import { Helmet } from 'react-helmet';
+import Client from './Client';
 import './favorites.css';
 
 class FavoritesPage extends react.Component{
     constructor(props){
         super(props);
         this.state={
-            client:JSON.parse(localStorage.user).user
+            client:JSON.parse(localStorage.user).user,
+            items:[],
+            hotels:[],
+            requestMade:false
         };
+        this.client=new Client(this.state.client.username,this.state.client.email,this.state.client.profilePic,this.state.client.auth);
+    }
+
+    removeHotel = (id) => {
+        var index=0;
+        for(var i=0;i<this.state.hotels.length;++i){
+            if(this.state.hotels[i].id==id){
+                index=i;
+                break;
+            }
+        }
+        var hotel=this.state.hotels[index];
+        this.client.removeFromFavorites(hotel);
+        var hotels=this.state.hotels,items=this.state.items;
+        this.splice(hotels,index);
+        this.splice(items,index);
+        this.setState({items:items,hotels:hotels});
+    }
+
+    splice = (arr,index) =>{
+        var newArr=arr;
+        for(var i=index+1;i<newArr.length;++i){
+            newArr[i-1]=newArr[i];
+        }
+        newArr.pop();
+
+        return newArr;
     }
 
     render(){
+        if(!this.state.requestMade){
+            this.state.hotels=this.client.getAllFavorites();
+
+            this.state.items=[];
+            for(const [index,hotel] of this.state.hotels.entries()){
+                this.state.items.push(
+        <div id="element" class="col-md-4 ftco-animate fadeInUp ftco-animated">
+            <div class="block-7">
+                <img class="img" src={require('./images/hotel1.jpg').default}></img>
+                <div class="text-center p-4">
+                    <span class="excerpt d-block"><a href={hotel.hotelUrl} target="_blank">{hotel.hotelName}</a></span>
+                    <span class="price"><sup>$</sup> <span class="number">37</span> <sub>/night</sub></span>
+                    <ul class="pricing-text mb-5">
+                        <li><span><i class="fa fa-star" style={{color :'orange'}}></i><i class="fa fa-star" style={{color: 'orange'}}></i><i class="fa fa-star" style={{color: 'orange'}}></i></span></li>
+                        <li><span><i class="fa fa-map-marker" aria-hidden="true">{hotel.locationName}</i></span></li>
+                        <li><span class="fa fa-check mr-2"></span>Average rating : {hotel.averageRating}</li>
+                        <li><span class="fa fa-check mr-2"></span>Votes : {hotel.votes}</li>
+                    </ul>
+                    <a href={hotel.hotelUrl} class="btn btn-primary d-block px-2 py-3">See More</a> <button href="#" onClick={() => {this.removeHotel(hotel.id);}} class="btn btn-outline-primary px-2 py-3" style={{marginTop: '5px'}}>Remove From Favorites</button>
+                </div>
+            </div>
+        </div>)
+        }
+        this.state.requestMade=true;
+    }
+
+
         return(
 <div class="fav-page">
 <div class="topnav">
@@ -27,24 +85,7 @@ class FavoritesPage extends react.Component{
                 </div>
             </div>
             <div class="row">
-                <div id="element" class="col-md-4 ftco-animate fadeInUp ftco-animated">
-                    <div class="block-7">
-                        <img class="img" src={require('./images/hotel1.jpg').default}></img>
-                        <div class="text-center p-4">
-                            <span class="excerpt d-block"><a href="https://www.booking.com/hotel/ro/vila-verde-iasi.ro.html?aid=376393;label=bookings-name-d2AakcaZh5VCmomr9TOSVAS438094247978%3Apl%3Ata%3Ap1%3Ap22.563.000%3Aac%3Aap%3Aneg%3Afi%3Atikwd-65526620%3Alp1011828%3Ali%3Adec%3Adm%3Appccp%3DUmFuZG9tSVYkc2RlIyh9YcpDr58xwogAJgpBCuFL5yA;sid=0d04848ae3c10f09d38b63d4344911bf;all_sr_blocks=228680615_213000770_2_0_0;checkin=2021-05-11;checkout=2021-05-12;dest_id=-1161664;dest_type=city;dist=0;group_adults=2;group_children=0;hapos=1;highlighted_blocks=228680615_213000770_2_0_0;hpos=1;no_rooms=1;room1=A%2CA;sb_price_type=total;sr_order=popularity;sr_pri_blocks=228680615_213000770_2_0_0__14899;srepoch=1619089586;srpvid=f4624e1926b6016f;type=total;ucfs=1&#hotelTmpl" target="_blank">Hotel La Verde</a></span>
-                            <span class="price"><sup>$</sup> <span class="number">37</span> <sub>/night</sub></span>
-                            <ul class="pricing-text mb-5">
-                                <li><span><i class="fa fa-star" style={{color :'orange'}}></i><i class="fa fa-star" style={{color: 'orange'}}></i><i class="fa fa-star" style={{color: 'orange'}}></i></span></li>
-                                <li><span><i class="fa fa-map-marker" aria-hidden="true">str. Ciric Nr 12, 700334 Iaşi, România</i></span></li>
-                                <li><span class="fa fa-check mr-2"></span>Free WiFi and parking</li>
-                                <li><span class="fa fa-check mr-2"></span>Terrace & Bar</li>
-                                <li><span class="fa fa-check mr-2"></span>Includes breakfast if wanted</li>
-                            </ul>
-                            <a href="#" class="btn btn-primary d-block px-2 py-3">See More</a> <a href="#" class="btn btn-outline-primary px-2 py-3" style={{marginTop: '5px'}}>Remove From Favorites</a>
-                        </div>
-                    </div>
-                </div>
-
+                {this.state.items}
             </div>
         </div>
     </section>
