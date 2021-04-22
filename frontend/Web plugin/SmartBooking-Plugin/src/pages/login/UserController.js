@@ -14,11 +14,11 @@ export default class UserController {
             headers: {
                 "Content-type": "application/json; charset=UTF-8"
             }
-        }).then(response => { 
-            return handleLoginResponse(response); 
+        }).then(response => {
+            return handleLoginResponse(response);
         }).catch(err => {
             console.log(err);
-            return {succes:false, message:"Login failed!"};
+            return { succes: false, message: "Login failed!" };
         });
     }
 
@@ -30,7 +30,7 @@ export default class UserController {
 
     static async saveUserHotel(hotels) {
         if (hotels.length == 0) {
-            return {succes:false, message:"Nothing to save!"};
+            return { succes: false, message: "Nothing to save!" };
         }
         let token = window.localStorage.getItem('token');
         let url = host_url + "user/add_hotels";
@@ -42,11 +42,11 @@ export default class UserController {
                 "Content-type": "application/json; charset=UTF-8",
                 "Authorization": token
             }
-        }).then(response => { 
+        }).then(response => {
             return handleSaveResponse(response);
         }).catch(err => {
             console.log(err);
-            return {succes:false, message:"Failed to save hotel!"};
+            return { succes: false, message: "Failed to save hotel!" };
         });
     }
 
@@ -61,24 +61,19 @@ export default class UserController {
                 "Authorization": token
             }
         }).then(response => {
-            return handleLoadResponse(response); 
+            return handleLoadResponse(response);
         }).catch(err => {
             console.log(err);
-            return {succes:false, message:"Failed to load hotels!"};
+            return { succes: false, message: "Failed to load hotels!" };
         });
     }
 
-    static async deleteUserHotel(hotel) {
+    static async deleteUserHotel(hotelId) {
         let token = window.localStorage.getItem('token');
-        let url = host_url + "user/delete_hotel";
-
-        let _data = {
-            "hotelName": hotel.hotelName
-        };
+        let url = host_url + "user/delete_hotel?hotel_id=" + hotelId;
 
         return await fetch(url, {
             method: "DELETE",
-            body: JSON.stringify(_data),
             headers: {
                 "Content-type": "application/json; charset=UTF-8",
                 "Authorization": token
@@ -87,7 +82,7 @@ export default class UserController {
             return handleDeleteResponse(response);
         }).catch(err => {
             console.log(err);
-            return {succes:false, message:"Failed to delete hotel!"};
+            return { succes: false, message: "Failed to delete hotel!" };
         });
     }
 }
@@ -99,10 +94,10 @@ async function handleLoginResponse(response) {
             let token = json.authorizationToken;
             window.localStorage.setItem('loginstate', "true");
             window.localStorage.setItem('token', token);
-            return {succes:true, message:"Login succesful"};
+            return { succes: true, message: "Login succesful" };
         } else {
             window.localStorage.setItem('loginstate', "false");
-            return {succes:false, message:`Login failed - ${json.message}!` };
+            return { succes: false, message: `Login failed - ${json.message}!` };
         }
     });
 }
@@ -110,9 +105,10 @@ async function handleLoginResponse(response) {
 async function handleSaveResponse(response) {
     return await response.json().then(function(json) {
         if (response.status == 200) {
-            return {succes:true, message:"Hotels saved succesfuly!"};s
+            return { succes: true, message: "Hotels saved succesfuly!" };
+            s
         } else {
-            return {succes:false, message:"Failed to save hotels!"};
+            return { succes: false, message: "Failed to save hotels!" };
         }
     });
 }
@@ -120,9 +116,9 @@ async function handleSaveResponse(response) {
 async function handleLoadResponse(response) {
     return await response.json().then(function(json) {
         if (response.status == 200) {
-            return {succes:false, message:json};
+            return { succes: true, message: json };
         } else {
-            return {succes:false, message:"Failed to load hotels!"};
+            return { succes: false, message: "Failed to load hotels!" };
         }
     });
 }
@@ -130,9 +126,9 @@ async function handleLoadResponse(response) {
 async function handleDeleteResponse(response) {
     return await response.json().then(function(json) {
         if (response.status == 200) {
-            return {succes:true, message:"Hotel deleted succesfuly!"};
+            return { succes: true, message: "Hotel deleted succesfuly!" };
         } else {
-            return {succes:false, message:"Error deleting user hotel!"};
+            return { succes: false, message: "Error deleting user hotel!" };
         }
     });
 }

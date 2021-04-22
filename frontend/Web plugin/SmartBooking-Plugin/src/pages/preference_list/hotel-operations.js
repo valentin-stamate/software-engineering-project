@@ -1,5 +1,5 @@
 import UserController from '../login/UserController.js';
-
+import { checkCheckbox } from './preference_list.js';
 //experimental function
 document.getElementById('save-list').addEventListener('click', handleUserHotelList);
 
@@ -20,14 +20,14 @@ function handleUserHotelElement(element) {
     let regex = /hotel\/([a-zA-Z0-9-]+\/[a-zA-Z0-9-]+\.?[a-zA-Z0-9-]*)\.html/g;
     let hotel_id = regex.exec(hotel_link)[1];
 
-    let isSaved = element.children[3].hasAttribute(checked);
+    let isSaved = element.children[3].hasAttribute("checked");
     let hotel = {
         identifier: hotel_id,
         hotelName: hotel_name,
         locationName: hotel_adress
     }
     if (!isSaved) {
-        hotels.add(hotel);
+        hotels.push(hotel);
         checkCheckbox(element);
     }
 }

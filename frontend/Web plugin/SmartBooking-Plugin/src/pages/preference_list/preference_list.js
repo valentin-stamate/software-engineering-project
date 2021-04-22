@@ -8,10 +8,11 @@ if (loginstate == "true") {
     document.getElementById('save-list').classList.remove("hidden");
     document.getElementById('log-to-save').classList.add('hidden');
     let response = await UserController.getUserHotels();
-    if (response.succes)
-    {
+    if (response.succes) {
         loadedHotelList = response.message;
         console.log(loadedHotelList);
+    } else {
+        console.log(response);
     }
 } else {
     document.getElementById('save-list').classList.add("hidden");
@@ -19,7 +20,7 @@ if (loginstate == "true") {
     loadedHotelList = [];
 }
 
-function checkCheckbox(listElem) {
+export function checkCheckbox(listElem) {
     listElem.children[3].setAttribute("checked", "checked");
 }
 
@@ -49,31 +50,33 @@ function addUserHotelList() {
 addUserHotelList();
 
 async function handleUserHotelsLoad(value) {
+    console.log(hotelList);
+    console.log(loadedHotelList);
     var control_group = document.getElementById("control-group");
     control_group.innerHTML = "Nothing here yet";
 
-    if (loadedHotelList) {
-        if (loadedHotelList.length > 0)
-            control_group.innerHTML = "";
+    if (loadedHotelList.length > 0)
+        control_group.innerHTML = "";
 
-        loadedHotelList.forEach(element => {
-            let hotel_list_elem = getListElem(element.hotelName, element.locationName, element.hotelUrl);
-            checkCheckbox(hotel_list_elem);
+    loadedHotelList.forEach(element => {
+        let hotel_list_elem = getListElem(element.hotelName, element.locationName, element.hotelUrl);
+        checkCheckbox(hotel_list_elem);
 
-            control_group.append(hotel_list_elem);
-        });
-    }
+        control_group.append(hotel_list_elem);
+    });
 
     hotelList = value.locations;
 
     if (hotelList) {
-        if (hotelList.length > 0 && (!loadedHotelList || loadedHotelList.length == 0))
+        if (hotelList.length > 0 && loadedHotelList.length == 0)
             control_group.innerHTML = "";
 
         hotelList.forEach(element => {
-            let hotel_link = "https://booking.com" + element.hotelPath;
+            let hotel_link = "https://www.booking.com" + element.hotelPath;
+            console.log(loadedHotelList);
+            console.log(hotel_link);
 
-            if (!loadedHotelList.some(function(loaded) { return loaded.hotelUrl == hotel_link; })) {
+            if (!loadedHotelList.some(function(loaded) { return loaded.hotelUrl === hotel_link; })) {
                 let hotel_list_elem = getListElem(element.hotelName, element.hotelLocation, hotel_link);
                 control_group.append(hotel_list_elem);
             }
@@ -90,27 +93,38 @@ function addRemoveButton() {
             showConfirmBox("Are you sure you want to remove this hotel from your favorites?", () => {
                 var label = el.target.parentElement;
                 label.style.display = "none";
-                removeLocation(label.getElementsByClassName("hotel-name")[0].innerText);
+                removeLocation(label.getElementsByClassName("hotel-link")[0].href);
                 label.remove();
             });
         });
     }
 }
 
-async function removeLocation(loc) {
+async function removeLocation(url) {
+    loadedHotelList = loadedHotelList.filter(async function(element, index) {
+        if (element.hotelUrl === url) {
+            let response = await UserController.deleteUserHotel(element.id);
+            if (response.succes)
+                return false;
+
+            console.log(response);
+        }
+        return true;
+    });
+
     chrome.storage.sync.get('locations', value => {
         var hotelList = value.locations;
 
         for (var i = 0; i < hotelList.length; i++) {
-            if (hotelList[i].hotelName == loc) {
+            if (("https://www.booking.com" + hotelList[i].hotelPath) == url) {
                 hotelList.splice(i, 1);
             }
         }
+        chrome.storage.sync.set({ "locations": hotelList });
 
-        if (hotelList.length == 0) {
+        if (hotelList.length == 0 && loadedHotelList.length == 0) {
             document.getElementById("control-group").innerText = "Nothing here yet";
         }
-        chrome.storage.sync.set({ "locations": hotelList });
     });
 }
 
