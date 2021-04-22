@@ -40,6 +40,15 @@ public class UserService {
         this.userHistoryRepository = userHistoryRepository;
     }
 
+    public UserService(){
+        this.userRepository = null;
+        this.emailService = null;
+        this.userVerificationService = null;
+        this.securityContext = null;
+        this.hotelRepository = null;
+        this.userHistoryRepository = null;
+    }
+
     public boolean checkTokenIsValid(String token) {
         return securityContext.exists(token);
     }
