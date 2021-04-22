@@ -109,9 +109,9 @@ async function addForecastItem(_forecast) {
     <div class="weather_card__info_main">
         <h3 class="weather_card__description">${title}</h3>
         <div class="weather_card__infos">
-            <h3 class="weather_card__description weather_card__info">Wind ${wind_speed}km/h</h3>
+            <h3 class="weather_card__description weather_card__info">Wind ${wind_speed}m/s</h3>
             <h3 class="weather_card__description weather_card__info">Humidity ${humidity}%</h3>
-            <h3 class="weather_card__description weather_card__info">Air pressure ${pressure}</h3>
+            <h3 class="weather_card__description weather_card__info">Air pressure ${pressure}hPa</h3>
         </div>
     </div>
     <div class="weather_card__main">
