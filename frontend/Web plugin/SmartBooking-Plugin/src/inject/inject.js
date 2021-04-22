@@ -80,15 +80,16 @@ async function addForecastCards(forecast) {
 }
 
 async function addForecastItem(_forecast) {
+    let index = Math.floor(_forecast.length / 2);
     let days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     let day = days[new Date(_forecast[0].dt * 1000).getDay()];
 
-    let avg_temp = (_forecast[_forecast.length / 2].main.temp - 273.15).toFixed(2);
-    let icon = _forecast[_forecast.length / 2].weather[0].icon;
-    let title = _forecast[_forecast.length / 2].weather[0].description;
-    let wind_speed = _forecast[_forecast.length / 2].wind.speed;
-    let humidity = _forecast[_forecast.length / 2].main.humidity;
-    let pressure = _forecast[_forecast.length / 2].main.pressure;
+    let avg_temp = (_forecast[index].main.temp - 273.15).toFixed(2);
+    let icon = _forecast[index].weather[0].icon;
+    let title = _forecast[index].weather[0].description;
+    let wind_speed = _forecast[index].wind.speed;
+    let humidity = _forecast[index].main.humidity;
+    let pressure = _forecast[index].main.pressure;
 
     let temps = [];
 
@@ -108,9 +109,9 @@ async function addForecastItem(_forecast) {
     <div class="weather_card__info_main">
         <h3 class="weather_card__description">${title}</h3>
         <div class="weather_card__infos">
-            <h3 class="weather_card__description weather_card__info">Wind ${wind_speed}km/h</h3>
+            <h3 class="weather_card__description weather_card__info">Wind ${wind_speed}m/s</h3>
             <h3 class="weather_card__description weather_card__info">Humidity ${humidity}%</h3>
-            <h3 class="weather_card__description weather_card__info">Air pressure ${pressure}</h3>
+            <h3 class="weather_card__description weather_card__info">Air pressure ${pressure}hPa</h3>
         </div>
     </div>
     <div class="weather_card__main">

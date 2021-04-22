@@ -13,7 +13,6 @@ class SearchLocationPage extends react.Component{
     render(){
         return(
 <div class="search-page">
-    <p>Hello,{this.state.client.username}</p>
 <div class="topnav">
 
 <a class="active" href="/">Home</a>
@@ -122,7 +121,7 @@ class SearchLocationPage extends react.Component{
                                             <a href="javascript:void();"><i class="fab fa-gratipay" onclick="liked(0)"></i></a> </td>
                                         <td class="number text-center">1</td>
                                         <td class="image"><img src={require("./images/img1.jpg").default} alt=""/></td>
-                                        <td class="product"><strong>La Verde</strong><br/>Offering a terrace, La Verde is located in Iasi. This 3-star hotel has a bar. WiFi is free.</td>
+                                        <a href="/hotelInfo" style={{textDecoration:'none'}}><td class="product"><strong>La Verde</strong><br/>Offering a terrace, La Verde is located in Iasi. This 3-star hotel has a bar. WiFi is free.</td></a>
                                         <td class="rate text-right" style={{width: '100px'}}><span><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></span></td>
                                         <td class="price text-right">$37</td>
 

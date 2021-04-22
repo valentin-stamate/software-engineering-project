@@ -1,5 +1,6 @@
 import LoginUtility from './LoginUtility'
 import Client from './Client'
+import FetchData from './FetchData'
 
 class ClientLogin extends LoginUtility{
     //Credentials credentials -> Credentials.js
@@ -16,38 +17,14 @@ class ClientLogin extends LoginUtility{
     }
 
     static fetchData(credentials){
-        //datele ce trebuie trimise pentru logare (username,password)
         var data={
-            username:credentials.uname,
+            login:credentials.uname,
             password:credentials.pword
         };
 
-        var url="http://188.34.167.200:8082/user/login";
-
-        /*
-        CORS error
-        fetch(url,{
-            method:"POST",
-            body:JSON.stringify(data)
-        })
-        .then(response =>response.json())
-        .then(data => {
-            alert("Data "+data);
-        })
-        .catch(error => {
-            alert("Error "+error);
-        });*/
-
-        /*return {
-            message:"Login failed"
-        };*/
-
-        return {
-            username:"JohnDoe",
-            email:"john@gmail.com",
-            profilePhotoLink:null,
-            authorizationToken:null
-        };
+        var response=FetchData.makeRequest("https://euopendata.herokuapp.com/user/login","POST",data);
+    
+        return response;
     }
 }
 

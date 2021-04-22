@@ -122,7 +122,6 @@ async function handleSaveResponse(response) {
 async function handleLoadResponse(response) {
     return await response.json().then(function(json) {
         if (response.status == 200) {
-            alert(JSON.stringify(json));
             return json;
         } else {
             showAlert("Failed to get the hotels - " + json.message);

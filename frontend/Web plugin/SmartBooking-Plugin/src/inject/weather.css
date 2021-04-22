@@ -60,6 +60,7 @@
     font-size: 0.85em;
     margin: 0;
     padding: 0;
+    width: 100%;
 }
 
 .weather_card__info {
@@ -69,7 +70,7 @@
 }
 
 .weather_card__infos {
-    width: 70%;
+    width: 100%;
 }
 
 .weather_card__info_main div {
