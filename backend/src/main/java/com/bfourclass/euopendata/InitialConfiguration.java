@@ -19,6 +19,7 @@ public class InitialConfiguration {
         return args -> {
             UserModel userModelA = new UserModel("ValentinSt", "valentinstamate@gmail.com", SimpleHashingAlgo.hash("dcy3w8r7ds4lr329"), "~/vali.png");
             UserModel userModelB = new UserModel("Lorenzo", "lorenzo@gmail.com", SimpleHashingAlgo.hash("dasdasd"), "~/lorenzo.png");
+            UserModel userModelC = new UserModel("plugin", "plugin@gmail.com", SimpleHashingAlgo.hash("plugintest99"), "~/lorenzo.png");
 
             HotelModel hotelModelA = new HotelModel("ro/arnia", "Hotel Arnia", "Iași");
             HotelModel hotelModelB = new HotelModel("ro/terra-iasi-valea-lupului", "Hotel Terra Iasi", "Iași");
@@ -26,6 +27,7 @@ public class InitialConfiguration {
 
             userModelA.activateUser();
             userModelB.activateUser();
+            userModelC.activateUser();
 
             userModelA.addHotel(hotelModelA);
             userModelA.addHotel(hotelModelB);
@@ -39,6 +41,7 @@ public class InitialConfiguration {
 
             userRepository.save(userModelA);
             userRepository.save(userModelB);
+            userRepository.save(userModelC);
 
             /* Review */
             HotelReviewModel hotelReviewModelA = new HotelReviewModel(userModelA, hotelModelB, "I like it", 9);
