@@ -25,10 +25,16 @@ class SignUpPage extends react.Component{
         if(this.state.password != this.state.confirmPassword){
             alert("Passwords don t match!");
         }
-
-        var message=ClientSignUp.signup(new ClientInfo(this.state.username,this.state.email,this.state.password,this.state.profilePhotoLink));
+        var info=new ClientInfo(this.state.username,this.state.email,this.state.password,this.state.profilePhotoLink);
+        info.username=this.state.username;
+        info.email=this.state.email;
+        info.password=this.state.password;
+        info.profilePhotoLink=this.state.profilePhotoLink;
+        var message=ClientSignUp.signup(info);
         alert(message);
-        window.location="/login";
+        if(message.includes("Success")){
+            window.location="/login";
+        }
     }
 
     render(){

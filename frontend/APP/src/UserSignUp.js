@@ -1,5 +1,6 @@
 import SignUpUtility from './SignUpUtility';
 import ClientInfo from './ClientInfo';
+import FetchData from './FetchData'
 
 class ClientSignUp extends SignUpUtility{
     static signup(info){
@@ -8,7 +9,6 @@ class ClientSignUp extends SignUpUtility{
    }
 
     static fetchData(info){
-        //datele ce trebuie trimise pentru inregistrare cont
         var data={
             username:info.username,
             email:info.email,
@@ -16,26 +16,9 @@ class ClientSignUp extends SignUpUtility{
             profilePhotoLink:info.profilePhotoLink
         };
 
-        var url="http://188.34.167.200:8082/user/register";
+        var response=FetchData.makeRequest("https://euopendata.herokuapp.com/user/register","POST",data);
 
-        /*
-        eroare CORS
-        fetch(url,{
-            method:"POST",
-            body:JSON.stringify(data)
-        })
-        .then(response =>response.json())
-        .then(data => {
-            //...TO DO
-        })
-        .catch(error => {
-            console.log(error);
-        })*/
-
-
-        return { 
-            message : "Registration executed successfully" 
-        };
+        return response;
     }
 }
 
