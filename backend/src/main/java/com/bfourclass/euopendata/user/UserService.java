@@ -7,12 +7,11 @@ import com.bfourclass.euopendata.hotel.json.HotelJSON;
 import com.bfourclass.euopendata.requests.APIError;
 import com.bfourclass.euopendata.security.StringGenerator;
 import com.bfourclass.euopendata.user.auth.SecurityContext;
-import com.bfourclass.euopendata.user.json.UserJSON;
-import com.bfourclass.euopendata.user.json.UserLoginJSON;
 import com.bfourclass.euopendata.user.json.UserRegisterJSONRequest;
+import com.bfourclass.euopendata.user_history.UserHistoryModel;
+import com.bfourclass.euopendata.user_history.UserHistoryRepository;
 import com.bfourclass.euopendata.user_verification.UserVerification;
 import com.bfourclass.euopendata.user_verification.UserVerificationService;
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,14 +28,16 @@ public class UserService {
     private final UserVerificationService userVerificationService;
     private final SecurityContext securityContext;
     private final HotelRepository hotelRepository;
+    private final UserHistoryRepository userHistoryRepository;
 
     @Autowired
-    public UserService(UserRepository userRepository, EmailService emailService, UserVerificationService userVerificationService, SecurityContext securityContext, HotelRepository hotelRepository) {
+    public UserService(UserRepository userRepository, EmailService emailService, UserVerificationService userVerificationService, SecurityContext securityContext, HotelRepository hotelRepository, UserHistoryRepository userHistoryRepository) {
         this.userRepository = userRepository;
         this.emailService = emailService;
         this.userVerificationService = userVerificationService;
         this.securityContext = securityContext;
         this.hotelRepository = hotelRepository;
+        this.userHistoryRepository = userHistoryRepository;
     }
 
     public boolean checkTokenIsValid(String token) {
@@ -141,5 +142,21 @@ public class UserService {
     public void deleteUserHotel(UserModel userModel, HotelModel hotelModel) {
         userModel.deleteUserHotel(hotelModel);
         userRepository.save(userModel);
+    }
+
+
+    public void addUserSearchHistory(UserModel userModel, String token) {
+        UserHistoryModel userHistoryModel=new UserHistoryModel(token);
+        userHistoryRepository.save(userHistoryModel);
+        userModel.addHistory(userHistoryModel);
+        userRepository.save(userModel);
+    }
+
+    public void removeSearchedHotel(UserModel userModel, long id) {
+        userModel.removeSearchedHotelById(id);
+        userRepository.save(userModel);
+
+        UserHistoryModel userHistoryModel = userHistoryRepository.getOne(id);
+        userHistoryRepository.delete(userHistoryModel);
     }
 }

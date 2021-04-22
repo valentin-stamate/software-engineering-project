@@ -154,4 +154,13 @@ public class UserModel {
     public void addHistory(UserHistoryModel userHistoryModel) {
         userHistory.add(userHistoryModel);
     }
+
+    public void removeSearchedHotelById(long id){
+        for(UserHistoryModel userHistoryModel : userHistory){
+            if(userHistoryModel.getId()==id){
+                userHistory.remove(userHistoryModel);
+                break;
+            }
+        }
+    }
 }

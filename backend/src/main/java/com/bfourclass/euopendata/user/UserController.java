@@ -257,7 +257,7 @@ public class UserController {
         return new ResponseEntity<>(new APISuccess("successfully added admin"), HttpStatus.OK);
     }
 
-    @PatchMapping("admin/remove_admin")
+    @PatchMapping("(admin/remove_admin)")
     public ResponseEntity<Object> removeAdmin(
             @RequestParam String username,
             @RequestHeader(name = "Authorization", required = true) String token) {
@@ -277,5 +277,37 @@ public class UserController {
         }
         userService.removeAdmin(username);
         return new ResponseEntity<>(new APISuccess("successfully added admin"), HttpStatus.OK);
+    }
+
+    @GetMapping("user/serach_hotel")
+    public ResponseEntity<Object> searchHotel(@RequestParam(name = "hotel_id") long id, @RequestHeader(name = "Authorization") String token)
+    {
+        ResponseEntity<Object> errorResponse = userService.checkUserToken(token);
+        if (errorResponse != null) {
+            return errorResponse;
+        }
+
+        UserModel userModel = userService.getUserFromToken(token);
+
+        /* TODO,search hotels */
+
+        userService.addUserSearchHistory(userModel,token);
+
+        return new ResponseEntity<>(new APISuccess("Comming soon,"), HttpStatus.OK);
+    }
+
+
+    @DeleteMapping("user/delete_searched_hotel")
+    public ResponseEntity<Object> deleteSearchedHotel(@RequestParam(name="hotel_query_id") long id, @RequestHeader(name="Authorization") String token)
+    {
+        ResponseEntity<Object> errorResponse = userService.checkUserToken(token);
+        if (errorResponse != null) {
+            return errorResponse;
+        }
+
+        UserModel userModel = userService.getUserFromToken(token);
+
+        userService.removeSearchedHotel(userModel,id);
+        return new ResponseEntity<>(new APISuccess("Deleted Succesfully"),HttpStatus.OK);
     }
 }

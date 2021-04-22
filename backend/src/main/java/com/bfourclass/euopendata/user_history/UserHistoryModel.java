@@ -5,6 +5,7 @@ import com.bfourclass.euopendata.user.UserModel;
 
 import javax.persistence.*;
 
+
 @Entity
 @Table(name = "user_history")
 public class UserHistoryModel {
@@ -17,6 +18,11 @@ public class UserHistoryModel {
     private UserModel userModel;
 
     private String searchedLocationName;
+
+    public UserHistoryModel(String token) {
+        this.searchedLocationName=token;
+    }
+
 
     public String getSearchedLocation() {
         return searchedLocationName;
@@ -33,4 +39,6 @@ public class UserHistoryModel {
     public Long getId() {
         return id;
     }
+
+
 }
