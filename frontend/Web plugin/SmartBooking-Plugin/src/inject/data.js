@@ -47,3 +47,9 @@ console.log("Destination = " + destination);
 console.log("Number of adults = " + numberOfAdults);
 console.log("Number of children = " + numberOfChildren);
 console.log("Number of Rooms = " + numberOfRooms);
+
+function sameDay(d1, d2) {
+    return d1.getFullYear() === d2.getFullYear() &&
+      d1.getMonth() === d2.getMonth() &&
+      d1.getDate() === d2.getDate();
+  }

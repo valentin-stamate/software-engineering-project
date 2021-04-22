@@ -8,9 +8,9 @@
     margin-left: 5px;
     margin-right: 5px;
     display: inline-block;
-    padding: 5px 10px;
-    width: 135px;
-    height: 250px;
+    padding: 5px 5px;
+    width: 140px;
+    height: 230px;
     border-radius: 3px;
     background-color: #fff;
     box-shadow: 1px 2px 10px rgba(0, 0, 0, .2);
@@ -59,12 +59,17 @@
     font-weight: 400;
     font-size: 0.85em;
     margin: 0;
+    padding: 0;
 }
 
 .weather_card__info {
-    color: #999;
+    color: rgb(148, 148, 148);
     font-weight: 300;
     font-size: 0.85em;
+}
+
+.weather_card__infos {
+    width: 70%;
 }
 
 .weather_card__info_main div {
@@ -84,7 +89,7 @@
 
 .weather_card__temp_am,
 .weather_card__temp_pm {
-    color: #999;
+    color: rgb(148, 148, 148);
 }
 
 .weather_card__temp_am * {
