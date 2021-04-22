@@ -6,8 +6,12 @@ const loginstate = localStorage.getItem('loginstate');
 if (loginstate == "true") {
     document.getElementById('save-list').classList.remove("hidden");
     document.getElementById('log-to-save').classList.add('hidden');
-    loadedHotelList = await UserController.getUserHotels();
-    console.log(loadedHotelList);
+    let response = await UserController.getUserHotels();
+    if (response.succes)
+    {
+        loadedHotelList = response.message;
+        console.log(loadedHotelList);
+    }
 } else {
     document.getElementById('save-list').classList.add("hidden");
     document.getElementById('log-to-save').classList.remove('hidden');
@@ -53,7 +57,6 @@ async function handleUserHotelsLoad(value) {
             console.log(element.hotelName);
             let hotel_link = "https://booking.com" + element.hotelPath;
             let hotel_list_elem = getListElem(element.hotelName, element.hotelLocation, hotel_link);
-            uncheckCheckbox(hotel_list_elem);
             control_group.append(hotel_list_elem);
         });
         if (hotelList.length == 0) {
@@ -67,15 +70,17 @@ function addRemoveButton() {
     var remove = document.getElementsByClassName("remove");
     for (var i = 0; i < remove.length; i++) {
         remove[i].addEventListener('click', (el) => {
-            var label = el.target.parentElement;
-            label.style.display = "none";
-            removeLocation(label.getElementsByClassName("hotel-name")[0].innerText);
-            label.remove();
+            showConfirmBox("Are you sure you want to remove this hotel from your favorites?", () => {
+                var label = el.target.parentElement;
+                label.style.display = "none";
+                removeLocation(label.getElementsByClassName("hotel-name")[0].innerText);
+                label.remove();
+            });
         });
     }
 }
 
-function removeLocation(loc) {
+async function removeLocation(loc) {
     chrome.storage.sync.get('locations', value => {
         var hotelList = value.locations;
 

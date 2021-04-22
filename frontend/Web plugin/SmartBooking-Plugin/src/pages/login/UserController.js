@@ -18,7 +18,7 @@ export default class UserController {
             return handleLoginResponse(response); 
         }).catch(err => {
             console.log(err);
-            return false;
+            return {succes:false, message:"Login failed!"};
         });
     }
 
@@ -30,7 +30,7 @@ export default class UserController {
 
     static async saveUserHotel(hotels) {
         if (hotels.length == 0) {
-            return true;
+            return {succes:false, message:"Nothing to save!"};
         }
         let token = window.localStorage.getItem('token');
         let url = host_url + "user/add_hotels";
@@ -46,7 +46,7 @@ export default class UserController {
             return handleSaveResponse(response);
         }).catch(err => {
             console.log(err);
-            return false;
+            return {succes:false, message:"Failed to save hotel!"};
         });
     }
 
@@ -64,7 +64,7 @@ export default class UserController {
             return handleLoadResponse(response); 
         }).catch(err => {
             console.log(err);
-            return {message:"Error loading user hotel list"};
+            return {succes:false, message:"Failed to load hotels!"};
         });
     }
 
@@ -87,7 +87,7 @@ export default class UserController {
             return handleDeleteResponse(response);
         }).catch(err => {
             console.log(err);
-            return false;
+            return {succes:false, message:"Failed to delete hotel!"};
         });
     }
 }
@@ -97,15 +97,12 @@ async function handleLoginResponse(response) {
         if (response.status == 200) {
             console.log(json);
             let token = json.authorizationToken;
-            let username = json.username;
             window.localStorage.setItem('loginstate', "true");
             window.localStorage.setItem('token', token);
-            showAlert("login succesful - " + username + ", " + token, true);
-            return true;
+            return {succes:true, message:"Login succesful"};
         } else {
             window.localStorage.setItem('loginstate', "false");
-            showAlert("login failed - " + json.message);
-            return false;
+            return {succes:false, message:`Login failed - ${json.message}!` };
         }
     });
 }
@@ -113,11 +110,9 @@ async function handleLoginResponse(response) {
 async function handleSaveResponse(response) {
     return await response.json().then(function(json) {
         if (response.status == 200) {
-            showAlert(json.message);
-            return true;
+            return {succes:true, message:"Hotels saved succesfuly!"};s
         } else {
-            showAlert("saving failed - " + json.message);
-            return false;
+            return {succes:false, message:"Failed to save hotels!"};
         }
     });
 }
@@ -125,10 +120,9 @@ async function handleSaveResponse(response) {
 async function handleLoadResponse(response) {
     return await response.json().then(function(json) {
         if (response.status == 200) {
-            return json;
+            return {succes:false, message:json};
         } else {
-            showAlert("Failed to get the hotels - " + json.message);
-            return json;
+            return {succes:false, message:"Failed to load hotels!"};
         }
     });
 }
@@ -136,11 +130,9 @@ async function handleLoadResponse(response) {
 async function handleDeleteResponse(response) {
     return await response.json().then(function(json) {
         if (response.status == 200) {
-            alert(json.message);
-            return true;
+            return {succes:true, message:"Hotel deleted succesfuly!"};
         } else {
-            alert("deleting failed - " + json.message);
-            return false;
+            return {succes:false, message:"Error deleting user hotel!"};
         }
     });
 }
