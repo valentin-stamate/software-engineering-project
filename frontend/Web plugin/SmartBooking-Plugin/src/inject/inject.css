@@ -76,18 +76,10 @@
 }
 
 #statistics-container {
+    padding: 2px;
     width: 100%;
     height: fit-content;
 }
-
-
-/*
-Asta suprascrie margin si padding elementelor din container
-#statistics-container *{
-	margin: 1px;
-	padding: 1px;
-}
-*/
 
 #statistics-container ul {
     list-style: none;
@@ -100,21 +92,14 @@ Asta suprascrie margin si padding elementelor din container
     /* or whatever color you prefer */
 }
 
-#hotel-info {
-    text-align: center;
+#covid-statistics {
+    display:flex;
+    justify-content: center;
+    width: 100%;
 }
 
-#covid-info {
-    text-align: left;
-    border: 1px solid gray;
-}
-
-#weather-info {
-    text-align: left;
-    border: 1px solid gray;
-}
-
-#air-pollution {
-    text-align: left;
-    border: 1px solid gray;
+#weather-statistics {
+    display:flex;
+    justify-content: center;
+    width: 100%;
 }

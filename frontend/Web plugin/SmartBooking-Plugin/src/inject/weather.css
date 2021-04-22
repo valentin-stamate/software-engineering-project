@@ -5,10 +5,10 @@
 }
 
 .weather_card {
-    margin-left: 10px;
+    margin-left: 5px;
+    margin-right: 5px;
     display: inline-block;
-    margin-top: 5%;
-    padding: 5px 15px;
+    padding: 5px 10px;
     width: 135px;
     height: 250px;
     border-radius: 3px;

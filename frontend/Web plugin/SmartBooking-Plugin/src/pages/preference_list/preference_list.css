@@ -2,11 +2,12 @@
 	cursor:pointer;
 	text-decoration: none;
 	color:black;
-	padding:5px;
+	padding:0;
+	margin: 0;
 }
 
-.b-contain a:hover {
-	background-color: #ffffff90;
+.b-contain a:hover{
+	background-color: transparent;
 	text-decoration: underline;
 }
 
@@ -21,7 +22,7 @@
 }
 
 .b-contain span {
-	line-height: 1.54;
+	line-height: 1.6em;
 	font-size: 1rem;
 	font-family: inherit;
 }
@@ -38,7 +39,6 @@
 	padding: 0.2rem;
 	padding-top: 0.15rem;
 	padding-left: 1.85rem;
-	cursor: pointer;
 	border:1px solid transparent;
 }
 
