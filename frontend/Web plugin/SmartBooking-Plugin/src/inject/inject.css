@@ -1,113 +1,120 @@
-#main-popup{
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
-	overflow-Y:auto;
-	overflow-X:hidden;
-	display: block;
-	width:100%;
-	z-index:9999;
-	padding:5;
-	margin:0;
+#main-popup {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-Y: auto;
+    overflow-X: hidden;
+    display: block;
+    width: 100%;
+    z-index: 9999;
+    padding: 5;
+    margin: 0;
 }
 
-#hide-btn{
-	width: 100%;
-	border:none;
-	outline:none;
-	cursor: pointer;
-	line-height:20px;
-    overflow:hidden;
-	text-align: right;
-	background-color:#2161bb;
-	color:white;
+#hide-btn {
+    width: 100%;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    line-height: 20px;
+    overflow: hidden;
+    text-align: right;
+    background-color: #2161bb;
+    color: white;
 }
 
 #hide-btn:active {
-	position:relative;
-	top:1px;
+    position: relative;
+    top: 1px;
 }
 
-#hide-btn:hover{
-	background-color:#78909c;
-	color:white;
+#hide-btn:hover {
+    background-color: #78909c;
+    color: white;
 }
 
-#popup{
-	background-color: #ebf3ff;
-	text-align: center; 
-	display: flex;
-	flex-direction:column;
-	height:100%;
-	width:100%;
-	padding: 5px 0px;
+#popup {
+    background-color: #ebf3ff;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    padding: 5px 0px;
 }
 
 #send-btn {
-	border:none;
-	border-radius: 2px;
-	background-color:#2161bb;
-	display:inline-flex;
-	justify-content: center;
-	align-items: center;
-	cursor:pointer;
-	color:white;
-	height:35px;
-	width: 25%;
-	margin:auto;
-	margin-top:15px;
-	font-weight: bold;
-	text-decoration:none;
+    margin-top: 10px;
+    border: none;
+    border-radius: 2px;
+    background-color: #2161bb;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    color: white;
+    height: 35px;
+    width: 25%;
+    margin: auto;
+    margin-top: 15px;
+    font-weight: bold;
+    text-decoration: none;
 }
+
 #send-btn:hover {
-	background-color:#003d92;
-	color:white;
+    background-color: #003d92;
+    color: white;
 }
+
 #send-btn:active {
-	position:relative;
-	top:1px;
+    position: relative;
+    top: 1px;
 }
 
-.header{
-	overflow:hidden;
-	background-color:#78909c;
+.header {
+    overflow: hidden;
+    background-color: #78909c;
 }
 
-#statistics-container{
-	width: 100%;
-	height: fit-content;
-	overflow: auto;
+#statistics-container {
+    width: 100%;
+    height: fit-content;
 }
 
+
+/*
+Asta suprascrie margin si padding elementelor din container
 #statistics-container *{
 	margin: 1px;
 	padding: 1px;
 }
+*/
 
-#statistics-container ul{ 
-	list-style: none;
-	margin-left:30px;
+#statistics-container ul {
+    list-style: none;
+    margin-left: 30px;
 }
 
 #statistics-container li::before {
-	content: "• ";
-	color: blue; /* or whatever color you prefer */
-  }
+    content: "• ";
+    color: blue;
+    /* or whatever color you prefer */
+}
 
-#hotel-info{
-	text-align: center;
+#hotel-info {
+    text-align: center;
 }
 
 #covid-info {
-	text-align: left;
-	border: 1px solid gray;
+    text-align: left;
+    border: 1px solid gray;
 }
 
 #weather-info {
-	text-align: left;
-	border: 1px solid gray;
+    text-align: left;
+    border: 1px solid gray;
 }
 
 #air-pollution {
-	text-align: left;
-	border: 1px solid gray;
+    text-align: left;
+    border: 1px solid gray;
 }
