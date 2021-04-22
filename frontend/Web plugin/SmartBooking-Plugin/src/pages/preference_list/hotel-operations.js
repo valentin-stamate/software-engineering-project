@@ -7,13 +7,9 @@ var hotels = [];
 async function handleUserHotelList() {
     var hotelNodeList = document.getElementsByClassName("b-contain");
     if (hotelNodeList) {
-        Array.prototype.slice.call(hotelNodeList).forEach(handleUserHotelElement);
-        if (await UserController.saveUserHotel(hotels)) {
-            showAlert("Save was succesful");
-        }
-        else {
-            showAlert("Save was unsuccesful");
-        }
+        Array.from(hotelNodeList).forEach(handleUserHotelElement);
+        let msg = await UserController.saveUserHotel(hotels);
+        showAlert(msg.message);
     }
 }
 

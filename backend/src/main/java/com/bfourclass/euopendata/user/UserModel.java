@@ -96,10 +96,12 @@ public class UserModel {
 
     public void addHotel(HotelModel hotelModel) {
         hotels.add(hotelModel);
+        hotelModel.addUserSave(this);
     }
 
     public void deleteUserHotel(HotelModel hotelModel) {
         hotels.removeIf(hotel -> hotel.getHotelName().equals(hotelModel.getHotelName()));
+        hotelModel.deleteUserSave(this);
     }
 
     public List<HotelModel> getUserHotels() {
