@@ -1,6 +1,7 @@
 import UserController from '../login/UserController.js';
 
 var loadedHotelList = [];
+
 const loginstate = localStorage.getItem('loginstate');
 
 if (loginstate == "true") {
@@ -37,29 +38,44 @@ function getListElem(element = "hotel name", adress = "hotel adress", link = "#"
 }
 
 var hotelList = [];
+
 function addUserHotelList() {
     chrome.storage.sync.get('locations', handleUserHotelsLoad);
 }
 addUserHotelList();
 
 async function handleUserHotelsLoad(value) {
-    hotelList = value.locations;
     var control_group = document.getElementById("control-group");
-
     control_group.innerHTML = "Nothing here yet";
-    if (hotelList) {
-        control_group.innerHTML = "";
-        hotelList.forEach(element => {
-            console.log(element.hotelName);
-            let hotel_link = "https://booking.com" + element.hotelPath;
-            let hotel_list_elem = getListElem(element.hotelName, element.hotelLocation, hotel_link);
-            uncheckCheckbox(hotel_list_elem);
+
+    if (loadedHotelList) {
+        if (loadedHotelList.length > 0)
+            control_group.innerHTML = "";
+
+        loadedHotelList.forEach(element => {
+            let hotel_list_elem = getListElem(element.hotelName, element.locationName, element.hotelUrl);
+            checkCheckbox(hotel_list_elem);
+
             control_group.append(hotel_list_elem);
         });
-        if (hotelList.length == 0) {
-            control_group.innerHTML = "Nothing here yet";
-        }
     }
+
+    hotelList = value.locations;
+
+    if (hotelList) {
+        if (hotelList.length > 0 && (!loadedHotelList || loadedHotelList.length == 0))
+            control_group.innerHTML = "";
+
+        hotelList.forEach(element => {
+            let hotel_link = "https://booking.com" + element.hotelPath;
+
+            if (!loadedHotelList.some(function(loaded) { return loaded.hotelUrl == hotel_link; })) {
+                let hotel_list_elem = getListElem(element.hotelName, element.hotelLocation, hotel_link);
+                control_group.append(hotel_list_elem);
+            }
+        });
+    }
+
     addRemoveButton();
 }
 
