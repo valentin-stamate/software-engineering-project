@@ -3,11 +3,12 @@ package com.bfourclass.euopendata;
 import com.bfourclass.euopendata.user.auth.InMemorySecurityContext;
 import com.bfourclass.euopendata.user.auth.SecurityContext;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.util.Assert;
 
 @SpringBootTest
-public class SecurityContextTest {
+public class SecurityContextTest{
 
     @Test
     public void insertsIntoContext() {
@@ -16,4 +17,18 @@ public class SecurityContextTest {
         Assert.isTrue(context.exists(token), "context inserts on login");
     }
 
+    @Test
+    public void removesFromContext() {
+        SecurityContext context = new InMemorySecurityContext();
+        String token = context.authenticateUserReturnToken("user");
+        context.removeToken(token);
+        Assert.isTrue(!context.exists(token), "context was removed");
+    }
+
+    @Test
+    public void generatesToken() {
+        SecurityContext context = new InMemorySecurityContext();
+        String token = context.generateToken("user");
+        Assert.isTrue(token != null && !token.equals(""), "context is not empty");
+    }
 }

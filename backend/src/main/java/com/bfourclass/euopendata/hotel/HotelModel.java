@@ -30,6 +30,7 @@ public class HotelModel {
     private double averageRating = 0.0D;
     private int votes = 0;
 
+    @Transient
     private List<UserModel> userSaves= new ArrayList<>();
 
     public HotelModel(String identifier, String hotelName, String locationName) {

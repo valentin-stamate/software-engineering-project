@@ -5,42 +5,47 @@ import com.bfourclass.euopendata.user.UserService;
 import com.bfourclass.euopendata.user.auth.InMemorySecurityContext;
 import com.bfourclass.euopendata.user.auth.SecurityContext;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.util.Assert;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@SpringBootTest
+@SpringBootTest(classes = EuopendataApplication.class,
+        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@ActiveProfiles("test")
+@RunWith(SpringRunner.class)
 public class UserServiceTests {
+
+    @Autowired
+    UserService userService;
 
     @Test
     public void checkTokenIsValid() {
-        UserService userService = new UserService();
-        SecurityContext context = new InMemorySecurityContext();
-        String token = context.authenticateUserReturnToken("user");
-        Assert.isTrue(userService.checkTokenIsValid(token));
+        String token = userService.loginUserReturnToken("user");
+        Assert.isTrue(userService.checkTokenIsValid(token), "");
     }
 
     @Test
     public void sendUserActivationEmail() {
-        UserService userService = new UserService();
         UserModel userModel = new UserModel("markel","emi@ta.com","emithau","");
-        Assert.isTrue(userService.sendUserActivationEmail(userModel));
+        Assert.isTrue(userService.sendUserActivationEmail(userModel), "");
     }
     @Test
     public void userExists() {
-        UserService userService = new UserService();
         String login = "user";
-        Assert.isTrue(userService.userExists(login));
+        Assert.isTrue(userService.userExists(login), "");
     }
 
     @Test
     public void getUserFromToken() {
-        UserService userService = new UserService();
-        SecurityContext context = new InMemorySecurityContext();
         UserModel userModel = new UserModel("user","emi@ta.com","emithau","");
-        String token = context.authenticateUserReturnToken("user");
-        assertEquals(userModel,userService.getUserFromToken(token));
+        String token = userService.loginUserReturnToken("user");
+        assertEquals(userModel.getUsername(), userService.getUserFromToken(token).getUsername());
     }
 }
 
