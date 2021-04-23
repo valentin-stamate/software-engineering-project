@@ -8,7 +8,7 @@ async function toggleLoginlogout() {
 		document.getElementById('login-btn').classList.add('hidden');
 		let credentials = window.localStorage.getItem('credentials');
 		if (credentials !== "undefined" && UserController.autoLogin) {
-			console.log(credentials);
+			credentials = JSON.parse(credentials);
 			UserController.login(credentials.login, credentials.password);
 		}
 	}
