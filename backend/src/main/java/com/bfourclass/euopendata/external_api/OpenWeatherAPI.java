@@ -13,6 +13,7 @@ import java.io.IOException;
 abstract class OpenWeatherAPI {
 
     protected static Weather requestWeather(String location) {
+        location = location.replace(" ", "%20");
         String requestURL = "http://api.openweathermap.org/data/2.5/weather?q=" + location + "&APPID=" + Secrets.weatherApiKey;
 
         ObjectMapper mapper = new ObjectMapper();
@@ -30,6 +31,7 @@ abstract class OpenWeatherAPI {
     }
 
     protected static Forecast requestForecast(String location) {
+        location = location.replace(" ", "%20");
         String requestURL = String.format("http://api.openweathermap.org/data/2.5/forecast?q=%s&appid=%s", location, Secrets.weatherApiKey);
 
         ObjectMapper mapper = new ObjectMapper();
