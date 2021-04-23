@@ -61,6 +61,8 @@ async function addCovidStatistics(covid){
 }
 
 async function addForecastCards(forecast) {
+    if (!forecast) return;
+    
     let list = forecast.list;
 
     let curr_date = new Date();
