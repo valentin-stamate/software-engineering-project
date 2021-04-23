@@ -1,14 +1,15 @@
 var host_url = `https://euopendata.herokuapp.com/`;
 export default class UserController {
-    static async login(username = "", password = "") {
+    static autoLogin = true;
+    static async login(login = "", password = "") {
         let url = host_url + "user/login";
 
         let _data = {
-            "login": username,
+            "login": login,
             "password": password
         };
 
-        return await fetch(url, {
+        let logged = await fetch(url, {
             method: "POST",
             body: JSON.stringify(_data),
             headers: {
@@ -18,11 +19,19 @@ export default class UserController {
             return handleLoginResponse(response);
         }).catch(err => {
             console.log(err);
-            return { succes: false, message: "Login failed!" };
+            return { succes: false, message: "Login failed! (fetch error)" };
         });
+
+        if (logged.succes) {
+            window.localStorage.setItem('credentials', JSON.stringify(_data));
+        } else {
+            window.localStorage.setItem('credentials', "undefined");
+        }
+
+        return logged;
     }
 
-    static async logout() {
+    static logout() {
         window.localStorage.clear();
         window.location.reload();
         window.location.href = '/src/pages/popup.html';
@@ -46,7 +55,7 @@ export default class UserController {
             return handleSaveResponse(response);
         }).catch(err => {
             console.log(err);
-            return { succes: false, message: "Failed to save hotel!" };
+            return { succes: false, message: "Failed to save hotel! (fetch error)" };
         });
     }
 
@@ -64,7 +73,7 @@ export default class UserController {
             return handleLoadResponse(response);
         }).catch(err => {
             console.log(err);
-            return { succes: false, message: "Failed to load hotels!" };
+            return { succes: false, message: "Failed to load hotels! (fetch error)" };
         });
     }
 
@@ -82,13 +91,13 @@ export default class UserController {
             return handleDeleteResponse(response);
         }).catch(err => {
             console.log(err);
-            return { succes: false, message: "Failed to delete hotel!" };
+            return { succes: false, message: "Failed to delete hotel! (fetch error)" };
         });
     }
 }
 
 async function handleLoginResponse(response) {
-    return await response.json().then(function(json) {
+    return await response.json().then(function (json) {
         if (response.status == 200) {
             console.log(json);
             let token = json.authorizationToken;
@@ -103,10 +112,9 @@ async function handleLoginResponse(response) {
 }
 
 async function handleSaveResponse(response) {
-    return await response.json().then(function(json) {
+    return await response.json().then(function (json) {
         if (response.status == 200) {
             return { succes: true, message: "Hotels saved succesfuly!" };
-            s
         } else {
             return { succes: false, message: "Failed to save hotels!" };
         }
@@ -114,7 +122,7 @@ async function handleSaveResponse(response) {
 }
 
 async function handleLoadResponse(response) {
-    return await response.json().then(function(json) {
+    return await response.json().then(function (json) {
         if (response.status == 200) {
             return { succes: true, message: json };
         } else {
@@ -124,7 +132,7 @@ async function handleLoadResponse(response) {
 }
 
 async function handleDeleteResponse(response) {
-    return await response.json().then(function(json) {
+    return await response.json().then(function (json) {
         if (response.status == 200) {
             return { succes: true, message: "Hotel deleted succesfuly!" };
         } else {

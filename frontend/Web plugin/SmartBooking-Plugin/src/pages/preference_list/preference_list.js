@@ -2,21 +2,27 @@ import UserController from '../login/UserController.js';
 
 var loadedHotelList = [];
 
-const loginstate = localStorage.getItem('loginstate');
+const loginstate = window.localStorage.getItem('loginstate');
+
+async function toggleSaveBtn(toggle){
+    if (toggle) {
+        document.getElementById('save-list').classList.remove("hidden");
+        document.getElementById('log-to-save').classList.add('hidden');
+    } else {
+        document.getElementById('save-list').classList.add("hidden");
+        document.getElementById('log-to-save').classList.remove('hidden');
+    }
+}
 
 if (loginstate == "true") {
-    document.getElementById('save-list').classList.remove("hidden");
-    document.getElementById('log-to-save').classList.add('hidden');
+    toggleSaveBtn(true);
     let response = await UserController.getUserHotels();
     if (response.succes) {
         loadedHotelList = response.message;
-        console.log(loadedHotelList);
     } else {
-        console.log(response);
     }
 } else {
-    document.getElementById('save-list').classList.add("hidden");
-    document.getElementById('log-to-save').classList.remove('hidden');
+    toggleSaveBtn(false);
     loadedHotelList = [];
 }
 
@@ -50,8 +56,6 @@ function addUserHotelList() {
 addUserHotelList();
 
 async function handleUserHotelsLoad(value) {
-    console.log(hotelList);
-    console.log(loadedHotelList);
     var control_group = document.getElementById("control-group");
     control_group.innerHTML = "Nothing here yet";
 
@@ -73,15 +77,15 @@ async function handleUserHotelsLoad(value) {
 
         hotelList.forEach(element => {
             let hotel_link = "https://www.booking.com" + element.hotelPath;
-            console.log(loadedHotelList);
-            console.log(hotel_link);
 
-            if (!loadedHotelList.some(function(loaded) { return loaded.hotelUrl === hotel_link; })) {
+            if (!loadedHotelList.some(function (loaded) { return loaded.hotelUrl === hotel_link; })) {
                 let hotel_list_elem = getListElem(element.hotelName, element.hotelLocation, hotel_link);
                 control_group.append(hotel_list_elem);
             }
         });
     }
+    hotelList.concat(loadedHotelList);
+    chrome.storage.sync.set({'loactions': hotelList});
 
     addRemoveButton();
 }
@@ -101,16 +105,18 @@ function addRemoveButton() {
 }
 
 async function removeLocation(url) {
-    loadedHotelList = loadedHotelList.filter(async function(element, index) {
+    loadedHotelList = loadedHotelList.filter(async function (element, index) {
         if (element.hotelUrl === url) {
             let response = await UserController.deleteUserHotel(element.id);
             if (response.succes)
                 return false;
 
-            console.log(response);
+            console.log(response.message);
         }
         return true;
     });
+
+    console.log(loadedHotelList);
 
     chrome.storage.sync.get('locations', value => {
         var hotelList = value.locations;

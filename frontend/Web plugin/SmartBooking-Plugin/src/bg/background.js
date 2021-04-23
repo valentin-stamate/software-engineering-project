@@ -2,11 +2,12 @@ var locations = [];
 var host_url = `https://euopendata.herokuapp.com/`;
 chrome.runtime.onInstalled.addListener(() => {
     chrome.storage.sync.set({ "locations": locations });
+    window.localStorage.setItem('credentials', "undefined");
 });
 
 //example of using a message handler from the inject scripts
 chrome.runtime.onMessage.addListener(
-    function(request, sender, sendResponse) {
+    function (request, sender, sendResponse) {
         if (!request.sendStatistics) {
             var _data = {
                 "hotelName": request.hotelName,
