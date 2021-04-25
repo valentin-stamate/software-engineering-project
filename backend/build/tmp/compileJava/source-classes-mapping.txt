@@ -1,15 +1,15 @@
-com/bfourclass/euopendata/hotel/HotelController.java
- com.bfourclass.euopendata.hotel.HotelController
+com/bfourclass/euopendata/globals/Globals.java
+ com.bfourclass.euopendata.globals.Globals
 com/bfourclass/euopendata/external_api/instance/weather/current_weather/WeatherDetails.java
  com.bfourclass.euopendata.external_api.instance.weather.current_weather.WeatherDetails
 com/bfourclass/euopendata/user/json/UserLoginJSON.java
  com.bfourclass.euopendata.user.json.UserLoginJSON
 com/bfourclass/euopendata/external_api/NumbeoAPI.java
  com.bfourclass.euopendata.external_api.NumbeoAPI
-com/bfourclass/euopendata/user_history/UserHistoryModel.java
- com.bfourclass.euopendata.user_history.UserHistoryModel
-com/bfourclass/euopendata/external_api/OpenWeatherAPI.java
- com.bfourclass.euopendata.external_api.OpenWeatherAPI
+com/bfourclass/euopendata/external_api/covid/CovidStatisticsAPI.java
+ com.bfourclass.euopendata.external_api.covid.CovidStatisticsAPI
+com/bfourclass/euopendata/external_api/instance/weather/current_weather/Rain.java
+ com.bfourclass.euopendata.external_api.instance.weather.current_weather.Rain
 com/bfourclass/euopendata/hotel_review/json/HotelReviewJSON.java
  com.bfourclass.euopendata.hotel_review.json.HotelReviewJSON
 com/bfourclass/euopendata/external_api/instance/covid_statistics/Item.java
@@ -18,34 +18,34 @@ com/bfourclass/euopendata/external_api/instance/weather/week_weather/Forecast.ja
  com.bfourclass.euopendata.external_api.instance.weather.week_weather.Forecast
 com/bfourclass/euopendata/external_api/instance/covid_statistics/CovidStatistics.java
  com.bfourclass.euopendata.external_api.instance.covid_statistics.CovidStatistics
-com/bfourclass/euopendata/user_history/UserHistoryService.java
- com.bfourclass.euopendata.user_history.UserHistoryService
+com/bfourclass/euopendata/hotel_review/json/HotelNewReviewJSON.java
+ com.bfourclass.euopendata.hotel_review.json.HotelNewReviewJSON
 com/bfourclass/euopendata/security/StringGenerator.java
  com.bfourclass.euopendata.security.StringGenerator
-com/bfourclass/euopendata/external_api/ExternalApiController.java
- com.bfourclass.euopendata.external_api.ExternalApiController
-com/bfourclass/euopendata/hotel_review/HotelReviewService.java
- com.bfourclass.euopendata.hotel_review.HotelReviewService
+com/bfourclass/euopendata/external_api/instance/numbeo_data/CriminalityStatistics.java
+ com.bfourclass.euopendata.external_api.instance.numbeo_data.CriminalityStatistics
+com/bfourclass/euopendata/external_api/instance/weather/current_weather/Coord.java
+ com.bfourclass.euopendata.external_api.instance.weather.current_weather.Coord
 com/bfourclass/euopendata/user_history/UserHistoryRepository.java
  com.bfourclass.euopendata.user_history.UserHistoryRepository
 com/bfourclass/euopendata/hotel_review/HotelReviewRepository.java
  com.bfourclass.euopendata.hotel_review.HotelReviewRepository
 com/bfourclass/euopendata/email/EmailService.java
  com.bfourclass.euopendata.email.EmailService
-com/bfourclass/euopendata/user/auth/InMemorySecurityContext.java
- com.bfourclass.euopendata.user.auth.InMemorySecurityContext
+com/bfourclass/euopendata/external_api/instance/weather/current_weather/Clouds.java
+ com.bfourclass.euopendata.external_api.instance.weather.current_weather.Clouds
 com/bfourclass/euopendata/hotel/json/HotelJSON.java
  com.bfourclass.euopendata.hotel.json.HotelJSON
 com/bfourclass/euopendata/external_api/instance/covid_news/Webpage.java
  com.bfourclass.euopendata.external_api.instance.covid_news.Webpage
-com/bfourclass/euopendata/hotel/HotelModel.java
- com.bfourclass.euopendata.hotel.HotelModel
-com/bfourclass/euopendata/hotel_review/HotelReviewModel.java
- com.bfourclass.euopendata.hotel_review.HotelReviewModel
+com/bfourclass/euopendata/EuopendataApplication.java
+ com.bfourclass.euopendata.EuopendataApplication
+com/bfourclass/euopendata/external_api/instance/covid_news/Listitem.java
+ com.bfourclass.euopendata.external_api.instance.covid_news.Listitem
 com/bfourclass/euopendata/external_api/instance/location/LocationStatisticsJSON.java
  com.bfourclass.euopendata.external_api.instance.location.LocationStatisticsJSON
-com/bfourclass/euopendata/user/UserController.java
- com.bfourclass.euopendata.user.UserController
+com/bfourclass/euopendata/user/json/UserJSON.java
+ com.bfourclass.euopendata.user.json.UserJSON
 com/bfourclass/euopendata/user_history/json/UserHistoryJSON.java
  com.bfourclass.euopendata.user_history.json.UserHistoryJSON
 com/bfourclass/euopendata/external_api/instance/covid_news/CovidNewsJSON.java
@@ -54,10 +54,10 @@ com/bfourclass/euopendata/security/SimpleHashingAlgo.java
  com.bfourclass.euopendata.security.SimpleHashingAlgo
 com/bfourclass/euopendata/user/auth/Role.java
  com.bfourclass.euopendata.user.auth.Role
-com/bfourclass/euopendata/user/UserRepository.java
- com.bfourclass.euopendata.user.UserRepository
-com/bfourclass/euopendata/security/JwtUtil.java
- com.bfourclass.euopendata.security.JwtUtil
+com/bfourclass/euopendata/external_api/instance/weather/current_weather/Wind.java
+ com.bfourclass.euopendata.external_api.instance.weather.current_weather.Wind
+com/bfourclass/euopendata/secrets/Secrets.java
+ com.bfourclass.euopendata.secrets.Secrets
 com/bfourclass/euopendata/external_api/instance/aqicn_data/AirPollution.java
  com.bfourclass.euopendata.external_api.instance.aqicn_data.AirPollution
 com/bfourclass/euopendata/external_api/instance/weather/current_weather/City.java
@@ -66,67 +66,67 @@ com/bfourclass/euopendata/external_api/instance/weather/current_weather/Main.jav
  com.bfourclass.euopendata.external_api.instance.weather.current_weather.Main
 com/bfourclass/euopendata/external_api/instance/covid_news/Item.java
  com.bfourclass.euopendata.external_api.instance.covid_news.Item
+com/bfourclass/euopendata/requests/APIError.java
+ com.bfourclass.euopendata.requests.APIError
+com/bfourclass/euopendata/external_api/instance/covid_news/CovidNews.java
+ com.bfourclass.euopendata.external_api.instance.covid_news.CovidNews
+com/bfourclass/euopendata/requests/APISuccess.java
+ com.bfourclass.euopendata.requests.APISuccess
+com/bfourclass/euopendata/external_api/instance/weather/current_weather/Weather.java
+ com.bfourclass.euopendata.external_api.instance.weather.current_weather.Weather
+com/bfourclass/euopendata/hotel/HotelController.java
+ com.bfourclass.euopendata.hotel.HotelController
+com/bfourclass/euopendata/user_history/UserHistoryModel.java
+ com.bfourclass.euopendata.user_history.UserHistoryModel
+com/bfourclass/euopendata/external_api/OpenWeatherAPI.java
+ com.bfourclass.euopendata.external_api.OpenWeatherAPI
 com/bfourclass/euopendata/user/UserModel.java
  com.bfourclass.euopendata.user.UserModel
 com/bfourclass/euopendata/hotel/HotelService.java
  com.bfourclass.euopendata.hotel.HotelService
+com/bfourclass/euopendata/user_history/UserHistoryService.java
+ com.bfourclass.euopendata.user_history.UserHistoryService
 com/bfourclass/euopendata/hotel/HotelRepository.java
  com.bfourclass.euopendata.hotel.HotelRepository
-com/bfourclass/euopendata/external_api/instance/weather/current_weather/Weather.java
- com.bfourclass.euopendata.external_api.instance.weather.current_weather.Weather
+com/bfourclass/euopendata/external_api/ExternalApiController.java
+ com.bfourclass.euopendata.external_api.ExternalApiController
+com/bfourclass/euopendata/hotel_review/HotelReviewService.java
+ com.bfourclass.euopendata.hotel_review.HotelReviewService
 com/bfourclass/euopendata/external_api/covid/CovidNewsAPI.java
  com.bfourclass.euopendata.external_api.covid.CovidNewsAPI
 com/bfourclass/euopendata/user_verification/UserVerificationRepository.java
  com.bfourclass.euopendata.user_verification.UserVerificationRepository
-com/bfourclass/euopendata/external_api/instance/weather/current_weather/Wind.java
- com.bfourclass.euopendata.external_api.instance.weather.current_weather.Wind
-com/bfourclass/euopendata/requests/APIError.java
- com.bfourclass.euopendata.requests.APIError
+com/bfourclass/euopendata/user/auth/InMemorySecurityContext.java
+ com.bfourclass.euopendata.user.auth.InMemorySecurityContext
 com/bfourclass/euopendata/external_api/ExternalAPI.java
  com.bfourclass.euopendata.external_api.ExternalAPI
-com/bfourclass/euopendata/hotel_review/json/HotelNewReviewJSON.java
- com.bfourclass.euopendata.hotel_review.json.HotelNewReviewJSON
-com/bfourclass/euopendata/external_api/instance/weather/current_weather/Clouds.java
- com.bfourclass.euopendata.external_api.instance.weather.current_weather.Clouds
+com/bfourclass/euopendata/hotel/HotelModel.java
+ com.bfourclass.euopendata.hotel.HotelModel
 com/bfourclass/euopendata/user_verification/UserVerificationService.java
  com.bfourclass.euopendata.user_verification.UserVerificationService
-com/bfourclass/euopendata/EuopendataApplication.java
- com.bfourclass.euopendata.EuopendataApplication
+com/bfourclass/euopendata/hotel_review/HotelReviewModel.java
+ com.bfourclass.euopendata.hotel_review.HotelReviewModel
 com/bfourclass/euopendata/user/UserService.java
  com.bfourclass.euopendata.user.UserService
 com/bfourclass/euopendata/user/json/UserRegisterJSONRequest.java
  com.bfourclass.euopendata.user.json.UserRegisterJSONRequest
-com/bfourclass/euopendata/user/json/UserJSON.java
- com.bfourclass.euopendata.user.json.UserJSON
-com/bfourclass/euopendata/external_api/instance/covid_news/Listitem.java
- com.bfourclass.euopendata.external_api.instance.covid_news.Listitem
+com/bfourclass/euopendata/user/UserController.java
+ com.bfourclass.euopendata.user.UserController
 com/bfourclass/euopendata/user/auth/SecurityContext.java
  com.bfourclass.euopendata.user.auth.SecurityContext
 com/bfourclass/euopendata/user/auth/SecurityConfig.java
  com.bfourclass.euopendata.user.auth.SecurityConfig
-com/bfourclass/euopendata/external_api/instance/covid_news/CovidNews.java
- com.bfourclass.euopendata.external_api.instance.covid_news.CovidNews
 com/bfourclass/euopendata/InitialConfiguration.java
  com.bfourclass.euopendata.InitialConfiguration
-com/bfourclass/euopendata/secrets/Secrets.java
- com.bfourclass.euopendata.secrets.Secrets
-com/bfourclass/euopendata/external_api/covid/CovidStatisticsAPI.java
- com.bfourclass.euopendata.external_api.covid.CovidStatisticsAPI
-com/bfourclass/euopendata/external_api/instance/weather/current_weather/Coord.java
- com.bfourclass.euopendata.external_api.instance.weather.current_weather.Coord
-com/bfourclass/euopendata/external_api/instance/numbeo_data/CriminalityStatistics.java
- com.bfourclass.euopendata.external_api.instance.numbeo_data.CriminalityStatistics
-com/bfourclass/euopendata/requests/APISuccess.java
- com.bfourclass.euopendata.requests.APISuccess
 com/bfourclass/euopendata/user_verification/UserVerification.java
  com.bfourclass.euopendata.user_verification.UserVerification
 com/bfourclass/euopendata/external_api/AQICNDataAPI.java
  com.bfourclass.euopendata.external_api.AQICNDataAPI
 com/bfourclass/euopendata/user/forms/FormValidator.java
  com.bfourclass.euopendata.user.forms.FormValidator
-com/bfourclass/euopendata/external_api/instance/weather/current_weather/Rain.java
- com.bfourclass.euopendata.external_api.instance.weather.current_weather.Rain
+com/bfourclass/euopendata/user/UserRepository.java
+ com.bfourclass.euopendata.user.UserRepository
+com/bfourclass/euopendata/security/JwtUtil.java
+ com.bfourclass.euopendata.security.JwtUtil
 com/bfourclass/euopendata/hotel_review/HotelReviewController.java
  com.bfourclass.euopendata.hotel_review.HotelReviewController
-com/bfourclass/euopendata/globals/Globals.java
- com.bfourclass.euopendata.globals.Globals
