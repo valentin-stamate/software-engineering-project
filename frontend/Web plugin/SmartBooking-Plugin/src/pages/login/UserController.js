@@ -1,34 +1,46 @@
 var host_url = `https://euopendata.herokuapp.com/`;
 export default class UserController {
-    static async login(username = "", password = "") {
+    static autoLogin = true;
+    static async login(login = "", password = "") {
         let url = host_url + "user/login";
 
         let _data = {
-            "login": username,
+            "login": login,
             "password": password
         };
 
-        return await fetch(url, {
+        let logged = await fetch(url, {
             method: "POST",
             body: JSON.stringify(_data),
             headers: {
                 "Content-type": "application/json; charset=UTF-8"
             }
-        }).then(response => { 
-            return handleLoginResponse(response); 
+        }).then(response => {
+            return handleLoginResponse(response);
         }).catch(err => {
             console.log(err);
-            return false;
+            return { succes: false, message: "Login failed! (fetch error)" };
         });
+
+        if (logged.succes) {
+            window.localStorage.setItem('credentials', JSON.stringify(_data));
+        } else {
+            window.localStorage.setItem('credentials', "undefined");
+        }
+
+        return logged;
     }
 
-    static async logout() {
+    static logout() {
         window.localStorage.clear();
         window.location.reload();
         window.location.href = '/src/pages/popup.html';
     }
 
     static async saveUserHotel(hotels) {
+        if (hotels.length == 0) {
+            return { succes: false, message: "Nothing to save!" };
+        }
         let token = window.localStorage.getItem('token');
         let url = host_url + "user/add_hotels";
 
@@ -39,11 +51,11 @@ export default class UserController {
                 "Content-type": "application/json; charset=UTF-8",
                 "Authorization": token
             }
-        }).then(response => { 
+        }).then(response => {
             return handleSaveResponse(response);
         }).catch(err => {
             console.log(err);
-            return false;
+            return { succes: false, message: "Failed to save hotel! (fetch error)" };
         });
     }
 
@@ -58,24 +70,19 @@ export default class UserController {
                 "Authorization": token
             }
         }).then(response => {
-            return handleLoadResponse(response); 
+            return handleLoadResponse(response);
         }).catch(err => {
             console.log(err);
-            return {message:"Error loading user hotel list"};
+            return { succes: false, message: "Failed to load hotels! (fetch error)" };
         });
     }
 
-    static async deleteUserHotel(hotel) {
+    static async deleteUserHotel(hotelId) {
         let token = window.localStorage.getItem('token');
-        let url = host_url + "user/delete_hotel";
-
-        let _data = {
-            "hotelName": hotel.hotelName
-        };
+        let url = host_url + "user/delete_hotel?hotel_id=" + hotelId;
 
         return await fetch(url, {
             method: "DELETE",
-            body: JSON.stringify(_data),
             headers: {
                 "Content-type": "application/json; charset=UTF-8",
                 "Authorization": token
@@ -84,60 +91,52 @@ export default class UserController {
             return handleDeleteResponse(response);
         }).catch(err => {
             console.log(err);
-            return false;
+            return { succes: false, message: "Failed to delete hotel! (fetch error)" };
         });
     }
 }
 
 async function handleLoginResponse(response) {
-    return await response.json().then(function(json) {
+    return await response.json().then(function (json) {
         if (response.status == 200) {
             console.log(json);
             let token = json.authorizationToken;
-            let username = json.username;
             window.localStorage.setItem('loginstate', "true");
             window.localStorage.setItem('token', token);
-            showAlert("login succesful - " + username + ", " + token, true);
-            return true;
+            return { succes: true, message: "Login succesful" };
         } else {
             window.localStorage.setItem('loginstate', "false");
-            showAlert("login failed - " + json.message);
-            return false;
+            return { succes: false, message: `Login failed - ${json.message}!` };
         }
     });
 }
 
 async function handleSaveResponse(response) {
-    return await response.json().then(function(json) {
+    return await response.text().then(function (text) {
         if (response.status == 200) {
-            showAlert(json.message);
-            return true;
+            return { succes: true, message: "Hotels saved succesfuly!" };
         } else {
-            showAlert("saving failed - " + json.message);
-            return false;
+            return { succes: false, message: "Failed to save hotels!" };
         }
     });
 }
 
 async function handleLoadResponse(response) {
-    return await response.json().then(function(json) {
+    return await response.json().then(function (json) {
         if (response.status == 200) {
-            return json;
+            return { succes: true, message: json };
         } else {
-            showAlert("Failed to get the hotels - " + json.message);
-            return json;
+            return { succes: false, message: "Failed to load hotels!" };
         }
     });
 }
 
 async function handleDeleteResponse(response) {
-    return await response.json().then(function(json) {
+    return await response.text().then(function (text) {
         if (response.status == 200) {
-            alert(json.message);
-            return true;
+            return { succes: true, message: "Hotel deleted succesfuly!" };
         } else {
-            alert("deleting failed - " + json.message);
-            return false;
+            return { succes: false, message: "Error deleting user hotel!" };
         }
     });
 }

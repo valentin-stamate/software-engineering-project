@@ -1,5 +1,7 @@
 import react from 'react';
 import { Helmet } from 'react-helmet';
+import Hotel from './Hotel';
+import Client from './Client';
 import './search.css';
 
 class SearchLocationPage extends react.Component{
@@ -8,6 +10,7 @@ class SearchLocationPage extends react.Component{
         this.state={
             client:JSON.parse(localStorage.user).user
         };
+        this.client=new Client(this.state.client.username,this.state.client.email,this.state.client.profilePic,this.state.client.auth);
     }
 
     render(){
@@ -118,7 +121,7 @@ class SearchLocationPage extends react.Component{
                                     <tr>
                                         <td class="rating">
                                             <a href="#"><i class="fas fa-circle"></i></a>
-                                            <a href="javascript:void();"><i class="fab fa-gratipay" onclick="liked(0)"></i></a> </td>
+                                            <a href="javascript:void();"><i class="fab fa-gratipay" onClick={() => (this.client.addToFavorites(new Hotel(0,"ro/casa-de-oaspeti-sfantul-nicolae","Casa de Oaspeți Sfântul Nicolae","Iaşi",7,12,"")))}></i></a> </td>
                                         <td class="number text-center">1</td>
                                         <td class="image"><img src={require("./images/img1.jpg").default} alt=""/></td>
                                         <a href="/hotelInfo" style={{textDecoration:'none'}}><td class="product"><strong>La Verde</strong><br/>Offering a terrace, La Verde is located in Iasi. This 3-star hotel has a bar. WiFi is free.</td></a>

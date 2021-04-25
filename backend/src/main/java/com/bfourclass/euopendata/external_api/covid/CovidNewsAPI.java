@@ -13,6 +13,7 @@ import java.io.IOException;
 public abstract class CovidNewsAPI {
 
     public static CovidNewsJSON requestCovidInformation(String locationName) {
+        locationName = locationName.replace(" ", "%20");
         String requestURL = "https://www.googleapis.com/customsearch/v1?key=" + Secrets.googleCustomSearchKey + "&cx=183e9c932cf280453&q=" + locationName + "%20covid";
 
         ObjectMapper mapper = new ObjectMapper();

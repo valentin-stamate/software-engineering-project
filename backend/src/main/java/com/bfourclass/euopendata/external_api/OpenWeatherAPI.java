@@ -15,6 +15,7 @@ abstract class OpenWeatherAPI {
 
     protected static Weather requestWeather(String location) {
         location = location.toLowerCase(Locale.ROOT);
+        location = location.replace(" ", "%20");
         String requestURL = "http://api.openweathermap.org/data/2.5/weather?q=" + location + "&APPID=" + Secrets.weatherApiKey;
 
         ObjectMapper mapper = new ObjectMapper();

@@ -10,6 +10,7 @@ abstract class AQICNDataAPI
 {
     protected static AirPollution requestAirPollution(String location) throws IOException
     {
+        location = location.replace(" ", "%20");
         /* Getting rid of diacritics */
         location = Normalizer.normalize(location, Normalizer.Form.NFD);
         location = location.replaceAll("\\p{M}", "");

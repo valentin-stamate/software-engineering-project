@@ -175,7 +175,7 @@ main {
 	border-color: #b8daff;
 }
 
-.banner-close {
+.banner-close, .banner-yes {
 	pointer-events: auto;
 	display:block;
 	height:fit-content;
@@ -190,7 +190,7 @@ main {
 	background-color:white;
 }
 
-.banner-close:hover {
+.banner-close:hover, .banner-yes:hover {
 	background-color:gray;
 	color:white;
 }
@@ -205,9 +205,6 @@ main {
   }
   50%{
     transform: scale(1);
-  }
-  60%{
-    transform: scale(1.1);
   }
   100%{
     transform: scale(1);
