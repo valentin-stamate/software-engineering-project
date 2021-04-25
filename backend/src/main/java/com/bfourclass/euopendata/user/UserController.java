@@ -4,6 +4,8 @@ import com.bfourclass.euopendata.hotel.HotelModel;
 import com.bfourclass.euopendata.hotel.HotelService;
 import com.bfourclass.euopendata.hotel.json.HotelJSON;
 import com.bfourclass.euopendata.user.json.*;
+import com.bfourclass.euopendata.user_history.UserHistoryModel;
+import com.bfourclass.euopendata.user_history.json.UserHistoryJSON;
 import com.bfourclass.euopendata.user_verification.UserVerificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,8 +14,8 @@ import org.springframework.web.bind.annotation.*;
 import com.bfourclass.euopendata.requests.APIError;
 import com.bfourclass.euopendata.requests.APISuccess;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 public class UserController {
@@ -51,6 +53,9 @@ public class UserController {
                 HotelModel hotelModel = new HotelModel(hotelJSON.identifier, hotelJSON.hotelName, hotelJSON.locationName);
 
                 hotelService.createHotelIfNotExists(hotelModel);
+
+                /* TODO find a properly primary key when the id is not given */
+                hotelModel = hotelService.getHotelByIdentifier(hotelJSON.identifier);
 
                 userService.addHotel(userModel, hotelModel);
             } else {
@@ -279,27 +284,43 @@ public class UserController {
         return new ResponseEntity<>(new APISuccess("successfully added admin"), HttpStatus.OK);
     }
 
-    @GetMapping("user/serach_hotel")
-    public ResponseEntity<Object> searchHotel(@RequestParam(name = "hotel_id") long id, @RequestHeader(name = "Authorization") String token)
+    @GetMapping("user/search_hotel")
+    public ResponseEntity<Object> searchHotel(@RequestParam(name = "query") String query, @RequestHeader(name = "Authorization", required = false) String token)
     {
         ResponseEntity<Object> errorResponse = userService.checkUserToken(token);
-        if (errorResponse != null) {
-            return errorResponse;
+
+        if (errorResponse == null) {
+            UserModel userModel = userService.getUserFromToken(token);
+            userService.addUserSearchHistory(userModel, query);
         }
 
-        UserModel userModel = userService.getUserFromToken(token);
+        /* TODO, make this clearer and refactor*/
 
-        /* TODO,search hotels */
+        List<HotelJSON> hotelJSONS = hotelService.getHotels();
 
-        userService.addUserSearchHistory(userModel,token);
+        query = query.toLowerCase(Locale.ROOT);
+        String[] searchTokens = query.split( " ");
 
-        return new ResponseEntity<>(new APISuccess("Comming soon,"), HttpStatus.OK);
+        Map<String, HotelJSON> searchResult= new HashMap<>();
+
+        for (HotelJSON hotelJSON : hotelJSONS) {
+            searchResult.put(hotelJSON.hotelName.toLowerCase(Locale.ROOT) + " " + hotelJSON.locationName.toLowerCase(Locale.ROOT), hotelJSON);
+        }
+
+        for (String searchToken : searchTokens) {
+            searchResult = searchResult.entrySet().stream().
+                    filter(map -> map.getKey().contains(searchToken))
+                    .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+        }
+
+        List<HotelJSON> finalResult = new ArrayList<>(searchResult.values());
+
+        return new ResponseEntity<>(finalResult, HttpStatus.OK);
     }
 
 
-    @DeleteMapping("user/delete_searched_hotel")
-    public ResponseEntity<Object> deleteSearchedHotel(@RequestParam(name="hotel_query_id") long id, @RequestHeader(name="Authorization") String token)
-    {
+    @DeleteMapping("user/delete_search_query")
+    public ResponseEntity<Object> deleteSearchedHotel(@RequestParam(name="hotel_query_id") long id, @RequestHeader(name="Authorization") String token) {
         ResponseEntity<Object> errorResponse = userService.checkUserToken(token);
         if (errorResponse != null) {
             return errorResponse;
@@ -307,7 +328,23 @@ public class UserController {
 
         UserModel userModel = userService.getUserFromToken(token);
 
+        /* TODO, explicit the error */
         userService.removeSearchedHotel(userModel,id);
-        return new ResponseEntity<>(new APISuccess("Deleted Succesfully"),HttpStatus.OK);
+        return new ResponseEntity<>(new APISuccess("Deleted Successfully"),HttpStatus.OK);
     }
+
+    @GetMapping("user/get_history")
+    public ResponseEntity<Object> getUserSearchHistory(@RequestHeader(name="Authorization") String token) {
+        ResponseEntity<Object> errorResponse = userService.checkUserToken(token);
+        if (errorResponse != null) {
+            return errorResponse;
+        }
+
+        UserModel userModel = userService.getUserFromToken(token);
+
+        List<UserHistoryModel> userHistoryJSONS = userModel.getUserSearchHistory();
+
+        return new ResponseEntity<>(userHistoryJSONS, HttpStatus.OK);
+    }
+
 }
