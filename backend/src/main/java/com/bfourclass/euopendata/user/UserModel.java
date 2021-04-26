@@ -6,6 +6,7 @@ import com.bfourclass.euopendata.security.SimpleHashingAlgo;
 import com.bfourclass.euopendata.user_history.UserHistoryModel;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -27,10 +28,10 @@ public class UserModel {
     private boolean isAdmin = false;
 
     @OneToMany
-    private Set<HotelReviewModel> userReviews = new HashSet<>();
+    private final Set<HotelReviewModel> userReviews = new HashSet<>();
 
     @OneToMany
-    private Set<UserHistoryModel> userHistory = new HashSet<>();
+    private final List<UserHistoryModel> userSearchHistory = new ArrayList<>();
 
     @ManyToMany
     private final Set<HotelModel> hotels = new HashSet<>();
@@ -154,15 +155,19 @@ public class UserModel {
     }
 
     public void addHistory(UserHistoryModel userHistoryModel) {
-        userHistory.add(userHistoryModel);
+        userSearchHistory.add(userHistoryModel);
     }
 
     public void removeSearchedHotelById(long id){
-        for(UserHistoryModel userHistoryModel : userHistory){
+        for(UserHistoryModel userHistoryModel : userSearchHistory){
             if(userHistoryModel.getId()==id){
-                userHistory.remove(userHistoryModel);
+                userSearchHistory.remove(userHistoryModel);
                 break;
             }
         }
+    }
+
+    public List<UserHistoryModel> getUserSearchHistory() {
+        return List.copyOf(userSearchHistory);
     }
 }

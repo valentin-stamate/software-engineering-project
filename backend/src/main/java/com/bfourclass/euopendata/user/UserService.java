@@ -140,12 +140,13 @@ public class UserService {
         return response;
     }
 
+    /* TODO, it's a little bit weird this logic*/
     public void addHotel(UserModel userModel, HotelModel hotelModel) {
-        userModel.addHotel(hotelModel);
-        userRepository.save(userModel);
         if (hotelRepository.findById(hotelModel.getId()).isEmpty()) {
             hotelRepository.save(hotelModel);
         }
+        userModel.addHotel(hotelModel);
+        userRepository.save(userModel);
     }
 
     public void deleteUserHotel(UserModel userModel, HotelModel hotelModel) {
@@ -154,8 +155,8 @@ public class UserService {
     }
 
 
-    public void addUserSearchHistory(UserModel userModel, String token) {
-        UserHistoryModel userHistoryModel=new UserHistoryModel(token);
+    public void addUserSearchHistory(UserModel userModel, String query) {
+        UserHistoryModel userHistoryModel = new UserHistoryModel(query);
         userHistoryRepository.save(userHistoryModel);
         userModel.addHistory(userHistoryModel);
         userRepository.save(userModel);

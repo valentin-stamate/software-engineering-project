@@ -17,19 +17,20 @@ public class UserHistoryModel {
     @ManyToOne
     private UserModel userModel;
 
-    private String searchedLocationName;
+    private String searchQuery;
 
-    public UserHistoryModel(String token) {
-        this.searchedLocationName=token;
+    public UserHistoryModel(String query) {
+        this.searchQuery = query;
     }
 
+    public UserHistoryModel() { }
 
     public String getSearchedLocation() {
-        return searchedLocationName;
+        return searchQuery;
     }
 
     public void setSearchedLocation(String searchedLocation) {
-        this.searchedLocationName = searchedLocation;
+        this.searchQuery = searchedLocation;
     }
 
     public void setId(Long id) {

@@ -112,7 +112,7 @@ async function handleLoginResponse(response) {
 }
 
 async function handleSaveResponse(response) {
-    return await response.json().then(function (json) {
+    return await response.text().then(function (text) {
         if (response.status == 200) {
             return { succes: true, message: "Hotels saved succesfuly!" };
         } else {
@@ -132,7 +132,7 @@ async function handleLoadResponse(response) {
 }
 
 async function handleDeleteResponse(response) {
-    return await response.json().then(function (json) {
+    return await response.text().then(function (text) {
         if (response.status == 200) {
             return { succes: true, message: "Hotel deleted succesfuly!" };
         } else {

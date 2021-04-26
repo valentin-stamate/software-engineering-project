@@ -84,8 +84,6 @@ async function handleUserHotelsLoad(value) {
             }
         });
     }
-    hotelList.concat(loadedHotelList);
-    chrome.storage.sync.set({'loactions': hotelList});
 
     addRemoveButton();
 }
@@ -104,29 +102,37 @@ function addRemoveButton() {
     }
 }
 
+const asyncFilter = async (arr, predicate, url) => 
+	arr.reduce(async (memo, e) =>
+		await predicate(e, url) ? [...await memo, e] : memo
+	, []);
+
+async function tryToDeleteUserHotel(element, url) {
+    if (element.hotelUrl === url) {
+        let response = await UserController.deleteUserHotel(element.id);
+        if (response.succes)
+            return false;
+
+        console.log(response.message);
+    }
+    return true;
+}
+
 async function removeLocation(url) {
-    loadedHotelList = loadedHotelList.filter(async function (element, index) {
-        if (element.hotelUrl === url) {
-            let response = await UserController.deleteUserHotel(element.id);
-            if (response.succes)
-                return false;
+    
+    loadedHotelList = await asyncFilter(loadedHotelList, tryToDeleteUserHotel, url);
+    chrome.storage.sync.get('locations', (value) => {
+        console.log(loadedHotelList);
+        let hotelList = value.locations;
 
-            console.log(response.message);
-        }
-        return true;
-    });
-
-    console.log(loadedHotelList);
-
-    chrome.storage.sync.get('locations', value => {
-        var hotelList = value.locations;
-
-        for (var i = 0; i < hotelList.length; i++) {
+        for (let i = 0; i < hotelList.length; i++) {
             if (("https://www.booking.com" + hotelList[i].hotelPath) == url) {
                 hotelList.splice(i, 1);
             }
         }
         chrome.storage.sync.set({ "locations": hotelList });
+
+        console.log(hotelList);
 
         if (hotelList.length == 0 && loadedHotelList.length == 0) {
             document.getElementById("control-group").innerText = "Nothing here yet";

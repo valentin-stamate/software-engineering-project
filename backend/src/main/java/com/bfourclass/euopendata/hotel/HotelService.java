@@ -93,4 +93,8 @@ public class HotelService {
 
         return null;
     }
+
+    public HotelModel getHotelByIdentifier(String identifier) {
+        return hotelRepository.findByIdentifier(identifier);
+    }
 }

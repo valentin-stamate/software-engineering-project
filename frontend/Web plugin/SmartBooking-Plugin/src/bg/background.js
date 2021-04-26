@@ -2,7 +2,6 @@ var locations = [];
 var host_url = `https://euopendata.herokuapp.com/`;
 chrome.runtime.onInstalled.addListener(() => {
     chrome.storage.sync.set({ "locations": locations });
-    window.localStorage.setItem('credentials', "undefined");
 });
 
 //example of using a message handler from the inject scripts
@@ -28,7 +27,7 @@ chrome.runtime.onMessage.addListener(
             //json experimental cu statistici
             //var url = "https://betonrats.000webhostapp.com/hotel.json";
 
-            let url1 = host_url + "forecast?locations=" + encodeURIComponent(request.hotelLocation);
+            let url1 = host_url + "forecast?locations=" + request.hotelLocation;
             let url2 = host_url + "covid_statistics?countries=" + "Romania";
 
             responses = fetchForecastAndCovid(url1, url2).then(([forecast, covid]) => {
