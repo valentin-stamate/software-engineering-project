@@ -36,4 +36,9 @@ public class UserVerificationService {
 
         return true;
     }
+
+    public UserModel getUserModel(String token) {
+        UserVerification userVerification = userVerificationRepository.findInstanceByKey(token);
+        return userVerification.userModel;
+    }
 }

@@ -158,9 +158,9 @@ public class UserModel {
         userSearchHistory.add(userHistoryModel);
     }
 
-    public void removeSearchedHotelById(long id){
-        for(UserHistoryModel userHistoryModel : userSearchHistory){
-            if(userHistoryModel.getId()==id){
+    public void removeSearchedHotelById(long id) {
+        for (UserHistoryModel userHistoryModel : userSearchHistory) {
+            if (userHistoryModel.getId() == id) {
                 userSearchHistory.remove(userHistoryModel);
                 break;
             }
@@ -173,5 +173,9 @@ public class UserModel {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

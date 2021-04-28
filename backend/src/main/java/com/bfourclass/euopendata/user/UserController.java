@@ -3,18 +3,20 @@ package com.bfourclass.euopendata.user;
 import com.bfourclass.euopendata.hotel.HotelModel;
 import com.bfourclass.euopendata.hotel.HotelService;
 import com.bfourclass.euopendata.hotel.json.HotelJSON;
+import com.bfourclass.euopendata.requests.APIError;
+import com.bfourclass.euopendata.requests.APISuccess;
 import com.bfourclass.euopendata.security.SimpleHashingAlgo;
 import com.bfourclass.euopendata.user.forms.FormValidator;
-import com.bfourclass.euopendata.user.json.*;
+import com.bfourclass.euopendata.user.json.UserChangePassJSon;
+import com.bfourclass.euopendata.user.json.UserJSON;
+import com.bfourclass.euopendata.user.json.UserLoginJSON;
+import com.bfourclass.euopendata.user.json.UserRegisterJSONRequest;
 import com.bfourclass.euopendata.user_history.UserHistoryModel;
-import com.bfourclass.euopendata.user_history.json.UserHistoryJSON;
 import com.bfourclass.euopendata.user_verification.UserVerificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.bfourclass.euopendata.requests.APIError;
-import com.bfourclass.euopendata.requests.APISuccess;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -177,9 +179,14 @@ public class UserController {
     }
 
     @GetMapping(value = "user/verify")
-    public ResponseEntity<Object> verifyUser(@RequestParam(name = "user_verification_key") String userKey) {
-        if (userVerificationService.activateUser(userKey)) {
-            return new ResponseEntity<>(new APISuccess("User successfully activated. Now you can log in"), HttpStatus.OK);
+    public ResponseEntity<Object> verifyUser(@RequestParam(name = "user_verification_key") String userKey, @RequestParam(required = false) String newEmail) {
+        if (newEmail == null || "".equals(newEmail)) {
+            if (userVerificationService.activateUser(userKey)) {
+                return new ResponseEntity<>(new APISuccess("User successfully activated. Now you can log in"), HttpStatus.OK);
+            }
+        } else {
+            UserModel userModel = userVerificationService.getUserModel(userKey);
+            userModel.setEmail(newEmail);
         }
         return new ResponseEntity<>(new APIError("Wrong verification key"), HttpStatus.NOT_FOUND);
     }
@@ -236,7 +243,7 @@ public class UserController {
         }
         userModel.setPassword(SimpleHashingAlgo.hash(userJSON.newPassword));
         userService.updateUser(userModel);
-        return new ResponseEntity(new APISuccess("User updated with success"),HttpStatus.OK);
+        return new ResponseEntity(new APISuccess("User updated with success"), HttpStatus.OK);
     }
 
     @PostMapping("user/update_email")
@@ -249,7 +256,7 @@ public class UserController {
         if (!FormValidator.isValidEmail(userModel.getEmail())) {
             return new ResponseEntity(new APIError("Invalid email"), HttpStatus.BAD_REQUEST);
         }
-        userService.updateEmail(userJSON);
+        userService.updateEmail(userModel, userJSON.email);
         return new ResponseEntity(new APISuccess("email updated successfully"), HttpStatus.OK);
     }
 

@@ -6,6 +6,7 @@ import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
+
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
@@ -19,7 +20,7 @@ public class EmailService {
         this.emailSender = emailSender;
     }
 
-    public boolean sendEmailVerificationEmail(String username, String destination, String key) {
+    public boolean sendEmailVerificationEmail(String username, String destination, String token, String queryParams) {
         MimeMessage mail = emailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(mail);
 
@@ -28,8 +29,8 @@ public class EmailService {
             helper.setTo(destination);
             helper.setSubject("Email Verification");
             helper.setText("Thank you for registering <b>" + username + "</b> ." +
-                    "To verify your account press on the button " +
-                            "<a href='" + Globals.BACKEND_URL + "user/verify?user_verification_key=" + key +"' target='_blank'>Activate Account</button>.",
+                            "To verify your account press on the button " +
+                            "<a href='" + Globals.BACKEND_URL + "user/verify?user_verification_key=" + token + queryParams + "' target='_blank'>Activate Account</button>.",
                     true);
         } catch (MessagingException e) {
             e.printStackTrace();

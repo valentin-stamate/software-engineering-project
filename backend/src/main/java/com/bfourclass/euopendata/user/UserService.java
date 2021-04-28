@@ -67,7 +67,7 @@ public class UserService {
 
     public boolean sendUserActivationEmail(UserModel userModel) {
         String activationToken = generateUserActivationToken(userModel);
-        return emailService.sendEmailVerificationEmail(userModel.getUsername(), userModel.getEmail(), activationToken);
+        return emailService.sendEmailVerificationEmail(userModel.getUsername(), userModel.getEmail(), activationToken, "");
     }
 
     public String generateUserActivationToken(UserModel userModel) {
@@ -171,15 +171,17 @@ public class UserService {
         userHistoryRepository.delete(userHistoryModel);
     }
 
-    public void updateUser(UserJSON userJSON) {
-        /* TODO */
-    }
 
-    public void updateEmail(UserJSON userJSON) {
-        /*  TODO*/
+    public void updateEmail(UserModel userModel, String newEmail) {
+        String activationToken = generateUserActivationToken(userModel);
+        emailService.sendEmailVerificationEmail(userModel.getUsername(), newEmail, activationToken, "?new_email=" + newEmail);
     }
 
     public void updateUser(UserModel userModel) {
+        /* TODO */
+    }
+
+    public void updateUser(UserJSON userJSON) {
         /* TODO */
     }
 }
