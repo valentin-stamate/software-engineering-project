@@ -68,6 +68,45 @@ public class ExternalApiController {
         return new ResponseEntity<>(covidStatistics, HttpStatus.OK);
     }
 
+    @GetMapping("/criminality_statistics")
+    public ResponseEntity<Object> getLocationCriminalityStatistics(@RequestParam(name = "locations") String locationsString) {
+        String[] locations = locationsString.split(",");
+
+        List<CriminalityStatistics> criminalityStatistics = new ArrayList<>();
+
+        for (String location : locations) {
+            criminalityStatistics.add(ExternalAPI.getCriminalityStatistics(location));
+        }
+
+        return new ResponseEntity<>(criminalityStatistics, HttpStatus.OK);
+    }
+
+    @GetMapping("/covid_news")
+    public ResponseEntity<Object> getLocationCovidNews(@RequestParam(name = "locations") String locationsString) {
+        String[] locations = locationsString.split(",");
+
+        List<CovidNewsJSON> covidNewsList = new ArrayList<>();
+
+        for (String location : locations) {
+            covidNewsList.add(ExternalAPI.getCovidNews(location));
+        }
+
+        return new ResponseEntity<>(covidNewsList, HttpStatus.OK);
+    }
+
+    @GetMapping("/air_pollution")
+    public ResponseEntity<Object> getLocationAirPollution(@RequestParam(name = "locations") String locationsString) {
+        String[] locations = locationsString.split(",");
+
+        List<AirPollution> airPollutions = new ArrayList<>();
+
+        for (String location : locations) {
+            airPollutions.add(ExternalAPI.getAirPollution(location));
+        }
+
+        return new ResponseEntity<>(airPollutions, HttpStatus.OK);
+    }
+
     /* TODO, location data */
     /* TODO add current weather */
 }
