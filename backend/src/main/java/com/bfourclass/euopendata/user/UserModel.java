@@ -170,4 +170,8 @@ public class UserModel {
     public List<UserHistoryModel> getUserSearchHistory() {
         return List.copyOf(userSearchHistory);
     }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }

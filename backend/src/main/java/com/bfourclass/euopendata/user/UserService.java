@@ -7,6 +7,7 @@ import com.bfourclass.euopendata.hotel.json.HotelJSON;
 import com.bfourclass.euopendata.requests.APIError;
 import com.bfourclass.euopendata.security.StringGenerator;
 import com.bfourclass.euopendata.user.auth.SecurityContext;
+import com.bfourclass.euopendata.user.json.UserJSON;
 import com.bfourclass.euopendata.user.json.UserRegisterJSONRequest;
 import com.bfourclass.euopendata.user_history.UserHistoryModel;
 import com.bfourclass.euopendata.user_history.UserHistoryRepository;
@@ -40,7 +41,7 @@ public class UserService {
         this.userHistoryRepository = userHistoryRepository;
     }
 
-    public UserService(){
+    public UserService() {
         this.userRepository = null;
         this.emailService = null;
         this.userVerificationService = null;
@@ -168,5 +169,17 @@ public class UserService {
 
         UserHistoryModel userHistoryModel = userHistoryRepository.getOne(id);
         userHistoryRepository.delete(userHistoryModel);
+    }
+
+    public void updateUser(UserJSON userJSON) {
+        /* TODO */
+    }
+
+    public void updateEmail(UserJSON userJSON) {
+        /*  TODO*/
+    }
+
+    public void updateUser(UserModel userModel) {
+        /* TODO */
     }
 }

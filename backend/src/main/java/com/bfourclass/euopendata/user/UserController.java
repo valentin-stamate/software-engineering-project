@@ -3,6 +3,8 @@ package com.bfourclass.euopendata.user;
 import com.bfourclass.euopendata.hotel.HotelModel;
 import com.bfourclass.euopendata.hotel.HotelService;
 import com.bfourclass.euopendata.hotel.json.HotelJSON;
+import com.bfourclass.euopendata.security.SimpleHashingAlgo;
+import com.bfourclass.euopendata.user.forms.FormValidator;
 import com.bfourclass.euopendata.user.json.*;
 import com.bfourclass.euopendata.user_history.UserHistoryModel;
 import com.bfourclass.euopendata.user_history.json.UserHistoryJSON;
@@ -175,7 +177,7 @@ public class UserController {
     }
 
     @GetMapping(value = "user/verify")
-    public ResponseEntity<Object> verifyUser(@RequestParam(name="user_verification_key") String userKey) {
+    public ResponseEntity<Object> verifyUser(@RequestParam(name = "user_verification_key") String userKey) {
         if (userVerificationService.activateUser(userKey)) {
             return new ResponseEntity<>(new APISuccess("User successfully activated. Now you can log in"), HttpStatus.OK);
         }
@@ -196,6 +198,59 @@ public class UserController {
         List<HotelJSON> response = userService.getUserHotels(userModel);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PostMapping("user/update")
+    public ResponseEntity<Object> updateUser(@RequestParam UserJSON userJSON, @RequestHeader(name = "Authorization") String token) {
+        ResponseEntity<Object> errorResponse = userService.checkUserToken(token);
+        if (errorResponse != null) {
+            return errorResponse;
+        }
+        UserModel userModel = userService.getUserFromToken(token);
+
+        if (!FormValidator.isValidUsername(userModel.getUsername())) {
+            return new ResponseEntity(new APIError("Invalid username"), HttpStatus.BAD_REQUEST);
+        }
+
+        if (!FormValidator.isValidLink(userModel.getProfilePhotoLink())) {
+            return new ResponseEntity(new APIError("Invalid photo-link"), HttpStatus.BAD_REQUEST);
+        }
+
+        userService.updateUser(userJSON);
+        return new ResponseEntity(new APISuccess("User update with success"), HttpStatus.OK);
+
+    }
+
+    @PostMapping("user/update_password")
+    public ResponseEntity<Object> updatePassword(@RequestParam UserChangePassJSon userJSON, @RequestHeader(name = "Authorization") String token) {
+        ResponseEntity<Object> errorResponse = userService.checkUserToken(token);
+        if (errorResponse != null) {
+            return errorResponse;
+        }
+        UserModel userModel = userService.getUserFromToken(token);
+        if (!userModel.checkUserPassword(userJSON.oldPassword)) {
+            return new ResponseEntity(new APIError("Invalid current password"), HttpStatus.BAD_REQUEST);
+        }
+        if (!FormValidator.isValidPassword(userJSON.newPassword)) {
+            return new ResponseEntity(new APIError("Invalid new password"), HttpStatus.BAD_REQUEST);
+        }
+        userModel.setPassword(SimpleHashingAlgo.hash(userJSON.newPassword));
+        userService.updateUser(userModel);
+        return new ResponseEntity(new APISuccess("User updated with success"),HttpStatus.OK);
+    }
+
+    @PostMapping("user/update_email")
+    public ResponseEntity<Object> updateEmail(@RequestParam UserJSON userJSON, @RequestHeader(name = "Authorization") String token) {
+        ResponseEntity<Object> errorResponse = userService.checkUserToken(token);
+        if (errorResponse != null) {
+            return errorResponse;
+        }
+        UserModel userModel = userService.getUserFromToken(token);
+        if (!FormValidator.isValidEmail(userModel.getEmail())) {
+            return new ResponseEntity(new APIError("Invalid email"), HttpStatus.BAD_REQUEST);
+        }
+        userService.updateEmail(userJSON);
+        return new ResponseEntity(new APISuccess("email updated successfully"), HttpStatus.OK);
     }
 
     /* User as admin */
@@ -285,8 +340,7 @@ public class UserController {
     }
 
     @GetMapping("user/search_hotel")
-    public ResponseEntity<Object> searchHotel(@RequestParam(name = "query") String query, @RequestHeader(name = "Authorization", required = false) String token)
-    {
+    public ResponseEntity<Object> searchHotel(@RequestParam(name = "query") String query, @RequestHeader(name = "Authorization", required = false) String token) {
         ResponseEntity<Object> errorResponse = userService.checkUserToken(token);
 
         if (errorResponse == null) {
@@ -299,9 +353,9 @@ public class UserController {
         List<HotelJSON> hotelJSONS = hotelService.getHotels();
 
         query = query.toLowerCase(Locale.ROOT);
-        String[] searchTokens = query.split( " ");
+        String[] searchTokens = query.split(" ");
 
-        Map<String, HotelJSON> searchResult= new HashMap<>();
+        Map<String, HotelJSON> searchResult = new HashMap<>();
 
         for (HotelJSON hotelJSON : hotelJSONS) {
             searchResult.put(hotelJSON.hotelName.toLowerCase(Locale.ROOT) + " " + hotelJSON.locationName.toLowerCase(Locale.ROOT), hotelJSON);
@@ -320,7 +374,7 @@ public class UserController {
 
 
     @DeleteMapping("user/delete_search_query")
-    public ResponseEntity<Object> deleteSearchedHotel(@RequestParam(name="hotel_query_id") long id, @RequestHeader(name="Authorization") String token) {
+    public ResponseEntity<Object> deleteSearchedHotel(@RequestParam(name = "hotel_query_id") long id, @RequestHeader(name = "Authorization") String token) {
         ResponseEntity<Object> errorResponse = userService.checkUserToken(token);
         if (errorResponse != null) {
             return errorResponse;
@@ -329,12 +383,12 @@ public class UserController {
         UserModel userModel = userService.getUserFromToken(token);
 
         /* TODO, explicit the error */
-        userService.removeSearchedHotel(userModel,id);
-        return new ResponseEntity<>(new APISuccess("Deleted Successfully"),HttpStatus.OK);
+        userService.removeSearchedHotel(userModel, id);
+        return new ResponseEntity<>(new APISuccess("Deleted Successfully"), HttpStatus.OK);
     }
 
     @GetMapping("user/get_history")
-    public ResponseEntity<Object> getUserSearchHistory(@RequestHeader(name="Authorization") String token) {
+    public ResponseEntity<Object> getUserSearchHistory(@RequestHeader(name = "Authorization") String token) {
         ResponseEntity<Object> errorResponse = userService.checkUserToken(token);
         if (errorResponse != null) {
             return errorResponse;
