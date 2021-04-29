@@ -1,5 +1,6 @@
 package com.bfourclass.euopendata.user.forms;
 
+import com.bfourclass.euopendata.user.json.OwnerRegisterJSONRequest;
 import com.bfourclass.euopendata.user.json.UserLoginJSON;
 import com.bfourclass.euopendata.user.json.UserRegisterJSONRequest;
 
@@ -12,6 +13,33 @@ public abstract class FormValidator {
     private static final Pattern linkPattern = Pattern.compile("(http|https)://(www).([a-z.]*)?(/[a-z1-9/]*)*\\??([&a-z1-9=]*)?");
 
     public static String isValidRegisterForm(UserRegisterJSONRequest registerForm) {
+        // weird style of writing an if stmt
+        if (registerForm.username == null
+                || registerForm.email == null
+                || registerForm.password == null
+                || registerForm.profilePhotoLink == null
+        ) return "Complete all fields";
+
+        if (!FormValidator.isValidUsername(registerForm.username)) {
+            return "Invalid username";
+        }
+
+        if (!FormValidator.isValidEmail(registerForm.email)) {
+            return "Invalid email";
+        }
+
+        if (!FormValidator.isValidPassword(registerForm.password)) {
+            return "Invalid password";
+        }
+
+        if (!FormValidator.isValidLink(registerForm.profilePhotoLink)) {
+            return "Invalid email";
+        }
+
+        return null;
+    }
+
+    public static String isValidOwnerRegisterForm(OwnerRegisterJSONRequest registerForm) {
         // weird style of writing an if stmt
         if (registerForm.username == null
                 || registerForm.email == null
