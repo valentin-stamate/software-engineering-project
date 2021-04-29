@@ -30,7 +30,7 @@ chrome.runtime.onMessage.addListener(
             let url1 = host_url + "forecast?locations=" + request.hotelLocation;
             let url2 = host_url + "covid_statistics?countries=" + "Romania";
 
-            responses = fetchForecastAndCovid(url1, url2).then(([forecast, covid]) => {
+            responses = fetchDataAboutLocation(url1, url2).then(([forecast, covid]) => {
                 let responses = {
                     covid: covid[0],
                     forecast: forecast[0]
@@ -61,7 +61,7 @@ function getCovidStatistics(url) {
     });;
 }
 
-async function fetchForecastAndCovid(url1, url2) {
+async function fetchDataAboutLocation(url1, url2) {
     const [forecastResp, covidResp] = await Promise.all([
         getForecast(url1),
         getCovidStatistics(url2)
