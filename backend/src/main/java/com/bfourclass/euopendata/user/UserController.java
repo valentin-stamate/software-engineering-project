@@ -346,40 +346,6 @@ public class UserController {
         return new ResponseEntity<>(new APISuccess("successfully added admin"), HttpStatus.OK);
     }
 
-    @GetMapping("user/search_hotel")
-    public ResponseEntity<Object> searchHotel(@RequestParam(name = "query") String query, @RequestHeader(name = "Authorization", required = false) String token) {
-        ResponseEntity<Object> errorResponse = userService.checkUserToken(token);
-
-        if (errorResponse == null) {
-            UserModel userModel = userService.getUserFromToken(token);
-            userService.addUserSearchHistory(userModel, query);
-        }
-
-        /* TODO, make this clearer and refactor*/
-
-        List<HotelJSON> hotelJSONS = hotelService.getHotels();
-
-        query = query.toLowerCase(Locale.ROOT);
-        String[] searchTokens = query.split(" ");
-
-        Map<String, HotelJSON> searchResult = new HashMap<>();
-
-        for (HotelJSON hotelJSON : hotelJSONS) {
-            searchResult.put(hotelJSON.hotelName.toLowerCase(Locale.ROOT) + " " + hotelJSON.locationName.toLowerCase(Locale.ROOT), hotelJSON);
-        }
-
-        for (String searchToken : searchTokens) {
-            searchResult = searchResult.entrySet().stream().
-                    filter(map -> map.getKey().contains(searchToken))
-                    .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-        }
-
-        List<HotelJSON> finalResult = new ArrayList<>(searchResult.values());
-
-        return new ResponseEntity<>(finalResult, HttpStatus.OK);
-    }
-
-
     @DeleteMapping("user/delete_search_query")
     public ResponseEntity<Object> deleteSearchedHotel(@RequestParam(name = "hotel_query_id") long id, @RequestHeader(name = "Authorization") String token) {
         ResponseEntity<Object> errorResponse = userService.checkUserToken(token);

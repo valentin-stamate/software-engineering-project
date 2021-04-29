@@ -1,15 +1,16 @@
 package com.bfourclass.euopendata.external_api;
 
-import com.bfourclass.euopendata.external_api.covid.CovidNewsAPI;
+import com.bfourclass.euopendata.external_api.covid.GoogleSearchAPI;
 import com.bfourclass.euopendata.external_api.covid.CovidStatisticsAPI;
 import com.bfourclass.euopendata.external_api.instance.aqicn_data.AirPollution;
-import com.bfourclass.euopendata.external_api.instance.covid_news.CovidNewsJSON;
+import com.bfourclass.euopendata.external_api.instance.covid_news.SearchResultJSON;
 import com.bfourclass.euopendata.external_api.instance.covid_statistics.CovidStatistics;
 import com.bfourclass.euopendata.external_api.instance.numbeo_data.CriminalityStatistics;
 import com.bfourclass.euopendata.external_api.instance.weather.current_weather.Weather;
 import com.bfourclass.euopendata.external_api.instance.weather.week_weather.Forecast;
 
 import java.io.IOException;
+import java.util.List;
 
 public abstract class ExternalAPI {
 
@@ -27,8 +28,8 @@ public abstract class ExternalAPI {
         return null;
     }
 
-    public static CovidNewsJSON getCovidNews(String location) {
-        return CovidNewsAPI.requestCovidInformation(location);
+    public static List<SearchResultJSON> getGoogleSearchResults(String query, int results) {
+        return GoogleSearchAPI.fetchGoogleSearchResults(query, results);
     }
 
     public static CovidStatistics getCovidStatistics(String country) {

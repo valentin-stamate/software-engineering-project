@@ -1,12 +1,14 @@
 package com.bfourclass.euopendata.external_api;
 
 import com.bfourclass.euopendata.external_api.instance.aqicn_data.AirPollution;
-import com.bfourclass.euopendata.external_api.instance.covid_news.CovidNewsJSON;
+import com.bfourclass.euopendata.external_api.instance.covid_news.CovidNews;
+import com.bfourclass.euopendata.external_api.instance.covid_news.SearchResultJSON;
 import com.bfourclass.euopendata.external_api.instance.covid_statistics.CovidStatistics;
 import com.bfourclass.euopendata.external_api.instance.location.LocationStatisticsJSON;
 import com.bfourclass.euopendata.external_api.instance.numbeo_data.CriminalityStatistics;
 import com.bfourclass.euopendata.external_api.instance.weather.current_weather.Weather;
 import com.bfourclass.euopendata.external_api.instance.weather.week_weather.Forecast;
+import com.bfourclass.euopendata.external_api.json.CovidNewsJSON;
 import com.bfourclass.euopendata.hotel.HotelService;
 import com.bfourclass.euopendata.hotel.json.HotelJSON;
 import com.bfourclass.euopendata.requests.APIError;
@@ -39,10 +41,18 @@ public class ExternalApiController {
         Weather weather = ExternalAPI.getWeather(location);
         CovidStatistics covidStatistics = ExternalAPI.getCovidStatistics(country);
         List<HotelJSON> hotels = hotelService.getHotels();
-        CovidNewsJSON covidNewsJSON = ExternalAPI.getCovidNews(location);
+
+        List<SearchResultJSON> results = ExternalAPI.getGoogleSearchResults(location + " covid", CovidNewsJSON.MAX_RESULTS);
+
+        SearchResultJSON searchResultJSON = null;
+
+        if (results.size() != 0) {
+            searchResultJSON = results.get(0);
+        }
+
         AirPollution airPollution = ExternalAPI.getAirPollution(location);
         CriminalityStatistics criminalityStatistics=ExternalAPI.getCriminalityStatistics(location);
-        LocationStatisticsJSON locationStatistics = new LocationStatisticsJSON(hotels, weather, covidStatistics,covidNewsJSON,airPollution,criminalityStatistics);
+        LocationStatisticsJSON locationStatistics = new LocationStatisticsJSON(hotels, weather, covidStatistics, searchResultJSON,airPollution,criminalityStatistics);
 
         return new ResponseEntity<>(locationStatistics, HttpStatus.OK);
     }
@@ -116,13 +126,16 @@ public class ExternalApiController {
     }
 
     @GetMapping("/covid_news")
-    public ResponseEntity<Object> getLocationCovidNews(@RequestParam(name = "locations") String locationsString) {
+    public ResponseEntity<Object> getLocationCovidNews(@RequestParam(name = "locations") String locationsString, @RequestParam(name = "max_results", required = false) Integer maxResults) {
         String[] locations = locationsString.split(",");
 
         List<CovidNewsJSON> covidNewsList = new ArrayList<>();
 
+        int maxFetchResults = maxResults == null ? CovidNewsJSON.MAX_RESULTS : maxResults;
+
         for (String location : locations) {
-            covidNewsList.add(ExternalAPI.getCovidNews(location));
+            List<SearchResultJSON> results = ExternalAPI.getGoogleSearchResults(location + " covid", maxFetchResults);
+            covidNewsList.add(new CovidNewsJSON(location, results));
         }
 
         return new ResponseEntity<>(covidNewsList, HttpStatus.OK);
