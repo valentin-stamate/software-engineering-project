@@ -230,6 +230,22 @@ public class UserController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @GetMapping("owner/hotels")
+    public ResponseEntity<Object> getOwnerHotels(@RequestHeader(name = "Authorization") String token) {
+
+        System.out.println(token);
+        ResponseEntity<Object> errorResponse = userService.checkUserToken(token);
+        if (errorResponse != null) {
+            return errorResponse;
+        }
+
+        UserModel userModel = userService.getUserFromToken(token);
+
+        List<HotelModel> response = userService.getOwnerHotels(userModel.getUsername());
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
     @PostMapping("user/update")
     public ResponseEntity<Object> updateUser(@RequestParam UserJSON userJSON, @RequestHeader(name = "Authorization") String token) {
         ResponseEntity<Object> errorResponse = userService.checkUserToken(token);
