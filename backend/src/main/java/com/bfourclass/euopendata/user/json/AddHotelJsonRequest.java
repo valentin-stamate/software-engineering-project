@@ -19,7 +19,27 @@ public class AddHotelJsonRequest {
         this.price = price;
     }
 
-    public HotelModel toHotel() {
-        return new HotelModel(identifier, name, location, photoLink, description, price);
+    public String getName() {
+        return name;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public String getIdentifier() {
+        return identifier;
+    }
+
+    public String getPhotoLink() {
+        return photoLink;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public float getPrice() {
+        return price;
     }
 }

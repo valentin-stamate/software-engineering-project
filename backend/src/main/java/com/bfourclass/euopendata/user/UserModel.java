@@ -192,4 +192,12 @@ public class UserModel {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    public boolean isOwner() {
+        return isOwner;
+    }
+
+    public void setOwner(boolean owner) {
+        isOwner = owner;
+    }
 }
