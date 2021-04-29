@@ -40,9 +40,10 @@ async function getStatistics() {
     }
     chrome.runtime.sendMessage(_data, function (response) {
         console.log(response);
-        //forecast:   response.forecast
-        //covid:      response.covid
-        //covid_news: response.covid_news
+        //forecast:         response.forecast
+        //covid:            response.covid
+        //covid_news:       response.covid_news
+        //air_pollution:    response.airPollution
         addStatistics(response);
     });
 }
