@@ -7,10 +7,7 @@ import com.bfourclass.euopendata.requests.APIError;
 import com.bfourclass.euopendata.requests.APISuccess;
 import com.bfourclass.euopendata.security.SimpleHashingAlgo;
 import com.bfourclass.euopendata.user.forms.FormValidator;
-import com.bfourclass.euopendata.user.json.UserChangePassJSon;
-import com.bfourclass.euopendata.user.json.UserJSON;
-import com.bfourclass.euopendata.user.json.UserLoginJSON;
-import com.bfourclass.euopendata.user.json.UserRegisterJSONRequest;
+import com.bfourclass.euopendata.user.json.*;
 import com.bfourclass.euopendata.user_history.UserHistoryModel;
 import com.bfourclass.euopendata.user_verification.UserVerificationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -144,6 +141,32 @@ public class UserController {
         }
 
         userService.createUserByForm(form);
+
+        UserModel userModel = userService.getUserByLogin(form.email);
+
+        if (!userService.sendUserActivationEmail(userModel)) {
+            return new ResponseEntity<>(new APIError("Error sending verification email"), HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        return new ResponseEntity<>(new APISuccess("Registration successful"), HttpStatus.OK);
+    }
+    @PostMapping(value = "owner/register")
+    public ResponseEntity<Object> registerOwner(@RequestBody OwnerRegisterJSONRequest form) {
+
+        String errorMessage = form.isValid();
+        if (errorMessage != null) {
+            return new ResponseEntity<>(new APIError(errorMessage), HttpStatus.BAD_REQUEST);
+        }
+
+        if (userService.userExists(form.username)) {
+            return new ResponseEntity<>(new APIError("Username is taken"), HttpStatus.BAD_REQUEST);
+        }
+
+        if (userService.userExists(form.email)) {
+            return new ResponseEntity<>(new APIError("Email already used"), HttpStatus.BAD_REQUEST);
+        }
+
+        userService.createOwnerByForm(form);
 
         UserModel userModel = userService.getUserByLogin(form.email);
 

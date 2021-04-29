@@ -26,12 +26,18 @@ public class UserModel {
     private String profilePhotoLink;
     private boolean isActivated = false;
     private boolean isAdmin = false;
+    private boolean isOwner = false;
 
     @OneToMany
     private final Set<HotelReviewModel> userReviews = new HashSet<>();
 
     @OneToMany
     private final List<UserHistoryModel> userSearchHistory = new ArrayList<>();
+
+    @OneToMany
+    @Transient
+    private final List<HotelModel> ownedHotels = new ArrayList<>();
+
 
     @ManyToMany
     private final Set<HotelModel> hotels = new HashSet<>();
@@ -50,6 +56,14 @@ public class UserModel {
         this.email = email;
         this.password = password;
         this.profilePhotoLink = profilePhotoLink;
+    }
+
+    public UserModel(String username, String email, String password, String profilePhotoLink, boolean isOwner) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.profilePhotoLink = profilePhotoLink;
+        this.isOwner = isOwner;
     }
 
     public UserModel() {

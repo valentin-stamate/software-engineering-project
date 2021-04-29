@@ -7,6 +7,7 @@ import com.bfourclass.euopendata.hotel.json.HotelJSON;
 import com.bfourclass.euopendata.requests.APIError;
 import com.bfourclass.euopendata.security.StringGenerator;
 import com.bfourclass.euopendata.user.auth.SecurityContext;
+import com.bfourclass.euopendata.user.json.OwnerRegisterJSONRequest;
 import com.bfourclass.euopendata.user.json.UserJSON;
 import com.bfourclass.euopendata.user.json.UserRegisterJSONRequest;
 import com.bfourclass.euopendata.user_history.UserHistoryModel;
@@ -60,6 +61,11 @@ public class UserService {
     }
 
     public void createUserByForm(UserRegisterJSONRequest registerForm) {
+        UserModel userModel = registerForm.toUser();
+
+        userRepository.save(userModel);
+    }
+    public void createOwnerByForm(OwnerRegisterJSONRequest registerForm) {
         UserModel userModel = registerForm.toUser();
 
         userRepository.save(userModel);
