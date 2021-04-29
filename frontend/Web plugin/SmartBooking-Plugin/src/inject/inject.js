@@ -52,10 +52,12 @@ async function addStatistics(_stats) {
     let stats_div = document.getElementById("statistics-container");
     stats_div.innerHTML =
         `<section id="covid-statistics"><canvas id="covid-chart"></canvas></section>`;
-    stats_div.innerHTML += `<section id="weather-statistics"></section>`
+    stats_div.innerHTML += `<section id="covid-news"></section>`;
+    stats_div.innerHTML += `<section id="weather-statistics"></section>`;
 
     addForecastCards(_stats.forecast);
     addCovidStatistics(_stats.covid);
+    addCovidNews(_stats.covid_news);
 }
 
 //add covid info section
@@ -64,6 +66,18 @@ async function addCovidStatistics(covid) {
     setGlobalLabel();
     let covid_data = covid.items.slice(-nrCovidDays);
     addCovidChart(covid_data);
+}
+
+async function addCovidNews(covid_news) {
+    let news = covid_news[0];
+    //TO DO
+    let covidNews = document.getElementById("covid-news");
+
+    let covidNewsCard = `<h4 style="padding:0; margin:2px 0;">${news.title}</h4>
+    <p style="padding:0; margin:2px 0;">${news.snippet}</p>
+    <a href="${news.link}">${news.displayLink}</a>`;
+
+    covidNews.innerHTML += covidNewsCard;
 }
 
 //add forecast section
@@ -287,8 +301,7 @@ async function addCovidChart(covid_data) {
 				align: 'center'
 			  },
 			  title: {
-				display: true,
-				text: 'Covid statistics'
+				display: false
 			  }
 			},
 		}

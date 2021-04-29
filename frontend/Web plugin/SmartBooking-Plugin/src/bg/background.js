@@ -29,18 +29,19 @@ chrome.runtime.onMessage.addListener(
 
             let url1 = host_url + "forecast?locations=" + request.hotelLocation;
             let url2 = host_url + "covid_statistics?countries=" + "Romania";
-            let url3 = host_url + "covid_news?locations=" + request.hotelLocation + "&max_results=1"
+            let url3 = host_url + "covid_news?locations=" + request.hotelLocation + "&max_results=2"
 
-            responses = fetchDataAboutLocation(url1, url2, url3).then(([forecast, covid, covid_news]) => {
-                let responses = {
-                    covid: covid[0],
-                    covid_news: covid_news[0].results,
-                    forecast: forecast[0]
-                };
-                sendResponse(responses);
-            }).catch(err => {
-                console.log(err);
-            });
+            responses = fetchDataAboutLocation(url1, url2, url3).then(
+                ([forecast, covid, covid_news]) => {
+                    let responses = {
+                        covid: covid[0],
+                        covid_news: covid_news[0].results,
+                        forecast: forecast[0]
+                    };
+                    sendResponse(responses);
+                }).catch(err => {
+                    console.log(err);
+                });
         }
         return true;
     });

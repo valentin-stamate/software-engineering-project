@@ -6,7 +6,7 @@
     display: block;
     width: 100%;
     z-index: 9999;
-    padding: 5;
+    padding: 0;
     margin: 0;
 }
 
@@ -20,6 +20,7 @@
     text-align: right;
     background-color: #2161bb;
     color: white;
+    padding: 0 5px;
 }
 
 #hide-btn:active {
@@ -37,9 +38,7 @@
     text-align: center;
     display: flex;
     flex-direction: column;
-    height: 100%;
     width: 100%;
-    padding: 5px 5px;
 }
 
 #send-btn {
@@ -76,7 +75,6 @@
 }
 
 #statistics-container {
-    padding: 2px;
     width: 100%;
     height: fit-content;
 }
@@ -97,7 +95,15 @@
     justify-content: center;
     width: 95%;
     margin:auto;
-    margin-bottom: 15px;
+}
+
+#covid-news {
+    text-align: left;
+    width: 95%;
+    margin: auto;
+    background-color: #ff000040;
+    margin-bottom: 20px;
+    padding: 5px;
 }
 
 #weather-statistics {
