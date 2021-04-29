@@ -1,8 +1,11 @@
 package com.bfourclass.euopendata.hotel;
 
 import com.bfourclass.euopendata.hotel.json.HotelJSON;
+import com.bfourclass.euopendata.requests.APIError;
 import com.bfourclass.euopendata.requests.APISuccess;
+import com.bfourclass.euopendata.user.UserModel;
 import com.bfourclass.euopendata.user.UserService;
+import com.bfourclass.euopendata.user.forms.FormValidator;
 import com.bfourclass.euopendata.user.json.AddHotelJsonRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,15 +33,23 @@ public class HotelController {
         return new ResponseEntity<>(hotels, HttpStatus.OK);
     }
 
-    @PostMapping
+    @PostMapping("hotel/add_hotel")
     public ResponseEntity<Object> addHotel(@RequestBody AddHotelJsonRequest request, @RequestHeader(name = "Authorization") String token) {
         ResponseEntity<Object> errorResponse = userService.checkUserToken(token);
         if (errorResponse != null) {
             return errorResponse;
         }
 
-        // ... still writing, pushed to allow parallel development
+        if (!FormValidator.isValidHotelAddForm(request)) {
+            return new ResponseEntity<>(new APIError("invalid form"), HttpStatus.BAD_REQUEST);
+        }
 
+        UserModel user = userService.getUserFromToken(token);
+        if (!user.isOwner()) {
+            return new ResponseEntity<>(new APIError("not a hotel owner"), HttpStatus.UNAUTHORIZED);
+        }
+        HotelModel hotel = new HotelModel(request.getIdentifier(), request.getName(), request.getLocation(), request.getPhotoLink(), request.getDescription(), request.getPrice(), user.getId());
+        hotelService.save(hotel);
         return new ResponseEntity<>(new APISuccess("added hotel successfully"), HttpStatus.OK);
     }
 

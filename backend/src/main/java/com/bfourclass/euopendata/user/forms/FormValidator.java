@@ -1,5 +1,6 @@
 package com.bfourclass.euopendata.user.forms;
 
+import com.bfourclass.euopendata.user.json.AddHotelJsonRequest;
 import com.bfourclass.euopendata.user.json.OwnerRegisterJSONRequest;
 import com.bfourclass.euopendata.user.json.UserLoginJSON;
 import com.bfourclass.euopendata.user.json.UserRegisterJSONRequest;
@@ -64,6 +65,18 @@ public abstract class FormValidator {
         }
 
         return null;
+    }
+
+    public static boolean isValidHotelAddForm(AddHotelJsonRequest req) {
+        if (req.getDescription() == null ||
+        req.getIdentifier() == null ||
+        req.getLocation() == null ||
+        req.getName() == null ||
+        req.getPhotoLink() == null ||
+        req.getPrice() == null) {
+            return false;
+        }
+        return true;
     }
 
     public static String isValidLoginForm(UserLoginJSON userLoginJSON) {
