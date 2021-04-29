@@ -22,7 +22,7 @@ public class CovidStatisticsAPI implements Runnable {
 
     public static CovidStatistics getCovidStatistics(String country) {
         if (covidStatisticsCache.containsKey(country)) {
-            return covidStatisticsCache.get(country);
+            return covidStatisticsCache.get(country).copy();
         }
 
         return null;

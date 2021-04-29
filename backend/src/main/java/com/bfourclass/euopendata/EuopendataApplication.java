@@ -9,11 +9,11 @@ public class EuopendataApplication {
 
     public static void main(String[] args) throws InterruptedException {
         /* This thread is updating covid statistics once a day */
-//        CovidStatisticsAPI ins = new CovidStatisticsAPI();
-//        Thread thread = new Thread(ins);
-//        thread.start();
-//
-//        Thread.sleep(4000);
+        CovidStatisticsAPI ins = new CovidStatisticsAPI();
+        Thread thread = new Thread(ins);
+        thread.start();
+
+        Thread.sleep(4000);
 
         SpringApplication.run(EuopendataApplication.class, args);
     }

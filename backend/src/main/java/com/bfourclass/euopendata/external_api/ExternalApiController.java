@@ -9,6 +9,8 @@ import com.bfourclass.euopendata.external_api.instance.weather.current_weather.W
 import com.bfourclass.euopendata.external_api.instance.weather.week_weather.Forecast;
 import com.bfourclass.euopendata.hotel.HotelService;
 import com.bfourclass.euopendata.hotel.json.HotelJSON;
+import com.bfourclass.euopendata.requests.APIError;
+import com.bfourclass.euopendata.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,8 +18,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 public class ExternalApiController {
@@ -56,13 +61,42 @@ public class ExternalApiController {
     }
 
     @GetMapping("/covid_statistics")
-    public ResponseEntity<Object> getLocationCovidStatistics(@RequestParam(name = "countries") String countriesString) {
+    public ResponseEntity<Object> getLocationCovidStatistics(@RequestParam(name = "countries") String countriesString, @RequestParam(required = false) String start, @RequestParam(required = false) String end) {
         String[] countries = countriesString.split(",");
-
         List<CovidStatistics> covidStatistics = new ArrayList<>();
 
         for (String country : countries) {
             covidStatistics.add(ExternalAPI.getCovidStatistics(country));
+        }
+
+        Date startDate;
+        Date endDate;
+
+        try {
+            if (start == null) {
+                start = "2020-02-24";
+            }
+
+            if (end == null) {
+                end = Util.currentDate();
+            }
+
+            startDate = Util.toDate(start);
+            endDate = Util.toDate(end);
+        } catch (ParseException e) {
+            return new ResponseEntity<>(new APIError("Invalid date format"), HttpStatus.BAD_REQUEST);
+        }
+
+        for (CovidStatistics covidInfo : covidStatistics) {
+            covidInfo.items = covidInfo.items.stream().filter(item -> {
+                try {
+                    Date covidDate = Util.toDate(item.date);
+
+                    return startDate.compareTo(covidDate) <= 0 && covidDate.compareTo(endDate) <= 0;
+
+                } catch (ParseException e) { }
+                return false;
+            }).collect(Collectors.toList());
         }
 
         return new ResponseEntity<>(covidStatistics, HttpStatus.OK);

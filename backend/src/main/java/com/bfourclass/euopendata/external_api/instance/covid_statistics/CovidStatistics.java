@@ -7,7 +7,7 @@ public class CovidStatistics {
     public String isoCode;
     public String continent;
     public String country;
-    public final List<Item> items;
+    public List<Item> items;
 
     public CovidStatistics(String isoCode, String continent, String country) {
         this.isoCode = isoCode;
@@ -20,4 +20,9 @@ public class CovidStatistics {
         items.add(item);
     }
 
+    public CovidStatistics copy() {
+        CovidStatistics covidStatistics = new CovidStatistics(isoCode, continent, country);
+        covidStatistics.items = new ArrayList<>(items);
+        return covidStatistics;
+    }
 }
