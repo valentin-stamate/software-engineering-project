@@ -29,46 +29,42 @@ chrome.runtime.onMessage.addListener(
 
             let url1 = host_url + "forecast?locations=" + request.hotelLocation;
             let url2 = host_url + "covid_statistics?countries=" + "Romania";
+            let url3 = host_url + "covid_news?locations=" + request.hotelLocation + "&max_results=2"
 
-            responses = fetchDataAboutLocation(url1, url2).then(([forecast, covid]) => {
-                let responses = {
-                    covid: covid[0],
-                    forecast: forecast[0]
-                };
-                sendResponse(responses);
-            }).catch(err => {
-                console.log(err);
-            });
+            responses = fetchDataAboutLocation(url1, url2, url3).then(
+                ([forecast, covid, covid_news]) => {
+                    let responses = {
+                        covid: covid[0],
+                        covid_news: covid_news[0].results,
+                        forecast: forecast[0]
+                    };
+                    sendResponse(responses);
+                }).catch(err => {
+                    console.log(err);
+                });
         }
         return true;
     });
 
-function getForecast(url) {
+function fetchStatisticsFrom(url, msg = "Fetch failed") {
     return fetch(url, {
         method: 'GET'
     }).then(response => response.json()).catch(err => {
         console.log(err);
-        return { message: "Forecast request failed" };
+        return { message: msg };
     });;
 }
 
-function getCovidStatistics(url) {
-    return fetch(url, {
-        method: 'GET'
-    }).then(response => response.json()).catch(err => {
-        console.log(err);
-        return { message: "Covid statistics request failed" };
-    });;
-}
-
-async function fetchDataAboutLocation(url1, url2) {
-    const [forecastResp, covidResp] = await Promise.all([
-        getForecast(url1),
-        getCovidStatistics(url2)
+async function fetchDataAboutLocation(url_forecast, url_covid, url_covid_news) {
+    const [forecastResp, covidResp, covidNewsResp] = await Promise.all([
+        fetchStatisticsFrom(url_forecast, "Forecast request failed"),
+        fetchStatisticsFrom(url_covid, "Covid statistics request failed"),
+        fetchStatisticsFrom(url_covid_news, "Covid news request failed")
     ]);
 
     const forecast = forecastResp;
     const covid = covidResp;
+    const covid_news = covidNewsResp;
 
-    return [forecast, covid];
+    return [forecast, covid, covid_news];
 }
