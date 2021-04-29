@@ -2,6 +2,7 @@ package com.bfourclass.euopendata.external_api.instance.aqicn_data;
 
 public class AirPollution
 {
+    public String location;
     /**
      * <p>The air quality index's values range between 0 and 500, with the following meanings:</p>
      * <p>  - [0, 50] -> Good</p>

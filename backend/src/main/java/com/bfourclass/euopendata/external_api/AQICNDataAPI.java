@@ -31,6 +31,8 @@ abstract class AQICNDataAPI
 
         // Processing the fetched data
         AirPollution airPollution = new AirPollution();
+        airPollution.location = location;
+
         airPollution.setAirQualityIndex(Integer.valueOf(data.substring(
                 data.indexOf("\"aqi\""),
                 data.indexOf("\"aqi\"") + 9).split(":")[1].replaceAll("[^\\d]", "")
