@@ -42,6 +42,7 @@ async function getStatistics() {
         console.log(response);
         //forecast:   response.forecast
         //covid:      response.covid
+        //covid_news: response.covid_news
         addStatistics(response);
     });
 }
@@ -50,7 +51,7 @@ getStatistics();
 async function addStatistics(_stats) {
     let stats_div = document.getElementById("statistics-container");
     stats_div.innerHTML =
-        `<section id="covid-statistics" style="width:100% height:100%"><canvas id="covid-chart"></canvas></section>`;
+        `<section id="covid-statistics"><canvas id="covid-chart"></canvas></section>`;
     stats_div.innerHTML += `<section id="weather-statistics"></section>`
 
     addForecastCards(_stats.forecast);
@@ -61,7 +62,8 @@ async function addStatistics(_stats) {
 async function addCovidStatistics(covid) {
     //TO DO
     setGlobalLabel();
-    addCovidChart(covid);
+    let covid_data = covid.items.slice(-nrCovidDays);
+    addCovidChart(covid_data);
 }
 
 //add forecast section
@@ -189,37 +191,35 @@ function sendPreferences() {
 
 // covid chart section
 var labels = [];
+var nrCovidDays = 14;
 
 function setGlobalLabel(){
-  for(var i=13;i>=0;i--){
+  for(var i=nrCovidDays-1;i>=0;i--){
     var today = new Date();
-    today.setDate(today.getDate()-i);
-    var day = today.getDate();
-    var month = today.getMonth()+1;
+    today.setDate(today.getDate()-i-1);
+    var day = (today.getDate()<10)? '0' + today.getDate() : today.getDate();
+    var month = (today.getMonth()+1<10)? '0' + (today.getMonth()+1) : (today.getMonth()+1);
     var year = today.getFullYear();
     
-    if(month < 10){
-      var result = day + '/0' + month;
-    }
-    else
-    {
-      var result = day + '/' + month;
-    }
+    var result = day + '/' + month + '/' + year;
     labels.push(result);
   }
 }
 
-// folosim functia cand userul nu mai are cursorul pe hotel ca sa putem adauga alte valori
-function clearLabel(){
-  labels = [];
+var randomPossibleCase = [];
+var randomDeathCases = [];
+
+function initializeCovidData(covid_data)
+{
+    covid_data.forEach((item) => {
+        randomPossibleCase.push(item.newCases);
+        randomDeathCases.push(item.newDeaths);
+    })
 }
 
-var randomPossibleCase = [400,388,9999,5444,100,399,564,324,234,234,123,424,342,655];
-var randomDeathCase = [10,255,246,888,343,4900,3233,3423,4234,2323,2344,2332,1000,879];
 
-//random values added by force
-
-function addCovidChart(covid) {
+async function addCovidChart(covid_data) {
+    initializeCovidData(covid_data);
 	const ch = document.getElementById("covid-chart");
 	let chart = new Chart(ch,{
 		type: 'line',
@@ -227,7 +227,7 @@ function addCovidChart(covid) {
 			labels: labels,
 			datasets: [
 				{
-					label: "Current cases",
+					label: "New cases",
 					fill: false,
 					lineTension: 0.1,
 					backgroundColor: "rgba(0, 0, 255, 0.5)",
@@ -248,7 +248,7 @@ function addCovidChart(covid) {
 					data: randomPossibleCase,
 				},
 				{
-					label: "Current deaths",
+					label: "New deaths",
 					fill: false,
 					lineTension: 0.1,
 					backgroundColor: "rgba(255, 0, 0, 0.5)",
@@ -266,7 +266,7 @@ function addCovidChart(covid) {
 					pointHoverBorderWidth: 2,
 					pointRadius: 1,
 					pointHitRadius: 10,
-					data: randomDeathCase,
+					data: randomDeathCases,
 				}
 			]
 		},
