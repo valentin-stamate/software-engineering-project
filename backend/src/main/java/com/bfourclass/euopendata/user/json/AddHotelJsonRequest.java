@@ -8,9 +8,9 @@ public class AddHotelJsonRequest {
     private final String identifier;
     private final String photoLink;
     private final String description;
-    private final float price;
+    private final Float price;
 
-    public AddHotelJsonRequest(String name, String location, String identifier, String photoLink, String description, float price) {
+    public AddHotelJsonRequest(String name, String location, String identifier, String photoLink, String description, Float price) {
         this.name = name;
         this.location = location;
         this.identifier = identifier;
@@ -39,7 +39,7 @@ public class AddHotelJsonRequest {
         return description;
     }
 
-    public float getPrice() {
+    public Float getPrice() {
         return price;
     }
 }

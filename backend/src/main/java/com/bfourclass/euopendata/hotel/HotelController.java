@@ -5,6 +5,7 @@ import com.bfourclass.euopendata.requests.APIError;
 import com.bfourclass.euopendata.requests.APISuccess;
 import com.bfourclass.euopendata.user.UserModel;
 import com.bfourclass.euopendata.user.UserService;
+import com.bfourclass.euopendata.user.forms.FormValidator;
 import com.bfourclass.euopendata.user.json.AddHotelJsonRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -37,6 +38,10 @@ public class HotelController {
         ResponseEntity<Object> errorResponse = userService.checkUserToken(token);
         if (errorResponse != null) {
             return errorResponse;
+        }
+
+        if (!FormValidator.isValidHotelAddForm(request)) {
+            return new ResponseEntity<>(new APIError("invalid form"), HttpStatus.BAD_REQUEST);
         }
 
         UserModel user = userService.getUserFromToken(token);
