@@ -33,6 +33,7 @@
             "https://www.booking.com/hotel/*"
         ],
         "js": [
+			"js/chartjs/chart.min.js",
             "src/inject/data.js",
             "src/inject/inject.js"
         ],
@@ -42,6 +43,7 @@
         ]
     }],
     "web_accessible_resources": [
-        "/src/images/*"
+        "/src/images/*",
+		"https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.2.0/chart.min.js"
     ]
 }

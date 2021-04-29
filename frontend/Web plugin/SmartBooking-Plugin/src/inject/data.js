@@ -1,7 +1,3 @@
-let myCoolCode = document.createElement("script");
-myCoolCode.setAttribute("src", "https://cdn.jsdelivr.net/npm/chart.js@3.1.1/dist/chart.min.js");
-document.body.appendChild(myCoolCode);
-
 var destination = document.getElementById("ss").value;
 
 var tmpAdults = document.getElementById("group_adults");

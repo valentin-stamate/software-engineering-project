@@ -47,7 +47,7 @@ async function getStatistics() {
 }
 getStatistics();
 
-function addStatistics(_stats) {
+async function addStatistics(_stats) {
     let stats_div = document.getElementById("statistics-container");
     stats_div.innerHTML =
         `<section id="covid-statistics" style="width:100% height:100%"><canvas id="covid-chart"></canvas></section>`;
@@ -61,7 +61,7 @@ function addStatistics(_stats) {
 async function addCovidStatistics(covid) {
     //TO DO
     setGlobalLabel();
-    addCovidChart();
+    addCovidChart(covid);
 }
 
 //add forecast section
@@ -219,7 +219,7 @@ var randomDeathCase = [10,255,246,888,343,4900,3233,3423,4234,2323,2344,2332,100
 
 //random values added by force
 
-function addCovidChart() {
+function addCovidChart(covid) {
 	const ch = document.getElementById("covid-chart");
 	let chart = new Chart(ch,{
 		type: 'line',
@@ -227,7 +227,7 @@ function addCovidChart() {
 			labels: labels,
 			datasets: [
 				{
-					label: "Cazuri posibile",
+					label: "Current cases",
 					fill: false,
 					lineTension: 0.1,
 					backgroundColor: "rgba(0, 0, 255, 0.5)",
@@ -248,7 +248,7 @@ function addCovidChart() {
 					data: randomPossibleCase,
 				},
 				{
-					label: "Decese",
+					label: "Current deaths",
 					fill: false,
 					lineTension: 0.1,
 					backgroundColor: "rgba(255, 0, 0, 0.5)",
@@ -288,7 +288,7 @@ function addCovidChart() {
 			  },
 			  title: {
 				display: true,
-				text: 'Covid graph'
+				text: 'Covid statistics'
 			  }
 			},
 		}
