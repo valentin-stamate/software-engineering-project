@@ -5,9 +5,9 @@
 This project represents a web plugin that can be used to see informations about
 hotels like:
 
-### covid
-### weather
-### air pollution etc.
+* covid
+* weather
+* air pollution etc.
 
 You can save the hotels to view them later, but first you need to log into your account.
 If you don't have an account, you can use the register form to make one.
