@@ -33,17 +33,18 @@
             "https://www.booking.com/hotel/*"
         ],
         "js": [
-			"js/chartjs/chart.min.js",
+            "js/chartjs/chart.min.js",
             "src/inject/data.js",
             "src/inject/inject.js"
         ],
         "css": [
             "src/inject/inject.css",
-            "src/inject/weather.css"
+            "src/inject/weather.css",
+            "src/inject/pollution.css"
         ]
     }],
     "web_accessible_resources": [
         "/src/images/*",
-		"https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.2.0/chart.min.js"
+        "https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.2.0/chart.min.js"
     ]
 }

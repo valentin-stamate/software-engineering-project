@@ -38,7 +38,7 @@ async function getStatistics() {
         sendStatistics: true,
         hotelLocation: destination,
     }
-    chrome.runtime.sendMessage(_data, function (response) {
+    chrome.runtime.sendMessage(_data, function(response) {
         console.log(response);
         //forecast:   response.forecast
         //covid:      response.covid
@@ -53,6 +53,7 @@ async function addStatistics(_stats) {
         `<section id="covid-statistics" style="width:100% height:100%"><canvas id="covid-chart"></canvas></section>`;
     stats_div.innerHTML += `<section id="weather-statistics"></section>`
 
+    addPolution();
     addForecastCards(_stats.forecast);
     addCovidStatistics(_stats.covid);
 }
@@ -103,8 +104,7 @@ async function addForecastItem(_forecast) {
     for (i = 7; i >= 0; i--) {
         if (i < 8 - _forecast.length) {
             temps.push("-");
-        }
-        else {
+        } else {
             let temp = (_forecast[_forecast.length - (8 - i)].main.temp - 273.15).toFixed(1);
             temps.push(temp);
         }
@@ -182,7 +182,7 @@ function sendPreferences() {
         hotelLocation: destination,
         hotelPath: hotel_path
     }
-    chrome.runtime.sendMessage(_data, function (response) {
+    chrome.runtime.sendMessage(_data, function(response) {
         console.log(JSON.stringify(response));
     });
 }
@@ -190,107 +190,142 @@ function sendPreferences() {
 // covid chart section
 var labels = [];
 
-function setGlobalLabel(){
-  for(var i=13;i>=0;i--){
-    var today = new Date();
-    today.setDate(today.getDate()-i);
-    var day = today.getDate();
-    var month = today.getMonth()+1;
-    var year = today.getFullYear();
-    
-    if(month < 10){
-      var result = day + '/0' + month;
+function setGlobalLabel() {
+    for (var i = 13; i >= 0; i--) {
+        var today = new Date();
+        today.setDate(today.getDate() - i);
+        var day = today.getDate();
+        var month = today.getMonth() + 1;
+        var year = today.getFullYear();
+
+        if (month < 10) {
+            var result = day + '/0' + month;
+        } else {
+            var result = day + '/' + month;
+        }
+        labels.push(result);
     }
-    else
-    {
-      var result = day + '/' + month;
-    }
-    labels.push(result);
-  }
 }
 
 // folosim functia cand userul nu mai are cursorul pe hotel ca sa putem adauga alte valori
-function clearLabel(){
-  labels = [];
+function clearLabel() {
+    labels = [];
 }
 
-var randomPossibleCase = [400,388,9999,5444,100,399,564,324,234,234,123,424,342,655];
-var randomDeathCase = [10,255,246,888,343,4900,3233,3423,4234,2323,2344,2332,1000,879];
+var randomPossibleCase = [400, 388, 9999, 5444, 100, 399, 564, 324, 234, 234, 123, 424, 342, 655];
+var randomDeathCase = [10, 255, 246, 888, 343, 4900, 3233, 3423, 4234, 2323, 2344, 2332, 1000, 879];
 
 //random values added by force
 
 function addCovidChart(covid) {
-	const ch = document.getElementById("covid-chart");
-	let chart = new Chart(ch,{
-		type: 'line',
-		data: {
-			labels: labels,
-			datasets: [
-				{
-					label: "Current cases",
-					fill: false,
-					lineTension: 0.1,
-					backgroundColor: "rgba(0, 0, 255, 0.5)",
-					borderColor: "rgba(0, 0, 255, 1)",
-					borderCapStyle: 'butt',
-					broderDash: [],
-					borderDashOffset: 0.0,
-					borderJoinStyle: 'mitter',
-					pointBorderColor: "rgba(92, 86, 110, 1)",
-					pointBackgoundColor: "#fff",
-					pointBorderWidth: 1,
-					pointHoverRadius: 5,
-					pointHoverBackgroundColor: "rgba(208, 86, 165, 0.86)",
-					pointHoverBorderColor: "rgba(208, 86, 10, 0.86)",
-					pointHoverBorderWidth: 2,
-					pointRadius: 1,
-					pointHitRadius: 10,
-					data: randomPossibleCase,
-				},
-				{
-					label: "Current deaths",
-					fill: false,
-					lineTension: 0.1,
-					backgroundColor: "rgba(255, 0, 0, 0.5)",
-					borderColor: "rgba(255, 0, 0, 1)",
-					borderCapStyle: 'butt',
-					broderDash: [],
-					borderDashOffset: 0.0,
-					borderJoinStyle: 'mitter',
-					pointBorderColor: "rgba(92, 86, 110, 1)",
-					pointBackgoundColor: "#fff",
-					pointBorderWidth: 1,
-					pointHoverRadius: 5,
-					pointHoverBackgroundColor: "rgba(208, 86, 165, 0.86)",
-					pointHoverBorderColor: "rgba(208, 86, 10, 0.86)",
-					pointHoverBorderWidth: 2,
-					pointRadius: 1,
-					pointHitRadius: 10,
-					data: randomDeathCase,
-				}
-			]
-		},
-		options: {
-			responsive: true,
-			scales: {
-			  xAxes: [{
-				stacked: true
-			  }],
-			  yAxes: [{
-				stacked: true
-			  }]
-			},
-			plugins: {
-			  legend: {
-				display: true,
-				position: 'top',
-				align: 'center'
-			  },
-			  title: {
-				display: true,
-				text: 'Covid statistics'
-			  }
-			},
-		}
-	});
+    const ch = document.getElementById("covid-chart");
+    let chart = new Chart(ch, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                    label: "Current cases",
+                    fill: false,
+                    lineTension: 0.1,
+                    backgroundColor: "rgba(0, 0, 255, 0.5)",
+                    borderColor: "rgba(0, 0, 255, 1)",
+                    borderCapStyle: 'butt',
+                    broderDash: [],
+                    borderDashOffset: 0.0,
+                    borderJoinStyle: 'mitter',
+                    pointBorderColor: "rgba(92, 86, 110, 1)",
+                    pointBackgoundColor: "#fff",
+                    pointBorderWidth: 1,
+                    pointHoverRadius: 5,
+                    pointHoverBackgroundColor: "rgba(208, 86, 165, 0.86)",
+                    pointHoverBorderColor: "rgba(208, 86, 10, 0.86)",
+                    pointHoverBorderWidth: 2,
+                    pointRadius: 1,
+                    pointHitRadius: 10,
+                    data: randomPossibleCase,
+                },
+                {
+                    label: "Current deaths",
+                    fill: false,
+                    lineTension: 0.1,
+                    backgroundColor: "rgba(255, 0, 0, 0.5)",
+                    borderColor: "rgba(255, 0, 0, 1)",
+                    borderCapStyle: 'butt',
+                    broderDash: [],
+                    borderDashOffset: 0.0,
+                    borderJoinStyle: 'mitter',
+                    pointBorderColor: "rgba(92, 86, 110, 1)",
+                    pointBackgoundColor: "#fff",
+                    pointBorderWidth: 1,
+                    pointHoverRadius: 5,
+                    pointHoverBackgroundColor: "rgba(208, 86, 165, 0.86)",
+                    pointHoverBorderColor: "rgba(208, 86, 10, 0.86)",
+                    pointHoverBorderWidth: 2,
+                    pointRadius: 1,
+                    pointHitRadius: 10,
+                    data: randomDeathCase,
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                xAxes: [{
+                    stacked: true
+                }],
+                yAxes: [{
+                    stacked: true
+                }]
+            },
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'top',
+                    align: 'center'
+                },
+                title: {
+                    display: true,
+                    text: 'Covid statistics'
+                }
+            },
+        }
+    });
+}
+
+function addPolution() {
+    let container = `
+        <div id="pollution_card">
+        </div>
+    `;
+
+    let stats_div = document.getElementById("statistics-container");
+    stats_div.innerHTML += container;
+
+    let pollution_container = document.getElementById("pollution_card");
+
+    addPolutionItem(pollution_container, 10);
+    addPolutionItem(pollution_container, 12);
+    addPolutionItem(pollution_container, 16);
+
+    let image = `
+        <img id="pollution_icon" src="" alt="air pollution">
+    `;
+
+    pollution_container.innerHTML += image;
+
+    let pollution_icon = document.getElementById("pollution_icon");
+
+    pollution_icon.src = chrome.runtime.getURL("src/images/air_polution.png");
+
+}
+
+function addPolutionItem(pollution_container, value) {
+    let pollution_item = `
+    <div class="pollution_card__content">
+        <p>air quality index</p>
+        <p class="pollution_card__content__value"><b>${value}</b></p>
+    </div>
+    `;
+
+    pollution_container.innerHTML += pollution_item;
 }
