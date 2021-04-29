@@ -29,6 +29,7 @@ public class HotelModel {
     private String photoLink;
     private String description;
     private float price;
+    private Long ownerId;
 
     private double averageRating = 0.0D;
     private int votes = 0;
@@ -43,13 +44,14 @@ public class HotelModel {
     }
 
     // constructor with fields needed in the web app
-    public HotelModel(String identifier, String hotelName, String locationName, String photoLink, String description, float price) {
+    public HotelModel(String identifier, String hotelName, String locationName, String photoLink, String description, float price, Long ownerId) {
         this.identifier = identifier;
         this.hotelName = hotelName;
         this.locationName = locationName;
         this.photoLink = photoLink;
         this.description = description;
         this.price = price;
+        this.ownerId = ownerId;
     }
 
     public HotelModel() { }
@@ -168,5 +170,13 @@ public class HotelModel {
 
     public void setPrice(float price) {
         this.price = price;
+    }
+
+    public Long getOwnerId() {
+        return ownerId;
+    }
+
+    public void setOwnerId(Long ownerId) {
+        this.ownerId = ownerId;
     }
 }
