@@ -38,7 +38,7 @@ async function getStatistics() {
         sendStatistics: true,
         hotelLocation: destination,
     }
-    chrome.runtime.sendMessage(_data, function(response) {
+    chrome.runtime.sendMessage(_data, function (response) {
         console.log(response);
         //forecast:   response.forecast
         //covid:      response.covid
@@ -50,15 +50,15 @@ getStatistics();
 
 async function addStatistics(_stats) {
     let stats_div = document.getElementById("statistics-container");
-    stats_div.innerHTML =
-        `<section id="covid-statistics"><canvas id="covid-chart"></canvas></section>`;
+    stats_div.innerHTML = `<section id="covid-statistics"><canvas id="covid-chart"></canvas></section>`;
     stats_div.innerHTML += `<section id="covid-news"></section>`;
     stats_div.innerHTML += `<section id="weather-statistics"></section>`;
+    stats_div.innerHTML += `<section id="pollution_card"></section>`;
 
-    addPolution();
     addCovidStatistics(_stats.covid);
     addCovidNews(_stats.covid_news);
     addForecastCards(_stats.forecast);
+    addPolution();
 }
 
 //add covid info section
@@ -71,7 +71,8 @@ async function addCovidStatistics(covid) {
 
 async function addCovidNews(covid_news) {
     let news = covid_news[0];
-    //TO DO
+    if (!news)
+        return;
     let covidNews = document.getElementById("covid-news");
 
     let covidNewsCard = `<h4 style="padding:0; margin:2px 0;">${news.title}</h4>
@@ -198,7 +199,7 @@ function sendPreferences() {
         hotelLocation: destination,
         hotelPath: hotel_path
     }
-    chrome.runtime.sendMessage(_data, function(response) {
+    chrome.runtime.sendMessage(_data, function (response) {
         console.log(JSON.stringify(response));
     });
 }
@@ -238,47 +239,47 @@ function addCovidChart(covid_data) {
         data: {
             labels: labels,
             datasets: [{
-                    label: "New cases",
-                    fill: false,
-                    lineTension: 0.1,
-                    backgroundColor: "rgba(0, 0, 255, 0.5)",
-                    borderColor: "rgba(0, 0, 255, 1)",
-                    borderCapStyle: 'butt',
-                    broderDash: [],
-                    borderDashOffset: 0.0,
-                    borderJoinStyle: 'mitter',
-                    pointBorderColor: "rgba(92, 86, 110, 1)",
-                    pointBackgoundColor: "#fff",
-                    pointBorderWidth: 1,
-                    pointHoverRadius: 5,
-                    pointHoverBackgroundColor: "rgba(208, 86, 165, 0.86)",
-                    pointHoverBorderColor: "rgba(208, 86, 10, 0.86)",
-                    pointHoverBorderWidth: 2,
-                    pointRadius: 1,
-                    pointHitRadius: 10,
-                    data: randomPossibleCase,
-                },
-                {
-                    label: "New deaths",
-                    fill: false,
-                    lineTension: 0.1,
-                    backgroundColor: "rgba(255, 0, 0, 0.5)",
-                    borderColor: "rgba(255, 0, 0, 1)",
-                    borderCapStyle: 'butt',
-                    broderDash: [],
-                    borderDashOffset: 0.0,
-                    borderJoinStyle: 'mitter',
-                    pointBorderColor: "rgba(92, 86, 110, 1)",
-                    pointBackgoundColor: "#fff",
-                    pointBorderWidth: 1,
-                    pointHoverRadius: 5,
-                    pointHoverBackgroundColor: "rgba(208, 86, 165, 0.86)",
-                    pointHoverBorderColor: "rgba(208, 86, 10, 0.86)",
-                    pointHoverBorderWidth: 2,
-                    pointRadius: 1,
-                    pointHitRadius: 10,
-                    data: randomDeathCases,
-                }
+                label: "New cases",
+                fill: false,
+                lineTension: 0.1,
+                backgroundColor: "rgba(0, 0, 255, 0.5)",
+                borderColor: "rgba(0, 0, 255, 1)",
+                borderCapStyle: 'butt',
+                broderDash: [],
+                borderDashOffset: 0.0,
+                borderJoinStyle: 'mitter',
+                pointBorderColor: "rgba(92, 86, 110, 1)",
+                pointBackgoundColor: "#fff",
+                pointBorderWidth: 1,
+                pointHoverRadius: 5,
+                pointHoverBackgroundColor: "rgba(208, 86, 165, 0.86)",
+                pointHoverBorderColor: "rgba(208, 86, 10, 0.86)",
+                pointHoverBorderWidth: 2,
+                pointRadius: 1,
+                pointHitRadius: 10,
+                data: randomPossibleCase,
+            },
+            {
+                label: "New deaths",
+                fill: false,
+                lineTension: 0.1,
+                backgroundColor: "rgba(255, 0, 0, 0.5)",
+                borderColor: "rgba(255, 0, 0, 1)",
+                borderCapStyle: 'butt',
+                broderDash: [],
+                borderDashOffset: 0.0,
+                borderJoinStyle: 'mitter',
+                pointBorderColor: "rgba(92, 86, 110, 1)",
+                pointBackgoundColor: "#fff",
+                pointBorderWidth: 1,
+                pointHoverRadius: 5,
+                pointHoverBackgroundColor: "rgba(208, 86, 165, 0.86)",
+                pointHoverBorderColor: "rgba(208, 86, 10, 0.86)",
+                pointHoverBorderWidth: 2,
+                pointRadius: 1,
+                pointHitRadius: 10,
+                data: randomDeathCases,
+            }
             ]
         },
         options: {
@@ -306,23 +307,13 @@ function addCovidChart(covid_data) {
 }
 
 async function addPolution() {
-    let container = `
-        <div id="pollution_card">
-        </div>
-    `;
-
-    let stats_div = document.getElementById("statistics-container");
-    stats_div.innerHTML += container;
-
     let pollution_container = document.getElementById("pollution_card");
 
     addPolutionItem(pollution_container, 10);
     addPolutionItem(pollution_container, 12);
     addPolutionItem(pollution_container, 16);
 
-    let image = `
-        <img id="pollution_icon" src="" alt="air pollution">
-    `;
+    let image = `<img id="pollution_icon" src="" alt="air pollution">`;
 
     pollution_container.innerHTML += image;
 

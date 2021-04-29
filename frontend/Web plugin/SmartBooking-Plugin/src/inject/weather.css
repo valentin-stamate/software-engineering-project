@@ -96,3 +96,34 @@
 .weather_card__temp_am * {
     padding-top: 10px;
 }
+
+#pollution_card {
+    display: inline-flex;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 96%;
+    box-shadow: 0px 0.2em 0.4em rgb(0, 0, 0, 0.6);
+    background: white;
+    color: #666;
+    margin-top: 10px;
+	padding: 0;
+}
+
+.pollution_card__content {
+    text-align: center;
+    font-size:1em;
+}
+
+#pollution_icon {
+    width: 50px;
+    height: 50px;
+}
+
+.pollution_card__content__value b {
+    font-size: 2em;
+}
+
+.pollution_card__content p{
+    padding: 5px;
+    margin: 0;
+}

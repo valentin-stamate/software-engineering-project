@@ -39,8 +39,7 @@
         ],
         "css": [
             "src/inject/inject.css",
-            "src/inject/weather.css",
-            "src/inject/pollution.css"
+            "src/inject/weather.css"
         ]
     }],
     "web_accessible_resources": [

@@ -1,7 +1,7 @@
 #main-popup {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    overflow-Y: auto;
+    overflow-Y: hidden;
     overflow-X: hidden;
     display: block;
     width: 100%;
@@ -91,23 +91,22 @@
 }
 
 #covid-statistics {
-    display:flex;
-    justify-content: center;
-    width: 95%;
+    width: 96%;
     margin:auto;
 }
 
 #covid-news {
     text-align: left;
-    width: 95%;
+    width: 96%;
     margin: auto;
-    background-color: #ff000040;
+    background-color: #ff000030;
     margin-bottom: 20px;
-    padding: 5px;
+    padding: 8px;
 }
 
 #weather-statistics {
-    display:flex;
+    display:inline-flex;
     justify-content: center;
-    width: 100%;
+    width: 96%;
+    margin-bottom: auto;
 }
