@@ -181,6 +181,10 @@ public class UserModel {
         }
     }
 
+    public boolean isHotelOwner(){
+        return isOwner;
+    }
+
     public List<UserHistoryModel> getUserSearchHistory() {
         return List.copyOf(userSearchHistory);
     }

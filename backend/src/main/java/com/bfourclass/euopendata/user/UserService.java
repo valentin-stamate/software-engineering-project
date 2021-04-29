@@ -20,6 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 @Service
@@ -133,6 +134,15 @@ public class UserService {
         }
 
         return userRepository.findUserByEmail(login);
+    }
+
+    public List<HotelModel> getOwnerHotels(String ownerName){
+        UserModel userModel = userRepository.findUserByUsername(ownerName);
+        List<HotelModel> response = null;
+        if(userModel.isHotelOwner()) {
+           response = hotelRepository.findByOwnerId(userModel.getId());
+        }
+        return response;
     }
 
     public List<HotelJSON> getUserHotels(UserModel userModel) {
