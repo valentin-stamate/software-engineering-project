@@ -21,7 +21,11 @@ abstract class AQICNDataAPI
         String command = "curl https://api.waqi.info/feed/" + location + "/?token=d69eed0409fd85ce77805bc2b5b5217c7fcc456f";
         ProcessBuilder processBuilder = new ProcessBuilder(command.split(" "));
 
-        processBuilder.directory(new File("C:\\"));
+        if(System.getProperty("os.name").startsWith("Windows")) // Windows
+            processBuilder.directory(new File("C:\\"));
+        else // Linux
+            processBuilder.directory(new File("~"));
+
         Process process = processBuilder.start();
 
         InputStream inputStream = process.getInputStream();
@@ -29,28 +33,85 @@ abstract class AQICNDataAPI
                 .lines().collect(Collectors.joining("\n"));
         process.destroy();
 
-        // Processing the fetched data
-        AirPollution airPollution = new AirPollution();
-        airPollution.location = location;
+        int index;
+        // Verifying if a correct location was given
+        index = data.indexOf("\"status\":\"error\"");
+        if(index != -1)
+            return null;
 
-        airPollution.setAirQualityIndex(Integer.valueOf(data.substring(
-                data.indexOf("\"aqi\""),
-                data.indexOf("\"aqi\"") + 9).split(":")[1].replaceAll("[^\\d]", "")
-        ));
-        airPollution.setPm10Value(Integer.valueOf(data.substring(
-                data.indexOf("\"pm10\":{\"v\":"),
-                data.indexOf("\"pm10\":{\"v\":") + 16).split(":")[2].replaceAll("[^\\d]", "")
-        ));
-        airPollution.setAirPressure(Integer.valueOf(data.substring(
-                data.indexOf("\"p\":{\"v\":"),
-                data.indexOf("\"p\":{\"v\":") + 15).split(":")[2].replaceAll("[^\\d]", "")
-        ));
-        airPollution.setAirHumidity(Float.valueOf(data.substring(
-                data.indexOf("\"h\":{\"v\":"),
-                data.indexOf("\"h\":{\"v\":") + 15).split(":")[2].replaceAll("[^\\d.]", "")
-        ));
+        // Processing the fetched data
+        AirPollution airPollution = new AirPollution(location);
+
+        index = data.indexOf("\"aqi\"");
+        if (index != -1)
+            airPollution.setAirQualityIndex(Integer.valueOf(data.substring(
+                    index, index + 9
+                    ).split(":")[1].replaceAll("[^\\d]", "")
+            ));
+
+        index = data.indexOf("\"pm10\":{\"v\":");
+        if (index != -1)
+            airPollution.setPm10ValueIndex(Integer.valueOf(data.substring(
+                    index, index + 16
+                    ).split(":")[2].replaceAll("[^\\d]", "")
+            ));
+
+        index = data.indexOf("\"pm25\":{\"v\":");
+        if (index != -1)
+            airPollution.setPm25ValueIndex(Integer.valueOf(data.substring(
+                    index, index + 16
+                    ).split(":")[2].replaceAll("[^\\d]", "")
+            ));
+
+        index = data.indexOf("\"o3\":{\"v\":");
+        if (index != -1)
+            airPollution.setO3ValueIndex(Float.valueOf(data.substring(
+                    index, index + 16
+                    ).split(":")[2].replaceAll("[^.\\d]", "")
+            ));
+
+        index = data.indexOf("\"no2\":{\"v\":");
+        if (index != -1)
+            airPollution.setNO2ValueIndex(Float.valueOf(data.substring(
+                    index, index + 16
+                    ).split(":")[2].replaceAll("[^.\\d]", "")
+            ));
+
+        index = data.indexOf("\"so2\":{\"v\":");
+        if (index != -1)
+            airPollution.setSO2ValueIndex(Float.valueOf(data.substring(
+                    index, index + 16
+                    ).split(":")[2].replaceAll("[^.\\d]", "")
+            ));
+
+        index = data.indexOf("\"co\":{\"v\":");
+        if (index != -1)
+            airPollution.setCOValueIndex(Float.valueOf(data.substring(
+                    index, index + 16
+                    ).split(":")[2].replaceAll("[^.\\d]", "")
+            ));
+
+        index = data.indexOf("\"p\":{\"v\":");
+        if (index != -1)
+            airPollution.setAirPressure(Float.valueOf(data.substring(
+                    index, index + 15
+                    ).split(":")[2].replaceAll("[^.\\d]", "")
+            ));
+
+        index = data.indexOf("\"h\":{\"v\":");
+        if (index != -1)
+            airPollution.setAirHumidity(Float.valueOf(data.substring(
+                    index, index + 15
+                    ).split(":")[2].replaceAll("[^\\d.]", "")
+            ));
+
+        index = data.indexOf("\"w\":{\"v\":");
+        if (index != -1)
+            airPollution.setWindSpeed(Float.valueOf(data.substring(
+                    index, index + 15
+                    ).split(":")[2].replaceAll("[^\\d.]", "")
+            ));
 
         return airPollution;
     }
-
 }
