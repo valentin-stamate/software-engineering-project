@@ -55,10 +55,10 @@ async function addStatistics(_stats) {
     stats_div.innerHTML += `<section id="weather-statistics"></section>`;
     stats_div.innerHTML += `<section id="pollution_card"></section>`;
 
+    addPolution(_stats.airPollution);
     addCovidStatistics(_stats.covid);
     addCovidNews(_stats.covid_news);
     addForecastCards(_stats.forecast);
-    addPolution();
 }
 
 //add covid info section
@@ -306,12 +306,18 @@ function addCovidChart(covid_data) {
     });
 }
 
-async function addPolution() {
+async function addPolution(airPollution) {
     let pollution_container = document.getElementById("pollution_card");
 
-    addPolutionItem(pollution_container, 10);
-    addPolutionItem(pollution_container, 12);
-    addPolutionItem(pollution_container, 16);
+    if (airPollution[0] === null) {
+        airPollution.airQualityIndex = 'N/A';
+        airPollution.pm10Value = 'N/A';
+        airPollution.airPressure = 'N/A';
+    }
+
+    addPolutionItem(pollution_container, 'air quality index', airPollution.airQualityIndex);
+    addPolutionItem(pollution_container, 'pm10', airPollution.pm10Value);
+    addPolutionItem(pollution_container, 'air pressure', airPollution.airPressure);
 
     let image = `<img id="pollution_icon" src="" alt="air pollution">`;
 
@@ -323,10 +329,10 @@ async function addPolution() {
 
 }
 
-async function addPolutionItem(pollution_container, value) {
+async function addPolutionItem(pollution_container, text, value) {
     let pollution_item = `
     <div class="pollution_card__content">
-        <p>air quality index</p>
+        <p>${text}</p>
         <p class="pollution_card__content__value"><b>${value}</b></p>
     </div>
     `;
