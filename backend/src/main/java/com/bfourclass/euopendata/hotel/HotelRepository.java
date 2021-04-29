@@ -17,4 +17,7 @@ public interface HotelRepository extends JpaRepository<HotelModel, Long> {
 
     @Query("SELECT h FROM HotelModel h WHERE h.identifier = ?1")
     HotelModel findByIdentifier(String identifier);
+
+    @Query("SELECT h FROM HotelModel h WHERE h.ownerId = ?1")
+    List<HotelModel> findByOwnerId(Long ownerId);
 }
