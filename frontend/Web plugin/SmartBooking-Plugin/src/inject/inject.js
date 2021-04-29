@@ -55,9 +55,9 @@ async function addStatistics(_stats) {
     stats_div.innerHTML += `<section id="covid-news"></section>`;
     stats_div.innerHTML += `<section id="weather-statistics"></section>`;
 
-    addForecastCards(_stats.forecast);
     addCovidStatistics(_stats.covid);
     addCovidNews(_stats.covid_news);
+    addForecastCards(_stats.forecast);
 }
 
 //add covid info section
@@ -232,7 +232,7 @@ function initializeCovidData(covid_data)
 }
 
 
-async function addCovidChart(covid_data) {
+function addCovidChart(covid_data) {
     initializeCovidData(covid_data);
 	const ch = document.getElementById("covid-chart");
 	let chart = new Chart(ch,{
