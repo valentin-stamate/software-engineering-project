@@ -1,0 +1,23 @@
+#pollution_card {
+    display: inline-flex;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 45em;
+    box-shadow: 0px 0.2em 0.4em rgb(0, 0, 0, 0.8);
+    background: rgb(127, 140, 141);
+    color: white;
+    margin-top: 1em;
+}
+
+.pollution_card__content {
+    text-align: center;
+}
+
+#pollution_icon {
+    width: 80px;
+    height: 80px;
+}
+
+.pollution_card__content__value b {
+    font-size: 3em;
+}

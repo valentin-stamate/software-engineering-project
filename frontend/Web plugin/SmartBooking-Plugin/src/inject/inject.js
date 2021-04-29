@@ -38,7 +38,7 @@ async function getStatistics() {
         sendStatistics: true,
         hotelLocation: destination,
     }
-    chrome.runtime.sendMessage(_data, function (response) {
+    chrome.runtime.sendMessage(_data, function(response) {
         console.log(response);
         //forecast:   response.forecast
         //covid:      response.covid
@@ -52,10 +52,13 @@ async function addStatistics(_stats) {
     let stats_div = document.getElementById("statistics-container");
     stats_div.innerHTML =
         `<section id="covid-statistics"><canvas id="covid-chart"></canvas></section>`;
-    stats_div.innerHTML += `<section id="weather-statistics"></section>`
+    stats_div.innerHTML += `<section id="covid-news"></section>`;
+    stats_div.innerHTML += `<section id="weather-statistics"></section>`;
 
-    addForecastCards(_stats.forecast);
+    addPolution(_stats.airPollution);
     addCovidStatistics(_stats.covid);
+    addCovidNews(_stats.covid_news);
+    addForecastCards(_stats.forecast);
 }
 
 //add covid info section
@@ -64,6 +67,18 @@ async function addCovidStatistics(covid) {
     setGlobalLabel();
     let covid_data = covid.items.slice(-nrCovidDays);
     addCovidChart(covid_data);
+}
+
+async function addCovidNews(covid_news) {
+    let news = covid_news[0];
+    //TO DO
+    let covidNews = document.getElementById("covid-news");
+
+    let covidNewsCard = `<h4 style="padding:0; margin:2px 0;">${news.title}</h4>
+    <p style="padding:0; margin:2px 0;">${news.snippet}</p>
+    <a href="${news.link}">${news.displayLink}</a>`;
+
+    covidNews.innerHTML += covidNewsCard;
 }
 
 //add forecast section
@@ -105,8 +120,7 @@ async function addForecastItem(_forecast) {
     for (i = 7; i >= 0; i--) {
         if (i < 8 - _forecast.length) {
             temps.push("-");
-        }
-        else {
+        } else {
             let temp = (_forecast[_forecast.length - (8 - i)].main.temp - 273.15).toFixed(1);
             temps.push(temp);
         }
@@ -184,7 +198,7 @@ function sendPreferences() {
         hotelLocation: destination,
         hotelPath: hotel_path
     }
-    chrome.runtime.sendMessage(_data, function (response) {
+    chrome.runtime.sendMessage(_data, function(response) {
         console.log(JSON.stringify(response));
     });
 }
@@ -193,104 +207,145 @@ function sendPreferences() {
 var labels = [];
 var nrCovidDays = 14;
 
-function setGlobalLabel(){
-  for(var i=nrCovidDays-1;i>=0;i--){
-    var today = new Date();
-    today.setDate(today.getDate()-i-1);
-    var day = (today.getDate()<10)? '0' + today.getDate() : today.getDate();
-    var month = (today.getMonth()+1<10)? '0' + (today.getMonth()+1) : (today.getMonth()+1);
-    var year = today.getFullYear();
-    
-    var result = day + '/' + month + '/' + year;
-    labels.push(result);
-  }
+function setGlobalLabel() {
+    for (var i = nrCovidDays - 1; i >= 0; i--) {
+        var today = new Date();
+        today.setDate(today.getDate() - i - 1);
+        var day = (today.getDate() < 10) ? '0' + today.getDate() : today.getDate();
+        var month = (today.getMonth() + 1 < 10) ? '0' + (today.getMonth() + 1) : (today.getMonth() + 1);
+        var year = today.getFullYear();
+
+        var result = day + '/' + month + '/' + year;
+        labels.push(result);
+    }
 }
 
 var randomPossibleCase = [];
 var randomDeathCases = [];
 
-function initializeCovidData(covid_data)
-{
+function initializeCovidData(covid_data) {
     covid_data.forEach((item) => {
         randomPossibleCase.push(item.newCases);
         randomDeathCases.push(item.newDeaths);
     })
 }
 
-
-async function addCovidChart(covid_data) {
+function addCovidChart(covid_data) {
     initializeCovidData(covid_data);
-	const ch = document.getElementById("covid-chart");
-	let chart = new Chart(ch,{
-		type: 'line',
-		data: {
-			labels: labels,
-			datasets: [
-				{
-					label: "New cases",
-					fill: false,
-					lineTension: 0.1,
-					backgroundColor: "rgba(0, 0, 255, 0.5)",
-					borderColor: "rgba(0, 0, 255, 1)",
-					borderCapStyle: 'butt',
-					broderDash: [],
-					borderDashOffset: 0.0,
-					borderJoinStyle: 'mitter',
-					pointBorderColor: "rgba(92, 86, 110, 1)",
-					pointBackgoundColor: "#fff",
-					pointBorderWidth: 1,
-					pointHoverRadius: 5,
-					pointHoverBackgroundColor: "rgba(208, 86, 165, 0.86)",
-					pointHoverBorderColor: "rgba(208, 86, 10, 0.86)",
-					pointHoverBorderWidth: 2,
-					pointRadius: 1,
-					pointHitRadius: 10,
-					data: randomPossibleCase,
-				},
-				{
-					label: "New deaths",
-					fill: false,
-					lineTension: 0.1,
-					backgroundColor: "rgba(255, 0, 0, 0.5)",
-					borderColor: "rgba(255, 0, 0, 1)",
-					borderCapStyle: 'butt',
-					broderDash: [],
-					borderDashOffset: 0.0,
-					borderJoinStyle: 'mitter',
-					pointBorderColor: "rgba(92, 86, 110, 1)",
-					pointBackgoundColor: "#fff",
-					pointBorderWidth: 1,
-					pointHoverRadius: 5,
-					pointHoverBackgroundColor: "rgba(208, 86, 165, 0.86)",
-					pointHoverBorderColor: "rgba(208, 86, 10, 0.86)",
-					pointHoverBorderWidth: 2,
-					pointRadius: 1,
-					pointHitRadius: 10,
-					data: randomDeathCases,
-				}
-			]
-		},
-		options: {
-			responsive: true,
-			scales: {
-			  xAxes: [{
-				stacked: true
-			  }],
-			  yAxes: [{
-				stacked: true
-			  }]
-			},
-			plugins: {
-			  legend: {
-				display: true,
-				position: 'top',
-				align: 'center'
-			  },
-			  title: {
-				display: true,
-				text: 'Covid statistics'
-			  }
-			},
-		}
-	});
+    const ch = document.getElementById("covid-chart");
+    let chart = new Chart(ch, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                    label: "New cases",
+                    fill: false,
+                    lineTension: 0.1,
+                    backgroundColor: "rgba(0, 0, 255, 0.5)",
+                    borderColor: "rgba(0, 0, 255, 1)",
+                    borderCapStyle: 'butt',
+                    broderDash: [],
+                    borderDashOffset: 0.0,
+                    borderJoinStyle: 'mitter',
+                    pointBorderColor: "rgba(92, 86, 110, 1)",
+                    pointBackgoundColor: "#fff",
+                    pointBorderWidth: 1,
+                    pointHoverRadius: 5,
+                    pointHoverBackgroundColor: "rgba(208, 86, 165, 0.86)",
+                    pointHoverBorderColor: "rgba(208, 86, 10, 0.86)",
+                    pointHoverBorderWidth: 2,
+                    pointRadius: 1,
+                    pointHitRadius: 10,
+                    data: randomPossibleCase,
+                },
+                {
+                    label: "New deaths",
+                    fill: false,
+                    lineTension: 0.1,
+                    backgroundColor: "rgba(255, 0, 0, 0.5)",
+                    borderColor: "rgba(255, 0, 0, 1)",
+                    borderCapStyle: 'butt',
+                    broderDash: [],
+                    borderDashOffset: 0.0,
+                    borderJoinStyle: 'mitter',
+                    pointBorderColor: "rgba(92, 86, 110, 1)",
+                    pointBackgoundColor: "#fff",
+                    pointBorderWidth: 1,
+                    pointHoverRadius: 5,
+                    pointHoverBackgroundColor: "rgba(208, 86, 165, 0.86)",
+                    pointHoverBorderColor: "rgba(208, 86, 10, 0.86)",
+                    pointHoverBorderWidth: 2,
+                    pointRadius: 1,
+                    pointHitRadius: 10,
+                    data: randomDeathCases,
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                xAxes: [{
+                    stacked: true
+                }],
+                yAxes: [{
+                    stacked: true
+                }]
+            },
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'top',
+                    align: 'center'
+                },
+                title: {
+                    display: false
+                }
+            },
+        }
+    });
+}
+
+async function addPolution(airPollution) {
+    let container = `
+        <div id="pollution_card">
+        </div>
+    `;
+
+    let stats_div = document.getElementById("statistics-container");
+    stats_div.innerHTML += container;
+
+    let pollution_container = document.getElementById("pollution_card");
+
+    if (airPollution[0] === null) {
+        airPollution.airQualityIndex = 'N/A';
+        airPollution.pm10Value = 'N/A';
+        airPollution.airPressure = 'N/A';
+    }
+
+    addPolutionItem(pollution_container, 'air quality index', airPollution.airQualityIndex);
+    addPolutionItem(pollution_container, 'pm10', airPollution.pm10Value);
+    addPolutionItem(pollution_container, 'air pressure', airPollution.airPressure);
+
+    let image = `
+        <img id="pollution_icon" src="" alt="air pollution">
+    `;
+
+    pollution_container.innerHTML += image;
+
+    let pollution_icon = document.getElementById("pollution_icon");
+
+    pollution_icon.src = chrome.runtime.getURL("src/images/air_polution.png");
+
+}
+
+async function addPolutionItem(pollution_container, text, value) {
+    let pollution_item = `
+    <div class="pollution_card__content">
+        <p>${text}</p>
+        <p class="pollution_card__content__value"><b>${value}</b></p>
+    </div>
+    `;
+
+    pollution_container.innerHTML += pollution_item;
+
 }
