@@ -49,20 +49,25 @@ getStatistics();
 
 function addStatistics(_stats) {
     let stats_div = document.getElementById("statistics-container");
-    stats_div.innerHTML = `<section id="weather-statistics"></section>`;
+    stats_div.innerHTML =
+        `<section id="covid-statistics" style="width:100% height:100%"><canvas id="covid-chart"></canvas></section>`;
     stats_div.innerHTML += `<section id="weather-statistics"></section>`
 
     addForecastCards(_stats.forecast);
     addCovidStatistics(_stats.covid);
 }
 
-async function addCovidStatistics(covid){
+//add covid info section
+async function addCovidStatistics(covid) {
     //TO DO
+    setGlobalLabel();
+    addCovidChart();
 }
 
+//add forecast section
 async function addForecastCards(forecast) {
     if (!forecast) return;
-    
+
     let list = forecast.list;
 
     let curr_date = new Date();
@@ -154,6 +159,7 @@ async function addForecastItem(_forecast) {
 
 var show = true;
 
+// button events
 function hidePopup() {
     var popup = document.getElementById("popup");
     var btn = document.getElementById("hide-btn");
@@ -179,4 +185,112 @@ function sendPreferences() {
     chrome.runtime.sendMessage(_data, function (response) {
         console.log(JSON.stringify(response));
     });
+}
+
+// covid chart section
+var labels = [];
+
+function setGlobalLabel(){
+  for(var i=13;i>=0;i--){
+    var today = new Date();
+    today.setDate(today.getDate()-i);
+    var day = today.getDate();
+    var month = today.getMonth()+1;
+    var year = today.getFullYear();
+    
+    if(month < 10){
+      var result = day + '/0' + month;
+    }
+    else
+    {
+      var result = day + '/' + month;
+    }
+    labels.push(result);
+  }
+}
+
+// folosim functia cand userul nu mai are cursorul pe hotel ca sa putem adauga alte valori
+function clearLabel(){
+  labels = [];
+}
+
+var randomPossibleCase = [400,388,9999,5444,100,399,564,324,234,234,123,424,342,655];
+var randomDeathCase = [10,255,246,888,343,4900,3233,3423,4234,2323,2344,2332,1000,879];
+
+//random values added by force
+
+function addCovidChart() {
+	const ch = document.getElementById("covid-chart");
+	let chart = new Chart(ch,{
+		type: 'line',
+		data: {
+			labels: labels,
+			datasets: [
+				{
+					label: "Cazuri posibile",
+					fill: false,
+					lineTension: 0.1,
+					backgroundColor: "rgba(0, 0, 255, 0.5)",
+					borderColor: "rgba(0, 0, 255, 1)",
+					borderCapStyle: 'butt',
+					broderDash: [],
+					borderDashOffset: 0.0,
+					borderJoinStyle: 'mitter',
+					pointBorderColor: "rgba(92, 86, 110, 1)",
+					pointBackgoundColor: "#fff",
+					pointBorderWidth: 1,
+					pointHoverRadius: 5,
+					pointHoverBackgroundColor: "rgba(208, 86, 165, 0.86)",
+					pointHoverBorderColor: "rgba(208, 86, 10, 0.86)",
+					pointHoverBorderWidth: 2,
+					pointRadius: 1,
+					pointHitRadius: 10,
+					data: randomPossibleCase,
+				},
+				{
+					label: "Decese",
+					fill: false,
+					lineTension: 0.1,
+					backgroundColor: "rgba(255, 0, 0, 0.5)",
+					borderColor: "rgba(255, 0, 0, 1)",
+					borderCapStyle: 'butt',
+					broderDash: [],
+					borderDashOffset: 0.0,
+					borderJoinStyle: 'mitter',
+					pointBorderColor: "rgba(92, 86, 110, 1)",
+					pointBackgoundColor: "#fff",
+					pointBorderWidth: 1,
+					pointHoverRadius: 5,
+					pointHoverBackgroundColor: "rgba(208, 86, 165, 0.86)",
+					pointHoverBorderColor: "rgba(208, 86, 10, 0.86)",
+					pointHoverBorderWidth: 2,
+					pointRadius: 1,
+					pointHitRadius: 10,
+					data: randomDeathCase,
+				}
+			]
+		},
+		options: {
+			responsive: true,
+			scales: {
+			  xAxes: [{
+				stacked: true
+			  }],
+			  yAxes: [{
+				stacked: true
+			  }]
+			},
+			plugins: {
+			  legend: {
+				display: true,
+				position: 'top',
+				align: 'center'
+			  },
+			  title: {
+				display: true,
+				text: 'Covid graph'
+			  }
+			},
+		}
+	});
 }
