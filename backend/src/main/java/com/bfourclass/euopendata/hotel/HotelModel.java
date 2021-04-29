@@ -26,6 +26,9 @@ public class HotelModel {
     @Column(unique = true)
     private String hotelName;
     private String locationName;
+    private String photoLink;
+    private String description;
+    private float price;
 
     private double averageRating = 0.0D;
     private int votes = 0;
@@ -37,6 +40,16 @@ public class HotelModel {
         this.identifier = identifier;
         this.hotelName = hotelName;
         this.locationName = locationName;
+    }
+
+    // constructor with fields needed in the web app
+    public HotelModel(String identifier, String hotelName, String locationName, String photoLink, String description, float price) {
+        this.identifier = identifier;
+        this.hotelName = hotelName;
+        this.locationName = locationName;
+        this.photoLink = photoLink;
+        this.description = description;
+        this.price = price;
     }
 
     public HotelModel() { }
@@ -131,5 +144,29 @@ public class HotelModel {
 
     public List<UserModel> getUserSave() {
         return userSaves;
+    }
+
+    public String getPhotoLink() {
+        return photoLink;
+    }
+
+    public void setPhotoLink(String photoLink) {
+        this.photoLink = photoLink;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public float getPrice() {
+        return price;
+    }
+
+    public void setPrice(float price) {
+        this.price = price;
     }
 }
