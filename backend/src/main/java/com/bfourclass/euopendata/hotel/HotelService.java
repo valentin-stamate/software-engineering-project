@@ -25,6 +25,10 @@ public class HotelService {
         this.hotelReviewRepository = hotelReviewRepository;
     }
 
+    public void save(HotelModel hotelModel) {
+        hotelRepository.save(hotelModel);
+    }
+
     public void createHotelIfNotExists(HotelModel hotelModel) {
         if (!locationExists(hotelModel.getHotelName())) {
             hotelRepository.save(hotelModel);

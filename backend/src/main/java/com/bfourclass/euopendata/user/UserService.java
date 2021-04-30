@@ -7,18 +7,21 @@ import com.bfourclass.euopendata.hotel.json.HotelJSON;
 import com.bfourclass.euopendata.requests.APIError;
 import com.bfourclass.euopendata.security.StringGenerator;
 import com.bfourclass.euopendata.user.auth.SecurityContext;
+import com.bfourclass.euopendata.user.json.OwnerRegisterJSONRequest;
 import com.bfourclass.euopendata.user.json.UserJSON;
 import com.bfourclass.euopendata.user.json.UserRegisterJSONRequest;
 import com.bfourclass.euopendata.user_history.UserHistoryModel;
 import com.bfourclass.euopendata.user_history.UserHistoryRepository;
 import com.bfourclass.euopendata.user_verification.UserVerification;
 import com.bfourclass.euopendata.user_verification.UserVerificationService;
+import org.hibernate.persister.entity.UnionSubclassEntityPersister;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 @Service
@@ -60,6 +63,11 @@ public class UserService {
     }
 
     public void createUserByForm(UserRegisterJSONRequest registerForm) {
+        UserModel userModel = registerForm.toUser();
+
+        userRepository.save(userModel);
+    }
+    public void createOwnerByForm(OwnerRegisterJSONRequest registerForm) {
         UserModel userModel = registerForm.toUser();
 
         userRepository.save(userModel);
@@ -129,6 +137,15 @@ public class UserService {
         return userRepository.findUserByEmail(login);
     }
 
+    public List<HotelModel> getOwnerHotels(String ownerName){
+        UserModel userModel = userRepository.findUserByUsername(ownerName);
+        List<HotelModel> response = null;
+        if(userModel.isHotelOwner()) {
+           response = hotelRepository.findByOwnerId(userModel.getId());
+        }
+        return response;
+    }
+
     public List<HotelJSON> getUserHotels(UserModel userModel) {
         List<HotelJSON> response = new ArrayList<>();
 
@@ -178,10 +195,6 @@ public class UserService {
     }
 
     public void updateUser(UserModel userModel) {
-        /* TODO */
-    }
-
-    public void updateUser(UserJSON userJSON) {
-        /* TODO */
+        userRepository.save(userModel);
     }
 }

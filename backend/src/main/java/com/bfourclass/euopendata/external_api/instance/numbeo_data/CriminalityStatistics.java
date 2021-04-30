@@ -11,6 +11,7 @@ public class CriminalityStatistics {
      *
      * crimeIndex + safetyIndex = 100
      */
+    private String location;
 
     /**
      * Crime index is an estimation of overall level of crime in a given city. The lower, the better.
@@ -82,7 +83,9 @@ public class CriminalityStatistics {
      */
     private Double nightWalkingSafetyIndex;
 
-    public CriminalityStatistics() { }
+    public CriminalityStatistics(String location) {
+        this.location = location;
+    }
 
     public void setCrimeIndex(Double crimeIndex) {
         this.crimeIndex = crimeIndex;

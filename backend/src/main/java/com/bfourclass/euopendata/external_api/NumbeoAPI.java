@@ -12,7 +12,7 @@ import java.util.Locale;
 import java.util.stream.Collectors;
 
 public class NumbeoAPI {
-    private static CriminalityStatistics parseHTMLCode(String htmlCode) {
+    private static CriminalityStatistics parseHTMLCode(String cityName, String htmlCode) {
         Document htmlParser = Jsoup.parse(htmlCode);
 
         // Verifying if "City not found" exception was raised
@@ -22,7 +22,7 @@ public class NumbeoAPI {
         // Parsing data
         Element container;
         Elements elements;
-        CriminalityStatistics criminalityStatistics = new CriminalityStatistics();
+        CriminalityStatistics criminalityStatistics = new CriminalityStatistics(cityName);
 
         // Parsing data on safety and crime indexes container
         container = htmlParser.select(".table_indices").get(0);
@@ -68,7 +68,11 @@ public class NumbeoAPI {
         String command = "curl https://www.numbeo.com/crime/in/" + cityName + "/";
         ProcessBuilder processBuilder = new ProcessBuilder(command.split(" "));
 
-        processBuilder.directory(new File("C:\\"));
+        if(System.getProperty("os.name").startsWith("Windows")) // Windows
+            processBuilder.directory(new File("C:\\"));
+        else // Linux
+            processBuilder.directory(new File("~"));
+
         Process process = processBuilder.start();
 
         InputStream inputStream = process.getInputStream();
@@ -77,6 +81,6 @@ public class NumbeoAPI {
         process.destroy();
 
         // Processing the html code and creating an instance
-        return parseHTMLCode(data);
+        return parseHTMLCode(cityName, data);
     }
 }

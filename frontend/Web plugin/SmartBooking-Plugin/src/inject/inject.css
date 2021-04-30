@@ -1,12 +1,12 @@
 #main-popup {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    overflow-Y: auto;
+    overflow-Y: hidden;
     overflow-X: hidden;
     display: block;
     width: 100%;
     z-index: 9999;
-    padding: 5;
+    padding: 0;
     margin: 0;
 }
 
@@ -20,6 +20,7 @@
     text-align: right;
     background-color: #2161bb;
     color: white;
+    padding: 0 5px;
 }
 
 #hide-btn:active {
@@ -37,9 +38,7 @@
     text-align: center;
     display: flex;
     flex-direction: column;
-    height: 100%;
     width: 100%;
-    padding: 5px 0px;
 }
 
 #send-btn {
@@ -76,7 +75,6 @@
 }
 
 #statistics-container {
-    padding: 2px;
     width: 100%;
     height: fit-content;
 }
@@ -93,14 +91,22 @@
 }
 
 #covid-statistics {
-    display:flex;
-    justify-content: center;
-    width: 100%;
-    margin-bottom: 15px;
+    width: 96%;
+    margin:auto;
+}
+
+#covid-news {
+    text-align: left;
+    width: 96%;
+    margin: auto;
+    background-color: #ff000030;
+    margin-bottom: 20px;
+    padding: 8px;
 }
 
 #weather-statistics {
-    display:flex;
+    display:inline-flex;
     justify-content: center;
-    width: 100%;
+    width: 96%;
+    margin-bottom: auto;
 }

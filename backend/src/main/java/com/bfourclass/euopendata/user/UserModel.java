@@ -22,16 +22,27 @@ public class UserModel {
     private String username;
     @Column(unique = true)
     private String email;
+
+    public void setProfilePhotoLink(String profilePhotoLink) {
+        this.profilePhotoLink = profilePhotoLink;
+    }
+
     private String password;
     private String profilePhotoLink;
     private boolean isActivated = false;
     private boolean isAdmin = false;
+    private boolean isOwner = false;
 
     @OneToMany
     private final Set<HotelReviewModel> userReviews = new HashSet<>();
 
     @OneToMany
     private final List<UserHistoryModel> userSearchHistory = new ArrayList<>();
+
+    @OneToMany
+    @Transient
+    private final List<HotelModel> ownedHotels = new ArrayList<>();
+
 
     @ManyToMany
     private final Set<HotelModel> hotels = new HashSet<>();
@@ -50,6 +61,14 @@ public class UserModel {
         this.email = email;
         this.password = password;
         this.profilePhotoLink = profilePhotoLink;
+    }
+
+    public UserModel(String username, String email, String password, String profilePhotoLink, boolean isOwner) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.profilePhotoLink = profilePhotoLink;
+        this.isOwner = isOwner;
     }
 
     public UserModel() {
@@ -167,6 +186,10 @@ public class UserModel {
         }
     }
 
+    public boolean isHotelOwner(){
+        return isOwner;
+    }
+
     public List<UserHistoryModel> getUserSearchHistory() {
         return List.copyOf(userSearchHistory);
     }
@@ -177,5 +200,13 @@ public class UserModel {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public boolean isOwner() {
+        return isOwner;
+    }
+
+    public void setOwner(boolean owner) {
+        isOwner = owner;
     }
 }

@@ -6,7 +6,7 @@ chrome.runtime.onInstalled.addListener(() => {
 
 //example of using a message handler from the inject scripts
 chrome.runtime.onMessage.addListener(
-    function (request, sender, sendResponse) {
+    function(request, sender, sendResponse) {
         if (!request.sendStatistics) {
             var _data = {
                 "hotelName": request.hotelName,
@@ -29,46 +29,46 @@ chrome.runtime.onMessage.addListener(
 
             let url1 = host_url + "forecast?locations=" + request.hotelLocation;
             let url2 = host_url + "covid_statistics?countries=" + "Romania";
+            let url3 = host_url + "covid_news?locations=" + request.hotelLocation + "&max_results=2"
+            let url4 = host_url + "air_pollution?locations=" + request.hotelLocation;
 
-            responses = fetchDataAboutLocation(url1, url2).then(([forecast, covid]) => {
-                let responses = {
-                    covid: covid[0],
-                    forecast: forecast[0]
-                };
-                sendResponse(responses);
-            }).catch(err => {
+            responses = fetchDataAboutLocation(url1, url2, url3, url4).then(
+                ([forecast, covid, covid_news, air_pollution]) => {
+                    let responses = {
+                        covid: covid[0],
+                        covid_news: covid_news[0].results,
+                        forecast: forecast[0],
+                        airPollution: air_pollution
+                    };
+                    sendResponse(responses);
+                }).catch(err => {
                 console.log(err);
             });
         }
         return true;
     });
 
-function getForecast(url) {
+function fetchStatisticsFrom(url, msg = "Fetch failed") {
     return fetch(url, {
         method: 'GET'
     }).then(response => response.json()).catch(err => {
         console.log(err);
-        return { message: "Forecast request failed" };
+        return { message: msg };
     });;
 }
 
-function getCovidStatistics(url) {
-    return fetch(url, {
-        method: 'GET'
-    }).then(response => response.json()).catch(err => {
-        console.log(err);
-        return { message: "Covid statistics request failed" };
-    });;
-}
-
-async function fetchDataAboutLocation(url1, url2) {
-    const [forecastResp, covidResp] = await Promise.all([
-        getForecast(url1),
-        getCovidStatistics(url2)
+async function fetchDataAboutLocation(url_forecast, url_covid, url_covid_news, url_pollution) {
+    const [forecastResp, covidResp, covidNewsResp, airPollutionResp] = await Promise.all([
+        fetchStatisticsFrom(url_forecast, "Forecast request failed"),
+        fetchStatisticsFrom(url_covid, "Covid statistics request failed"),
+        fetchStatisticsFrom(url_covid_news, "Covid news request failed"),
+        fetchStatisticsFrom(url_pollution, "Air pollution request failed")
     ]);
 
     const forecast = forecastResp;
     const covid = covidResp;
+    const covid_news = covidNewsResp;
+    const airPollution = airPollutionResp;
 
-    return [forecast, covid];
+    return [forecast, covid, covid_news, airPollution];
 }

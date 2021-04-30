@@ -40,8 +40,10 @@ async function getStatistics() {
     }
     chrome.runtime.sendMessage(_data, function (response) {
         console.log(response);
-        //forecast:   response.forecast
-        //covid:      response.covid
+        //forecast:         response.forecast
+        //covid:            response.covid
+        //covid_news:       response.covid_news
+        //air_pollution:    response.airPollution
         addStatistics(response);
     });
 }
@@ -49,19 +51,36 @@ getStatistics();
 
 async function addStatistics(_stats) {
     let stats_div = document.getElementById("statistics-container");
-    stats_div.innerHTML =
-        `<section id="covid-statistics" style="width:100% height:100%"><canvas id="covid-chart"></canvas></section>`;
-    stats_div.innerHTML += `<section id="weather-statistics"></section>`
+    stats_div.innerHTML = `<section id="covid-statistics"><canvas id="covid-chart"></canvas></section>`;
+    stats_div.innerHTML += `<section id="covid-news"></section>`;
+    stats_div.innerHTML += `<section id="weather-statistics"></section>`;
+    stats_div.innerHTML += `<section id="pollution_card"></section>`;
 
-    addForecastCards(_stats.forecast);
+    addPolution(_stats.airPollution);
     addCovidStatistics(_stats.covid);
+    addCovidNews(_stats.covid_news);
+    addForecastCards(_stats.forecast);
 }
 
 //add covid info section
 async function addCovidStatistics(covid) {
     //TO DO
     setGlobalLabel();
-    addCovidChart(covid);
+    let covid_data = covid.items.slice(-nrCovidDays);
+    addCovidChart(covid_data);
+}
+
+async function addCovidNews(covid_news) {
+    let news = covid_news[0];
+    if (!news)
+        return;
+    let covidNews = document.getElementById("covid-news");
+
+    let covidNewsCard = `<h4 style="padding:0; margin:2px 0;">${news.title}</h4>
+    <p style="padding:0; margin:2px 0;">${news.snippet}</p>
+    <a href="${news.link}">${news.displayLink}</a>`;
+
+    covidNews.innerHTML += covidNewsCard;
 }
 
 //add forecast section
@@ -103,8 +122,7 @@ async function addForecastItem(_forecast) {
     for (i = 7; i >= 0; i--) {
         if (i < 8 - _forecast.length) {
             temps.push("-");
-        }
-        else {
+        } else {
             let temp = (_forecast[_forecast.length - (8 - i)].main.temp - 273.15).toFixed(1);
             temps.push(temp);
         }
@@ -189,108 +207,137 @@ function sendPreferences() {
 
 // covid chart section
 var labels = [];
+var nrCovidDays = 14;
 
-function setGlobalLabel(){
-  for(var i=13;i>=0;i--){
-    var today = new Date();
-    today.setDate(today.getDate()-i);
-    var day = today.getDate();
-    var month = today.getMonth()+1;
-    var year = today.getFullYear();
-    
-    if(month < 10){
-      var result = day + '/0' + month;
+function setGlobalLabel() {
+    for (var i = nrCovidDays - 1; i >= 0; i--) {
+        var today = new Date();
+        today.setDate(today.getDate() - i - 1);
+        var day = (today.getDate() < 10) ? '0' + today.getDate() : today.getDate();
+        var month = (today.getMonth() + 1 < 10) ? '0' + (today.getMonth() + 1) : (today.getMonth() + 1);
+        var year = today.getFullYear();
+
+        var result = day + '/' + month + '/' + year;
+        labels.push(result);
     }
-    else
-    {
-      var result = day + '/' + month;
-    }
-    labels.push(result);
-  }
 }
 
-// folosim functia cand userul nu mai are cursorul pe hotel ca sa putem adauga alte valori
-function clearLabel(){
-  labels = [];
+var randomPossibleCase = [];
+var randomDeathCases = [];
+
+function initializeCovidData(covid_data) {
+    covid_data.forEach((item) => {
+        randomPossibleCase.push(item.newCases);
+        randomDeathCases.push(item.newDeaths);
+    })
 }
 
-var randomPossibleCase = [400,388,9999,5444,100,399,564,324,234,234,123,424,342,655];
-var randomDeathCase = [10,255,246,888,343,4900,3233,3423,4234,2323,2344,2332,1000,879];
+function addCovidChart(covid_data) {
+    initializeCovidData(covid_data);
+    const ch = document.getElementById("covid-chart");
+    let chart = new Chart(ch, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: "New cases",
+                fill: false,
+                lineTension: 0.1,
+                backgroundColor: "rgba(0, 0, 255, 0.5)",
+                borderColor: "rgba(0, 0, 255, 1)",
+                borderCapStyle: 'butt',
+                broderDash: [],
+                borderDashOffset: 0.0,
+                borderJoinStyle: 'mitter',
+                pointBorderColor: "rgba(92, 86, 110, 1)",
+                pointBackgoundColor: "#fff",
+                pointBorderWidth: 1,
+                pointHoverRadius: 5,
+                pointHoverBackgroundColor: "rgba(208, 86, 165, 0.86)",
+                pointHoverBorderColor: "rgba(208, 86, 10, 0.86)",
+                pointHoverBorderWidth: 2,
+                pointRadius: 1,
+                pointHitRadius: 10,
+                data: randomPossibleCase,
+            },
+            {
+                label: "New deaths",
+                fill: false,
+                lineTension: 0.1,
+                backgroundColor: "rgba(255, 0, 0, 0.5)",
+                borderColor: "rgba(255, 0, 0, 1)",
+                borderCapStyle: 'butt',
+                broderDash: [],
+                borderDashOffset: 0.0,
+                borderJoinStyle: 'mitter',
+                pointBorderColor: "rgba(92, 86, 110, 1)",
+                pointBackgoundColor: "#fff",
+                pointBorderWidth: 1,
+                pointHoverRadius: 5,
+                pointHoverBackgroundColor: "rgba(208, 86, 165, 0.86)",
+                pointHoverBorderColor: "rgba(208, 86, 10, 0.86)",
+                pointHoverBorderWidth: 2,
+                pointRadius: 1,
+                pointHitRadius: 10,
+                data: randomDeathCases,
+            }
+            ]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                xAxes: [{
+                    stacked: true
+                }],
+                yAxes: [{
+                    stacked: true
+                }]
+            },
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'top',
+                    align: 'center'
+                },
+                title: {
+                    display: false
+                }
+            },
+        }
+    });
+}
 
-//random values added by force
+async function addPolution(airPollution) {
+    let pollution_container = document.getElementById("pollution_card");
 
-function addCovidChart(covid) {
-	const ch = document.getElementById("covid-chart");
-	let chart = new Chart(ch,{
-		type: 'line',
-		data: {
-			labels: labels,
-			datasets: [
-				{
-					label: "Current cases",
-					fill: false,
-					lineTension: 0.1,
-					backgroundColor: "rgba(0, 0, 255, 0.5)",
-					borderColor: "rgba(0, 0, 255, 1)",
-					borderCapStyle: 'butt',
-					broderDash: [],
-					borderDashOffset: 0.0,
-					borderJoinStyle: 'mitter',
-					pointBorderColor: "rgba(92, 86, 110, 1)",
-					pointBackgoundColor: "#fff",
-					pointBorderWidth: 1,
-					pointHoverRadius: 5,
-					pointHoverBackgroundColor: "rgba(208, 86, 165, 0.86)",
-					pointHoverBorderColor: "rgba(208, 86, 10, 0.86)",
-					pointHoverBorderWidth: 2,
-					pointRadius: 1,
-					pointHitRadius: 10,
-					data: randomPossibleCase,
-				},
-				{
-					label: "Current deaths",
-					fill: false,
-					lineTension: 0.1,
-					backgroundColor: "rgba(255, 0, 0, 0.5)",
-					borderColor: "rgba(255, 0, 0, 1)",
-					borderCapStyle: 'butt',
-					broderDash: [],
-					borderDashOffset: 0.0,
-					borderJoinStyle: 'mitter',
-					pointBorderColor: "rgba(92, 86, 110, 1)",
-					pointBackgoundColor: "#fff",
-					pointBorderWidth: 1,
-					pointHoverRadius: 5,
-					pointHoverBackgroundColor: "rgba(208, 86, 165, 0.86)",
-					pointHoverBorderColor: "rgba(208, 86, 10, 0.86)",
-					pointHoverBorderWidth: 2,
-					pointRadius: 1,
-					pointHitRadius: 10,
-					data: randomDeathCase,
-				}
-			]
-		},
-		options: {
-			responsive: true,
-			scales: {
-			  xAxes: [{
-				stacked: true
-			  }],
-			  yAxes: [{
-				stacked: true
-			  }]
-			},
-			plugins: {
-			  legend: {
-				display: true,
-				position: 'top',
-				align: 'center'
-			  },
-			  title: {
-				display: true,
-				text: 'Covid statistics'
-			  }
-			},
-		}
-	});
+    if (airPollution[0] === null) {
+        airPollution.airQualityIndex = 'N/A';
+        airPollution.pm10Value = 'N/A';
+        airPollution.airPressure = 'N/A';
+    }
+
+    addPolutionItem(pollution_container, 'air quality index', airPollution.airQualityIndex);
+    addPolutionItem(pollution_container, 'pm10', airPollution.pm10Value);
+    addPolutionItem(pollution_container, 'air pressure', airPollution.airPressure);
+
+    let image = `<img id="pollution_icon" src="" alt="air pollution">`;
+
+    pollution_container.innerHTML += image;
+
+    let pollution_icon = document.getElementById("pollution_icon");
+
+    pollution_icon.src = chrome.runtime.getURL("src/images/air_polution.png");
+
+}
+
+async function addPolutionItem(pollution_container, text, value) {
+    let pollution_item = `
+    <div class="pollution_card__content">
+        <p>${text}</p>
+        <p class="pollution_card__content__value"><b>${value}</b></p>
+    </div>
+    `;
+
+    pollution_container.innerHTML += pollution_item;
+
 }
