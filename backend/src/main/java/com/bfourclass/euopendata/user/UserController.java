@@ -150,6 +150,7 @@ public class UserController {
 
         return new ResponseEntity<>(new APISuccess("Registration successful"), HttpStatus.OK);
     }
+
     @PostMapping(value = "owner/register")
     public ResponseEntity<Object> registerOwner(@RequestBody OwnerRegisterJSONRequest form) {
 
@@ -262,7 +263,9 @@ public class UserController {
             return new ResponseEntity(new APIError("Invalid photo-link"), HttpStatus.BAD_REQUEST);
         }
 
-        userService.updateUser(userJSON);
+        userModel.setProfilePhotoLink(userJSON.profilePhotoLink);
+        userModel.setUsername(userJSON.username);
+        userService.updateUser(userModel);
         return new ResponseEntity(new APISuccess("User update with success"), HttpStatus.OK);
 
     }

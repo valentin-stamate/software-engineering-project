@@ -22,6 +22,11 @@ public class UserModel {
     private String username;
     @Column(unique = true)
     private String email;
+
+    public void setProfilePhotoLink(String profilePhotoLink) {
+        this.profilePhotoLink = profilePhotoLink;
+    }
+
     private String password;
     private String profilePhotoLink;
     private boolean isActivated = false;

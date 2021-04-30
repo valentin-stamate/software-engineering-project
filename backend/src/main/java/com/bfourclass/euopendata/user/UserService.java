@@ -14,6 +14,7 @@ import com.bfourclass.euopendata.user_history.UserHistoryModel;
 import com.bfourclass.euopendata.user_history.UserHistoryRepository;
 import com.bfourclass.euopendata.user_verification.UserVerification;
 import com.bfourclass.euopendata.user_verification.UserVerificationService;
+import org.hibernate.persister.entity.UnionSubclassEntityPersister;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -194,10 +195,6 @@ public class UserService {
     }
 
     public void updateUser(UserModel userModel) {
-        /* TODO */
-    }
-
-    public void updateUser(UserJSON userJSON) {
-        /* TODO */
+        userRepository.save(userModel);
     }
 }
