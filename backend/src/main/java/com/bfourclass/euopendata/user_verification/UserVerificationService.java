@@ -37,6 +37,11 @@ public class UserVerificationService {
         return true;
     }
 
+    public void changeEmail(UserModel user, String newEmail) {
+        user.setEmail(newEmail);
+        userRepository.save(user);
+    }
+
     public UserModel getUserModel(String token) {
         UserVerification userVerification = userVerificationRepository.findInstanceByKey(token);
         return userVerification.userModel;

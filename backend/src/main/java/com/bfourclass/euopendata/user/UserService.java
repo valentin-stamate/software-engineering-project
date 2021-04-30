@@ -110,18 +110,12 @@ public class UserService {
     public ResponseEntity<Object> checkUserToken(String token) {
         // check if token exists in request
         if (token == null) {
-            return new ResponseEntity<>(
-                    new APIError("Missing Authorization header"),
-                    HttpStatus.UNAUTHORIZED
-            );
+            return new ResponseEntity<>(new APIError("Missing Authorization header"), HttpStatus.UNAUTHORIZED);
         }
 
         // check if token exists in SecurityContext
         if (!checkTokenIsValid(token)) {
-            return new ResponseEntity<>(
-                    new APIError("Invalid Authorization header"),
-                    HttpStatus.UNAUTHORIZED
-            );
+            return new ResponseEntity<>(new APIError("Invalid Authorization header"), HttpStatus.UNAUTHORIZED);
         }
 
         return null;
@@ -189,9 +183,9 @@ public class UserService {
     }
 
 
-    public void updateEmail(UserModel userModel, String newEmail) {
+    public void sendEmailVerificationUpdate(UserModel userModel, String newEmail) {
         String activationToken = generateUserActivationToken(userModel);
-        emailService.sendEmailVerificationEmail(userModel.getUsername(), newEmail, activationToken, "?new_email=" + newEmail);
+        emailService.sendEmailVerificationEmail(userModel.getUsername(), newEmail, activationToken, "&new_email=" + newEmail);
     }
 
     public void updateUser(UserModel userModel) {
