@@ -3,6 +3,7 @@ package com.bfourclass.euopendata.hotel;
 import com.bfourclass.euopendata.hotel_review.HotelReviewModel;
 import com.bfourclass.euopendata.hotel_review.json.HotelReviewJSON;
 import com.bfourclass.euopendata.user.UserModel;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -15,6 +16,7 @@ import java.util.Set;
 public class HotelModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonIgnore
     private Long id;
 
     @Column(unique = true)
@@ -27,14 +29,17 @@ public class HotelModel {
     private String hotelName;
     private String locationName;
     private String photoLink;
+    @Column(length = 8192)
     private String description;
     private float price;
+    @JsonIgnore
     private Long ownerId;
 
     private double averageRating = 0.0D;
     private int votes = 0;
 
     @Transient
+    @JsonIgnore
     private List<UserModel> userSaves= new ArrayList<>();
 
     public HotelModel(String identifier, String hotelName, String locationName) {
@@ -56,6 +61,7 @@ public class HotelModel {
 
     public HotelModel() { }
 
+    @JsonIgnore
     public List<HotelReviewJSON> getReviewsAsJSON() {
         List<HotelReviewJSON> hotelReviewJSONList = new ArrayList<>();
 
@@ -144,6 +150,7 @@ public class HotelModel {
         return identifier;
     }
 
+    @JsonIgnore
     public List<UserModel> getUserSave() {
         return userSaves;
     }

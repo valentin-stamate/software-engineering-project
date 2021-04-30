@@ -171,12 +171,33 @@ public class UserController {
 
         UserModel userModel = userService.getUserByLogin(form.email);
 
-        if (!userService.sendUserActivationEmail(userModel)) {
-            return new ResponseEntity<>(new APIError("Error sending verification email"), HttpStatus.NOT_ACCEPTABLE);
-        }
+        // skip verification process
+        userModel.activateUser();
+        userService.updateUser(userModel);
+//        if (!userService.sendUserActivationEmail(userModel)) {
+//            return new ResponseEntity<>(new APIError("Error sending verification email"), HttpStatus.NOT_ACCEPTABLE);
+//        }
 
         return new ResponseEntity<>(new APISuccess("Registration successful"), HttpStatus.OK);
     }
+
+    @GetMapping("owner/hotels")
+    public ResponseEntity<Object> getOwnerHotels(@RequestHeader(name = "Authorization") String token) {
+
+        System.out.println(token);
+        ResponseEntity<Object> errorResponse = userService.checkUserToken(token);
+        if (errorResponse != null) {
+            return errorResponse;
+        }
+
+        UserModel userModel = userService.getUserFromToken(token);
+
+        List<HotelModel> response = userService.getOwnerHotels(userModel.getUsername());
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+
 
     @PostMapping(value = "user/resent_activation_token")
     public ResponseEntity<Object> resendActivationToken(@RequestBody UserLoginJSON request) {
@@ -227,22 +248,6 @@ public class UserController {
         UserModel userModel = userService.getUserFromToken(token);
 
         List<HotelJSON> response = userService.getUserHotels(userModel);
-
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
-
-    @GetMapping("owner/hotels")
-    public ResponseEntity<Object> getOwnerHotels(@RequestHeader(name = "Authorization") String token) {
-
-        System.out.println(token);
-        ResponseEntity<Object> errorResponse = userService.checkUserToken(token);
-        if (errorResponse != null) {
-            return errorResponse;
-        }
-
-        UserModel userModel = userService.getUserFromToken(token);
-
-        List<HotelModel> response = userService.getOwnerHotels(userModel.getUsername());
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
