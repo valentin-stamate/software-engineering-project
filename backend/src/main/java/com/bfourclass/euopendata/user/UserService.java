@@ -4,6 +4,7 @@ import com.bfourclass.euopendata.email.EmailService;
 import com.bfourclass.euopendata.hotel.HotelModel;
 import com.bfourclass.euopendata.hotel.HotelRepository;
 import com.bfourclass.euopendata.hotel.json.HotelJSON;
+import com.bfourclass.euopendata.notification.json.Notification;
 import com.bfourclass.euopendata.requests.APIError;
 import com.bfourclass.euopendata.security.StringGenerator;
 import com.bfourclass.euopendata.user.auth.SecurityContext;
@@ -190,5 +191,17 @@ public class UserService {
 
     public void updateUser(UserModel userModel) {
         userRepository.save(userModel);
+    }
+
+    /* TODO */
+    public List<Notification> getUserNotifications(UserModel userModel) {
+        List<Notification> notifications = new ArrayList<>();
+        notifications.add(new Notification(1, "Notifications are working"));
+        return notifications;
+    }
+
+    /* TODO */
+    public boolean deleteUserNotification(UserModel userModel, long notificationId) {
+        return true;
     }
 }
