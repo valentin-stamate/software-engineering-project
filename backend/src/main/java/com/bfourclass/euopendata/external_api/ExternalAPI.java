@@ -7,9 +7,12 @@ import com.bfourclass.euopendata.external_api.instance.covid_news.SearchResultJS
 import com.bfourclass.euopendata.external_api.instance.covid_statistics.CovidStatistics;
 import com.bfourclass.euopendata.external_api.instance.numbeo_data.CriminalityStatistics;
 import com.bfourclass.euopendata.external_api.instance.weather.current_weather.Weather;
-import com.bfourclass.euopendata.external_api.instance.weather.week_weather.Forecast;
+import com.bfourclass.euopendata.external_api.instance.weather.Forecast;
+import com.bfourclass.euopendata.external_api.instance.weather.statistical_weather.StatisticalWeather;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class ExternalAPI {
@@ -48,6 +51,17 @@ public abstract class ExternalAPI {
 
     public static Forecast getForecast(String location) {
         return OpenWeatherAPI.requestForecast(location);
+    }
+
+    public static StatisticalWeather getStatisticWeather(String location, LocalDate date) {
+
+        List<StatisticalWeather> statisticalWeatherList = new ArrayList<>();
+
+        statisticalWeatherList.add(StatisticalWeatherAPI.getStatisticalWeather(location, date.minusYears(1)));
+        statisticalWeatherList.add(StatisticalWeatherAPI.getStatisticalWeather(location, date.minusYears(2)));
+        statisticalWeatherList.add(StatisticalWeatherAPI.getStatisticalWeather(location, date.minusYears(3)));
+
+        return StatisticalWeather.mean(statisticalWeatherList);
     }
 
 }

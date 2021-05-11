@@ -1,13 +1,13 @@
 package com.bfourclass.euopendata.external_api;
 
 import com.bfourclass.euopendata.external_api.instance.aqicn_data.AirPollution;
-import com.bfourclass.euopendata.external_api.instance.covid_news.CovidNews;
 import com.bfourclass.euopendata.external_api.instance.covid_news.SearchResultJSON;
 import com.bfourclass.euopendata.external_api.instance.covid_statistics.CovidStatistics;
 import com.bfourclass.euopendata.external_api.instance.location.LocationStatisticsJSON;
 import com.bfourclass.euopendata.external_api.instance.numbeo_data.CriminalityStatistics;
 import com.bfourclass.euopendata.external_api.instance.weather.current_weather.Weather;
-import com.bfourclass.euopendata.external_api.instance.weather.week_weather.Forecast;
+import com.bfourclass.euopendata.external_api.instance.weather.Forecast;
+import com.bfourclass.euopendata.external_api.instance.weather.statistical_weather.StatisticalWeather;
 import com.bfourclass.euopendata.external_api.json.CovidNewsJSON;
 import com.bfourclass.euopendata.hotel.HotelService;
 import com.bfourclass.euopendata.hotel.json.HotelJSON;
@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.text.ParseException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -154,6 +155,11 @@ public class ExternalApiController {
         return new ResponseEntity<>(airPollutions, HttpStatus.OK);
     }
 
-    /* TODO, location data */
-    /* TODO add current weather */
+    @GetMapping("/statistical_weather")
+    public ResponseEntity<Object> getStatisticalWeather(@RequestParam(name = "location") String location, @RequestParam(name = "date") String date) {
+
+        LocalDate localDate = LocalDate.parse(date);
+
+        return new ResponseEntity<>(ExternalAPI.getStatisticWeather(location, localDate), HttpStatus.OK);
+    }
 }

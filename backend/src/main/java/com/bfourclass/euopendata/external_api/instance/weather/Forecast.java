@@ -1,4 +1,4 @@
-package com.bfourclass.euopendata.external_api.instance.weather.week_weather;
+package com.bfourclass.euopendata.external_api.instance.weather;
 
 import com.bfourclass.euopendata.external_api.instance.weather.current_weather.*;
 import java.util.List;
