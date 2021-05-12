@@ -9,20 +9,17 @@ import com.bfourclass.euopendata.requests.APIError;
 import com.bfourclass.euopendata.security.StringGenerator;
 import com.bfourclass.euopendata.user.auth.SecurityContext;
 import com.bfourclass.euopendata.user.json.OwnerRegisterJSONRequest;
-import com.bfourclass.euopendata.user.json.UserJSON;
 import com.bfourclass.euopendata.user.json.UserRegisterJSONRequest;
 import com.bfourclass.euopendata.user_history.UserHistoryModel;
 import com.bfourclass.euopendata.user_history.UserHistoryRepository;
 import com.bfourclass.euopendata.user_verification.UserVerification;
 import com.bfourclass.euopendata.user_verification.UserVerificationService;
-import org.hibernate.persister.entity.UnionSubclassEntityPersister;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 @Service
@@ -68,6 +65,7 @@ public class UserService {
 
         userRepository.save(userModel);
     }
+
     public void createOwnerByForm(OwnerRegisterJSONRequest registerForm) {
         UserModel userModel = registerForm.toUser();
 
@@ -132,11 +130,11 @@ public class UserService {
         return userRepository.findUserByEmail(login);
     }
 
-    public List<HotelModel> getOwnerHotels(String ownerName){
+    public List<HotelModel> getOwnerHotels(String ownerName) {
         UserModel userModel = userRepository.findUserByUsername(ownerName);
         List<HotelModel> response = null;
-        if(userModel.isHotelOwner()) {
-           response = hotelRepository.findByOwnerId(userModel.getId());
+        if (userModel.isHotelOwner()) {
+            response = hotelRepository.findByOwnerId(userModel.getId());
         }
         return response;
     }
@@ -203,5 +201,9 @@ public class UserService {
     /* TODO */
     public boolean deleteUserNotification(UserModel userModel, long notificationId) {
         return true;
+    }
+
+    public void saveUser(UserModel userModel) {
+        userRepository.save(userModel);
     }
 }

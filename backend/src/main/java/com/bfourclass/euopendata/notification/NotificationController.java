@@ -58,7 +58,7 @@ public class NotificationController {
         return new ResponseEntity<>(new APIError("Error deleting notification"), HttpStatus.OK);
     }
 
-    @PostMapping("/notifications")
+    @PutMapping("/notifications")
     public ResponseEntity<Object> markAsRead(@RequestHeader(name = "Authorization") String token, @RequestParam(name = "notification_id") long notificationId) {
         ResponseEntity<Object> errorResponse = userService.checkUserToken(token);
         if (errorResponse != null) {
@@ -69,9 +69,10 @@ public class NotificationController {
 
         return new ResponseEntity<>(new APISuccess("Notification marked as read"), HttpStatus.OK);
     }
+
     @MessageMapping("/notification")
     @SendTo("/view/notifications")
-    public ResponseEntity<Object> sendNotification(Notification notification){
+    public ResponseEntity<Object> sendNotification(Notification notification) {
         return new ResponseEntity<>(new APISuccess("Notification sent"), HttpStatus.OK);
     }
 }

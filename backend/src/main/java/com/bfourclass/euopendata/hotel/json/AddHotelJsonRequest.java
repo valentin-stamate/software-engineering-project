@@ -1,6 +1,4 @@
-package com.bfourclass.euopendata.user.json;
-
-import com.bfourclass.euopendata.hotel.HotelModel;
+package com.bfourclass.euopendata.hotel.json;
 
 public class AddHotelJsonRequest {
     private final String name;

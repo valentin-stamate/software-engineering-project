@@ -8,8 +8,23 @@ public class NotificationModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    private String message;
+    private boolean read = false;
 
-    private boolean read;
+    public NotificationModel(String message) {
+        this.message = message;
+    }
+
+    public NotificationModel() {
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
 
     public long getId() {
         return id;

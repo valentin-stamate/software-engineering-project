@@ -2,21 +2,18 @@ package com.bfourclass.euopendata.hotel;
 
 import com.bfourclass.euopendata.external_api.ExternalAPI;
 import com.bfourclass.euopendata.external_api.instance.covid_news.SearchResultJSON;
+import com.bfourclass.euopendata.hotel.json.AddHotelJsonRequest;
 import com.bfourclass.euopendata.hotel.json.HotelJSON;
 import com.bfourclass.euopendata.hotel.json.HotelSearchResultJSON;
+import com.bfourclass.euopendata.notification.NotificationModel;
+import com.bfourclass.euopendata.requests.APIError;
+import com.bfourclass.euopendata.requests.APISuccess;
 import com.bfourclass.euopendata.user.UserModel;
 import com.bfourclass.euopendata.user.UserService;
+import com.bfourclass.euopendata.user.forms.FormValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import com.bfourclass.euopendata.requests.APIError;
-import com.bfourclass.euopendata.requests.APISuccess;
-import com.bfourclass.euopendata.user.forms.FormValidator;
-import com.bfourclass.euopendata.user.json.AddHotelJsonRequest;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -35,7 +32,7 @@ public class HotelController {
     }
 
     @GetMapping("hotel/all_hotels")
-    public ResponseEntity<Object> getLocation(){
+    public ResponseEntity<Object> getLocation() {
         List<HotelJSON> hotels = hotelService.getHotels();
 
         return new ResponseEntity<>(hotels, HttpStatus.OK);
@@ -97,6 +94,18 @@ public class HotelController {
         return new ResponseEntity<>(new APISuccess("added hotel successfully"), HttpStatus.OK);
     }
 
+    /*TODO implement update hotel endpoint*/
+    @PutMapping("hotel/update_hotel")
+    public ResponseEntity<Object> updateHotel(@RequestBody HotelJSON hotelJSON, @RequestHeader(name = "Authorization") String token) {
+        HotelModel hotelModel = hotelService.getHotelById(hotelJSON.id);
+        for (UserModel user : hotelModel.getUserSave()) {
+            user.addNotification(new NotificationModel("Hotel " + hotelJSON.hotelName + " was updated"));
+            userService.saveUser(user);
+        }
+        return new ResponseEntity<>(new APISuccess("hotel updated successfully"), HttpStatus.OK);
+        /*TODO update hotel info*/
+    }
     /* TODO Hotel Information */
+
 
 }

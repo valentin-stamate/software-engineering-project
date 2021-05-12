@@ -2,6 +2,7 @@ package com.bfourclass.euopendata.user;
 
 import com.bfourclass.euopendata.hotel.HotelModel;
 import com.bfourclass.euopendata.hotel_review.HotelReviewModel;
+import com.bfourclass.euopendata.notification.NotificationModel;
 import com.bfourclass.euopendata.security.SimpleHashingAlgo;
 import com.bfourclass.euopendata.user_history.UserHistoryModel;
 
@@ -46,6 +47,9 @@ public class UserModel {
 
     @ManyToMany
     private final Set<HotelModel> hotels = new HashSet<>();
+
+    @OneToMany
+    private final Set<NotificationModel> notifications = new HashSet<>();
 
     public UserModel(String username, String email, String password, String profilePhotoLink, boolean isActivated, boolean isAdmin) {
         this.username = username;
@@ -186,7 +190,7 @@ public class UserModel {
         }
     }
 
-    public boolean isHotelOwner(){
+    public boolean isHotelOwner() {
         return isOwner;
     }
 
@@ -208,5 +212,9 @@ public class UserModel {
 
     public void setOwner(boolean owner) {
         isOwner = owner;
+    }
+
+    public void addNotification(NotificationModel notificationModel) {
+        notifications.add(notificationModel);
     }
 }

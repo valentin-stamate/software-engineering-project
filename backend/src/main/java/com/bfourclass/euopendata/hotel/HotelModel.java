@@ -34,8 +34,8 @@ public class HotelModel {
     private double averageRating = 0.0D;
     private int votes = 0;
 
-    @Transient
-    private List<UserModel> userSaves= new ArrayList<>();
+    @ManyToMany
+    private final List<UserModel> userSaves = new ArrayList<>();
 
     public HotelModel(String identifier, String hotelName, String locationName) {
         this.identifier = identifier;
@@ -54,7 +54,8 @@ public class HotelModel {
         this.ownerId = ownerId;
     }
 
-    public HotelModel() { }
+    public HotelModel() {
+    }
 
     public List<HotelReviewJSON> getReviewsAsJSON() {
         List<HotelReviewJSON> hotelReviewJSONList = new ArrayList<>();
@@ -107,15 +108,15 @@ public class HotelModel {
         averageRating = oldTotalSum / votes;
 
     }
-    public void addUserSave(UserModel user){
+
+    public void addUserSave(UserModel user) {
         userSaves.add(user);
     }
 
     /**
      * TO_DO: Implement equals() in UserModel
-     *
      */
-    public void deleteUserSave(UserModel user){
+    public void deleteUserSave(UserModel user) {
         userSaves.remove(user);
     }
 

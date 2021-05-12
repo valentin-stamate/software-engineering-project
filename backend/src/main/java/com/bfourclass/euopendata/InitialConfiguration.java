@@ -31,15 +31,16 @@ public class InitialConfiguration {
             userModelC.activateUser();
             userModelD.activateUser();
 
+            hotelRepository.save(hotelModelA);
+            hotelRepository.save(hotelModelB);
+            hotelRepository.save(hotelModelC);
+
             userModelA.addHotel(hotelModelA);
             userModelA.addHotel(hotelModelB);
 
             userModelB.addHotel(hotelModelB);
             userModelB.addHotel(hotelModelC);
 
-            hotelRepository.save(hotelModelA);
-            hotelRepository.save(hotelModelB);
-            hotelRepository.save(hotelModelC);
 
             userRepository.save(userModelA);
             userRepository.save(userModelB);
