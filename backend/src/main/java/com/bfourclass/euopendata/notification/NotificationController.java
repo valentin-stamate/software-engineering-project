@@ -39,7 +39,8 @@ public class NotificationController {
     }
 
     @DeleteMapping("/notifications")
-    public ResponseEntity<Object> deleteNotification(@RequestHeader(name = "Authorization") String token, @RequestParam(name = "notification_id") long notificationId) {
+    public ResponseEntity<Object> deleteNotification(@RequestHeader(name = "Authorization") String token,
+                                                     @RequestParam(name = "notification_id") long notificationId) {
         ResponseEntity<Object> errorResponse = userService.checkUserToken(token);
         if (errorResponse != null) {
             return errorResponse;
