@@ -8,6 +8,8 @@ import com.bfourclass.euopendata.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -66,5 +68,10 @@ public class NotificationController {
         notificationService.markAsRead(notificationId);
 
         return new ResponseEntity<>(new APISuccess("Notification marked as read"), HttpStatus.OK);
+    }
+    @MessageMapping("/notification")
+    @SendTo("/view/notifications")
+    public ResponseEntity<Object> sendNotification(Notification notification){
+        return new ResponseEntity<>(new APISuccess("Notification sent"), HttpStatus.OK);
     }
 }
