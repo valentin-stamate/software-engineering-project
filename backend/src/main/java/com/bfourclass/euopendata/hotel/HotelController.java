@@ -98,7 +98,7 @@ public class HotelController {
     @PutMapping("hotel/update_hotel")
     public ResponseEntity<Object> updateHotel(@RequestBody HotelJSON hotelJSON, @RequestHeader(name = "Authorization") String token) {
         HotelModel hotelModel = hotelService.getHotelById(hotelJSON.id);
-        for (UserModel user : hotelModel.getUserSave()) {
+        for (UserModel user : hotelModel.getUserSaves()) {
             user.addNotification(new NotificationModel("Hotel " + hotelJSON.hotelName + " was updated"));
             userService.saveUser(user);
         }

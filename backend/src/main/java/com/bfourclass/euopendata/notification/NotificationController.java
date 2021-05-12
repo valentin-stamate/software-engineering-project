@@ -72,7 +72,7 @@ public class NotificationController {
 
     @MessageMapping("/notification")
     @SendTo("/view/notifications")
-    public ResponseEntity<Object> sendNotification(Notification notification) {
-        return new ResponseEntity<>(new APISuccess("Notification sent"), HttpStatus.OK);
+    public Notification sendNotification(Notification notification) {
+        return notification;
     }
 }

@@ -145,7 +145,7 @@ public class HotelModel {
         return identifier;
     }
 
-    public List<UserModel> getUserSave() {
+    public List<UserModel> getUserSaves() {
         return userSaves;
     }
 
