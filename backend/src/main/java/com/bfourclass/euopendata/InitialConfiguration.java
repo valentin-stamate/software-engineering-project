@@ -17,9 +17,10 @@ public class InitialConfiguration {
     @Bean
     CommandLineRunner commandLineRunner(UserRepository userRepository, HotelRepository hotelRepository, HotelReviewRepository hotelReviewRepository) {
         return args -> {
-            UserModel userModelA = new UserModel("ValentinSt", "valentinstamate@gmail.com", SimpleHashingAlgo.hash("dcy3w8r7ds4lr329"), "~/vali.png");
-            UserModel userModelB = new UserModel("Lorenzo", "lorenzo@gmail.com", SimpleHashingAlgo.hash("dasdasd"), "~/lorenzo.png");
-            UserModel userModelC = new UserModel("plugin", "plugin@gmail.com", SimpleHashingAlgo.hash("plugintest99"), "~/lorenzo.png");
+            UserModel userModelA = new UserModel("ValentinSt", "valentinstamate@gmail.com", SimpleHashingAlgo.hash("dcy3w8r7ds4lr329"), "https://postimage.com/picture.png");
+            UserModel userModelB = new UserModel("Lorenzo", "lorenzo@gmail.com", SimpleHashingAlgo.hash("dasdasd"), "https://postimage.com/picture.png");
+            UserModel userModelC = new UserModel("plugin", "plugin@gmail.com", SimpleHashingAlgo.hash("plugintest99"), "https://postimage.com/picture.png");
+            UserModel userModelD = new UserModel("web", "web@gmail.com", SimpleHashingAlgo.hash("webtest99"), "https://postimage.com/picture.png");
 
             HotelModel hotelModelA = new HotelModel("ro/arnia", "Hotel Arnia", "Iași");
             HotelModel hotelModelB = new HotelModel("ro/terra-iasi-valea-lupului", "Hotel Terra Iasi", "Iași");
@@ -28,6 +29,11 @@ public class InitialConfiguration {
             userModelA.activateUser();
             userModelB.activateUser();
             userModelC.activateUser();
+            userModelD.activateUser();
+
+            hotelRepository.save(hotelModelA);
+            hotelRepository.save(hotelModelB);
+            hotelRepository.save(hotelModelC);
 
             userModelA.addHotel(hotelModelA);
             userModelA.addHotel(hotelModelB);
@@ -35,13 +41,11 @@ public class InitialConfiguration {
             userModelB.addHotel(hotelModelB);
             userModelB.addHotel(hotelModelC);
 
-            hotelRepository.save(hotelModelA);
-            hotelRepository.save(hotelModelB);
-            hotelRepository.save(hotelModelC);
 
             userRepository.save(userModelA);
             userRepository.save(userModelB);
             userRepository.save(userModelC);
+            userRepository.save(userModelD);
 
             /* Review */
             HotelReviewModel hotelReviewModelA = new HotelReviewModel(userModelA, hotelModelB, "I like it", 9);

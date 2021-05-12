@@ -16,7 +16,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @RestController
 public class UserController {
@@ -224,14 +223,16 @@ public class UserController {
     }
 
     @GetMapping(value = "user/verify")
-    public ResponseEntity<Object> verifyUser(@RequestParam(name = "user_verification_key") String userKey, @RequestParam(required = false) String newEmail) {
-        if (newEmail == null || "".equals(newEmail)) {
+    public ResponseEntity<Object> verifyUser(@RequestParam(name = "user_verification_key") String userKey, @RequestParam(name = "new_email", required = false) String newEmail) {
+        if (newEmail == null) {
             if (userVerificationService.activateUser(userKey)) {
                 return new ResponseEntity<>(new APISuccess("User successfully activated. Now you can log in"), HttpStatus.OK);
             }
         } else {
+            /* TODO verify if the new email is already taken */
             UserModel userModel = userVerificationService.getUserModel(userKey);
-            userModel.setEmail(newEmail);
+            userVerificationService.changeEmail(userModel, newEmail);
+            return new ResponseEntity<>(new APISuccess("Email changed successfully."), HttpStatus.OK);
         }
         return new ResponseEntity<>(new APIError("Wrong verification key"), HttpStatus.NOT_FOUND);
     }
@@ -253,7 +254,7 @@ public class UserController {
     }
 
     @PostMapping("user/update")
-    public ResponseEntity<Object> updateUser(@RequestParam UserJSON userJSON, @RequestHeader(name = "Authorization") String token) {
+    public ResponseEntity<Object> updateUser(@RequestBody UserJSON userJSON, @RequestHeader(name = "Authorization") String token) {
         ResponseEntity<Object> errorResponse = userService.checkUserToken(token);
         if (errorResponse != null) {
             return errorResponse;
@@ -276,7 +277,7 @@ public class UserController {
     }
 
     @PostMapping("user/update_password")
-    public ResponseEntity<Object> updatePassword(@RequestParam UserChangePassJSon userJSON, @RequestHeader(name = "Authorization") String token) {
+    public ResponseEntity<Object> updatePassword(@RequestBody UserChangePassJSon userJSON, @RequestHeader(name = "Authorization") String token) {
         ResponseEntity<Object> errorResponse = userService.checkUserToken(token);
         if (errorResponse != null) {
             return errorResponse;
@@ -294,7 +295,7 @@ public class UserController {
     }
 
     @PostMapping("user/update_email")
-    public ResponseEntity<Object> updateEmail(@RequestParam UserJSON userJSON, @RequestHeader(name = "Authorization") String token) {
+    public ResponseEntity<Object> updateEmail(@RequestBody UserJSON userJSON, @RequestHeader(name = "Authorization") String token) {
         ResponseEntity<Object> errorResponse = userService.checkUserToken(token);
         if (errorResponse != null) {
             return errorResponse;
@@ -303,8 +304,8 @@ public class UserController {
         if (!FormValidator.isValidEmail(userModel.getEmail())) {
             return new ResponseEntity(new APIError("Invalid email"), HttpStatus.BAD_REQUEST);
         }
-        userService.updateEmail(userModel, userJSON.email);
-        return new ResponseEntity(new APISuccess("email updated successfully"), HttpStatus.OK);
+        userService.sendEmailVerificationUpdate(userModel, userJSON.email);
+        return new ResponseEntity(new APISuccess("An email was sent to you new address."), HttpStatus.OK);
     }
 
     /* User as admin */

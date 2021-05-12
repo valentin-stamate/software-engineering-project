@@ -4,24 +4,22 @@ import com.bfourclass.euopendata.email.EmailService;
 import com.bfourclass.euopendata.hotel.HotelModel;
 import com.bfourclass.euopendata.hotel.HotelRepository;
 import com.bfourclass.euopendata.hotel.json.HotelJSON;
+import com.bfourclass.euopendata.notification.json.Notification;
 import com.bfourclass.euopendata.requests.APIError;
 import com.bfourclass.euopendata.security.StringGenerator;
 import com.bfourclass.euopendata.user.auth.SecurityContext;
 import com.bfourclass.euopendata.user.json.OwnerRegisterJSONRequest;
-import com.bfourclass.euopendata.user.json.UserJSON;
 import com.bfourclass.euopendata.user.json.UserRegisterJSONRequest;
 import com.bfourclass.euopendata.user_history.UserHistoryModel;
 import com.bfourclass.euopendata.user_history.UserHistoryRepository;
 import com.bfourclass.euopendata.user_verification.UserVerification;
 import com.bfourclass.euopendata.user_verification.UserVerificationService;
-import org.hibernate.persister.entity.UnionSubclassEntityPersister;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 @Service
@@ -67,6 +65,7 @@ public class UserService {
 
         userRepository.save(userModel);
     }
+
     public void createOwnerByForm(OwnerRegisterJSONRequest registerForm) {
         UserModel userModel = registerForm.toUser();
 
@@ -110,18 +109,12 @@ public class UserService {
     public ResponseEntity<Object> checkUserToken(String token) {
         // check if token exists in request
         if (token == null) {
-            return new ResponseEntity<>(
-                    new APIError("Missing Authorization header"),
-                    HttpStatus.UNAUTHORIZED
-            );
+            return new ResponseEntity<>(new APIError("Missing Authorization header"), HttpStatus.UNAUTHORIZED);
         }
 
         // check if token exists in SecurityContext
         if (!checkTokenIsValid(token)) {
-            return new ResponseEntity<>(
-                    new APIError("Invalid Authorization header"),
-                    HttpStatus.UNAUTHORIZED
-            );
+            return new ResponseEntity<>(new APIError("Invalid Authorization header"), HttpStatus.UNAUTHORIZED);
         }
 
         return null;
@@ -137,11 +130,11 @@ public class UserService {
         return userRepository.findUserByEmail(login);
     }
 
-    public List<HotelModel> getOwnerHotels(String ownerName){
+    public List<HotelModel> getOwnerHotels(String ownerName) {
         UserModel userModel = userRepository.findUserByUsername(ownerName);
         List<HotelModel> response = null;
-        if(userModel.isHotelOwner()) {
-           response = hotelRepository.findByOwnerId(userModel.getId());
+        if (userModel.isHotelOwner()) {
+            response = hotelRepository.findByOwnerId(userModel.getId());
         }
         return response;
     }
@@ -189,12 +182,28 @@ public class UserService {
     }
 
 
-    public void updateEmail(UserModel userModel, String newEmail) {
+    public void sendEmailVerificationUpdate(UserModel userModel, String newEmail) {
         String activationToken = generateUserActivationToken(userModel);
-        emailService.sendEmailVerificationEmail(userModel.getUsername(), newEmail, activationToken, "?new_email=" + newEmail);
+        emailService.sendEmailVerificationEmail(userModel.getUsername(), newEmail, activationToken, "&new_email=" + newEmail);
     }
 
     public void updateUser(UserModel userModel) {
+        userRepository.save(userModel);
+    }
+
+    /* TODO */
+    public List<Notification> getUserNotifications(UserModel userModel) {
+        List<Notification> notifications = new ArrayList<>();
+        notifications.add(new Notification(1, "Notifications are working"));
+        return notifications;
+    }
+
+    /* TODO */
+    public boolean deleteUserNotification(UserModel userModel, long notificationId) {
+        return true;
+    }
+
+    public void saveUser(UserModel userModel) {
         userRepository.save(userModel);
     }
 }

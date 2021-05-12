@@ -12,7 +12,7 @@ public class UserHistoryModel {
 
     @Id
     @GeneratedValue
-    private Long id;
+    private long id;
 
     @ManyToOne
     private UserModel userModel;

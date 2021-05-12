@@ -16,8 +16,7 @@ import java.util.Set;
 public class HotelModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonIgnore
-    private Long id;
+    private long id;
 
     @Column(unique = true)
     private String identifier;
@@ -38,9 +37,8 @@ public class HotelModel {
     private double averageRating = 0.0D;
     private int votes = 0;
 
-    @Transient
-    @JsonIgnore
-    private List<UserModel> userSaves= new ArrayList<>();
+    @ManyToMany
+    private final List<UserModel> userSaves = new ArrayList<>();
 
     public HotelModel(String identifier, String hotelName, String locationName) {
         this.identifier = identifier;
@@ -59,7 +57,8 @@ public class HotelModel {
         this.ownerId = ownerId;
     }
 
-    public HotelModel() { }
+    public HotelModel() {
+    }
 
     @JsonIgnore
     public List<HotelReviewJSON> getReviewsAsJSON() {
@@ -113,15 +112,15 @@ public class HotelModel {
         averageRating = oldTotalSum / votes;
 
     }
-    public void addUserSave(UserModel user){
+
+    public void addUserSave(UserModel user) {
         userSaves.add(user);
     }
 
     /**
      * TO_DO: Implement equals() in UserModel
-     *
      */
-    public void deleteUserSave(UserModel user){
+    public void deleteUserSave(UserModel user) {
         userSaves.remove(user);
     }
 
@@ -150,8 +149,8 @@ public class HotelModel {
         return identifier;
     }
 
-    @JsonIgnore
-    public List<UserModel> getUserSave() {
+
+    public List<UserModel> getUserSaves() {
         return userSaves;
     }
 
@@ -185,5 +184,22 @@ public class HotelModel {
 
     public void setOwnerId(Long ownerId) {
         this.ownerId = ownerId;
+    }
+
+
+    public void setHotelName(String hotelName) {
+        this.hotelName = hotelName;
+    }
+
+    public void setLocationName(String locationName) {
+        this.locationName = locationName;
+    }
+
+    public void setAverageRating(double averageRating) {
+        this.averageRating = averageRating;
+    }
+
+    public void setVotes(int votes) {
+        this.votes = votes;
     }
 }

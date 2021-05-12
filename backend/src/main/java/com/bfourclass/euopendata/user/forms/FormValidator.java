@@ -1,6 +1,6 @@
 package com.bfourclass.euopendata.user.forms;
 
-import com.bfourclass.euopendata.user.json.AddHotelJsonRequest;
+import com.bfourclass.euopendata.hotel.json.AddHotelJsonRequest;
 import com.bfourclass.euopendata.user.json.OwnerRegisterJSONRequest;
 import com.bfourclass.euopendata.user.json.UserLoginJSON;
 import com.bfourclass.euopendata.user.json.UserRegisterJSONRequest;

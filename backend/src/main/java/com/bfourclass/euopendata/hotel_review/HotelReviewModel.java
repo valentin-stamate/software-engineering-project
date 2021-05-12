@@ -11,7 +11,7 @@ import java.util.Date;
 public class HotelReviewModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private long id;
 
     @OneToOne
     private UserModel user;

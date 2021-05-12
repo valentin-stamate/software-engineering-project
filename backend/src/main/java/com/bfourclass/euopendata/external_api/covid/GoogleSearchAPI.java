@@ -16,7 +16,7 @@ public abstract class GoogleSearchAPI {
 
     public static List<SearchResultJSON> fetchGoogleSearchResults(String query, int results) {
         query = query.replace(" ", "%20");
-        String requestURL = "https://www.googleapis.com/customsearch/v1?key=" + Secrets.googleCustomSearchKey + "&cx=183e9c932cf280453&q=" + query;
+        String requestURL = "https://www.googleapis.com/customsearch/v1?key=" + Secrets.GOOGLE_CUSTOM_SEARCH_API_KEY + "&cx=183e9c932cf280453&q=" + query;
 
         ObjectMapper mapper = new ObjectMapper();
 
