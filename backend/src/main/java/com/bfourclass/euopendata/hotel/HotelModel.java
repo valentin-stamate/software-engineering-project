@@ -38,6 +38,7 @@ public class HotelModel {
     private int votes = 0;
 
     @ManyToMany
+    @JsonIgnore
     private final List<UserModel> userSaves = new ArrayList<>();
 
     public HotelModel(String identifier, String hotelName, String locationName) {
@@ -149,7 +150,7 @@ public class HotelModel {
         return identifier;
     }
 
-
+    @JsonIgnore
     public List<UserModel> getUserSaves() {
         return userSaves;
     }
