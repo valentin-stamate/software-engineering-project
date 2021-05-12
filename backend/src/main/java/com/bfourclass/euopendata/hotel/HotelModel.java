@@ -180,4 +180,21 @@ public class HotelModel {
     public void setOwnerId(Long ownerId) {
         this.ownerId = ownerId;
     }
+
+
+    public void setHotelName(String hotelName) {
+        this.hotelName = hotelName;
+    }
+
+    public void setLocationName(String locationName) {
+        this.locationName = locationName;
+    }
+
+    public void setAverageRating(double averageRating) {
+        this.averageRating = averageRating;
+    }
+
+    public void setVotes(int votes) {
+        this.votes = votes;
+    }
 }

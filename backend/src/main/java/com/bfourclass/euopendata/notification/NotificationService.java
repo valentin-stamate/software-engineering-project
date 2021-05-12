@@ -41,4 +41,8 @@ public class NotificationService {
             return notificationRepository.findById(notificationId).get();
         return null;
     }
+
+    public void save(NotificationModel notification) {
+        notificationRepository.save(notification);
+    }
 }

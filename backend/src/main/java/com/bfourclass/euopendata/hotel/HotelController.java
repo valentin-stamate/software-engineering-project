@@ -6,6 +6,7 @@ import com.bfourclass.euopendata.hotel.json.AddHotelJsonRequest;
 import com.bfourclass.euopendata.hotel.json.HotelJSON;
 import com.bfourclass.euopendata.hotel.json.HotelSearchResultJSON;
 import com.bfourclass.euopendata.notification.NotificationModel;
+import com.bfourclass.euopendata.notification.NotificationService;
 import com.bfourclass.euopendata.requests.APIError;
 import com.bfourclass.euopendata.requests.APISuccess;
 import com.bfourclass.euopendata.user.UserModel;
@@ -24,11 +25,13 @@ public class HotelController {
 
     private final HotelService hotelService;
     private final UserService userService;
+    private final NotificationService notificationService;
 
     @Autowired
-    HotelController(HotelService hotelService, UserService userService) {
+    HotelController(HotelService hotelService, UserService userService, NotificationService notificationService) {
         this.hotelService = hotelService;
         this.userService = userService;
+        this.notificationService = notificationService;
     }
 
     @GetMapping("hotel/all_hotels")
@@ -98,14 +101,25 @@ public class HotelController {
     @PutMapping("hotel/update_hotel")
     public ResponseEntity<Object> updateHotel(@RequestBody HotelJSON hotelJSON, @RequestHeader(name = "Authorization") String token) {
         HotelModel hotelModel = hotelService.getHotelById(hotelJSON.id);
-        for (UserModel user : hotelModel.getUserSaves()) {
-            user.addNotification(new NotificationModel("Hotel " + hotelJSON.hotelName + " was updated"));
-            userService.saveUser(user);
+        ResponseEntity<Object> errorResponse = userService.checkUserToken(token);
+        if (errorResponse != null) {
+            return errorResponse;
         }
+        for (UserModel user : hotelModel.getUserSaves()) {
+            NotificationModel notification= new NotificationModel("Hotel " + hotelJSON.hotelName + " was updated");
+            user.addNotification(notification);
+            userService.saveUser(user);
+            notificationService.save(notification);
+        }
+        hotelModel.setHotelName(hotelJSON.hotelName);
+        hotelModel.setLocationName(hotelJSON.locationName);
+        hotelService.save(hotelModel);
+
         return new ResponseEntity<>(new APISuccess("hotel updated successfully"), HttpStatus.OK);
-        /*TODO update hotel info*/
     }
     /* TODO Hotel Information */
+
+
 
 
 }
