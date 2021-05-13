@@ -31,14 +31,16 @@ chrome.runtime.onMessage.addListener(
             let url2 = host_url + "covid_statistics?countries=" + "Romania";
             let url3 = host_url + "covid_news?locations=" + request.hotelLocation + "&max_results=2"
             let url4 = host_url + "air_pollution?locations=" + request.hotelLocation;
+            let url5 = host_url + "criminality_statistics?locations=" + request.hotelLocation;
 
-            responses = fetchDataAboutLocation(url1, url2, url3, url4).then(
-                ([forecast, covid, covid_news, air_pollution]) => {
+            responses = fetchDataAboutLocation(url1, url2, url3, url4, url5).then(
+                ([forecast, covid, covid_news, air_pollution, criminality]) => {
                     let responses = {
                         covid: covid[0],
                         covid_news: covid_news[0].results,
                         forecast: forecast[0],
-                        airPollution: air_pollution
+                        airPollution: air_pollution[0],
+                        criminality: criminality[0]
                     };
                     sendResponse(responses);
                 }).catch(err => {
@@ -57,18 +59,20 @@ function fetchStatisticsFrom(url, msg = "Fetch failed") {
     });;
 }
 
-async function fetchDataAboutLocation(url_forecast, url_covid, url_covid_news, url_pollution) {
-    const [forecastResp, covidResp, covidNewsResp, airPollutionResp] = await Promise.all([
+async function fetchDataAboutLocation(url_forecast, url_covid, url_covid_news, url_pollution, url_criminality) {
+    const [forecastResp, covidResp, covidNewsResp, airPollutionResp, criminalityResp] = await Promise.all([
         fetchStatisticsFrom(url_forecast, "Forecast request failed"),
         fetchStatisticsFrom(url_covid, "Covid statistics request failed"),
         fetchStatisticsFrom(url_covid_news, "Covid news request failed"),
-        fetchStatisticsFrom(url_pollution, "Air pollution request failed")
+        fetchStatisticsFrom(url_pollution, "Air pollution request failed"),
+        fetchStatisticsFrom(url_criminality, "criminality request failed")
     ]);
 
     const forecast = forecastResp;
     const covid = covidResp;
     const covid_news = covidNewsResp;
     const airPollution = airPollutionResp;
+    const criminality = criminalityResp;
 
-    return [forecast, covid, covid_news, airPollution];
+    return [forecast, covid, covid_news, airPollution, criminality];
 }

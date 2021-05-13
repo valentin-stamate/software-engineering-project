@@ -106,12 +106,12 @@
     background: white;
     color: #666;
     margin-top: 10px;
-	padding: 0;
+    padding: 0;
 }
 
 .pollution_card__content {
     text-align: center;
-    font-size:1em;
+    font-size: 1em;
 }
 
 #pollution_icon {
@@ -123,7 +123,64 @@
     font-size: 2em;
 }
 
-.pollution_card__content p{
+.pollution_card__content p {
     padding: 5px;
     margin: 0;
+}
+
+#criminality_card {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-evenly;
+    width: 96%;
+    box-shadow: 0px 0.2em 0.4em rgb(0, 0, 0, 0.6);
+    background: white;
+    color: #666;
+    margin-top: 10px;
+    padding: 0;
+}
+
+#criminality_card__container {
+    display: inline-block;
+}
+
+.criminality_card__content {
+    text-align: center;
+    font-size: 1em;
+}
+
+#criminality_icon {
+    width: 75px;
+    height: 75px;
+}
+
+.criminality_card__content__value b {
+    font-size: 2em;
+}
+
+.criminality_card__content p {
+    padding: 5px;
+    margin: 0;
+}
+
+#rating {
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#rating b {
+    font-size: 2em;
+}
+
+#rating__stars {
+    display: inline-flex;
+    width: 600px;
+    justify-content: space-evenly;
+}
+
+.rating_star {
+    width: 50px;
+    height: 50px;
 }

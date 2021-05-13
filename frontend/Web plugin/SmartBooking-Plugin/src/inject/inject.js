@@ -38,7 +38,7 @@ async function getStatistics() {
         sendStatistics: true,
         hotelLocation: destination,
     }
-    chrome.runtime.sendMessage(_data, function (response) {
+    chrome.runtime.sendMessage(_data, function(response) {
         console.log(response);
         //forecast:         response.forecast
         //covid:            response.covid
@@ -55,7 +55,11 @@ async function addStatistics(_stats) {
     stats_div.innerHTML += `<section id="covid-news"></section>`;
     stats_div.innerHTML += `<section id="weather-statistics"></section>`;
     stats_div.innerHTML += `<section id="pollution_card"></section>`;
+    stats_div.innerHTML += `<section id="criminality_card"></section>`;
+    stats_div.innerHTML += `<section id="rating"></section>`;
 
+    addRating();
+    addCriminality(_stats.criminality);
     addPolution(_stats.airPollution);
     addCovidStatistics(_stats.covid);
     addCovidNews(_stats.covid_news);
@@ -200,7 +204,7 @@ function sendPreferences() {
         hotelLocation: destination,
         hotelPath: hotel_path
     }
-    chrome.runtime.sendMessage(_data, function (response) {
+    chrome.runtime.sendMessage(_data, function(response) {
         console.log(JSON.stringify(response));
     });
 }
@@ -240,47 +244,47 @@ function addCovidChart(covid_data) {
         data: {
             labels: labels,
             datasets: [{
-                label: "New cases",
-                fill: false,
-                lineTension: 0.1,
-                backgroundColor: "rgba(0, 0, 255, 0.5)",
-                borderColor: "rgba(0, 0, 255, 1)",
-                borderCapStyle: 'butt',
-                broderDash: [],
-                borderDashOffset: 0.0,
-                borderJoinStyle: 'mitter',
-                pointBorderColor: "rgba(92, 86, 110, 1)",
-                pointBackgoundColor: "#fff",
-                pointBorderWidth: 1,
-                pointHoverRadius: 5,
-                pointHoverBackgroundColor: "rgba(208, 86, 165, 0.86)",
-                pointHoverBorderColor: "rgba(208, 86, 10, 0.86)",
-                pointHoverBorderWidth: 2,
-                pointRadius: 1,
-                pointHitRadius: 10,
-                data: randomPossibleCase,
-            },
-            {
-                label: "New deaths",
-                fill: false,
-                lineTension: 0.1,
-                backgroundColor: "rgba(255, 0, 0, 0.5)",
-                borderColor: "rgba(255, 0, 0, 1)",
-                borderCapStyle: 'butt',
-                broderDash: [],
-                borderDashOffset: 0.0,
-                borderJoinStyle: 'mitter',
-                pointBorderColor: "rgba(92, 86, 110, 1)",
-                pointBackgoundColor: "#fff",
-                pointBorderWidth: 1,
-                pointHoverRadius: 5,
-                pointHoverBackgroundColor: "rgba(208, 86, 165, 0.86)",
-                pointHoverBorderColor: "rgba(208, 86, 10, 0.86)",
-                pointHoverBorderWidth: 2,
-                pointRadius: 1,
-                pointHitRadius: 10,
-                data: randomDeathCases,
-            }
+                    label: "New cases",
+                    fill: false,
+                    lineTension: 0.1,
+                    backgroundColor: "rgba(0, 0, 255, 0.5)",
+                    borderColor: "rgba(0, 0, 255, 1)",
+                    borderCapStyle: 'butt',
+                    broderDash: [],
+                    borderDashOffset: 0.0,
+                    borderJoinStyle: 'mitter',
+                    pointBorderColor: "rgba(92, 86, 110, 1)",
+                    pointBackgoundColor: "#fff",
+                    pointBorderWidth: 1,
+                    pointHoverRadius: 5,
+                    pointHoverBackgroundColor: "rgba(208, 86, 165, 0.86)",
+                    pointHoverBorderColor: "rgba(208, 86, 10, 0.86)",
+                    pointHoverBorderWidth: 2,
+                    pointRadius: 1,
+                    pointHitRadius: 10,
+                    data: randomPossibleCase,
+                },
+                {
+                    label: "New deaths",
+                    fill: false,
+                    lineTension: 0.1,
+                    backgroundColor: "rgba(255, 0, 0, 0.5)",
+                    borderColor: "rgba(255, 0, 0, 1)",
+                    borderCapStyle: 'butt',
+                    broderDash: [],
+                    borderDashOffset: 0.0,
+                    borderJoinStyle: 'mitter',
+                    pointBorderColor: "rgba(92, 86, 110, 1)",
+                    pointBackgoundColor: "#fff",
+                    pointBorderWidth: 1,
+                    pointHoverRadius: 5,
+                    pointHoverBackgroundColor: "rgba(208, 86, 165, 0.86)",
+                    pointHoverBorderColor: "rgba(208, 86, 10, 0.86)",
+                    pointHoverBorderWidth: 2,
+                    pointRadius: 1,
+                    pointHitRadius: 10,
+                    data: randomDeathCases,
+                }
             ]
         },
         options: {
@@ -310,10 +314,12 @@ function addCovidChart(covid_data) {
 async function addPolution(airPollution) {
     let pollution_container = document.getElementById("pollution_card");
 
-    if (airPollution[0] === null) {
-        airPollution.airQualityIndex = 'N/A';
-        airPollution.pm10Value = 'N/A';
-        airPollution.airPressure = 'N/A';
+    if (airPollution === null) {
+        airPollution = {
+            airQualityIndex: 'N/A',
+            pm10Value: 'N/A',
+            airPressure: 'N/A'
+        }
     }
 
     addPolutionItem(pollution_container, 'air quality index', airPollution.airQualityIndex);
@@ -340,4 +346,106 @@ async function addPolutionItem(pollution_container, text, value) {
 
     pollution_container.innerHTML += pollution_item;
 
+}
+
+async function addCriminality(criminality) {
+    let criminality_container = document.getElementById("criminality_card");
+
+    if (criminality === null) {
+        criminality = {
+            crimeIndex: 'N/A',
+            robbingIndex: 'N/A',
+            brokenHomesIndex: 'N/A',
+            stolenCarsIndex: 'N/A',
+            attackedIndex: 'N/A',
+            drugsIndex: 'N/A',
+            violentCrimesIndex: 'N/A',
+            insultedIndex: 'N/A'
+        }
+    }
+
+    let image = `
+    <table>
+        <tbody id="criminality_card__container">
+            <tr id="criminality_first"></tr>
+            <tr id="criminality_second"></tr>
+        </tbody>
+    </table>
+    <img id="criminality_icon" src="" alt="criminality">
+    `;
+
+    criminality_container.innerHTML += image;
+
+    let criminality_icon = document.getElementById("criminality_icon");
+
+    criminality_icon.src = chrome.runtime.getURL("src/images/burglar.png");
+
+    criminality_container = document.getElementById("criminality_first");
+
+    addCriminalityItem(criminality_container, 'crime index', criminality.crimeIndex);
+    addCriminalityItem(criminality_container, 'robbing index', criminality.robbingIndex);
+    addCriminalityItem(criminality_container, 'broken homes index', criminality.brokenHomesIndex);
+    addCriminalityItem(criminality_container, 'stolen cars index', criminality.stolenCarsIndex);
+
+    criminality_container = document.getElementById("criminality_second");
+
+    addCriminalityItem(criminality_container, 'attacked index', criminality.attackedIndex);
+    addCriminalityItem(criminality_container, 'drugs index', criminality.drugsIndex);
+    addCriminalityItem(criminality_container, 'violent crimes index', criminality.violentCrimesIndex);
+    addCriminalityItem(criminality_container, 'insulted index', criminality.insultedIndex);
+}
+
+async function addCriminalityItem(criminality_container, text, value) {
+    let criminality_item = `
+    <td>
+        <div class="criminality_card__content">
+            <p>${text}</p>
+            <p class="criminality_card__content__value"><b>${value}</b></p>
+        </div>
+    </td>
+    `;
+
+    criminality_container.innerHTML += criminality_item;
+}
+
+async function addRating(reviws) {
+    reviews = [{
+        "id": 3,
+        "userName": "plugin",
+        "userRating": 8,
+        "reviewMessage": "I like it. Maybe",
+        "reviewDate": "2021-04-29 16:26:28.705"
+    }]
+
+    let rating = document.getElementById("rating");
+
+    let rating_content = `
+            <b>Hotel rating:</b>
+            <p>( ${reviews.length} reviews )</p>
+            <div id="rating__stars">
+            </div>
+    `;
+
+    rating.innerHTML += rating_content;
+
+    let rating_stars = document.getElementById("rating__stars");
+
+    let sum = 0;
+    for (i = 0; i < reviews.length; i++) {
+        sum += reviews[i].userRating;
+    }
+
+    let mean = Math.round(sum / reviews.length);
+
+    for (i = 1; i <= 10; i++) {
+        let checked = i <= mean;
+        addStar(rating_stars, checked);
+    }
+
+}
+
+async function addStar(rating_stars_container, checked = false) {
+    let star_file_name = checked ? 'checked_star.png' : 'unchecked_star.png';
+    let source = chrome.runtime.getURL('src/images/' + star_file_name);
+    rating_stars_container.innerHTML += `<img class="rating_star" src="${source}" alt=""></img>`
 }
