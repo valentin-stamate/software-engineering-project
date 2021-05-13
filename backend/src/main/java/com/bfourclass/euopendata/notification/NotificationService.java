@@ -18,16 +18,18 @@ public class NotificationService {
             notificationRepository.delete(notificationModel);
     }
 
-    public void createNotification(long notificationId) {
-        NotificationModel model = new NotificationModel();
-        /* TODO: Add other data fields in model. */
+    public void createNotification(long notificationId, String notificationMessage) {
+        NotificationModel model = new NotificationModel(notificationMessage);
         notificationRepository.save(model);
     }
 
-    public void updateNotification(long notificationId) {
+    public void updateNotification(long notificationId, String newNotificationMessage) {
         NotificationModel model = getById(notificationId);
-        /* TODO: Modify notification's data. */
-        notificationRepository.save(model);
+        if(model != null) {
+            model.setMessage(newNotificationMessage);
+            model.setRead(false);
+            notificationRepository.save(model);
+        }
     }
 
     public void markAsRead(long notificationId) {
