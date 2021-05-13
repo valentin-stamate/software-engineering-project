@@ -29,6 +29,8 @@ public class HotelService {
         hotelRepository.save(hotelModel);
     }
 
+    public void delete(HotelModel hotelModel){hotelRepository.delete(hotelModel);}
+
     public void createHotelIfNotExists(HotelModel hotelModel) {
         if (!locationExists(hotelModel.getHotelName())) {
             hotelRepository.save(hotelModel);

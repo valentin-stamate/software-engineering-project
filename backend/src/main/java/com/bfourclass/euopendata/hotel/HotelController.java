@@ -124,7 +124,18 @@ public class HotelController {
     }
     /* TODO Hotel Information */
 
+    /*TODO implement delete hotel endpoint*/
+    @PutMapping("hotel/delete_hotel")
+    public ResponseEntity<Object> deleteHotel(@RequestBody HotelJSON hotelJSON, @RequestHeader(name = "Authorization") String token){
+        HotelModel hotelModel = hotelService.getHotelById(hotelJSON.id);
+        ResponseEntity<Object> errorResponse = userService.checkUserToken(token);
+        if (errorResponse != null) {
+            return errorResponse;
+        }
+        hotelService.delete(hotelModel);
 
+        return new ResponseEntity<>(new APISuccess("hotel deleted successfully"), HttpStatus.OK);
+    }
 
 
 }
