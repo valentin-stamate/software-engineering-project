@@ -15,8 +15,7 @@ public class NotificationModel {
         this.message = message;
     }
 
-    public NotificationModel() {
-    }
+    public NotificationModel() { }
 
     public String getMessage() {
         return message;
