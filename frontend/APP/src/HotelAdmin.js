@@ -1,26 +1,34 @@
 import User from './User'
 import Hotel from './Hotel'
+import FetchData from './FetchData';
 
 class HotelAdmin extends User{
-    constructor(username,password,profilePic,auth){
-        super(username,password,profilePic,auth);
-        hotels=[];
+    constructor(username,email,profilePic,auth){
+        super(username,email,profilePic,auth);
     }
 
-    login(){
 
+    addHotel(hotel) {
+        var data = {
+            name: hotel.hotelName,
+            location: hotel.locationName,
+            identifier: hotel.hotelUrl, 
+            photoLink: hotel.photoLink,
+            description: hotel.description, 
+            price: hotel.price
+        };
+
+        alert(JSON.stringify(data));
+
+        var response = FetchData.makeAuthRequest("https://euopendata.herokuapp.com/hotel/add_hotel", "POST", data, this.auth);
+        return response; // return response.message;
     }
 
-    signup(){
+    getAllHotels() {
+        var data = {};
 
-    }
-
-    showReviews(){
-
-    }
-
-    addHotel(hotel){
-        this.hotels.push(hotel);
+        var response = FetchData.makeAuthRequest("https://euopendata.herokuapp.com/owner/hotels", "GET", data, this.auth);
+        return response;
     }
 
     removeHotel(hotel){
@@ -31,13 +39,6 @@ class HotelAdmin extends User{
         this.hotels.split(index,1);
     }
 
-    updateInfo(){
-
-    }
-
-    getInfo(){
-        return this.hotels;
-    }
 }
 
 export default HotelAdmin;

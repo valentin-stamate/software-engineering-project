@@ -3,6 +3,20 @@ import './home.css';
 import { Helmet } from 'react-helmet';
 
 class HomePage extends React.Component{
+    constructor(props){
+        super(props);
+        this.state={
+            location:''
+        }
+    }
+
+
+    myChangeHandler = (event) => {
+        let nam = event.target.name;
+        let val = event.target.value;
+        this.setState({[nam] : val});
+    }
+
     render(){
         return (
             <div class="home-page">
@@ -26,7 +40,7 @@ class HomePage extends React.Component{
                 </div>
             </header>
             <div id="book." class="book">
-                <form class="book-form" method="GET" action="/search">
+                <form class="book-form" method="GET" action={"/search/"+this.state.location}>
                     <div class="form-item">
                         <label for="checkin-date">Check In Date: </label>
                         <input type="date" id="chekin-date" />
@@ -37,7 +51,7 @@ class HomePage extends React.Component{
                     </div>
                     <div class="form-item">
                         <label for="adult">Destination: </label>
-                        <input type="text" min="1" value="1" id="adult" />
+                        <input type="text" placeholder="1" id="adult" name="location" />
                     </div>
                    
                     <div class="form-item">

@@ -1,13 +1,49 @@
 import './adminProfile.css';
 import React from 'react';
 import { Helmet } from 'react-helmet';
+import Client from './Client';
+import HotelAdmin from './HotelAdmin';
+import Hotel from './Hotel';
 
 class AdminProfilePage extends React.Component{
     constructor(props){
         super(props);
+        this.state={
+            client:JSON.parse(localStorage.user).user,
+            hotelName:'',
+            hotelLocation:'',
+            hotelIdentifier:'',
+            hotelPhotoLink:'',
+            hotelDescription:'',
+            hotelPrice:''
+        };
+        this.client=new Client(this.state.client.username,this.state.client.email,this.state.client.profilePic,this.state.client.auth);
+        this.admin=new HotelAdmin(this.client.username,this.client.email,this.client.profilePic,this.client.auth);
+    }
+
+    myChangeHandler = (event) => {
+        let nam = event.target.name;
+        let val = event.target.value;
+        this.setState({[nam] : val});
+    }
+
+    addHotel = () =>{
+        var hotel=new Hotel(0,this.state.hotelIdentifier,this.state.hotelName,this.state.hotelLocation,0,0,this.state.hotelIdentifier,this.state.hotelPhotoLink,this.state.hotelDescription,parseFloat(this.state.hotelPrice));
+        var res=this.admin.addHotel(hotel);
+        alert(JSON.stringify(res));
     }
 
     render(){
+        var hotels=this.admin.getAllHotels();
+        //alert(JSON.stringify(hotels));
+        var items=[];
+
+
+        for(const[index,hotel] of hotels.entries()){
+            items.push(
+            <li class="list-group-item"><h1>{hotel.hotelName}</h1><img style={{width:'50%',height:'50%'}} class="img-rounded" src={hotel.photoLink}/><a href={"https://www.booking.com/hotel/"+hotel.identifier+".html"} class="pull-right btn btn-info btn-lg" style={{fontSize:'large',height:'15%',width:'30%',position: 'absolute',right: '0',bottom: '0'}}>View Hotel</a></li>);
+        }
+
         return(
 <div class="admin-profile-page">
 <hr/>
@@ -16,30 +52,18 @@ class AdminProfilePage extends React.Component{
 
 <div class="row">
     <div class="col-sm-10">
-        <h1>Administrator</h1>
-        <h2>User: joedoe6</h2></div>
+        <h1>Hotel Administrator</h1>
+        <h2>User: {this.client.username}</h2></div>
     <div class="col-sm-2">
-        <a href="#" class="pull-right"><img title="profile image" class="img-circle img-responsive" src={require("./images/admi.png").default} /></a>
+        <a href="#" class="pull-right"><img title="profile image" class="img-circle img-responsive" src={this.client.profilePic} /></a>
     </div>
 </div>
 <div class="row">
     <div class="col-sm-3">
 
         <ul class="list-group">
-            <li class="list-group-item text-muted">Profile</li>
-            <li class="list-group-item text-right"><span class="pull-left"><strong>Joined</strong></span> 15.02.2020</li>
-            <li class="list-group-item text-right"><span class="pull-left"><strong>Last seen</strong></span> Yesterday</li>
-            <li class="list-group-item text-right"><span class="pull-left"><strong>Real name</strong></span> Joseph Doe</li>
-            <li class="list-group-item text-right"><span class="pull-left"><strong>Nickname</strong></span> Joe</li>
-        </ul>
-
-        <ul class="list-group">
             <li class="list-group-item text-muted">Contact</li>
-            <li class="list-group-item text-right"><span class="pull-left"><strong>E-mail</strong></span> joedoe@gmail.com</li>
-            <li class="list-group-item text-right"><span class="pull-left"><strong>Mobile</strong></span>0712345678</li>
-            <li class="list-group-item text-right"><span class="pull-left"><strong>Phone</strong></span> 0312345678</li>
-            <li class="list-group-item text-right"><span class="pull-left"><strong>Adress</strong></span> Pascani, Iasi, Romania</li>
-            <li class="list-group-item text-right"><span class="pull-left"><strong>Website</strong></span> <a href = "#" style = {{textDecoration : 'none'}}>www.joedoe.com</a></li>
+            <li class="list-group-item text-right"><span class="pull-left"><strong>E-mail</strong></span> {this.client.email}</li>
         </ul>
 
 
@@ -63,6 +87,7 @@ class AdminProfilePage extends React.Component{
             <li class="active"><a href="#notif" data-toggle="tab">Notifications</a></li>
             <li><a href="#hotels" data-toggle="tab">My Hotels</a></li>
             <li><a href="#settings" data-toggle="tab">Settings</a></li>
+            <li><a href="#addHotel" data-toggle="tab">Add Hotel</a></li>
         </ul>
 
         <div class="tab-content">
@@ -84,10 +109,7 @@ class AdminProfilePage extends React.Component{
 
                 <ul class="list-group">
                     <li class="list-group-item text-muted">Hotels</li>
-                    <li class="list-group-item"><h1>Grand Hotel Continental</h1><img class="img-rounded" src={require("./images/hotel1.webp").default}/><a href="/hotel" class="pull-right btn btn-info btn-lg" style={{position: 'absolute',right: '0',bottom: '0'}}>View Hotel</a></li>
-                    <li class="list-group-item"><h1>Pensiunea Poiana Izvoarelor</h1><img class="img-rounded" src={require("./images/hotel2.webp").default}/><a href="#" class="pull-right btn btn-info btn-lg" style={{position: 'absolute',right: '0',bottom: '0'}}>View Hotel</a></li>
-                    <li class="list-group-item"><h1>Hotel Bavaria Blu</h1><img class="img-rounded" src={require("./images/hotel3.webp").default}/><a href="#" class="pull-right btn btn-info btn-lg" style={{position: 'absolute',right: '0',bottom: '0'}}>View Hotel</a></li>
-
+                    {items}
                 </ul>
 
             </div>
@@ -169,6 +191,68 @@ class AdminProfilePage extends React.Component{
                 </form>
             </div>
 
+
+            <div class="tab-pane" id="addHotel">
+
+                <div class="form" action="##" method="post" id="addHotelForm">
+                    <div class="form-group">
+
+                        <div class="col-xs-6">
+                            <label for="first_name">
+                                <h4>Hotel Name</h4></label>
+                            <input onChange={this.myChangeHandler} type="text" class="form-control" name="hotelName" id="first_name" placeholder="name" title="enter hotel name" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+
+                        <div class="col-xs-6">
+                            <label for="last_name">
+                                <h4>Location</h4></label>
+                            <input onChange={this.myChangeHandler} type="text" class="form-control" name="hotelLocation" id="last_name" placeholder="location" title="enter hotel location" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+
+                        <div class="col-xs-6">
+                            <label for="phone">
+                                <h4>Identifier</h4></label>
+                            <input onChange={this.myChangeHandler} type="text" class="form-control" name="hotelIdentifier" id="phone" placeholder="identifier" title="enter hotel identifier" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-xs-6">
+                            <label for="mobile">
+                                <h4>Photo Link</h4></label>
+                            <input onChange={this.myChangeHandler} type="text" class="form-control" name="hotelPhotoLink" id="mobile" placeholder="link" title="enter hotel photo link" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+
+                        <div class="col-xs-6">
+                            <label for="email">
+                                <h4>Description</h4></label>
+                            <input onChange={this.myChangeHandler} type="text" class="form-control" name="hotelDescription" id="email" placeholder="description" title="enter hotel description" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+
+                        <div class="col-xs-6">
+                            <label for="email">
+                                <h4>Price</h4></label>
+                            <input onChange={this.myChangeHandler} type="text" class="form-control" name="hotelPrice" id="email" placeholder="0" title="enter hotel price" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-xs-12">
+                            <br/>
+                            <button onClick={this.addHotel} class="btn btn-lg btn-success" type="submit"><i class="glyphicon glyphicon-ok-sign"></i> Save</button>
+                            <button class="btn btn-lg" type="reset"><i class="glyphicon glyphicon-repeat"></i> Reset</button>
+                        </div>
+                    </div>
+            </div>
+            </div>
         </div>
     </div>
 

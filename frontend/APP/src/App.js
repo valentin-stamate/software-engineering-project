@@ -9,6 +9,7 @@ import SearchLocationPage from './SearchLocationPage';
 import HotelInfoPage from './HotelInfoPage';
 import FavoritesPage from './FavoritesPage';
 import ChangeHotelInfoPage from './ChangeHotelInfoPage';
+import StatisticsPage from './StatisticsPage';
 import { BrowserRouter as Router, Route, Switch, Link } from "react-router-dom";
 import React from 'react';
 import './App.css';
@@ -31,9 +32,11 @@ class App extends React.Component{
         <Route exact path="/adminProfile" component={AdminProfilePage} />
         <Route exact path="/hotel" component={HotelPage} />
         <Route exact path="/search" component={SearchLocationPage} />
+        <Route exact path="/search/:location" component={SearchLocationPage} />
         <Route exact path="/hotelInfo" component={HotelInfoPage} />
         <Route exact path="/fav" component={FavoritesPage} />
         <Route exact path="/changeHotelInfo" component={ChangeHotelInfoPage} />
+        <Route exact path="/statistics" component={StatisticsPage} />
         <Route component={NotFoundPage} /> 
         </Switch>
       </Router>

@@ -252,6 +252,7 @@
 }
 .home-page .form-item input{
     background-color: white;
+    color: black;
 }
 .home-page .form-item{
     display: flex;

@@ -3,17 +3,61 @@ import { Helmet } from 'react-helmet';
 import Hotel from './Hotel';
 import Client from './Client';
 import './search.css';
+import { useLocation, useParams } from 'react-router';
+
 
 class SearchLocationPage extends react.Component{
     constructor(props){
         super(props);
         this.state={
-            client:JSON.parse(localStorage.user).user
+            client:JSON.parse(localStorage.user).user,
+            location:'',
+            hotels:[]
         };
         this.client=new Client(this.state.client.username,this.state.client.email,this.state.client.profilePic,this.state.client.auth);
+        this.hotels=[];
+        var params=new URLSearchParams(window.location.search);
+        if(params.get('location')===null){
+            return;
+        }
+        this.state.location=params.get('location');
+        this.searchHotels();
+    }
+
+    myChangeHandler = (event) => {
+        let nam = event.target.name;
+        let val = event.target.value;
+        this.setState({[nam] : val});
+    }
+
+    goToHotel = (hotel) =>{
+        localStorage.setItem("hotel",JSON.stringify({hotel:hotel}));
+        window.location="/hotelInfo";
+    }
+
+    searchHotels= () => {
+        var list=this.client.getSearchHotelsByLocation(this.state.location)["hotelList"];
+        this.hotels=[];
+        for(const [index,item] of list.entries()){
+            this.hotels.push(
+        <tr>
+            <td class="rating">
+            <a href="#"><i class="fas fa-circle"></i></a>
+            <a href="javascript:void();"><i class="fab fa-gratipay" onClick={() => (this.client.addToFavorites(new Hotel(item.id,item.identifier,item.hotelName,item.locationName,item.averageRating,item.votes,item.hotelUrl)))}></i></a> </td>
+            <td class="number text-center">{index+1}</td>
+            <td class="image"><img src={require("./images/img1.jpg").default} alt=""/></td>
+            <a onClick={() => {this.goToHotel(item);}} style={{textDecoration:'none'}}><td class="product"><strong>{item.hotelName}</strong><br/>Offering a terrace, La Verde is located in Iasi. This 3-star hotel has a bar. WiFi is free.</td></a>
+            <td class="rate text-right" style={{width: '100px'}}><span><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></span></td>
+            <td class="price text-right">$37</td>
+        </tr>);
+        }
+        this.setState({hotels:this.hotels});
     }
 
     render(){
+        
+
+
         return(
 <div class="search-page">
 <div class="topnav">
@@ -88,9 +132,9 @@ class SearchLocationPage extends react.Component{
                         <h2><i class="fa fa-bed" aria-hidden="true"></i> Result</h2>
                         <hr/>
                         <div class="input-group">
-                            <input type="text" class="form-control" value="search location"/>
+                            <input type="text" class="form-control" name="location" placeholder="search location" onChange={this.myChangeHandler} style={{fontSize:'large'}}/>
                             <span class="input-group-btn">
-        <button class="btn btn-primary" type="button"><i class="fa fa-search"></i></button>
+        <button class="btn btn-primary" type="button" onClick={this.searchHotels} style={{fontSize:'large'}}><i class="fa fa-search"></i></button>
       </span>
                         </div>
                         <p>Showing all results matching your search</p>
@@ -118,94 +162,7 @@ class SearchLocationPage extends react.Component{
                         <div class="table-responsive">
                             <table class="table table-hover">
                                 <tbody>
-                                    <tr>
-                                        <td class="rating">
-                                            <a href="#"><i class="fas fa-circle"></i></a>
-                                            <a href="javascript:void();"><i class="fab fa-gratipay" onClick={() => (this.client.addToFavorites(new Hotel(0,"ro/casa-de-oaspeti-sfantul-nicolae","Casa de Oaspeți Sfântul Nicolae","Iaşi",7,12,"")))}></i></a> </td>
-                                        <td class="number text-center">1</td>
-                                        <td class="image"><img src={require("./images/img1.jpg").default} alt=""/></td>
-                                        <a href="/hotelInfo" style={{textDecoration:'none'}}><td class="product"><strong>La Verde</strong><br/>Offering a terrace, La Verde is located in Iasi. This 3-star hotel has a bar. WiFi is free.</td></a>
-                                        <td class="rate text-right" style={{width: '100px'}}><span><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></span></td>
-                                        <td class="price text-right">$37</td>
-
-                                    </tr>
-                                    <tr>
-                                        <td class="rating">
-                                            <a href="#"><i class="fas fa-circle"></i></a>
-                                            <a href="javascript:void();"><i class="fab fa-gratipay" onclick="liked(1)"></i></a> </td>
-                                        <td class="number text-center">2</td>
-                                        <td class="image"><img src={require("./images/img2.jpg").default} alt=""/></td>
-                                        <td class="product"><strong>Unirea Hotel & Spa</strong><br/>Unirea Hotel & Spa is located in Unirii Square, in the center of Iași, a few steps from Alexandru Ioan Cuza University. It offers free access to an indoor pool, hot
-                                            tub and fitness center.</td>
-                                        <td class="rate text-right"><span><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></span></td>
-                                        <td class="price text-right">$84</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="rating">
-                                            <a href="#"><i class="fas fa-circle"></i></a>
-                                            <a href="javascript:void();"><i class="fab fa-gratipay" onclick="liked(2)"></i></a> </td>
-                                        <td class="number text-center">3</td>
-                                        <td class="image"><img src={require("./images/img3.jpg").default} alt=""/></td>
-                                        <td class="product"><strong>Grand Hotel Traian</strong><br/>Built in 1882 by Gustave Eiffel, this historic luxury hotel enjoys an exceptional location in Unirii Square in Iasi, a 10-minute walk from the National Theater, the
-                                            Metropolitan Church and the city’s main attractions.</td>
-                                        <td class="rate text-right"><span><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></span></td>
-                                        <td class="price text-right">$75</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="rating">
-                                            <a href="#"><i class="fas fa-circle"></i></a>
-                                            <a href="javascript:void();"><i class="fab fa-gratipay" onclick="liked(3)"></i></a> </td>
-                                        <td class="number text-center">4</td>
-                                        <td class="image"><img src={require("./images/img5.jpg").default} alt=""/></td>
-                                        <td class="product"><strong>Bucium Motel& SPA</strong><br/>Bucium Motel is a 15-minute drive from Iași city center and offers an à la carte restaurant with a terrace, as well as a sauna and an indoor pool. Free private parking
-                                            and free WiFi are available throughout the building.</td>
-                                        <td class="rate text-right"><span><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></span></td>
-                                        <td class="price text-right">$51</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="rating">
-                                            <a href="#"><i class="fas fa-circle"></i></a>
-                                            <a href="javascript:void();"><i class="fab fa-gratipay" onclick="liked(4)"></i></a> </td>
-                                        <td class="number text-center">5</td>
-                                        <td class="image"><img src="./images/img4.jpg" alt=""/></td>
-                                        <td class="product"><strong>Ramada Iasi City Center</strong><br/>Ramada City Center Iasi offers a quiet location in the heart of the city, just opposite the Palas Complex shopping center. It is just 15 minutes from the airport
-                                            and 7 minutes from the main train station.</td>
-                                        <td class="rate text-right"><span><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></span></td>
-                                        <td class="price text-right">$94</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="rating">
-                                            <a href="#"><i class="fas fa-circle"></i></a>
-                                            <a href="javascript:void();"><i class="fab fa-gratipay" onclick="liked(5)"></i></a> </td>
-                                        <td class="number text-center">6</td>
-                                        <td class="image"><img src={require("./images/263872329.webp").default} alt=""/></td>
-                                        <td class="product"><strong>Hotel Astoria City Center</strong><br/>Centrally-located in Iasi, within a 10-minute walk from the National Theatre and the most important landmarks of the city, Hotel Astoria features free WiFi access
-                                            and a restaurant serving traditional Romanian and international cuisine.</td>
-                                        <td class="rate text-right"><span><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></span></td>
-                                        <td class="price text-right">$64</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="rating">
-                                            <a href="#"><i class="fas fa-circle"></i></a>
-                                            <a href="javascript:void();"><i class="fab fa-gratipay" onclick="liked(6)"></i></a> </td>
-                                        <td class="number text-center">7</td>
-                                        <td class="image"><img src={require("./images/270120850.webp").default} alt=""/></td>
-                                        <td class="product"><strong>GRAND VIEW Hotel & Suites Copou</strong><br/>Centrally-located in Iasi, within a 10-minute walk from the National Theatre and the most important landmarks of the city, Hotel Astoria features free
-                                            WiFi access and a restaurant serving traditional Romanian and international cuisine.</td>
-                                        <td class="rate text-right"><span><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></span></td>
-                                        <td class="price text-right">$149</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="rating">
-                                            <a href="#"><i class="fas fa-circle"></i></a>
-                                            <a href="javascript:void();"><i class="fab fa-gratipay" onclick="liked(7)"></i></a> </td>
-                                        <td class="number text-center">8</td>
-                                        <td class="image"><img src={require("./images/270100151.webp").default} alt=""/></td>
-                                        <td class="product"><strong>Hotel Select</strong><br/>Centrally-located in Iasi, within a 10-minute walk from the National Theatre and the most important landmarks of the city, Hotel Astoria features free WiFi access and a restaurant
-                                            serving traditional Romanian and international cuisine.</td>
-                                        <td class="rate text-right"><span><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></span></td>
-                                        <td class="price text-right">$120</td>
-                                    </tr>
+                                    {this.hotels}
                                 </tbody>
                             </table>
                         </div>

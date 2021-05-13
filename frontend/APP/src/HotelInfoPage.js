@@ -3,14 +3,72 @@ import './login_style.css';
 import Credentials from './Credentials';
 import ClientLogin from './ClientLogin';
 import Client from './Client';
+import Hotel from './Hotel';
 import './hotelInfo.css';
 
 class HotelInfoPage extends react.Component{
     constructor(props){
         super(props);
+        this.state={
+            client:JSON.parse(localStorage.user).user,
+            reviewMessage:'',
+            reviewRating:10,
+            refreshReviews:true
+        };
+        var item=JSON.parse(localStorage.hotel).hotel;
+        this.client=new Client(this.state.client.username,this.state.client.email,this.state.client.profilePic,this.state.client.auth);
+        this.hotel=new Hotel(item.id,item.identifier,item.hotelName,item.locationName,item.averageRating,item.votes,item.hotelUrl,item.photoLink,item.description,item.price);
+        this.items=[];
+    }
+
+    myChangeHandler = (event) => {
+        if(!event.target.validity.valid){
+            return;
+        }
+        let nam = event.target.name;
+        let val = event.target.value;
+        this.setState({[nam] : val});
+    }
+
+    addReview = () => {
+        this.client.review_add(this.hotel,this.state.reviewMessage,this.state.reviewRating);
+        this.setState({reviewMessage:'',refreshReviews:true});
+    }
+
+    deleteReview = (id) => {
+        this.client.review_delete(id);
+        this.setState({refreshReviews:true});
     }
 
     render(){
+        if(this.state.refreshReviews){
+            this.items=[];
+            this.state.refreshReviews=false;
+            var reviews=this.client.get_reviews(this.hotel.id);
+
+            for(const [index,item] of reviews.entries()){
+            this.items.push(
+                <li class="message" style={{fontSize:'large'}}>
+                    <img src={require("./images/pers0.jpg").default} class="online" />
+                    <span class="message-text">
+                    <a href="javascript:void(0);" class="username">
+                        {item.userName}
+                        <span style={{border:'1px solid red',color:'red'}} class="pull-right" onClick={() => {this.deleteReview(item.id);}}>
+                            X
+                        </span>
+                        <span class="pull-right">
+                            Rating : {item.userRating} / 10
+                        </span>
+                        <small class="text-muted pull-right ultra-light"> Posted on : {item.reviewDate} </small>
+                    </a>
+                    <h5> {item.reviewMessage}</h5>
+                    </span>
+                </li>
+                );
+            }
+        }
+
+
         return(
 <div class="hotel-info">
 <div class="topnav">
@@ -64,21 +122,23 @@ class HotelInfoPage extends react.Component{
             </div>
             
                     <div class="btn-group pull-right">
-                        <button class="btn btn-white btn-default"> <i class="far fa-heart"></i>Add to favorites</button>
+                        <button class="btn btn-white btn-default" onClick={() => {this.client.addToFavorites(this.hotel);}}> <i class="far fa-heart"></i>Add to favorites</button>
                         
                     </div>
             <div class="content col-md-6 col-md-offset-1 col-sm-12 col-xs-12">
                 
                 <h2 class="name">
-                    Hotel Cafe Royal
-                    <small><h5><i class="fas fa-map-marker-alt" ></i> 68 Regent Street, West End - Mayfair, Westminster Borough, London, W1B 4DY, United Kingdom –</h5></small>
+                    <a href={this.hotel.hotelUrl}>
+                    {this.hotel.hotelName}
+                    <small><h5><i class="fas fa-map-marker-alt" ></i> {this.hotel.locationName} </h5></small>
                     <i class="fas fa-star fa-2x "></i>
                     <i class="fas fa-star fa-2x "></i>
                     <i class="fas fa-star fa-2x "></i>
                     <i class="fas fa-star fa-2x "></i>
                     <i class="fas fa-star fa-2x "></i>
-                    <span class="fa fa-2x"><h5>(109) Votes</h5></span>
-                    <a href="javascript:void(0);">109 customer reviews</a>
+                    <span class="fa fa-2x"><h5>{this.hotel.votes} Votes</h5></span>
+                    <span>Average rating : {this.hotel.averageRating}</span>
+                    </a>
                 </h2>
                 
                 <hr />
@@ -239,69 +299,19 @@ class HotelInfoPage extends react.Component{
 
                         <div class="tab-pane fade" id="reviews">
                             <br />
-                            <form method="post" class="well padding-bottom-10" onsubmit="return false;">
-                                <textarea rows="2" class="form-control" placeholder="Write a review"></textarea>
+                            <div class="well padding-bottom-10" >
+                                <textarea style={{fontSize:'large'}} rows="2" class="form-control" value={this.state.reviewMessage} onChange={this.myChangeHandler} name="reviewMessage" placeholder="Write a review"></textarea>
+                                <span>Rating (0-10):</span><input type="text" onChange={this.myChangeHandler} pattern="[0-9]|10" name="reviewRating" value={this.state.reviewRating}/>
                                 <div class="margin-top-10">
-                                    <button type="submit" class="btn btn-sm btn-primary pull-right">
+                                    <button type="submit" style={{fontSize:'large'}} class="btn btn-sm btn-primary pull-right" onClick={this.addReview}>
                                         Submit Review
                                     </button>
-                                    <a href="javascript:void(0);" class="btn btn-link profile-link-btn" rel="tooltip" data-placement="bottom" title="" data-original-title="Add Location"><i class="fa fa-location-arrow"></i></a>
-                                    <a href="javascript:void(0);" class="btn btn-link profile-link-btn" rel="tooltip" data-placement="bottom" title="" data-original-title="Add Voice"><i class="fa fa-microphone"></i></a>
-                                    <a href="javascript:void(0);" class="btn btn-link profile-link-btn" rel="tooltip" data-placement="bottom" title="" data-original-title="Add Photo"><i class="fa fa-camera"></i></a>
-                                    <a href="javascript:void(0);" class="btn btn-link profile-link-btn" rel="tooltip" data-placement="bottom" title="" data-original-title="Add File"><i class="fa fa-file"></i></a>
                                 </div>
-                            </form>
+                            </div>
 
                             <div class="chat-body no-padding profile-message">
                                 <ul>
-                                    <li class="message">
-                                        <img src={require("./images/pers0.jpg").default} class="online" />
-                                        <span class="message-text">
-                                            <a href="javascript:void(0);" class="username">
-                                                Aleksei
-                                                <span class="pull-right">
-                                                    <i class="fas fa-star fa-2x "></i>
-                                                    <i class="fas fa-star fa-2x "></i>
-                                                    <i class="fas fa-star fa-2x "></i>
-                                                    <i class="fas fa-star fa-2x "></i>
-                                                    <i class="far fa-star fa-2x "></i>
-                                                </span>
-                                            </a>
-                                           <h5> Classic hotel brought up to date with many modern touches and excellent staff</h5>
-                                        </span>
-                                        <ul class="list-inline font-xs">
-                                            <li>
-                                                <a href="javascript:void(0);" class="text-info"><i class="fa fa-thumbs-up"></i> This was helpful (5)</a>
-                                            </li>
-                                            <li class="pull-right">
-                                                <small class="text-muted pull-right ultra-light"> Posted 1 year ago </small>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                    <li class="message">
-                                        <img src={require("./images/pers6.jpg").default} class="online" />
-                                        <span class="message-text">
-                                            <a href="javascript:void(0);" class="username">
-                                                Melody
-                                                <span class="pull-right">
-                                                    <i class="fas fa-star fa-2x "></i>
-                                                    <i class="fas fa-star fa-2x text-primary"></i>
-                                                    <i class="fas fa-star fa-2x text-primary"></i>
-                                                    <i class="fas fa-star fa-2x text-primary"></i>
-                                                    <i class="fas fa-star fa-2x text-primary"></i>
-                                                </span>
-                                            </a>
-                                            <h5>Beautiful Hotel, always a very welcoming team at Cafe Royal and facilities are exceptional</h5>
-                                        </span>
-                                        <ul class="list-inline font-xs">
-                                            <li>
-                                                <a href="javascript:void(0);" class="text-info"><i class="fa fa-thumbs-up"></i> This was helpful (6)</a>
-                                            </li>
-                                            <li class="pull-right">
-                                                <small class="text-muted pull-right ultra-light"> Posted 2 months ago </small>
-                                            </li>
-                                        </ul>
-                                    </li>
+                                    {this.items}
                                 </ul>
                             </div>
                         </div>

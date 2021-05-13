@@ -156,6 +156,14 @@
     transform: translate3d(640px, 0, 0);
 }
 
+.sign-up-page .img-text button{
+    text-align: center;
+    border: 2px solid black;
+    border-radius: 4px;
+    width: 100%;
+    margin-top: 10px;
+}
+
 .sign-up-page .img-text {
     z-index: 2;
     position: absolute;

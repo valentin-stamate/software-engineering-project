@@ -7,7 +7,6 @@ class ClientLogin extends LoginUtility{
     static login(credentials){
         
         var data=this.fetchData(credentials);
-
         if("message" in data){
             return data["message"];
         }

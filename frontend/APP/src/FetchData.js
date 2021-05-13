@@ -4,7 +4,7 @@
 
 class FetchData{
     //api-ul creat ce serveste drept proxy pentru a evita anumite erori
-    static api="http://localhost:3001/";
+    static api="https://euopendata-proxy.herokuapp.com/get";
     //raspunsul dat de server
     static response;
     //NOTE: nu e nevoie folosirea atributelor de mai sus (sunt folosite doar in metodele de mai jos)

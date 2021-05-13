@@ -1,0 +1,4 @@
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+firebase login
+npm run buil
+firebase deploy
