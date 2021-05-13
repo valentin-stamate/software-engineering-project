@@ -113,6 +113,11 @@ public class HotelController {
         }
         hotelModel.setHotelName(hotelJSON.hotelName);
         hotelModel.setLocationName(hotelJSON.locationName);
+        hotelModel.setAverageRating(hotelJSON.averageRating);
+        hotelModel.setVotes(hotelJSON.votes);
+        hotelModel.setPrice(hotelJSON.price);
+        hotelModel.setDescription(hotelJSON.description);
+        hotelModel.setPhotoLink(hotelJSON.photoLink);
         hotelService.save(hotelModel);
 
         return new ResponseEntity<>(new APISuccess("hotel updated successfully"), HttpStatus.OK);

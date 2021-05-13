@@ -44,7 +44,7 @@ public class HotelService {
         List<HotelJSON> hotelJSONList = new ArrayList<>();
 
         for (HotelModel hotelModel : hotelModels) {
-            hotelJSONList.add(new HotelJSON(hotelModel.getId(), hotelModel.getIdentifier(), hotelModel.getHotelName(), hotelModel.getLocationName(), hotelModel.getAverageRating(), hotelModel.getVotes()));
+            hotelJSONList.add(new HotelJSON(hotelModel.getId(), hotelModel.getIdentifier(), hotelModel.getHotelName(), hotelModel.getLocationName(), hotelModel.getAverageRating(), hotelModel.getVotes(),hotelModel.getPhotoLink(),hotelModel.getDescription(),hotelModel.getPrice()));
         }
 
         return hotelJSONList;
