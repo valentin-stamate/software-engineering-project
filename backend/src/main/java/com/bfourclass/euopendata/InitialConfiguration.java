@@ -23,7 +23,7 @@ public class InitialConfiguration {
             UserModel userModelB = new UserModel("Lorenzo", "lorenzo@gmail.com", SimpleHashingAlgo.hash("dasdasd"), "https://postimage.com/picture.png");
             UserModel userModelC = new UserModel("plugin", "plugin@gmail.com", SimpleHashingAlgo.hash("plugintest99"), "https://postimage.com/picture.png");
             UserModel userModelD = new UserModel("web", "web@gmail.com", SimpleHashingAlgo.hash("webtest99"), "https://postimage.com/picture.png");
-            UserModel owner = new UserModel("hotelowner", "hotel@owner.com", SimpleHashingAlgo.hash("owner"), "", true);
+            UserModel owner = new UserModel("hotelowner", "hotel@owner.com", SimpleHashingAlgo.hash("ownerrr"), "", true);
 
 
             HotelModel hotelModelA = new HotelModel("ro/arnia", "Hotel Arnia", "Iași");
