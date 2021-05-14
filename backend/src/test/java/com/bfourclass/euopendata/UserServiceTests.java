@@ -12,7 +12,7 @@ import org.springframework.util.Assert;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@SpringBootTest(classes = SmartBookingApplication.class,
+@SpringBootTest(classes = EuopendataApplication.class,
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
 @RunWith(SpringRunner.class)

@@ -191,19 +191,11 @@ public class UserService {
         userRepository.save(userModel);
     }
 
-    /* TODO */
-    public List<Notification> getUserNotifications(UserModel userModel) {
-        List<Notification> notifications = new ArrayList<>();
-        notifications.add(new Notification(1, "Notifications are working"));
-        return notifications;
-    }
-
-    /* TODO */
-    public boolean deleteUserNotification(UserModel userModel, long notificationId) {
-        return true;
-    }
-
     public void saveUser(UserModel userModel) {
         userRepository.save(userModel);
+    }
+
+    public List<UserModel> getAll() {
+        return userRepository.findAll();
     }
 }

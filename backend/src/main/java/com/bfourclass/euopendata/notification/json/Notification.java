@@ -10,8 +10,9 @@ public class Notification {
         this.message = message;
     }
 
-    public Notification(String message) {
+    public Notification(long id, String message, boolean read) {
         this.message = message;
+        this.read = read;
     }
 
     public void markAsRead() {

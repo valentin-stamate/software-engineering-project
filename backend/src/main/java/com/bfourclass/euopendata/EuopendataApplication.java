@@ -5,7 +5,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class SmartBookingApplication {
+public class EuopendataApplication {
 
     public static void main(String[] args) throws InterruptedException {
         /* This thread is updating covid statistics once a day */
@@ -15,7 +15,7 @@ public class SmartBookingApplication {
 
         Thread.sleep(4000);
 
-        SpringApplication.run(SmartBookingApplication.class, args);
+        SpringApplication.run(EuopendataApplication.class, args);
     }
 
 }

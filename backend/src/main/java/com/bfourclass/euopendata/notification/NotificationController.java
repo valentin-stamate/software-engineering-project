@@ -5,6 +5,7 @@ import com.bfourclass.euopendata.requests.ResponseError;
 import com.bfourclass.euopendata.requests.ResponseSucces;
 import com.bfourclass.euopendata.user.UserModel;
 import com.bfourclass.euopendata.user.UserService;
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,37 +36,42 @@ public class NotificationController {
 
         UserModel userModel = userService.getUserFromToken(token);
 
-        List<Notification> notifications = userService.getUserNotifications(userModel);
+        List<Notification> notifications = notificationService.getUserNotifications(userModel);
 
         return new ResponseEntity<>(notifications, HttpStatus.OK);
     }
 
-    @DeleteMapping("/notifications")
+    @DeleteMapping("/notification")
     public ResponseEntity<Object> deleteNotification(@RequestHeader(name = "Authorization") String token,
-                                                     @RequestParam(name = "notification_id") long notificationId) {
+                                                     @RequestParam(name = "id") long notificationId) {
         ResponseEntity<Object> errorResponse = userService.checkUserToken(token);
         if (errorResponse != null) {
             return errorResponse;
         }
 
         UserModel userModel = userService.getUserFromToken(token);
+        NotificationModel notificationModel = notificationService.getById(notificationId);
 
-        if (userService.deleteUserNotification(userModel, notificationId)) {
-            notificationService.deleteNotification(notificationId);
-            return new ResponseEntity<>(new ResponseSucces("Notification deleted successfully"), HttpStatus.OK);
+        if (notificationModel == null) {
+            return new ResponseEntity<>(new ResponseError("You don't have this notification"), HttpStatus.BAD_REQUEST);
         }
 
-        return new ResponseEntity<>(new ResponseError("Error deleting notification"), HttpStatus.OK);
+        if (!notificationService.deleteUserNotification(userModel, notificationModel)) {
+            return new ResponseEntity<>(new ResponseError("Error deleting notification"), HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<>(new ResponseSucces("Notification deleted successfully"), HttpStatus.OK);
     }
 
-    @PutMapping("/notifications")
-    public ResponseEntity<Object> markAsRead(@RequestHeader(name = "Authorization") String token, @RequestParam(name = "notification_id") long notificationId) {
+    @PutMapping("/notification")
+    public ResponseEntity<Object> markAsRead(@RequestHeader(name = "Authorization") String token, @RequestParam(name = "id") long notificationId) {
         ResponseEntity<Object> errorResponse = userService.checkUserToken(token);
         if (errorResponse != null) {
             return errorResponse;
         }
 
-        notificationService.markAsRead(notificationId);
+        NotificationModel notificationModel = notificationService.getById(notificationId);
+        notificationService.markAsRead(notificationModel);
 
         return new ResponseEntity<>(new ResponseSucces("Notification marked as read"), HttpStatus.OK);
     }
@@ -73,6 +79,14 @@ public class NotificationController {
     @MessageMapping("/notification")
     @SendTo("/view/notifications")
     public Notification sendNotification(Notification notification) {
+
+        NotificationModel notificationModel = notificationService.getById(notification.id);
+
+        List<UserModel> userModels = userService.getAll();
+        for (UserModel userModel : userModels) {
+            notificationService.addUserNotification(userModel, notificationModel);
+        }
+
         return notification;
     }
 }

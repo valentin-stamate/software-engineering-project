@@ -37,7 +37,7 @@ public class NotificationModel {
         this.id = id;
     }
 
-    public void setRead(boolean read) {
-        this.read = read;
+    public void markAsRead() {
+        this.read = true;
     }
 }

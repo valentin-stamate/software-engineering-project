@@ -49,7 +49,7 @@ public class UserModel {
     private final Set<HotelModel> hotels = new HashSet<>();
 
     @OneToMany
-    private final Set<NotificationModel> notifications = new HashSet<>();
+    private final List<NotificationModel> notifications = new ArrayList<>();
 
     public UserModel(String username, String email, String password, String profilePhotoLink, boolean isActivated, boolean isAdmin) {
         this.username = username;
@@ -126,6 +126,17 @@ public class UserModel {
     public void deleteUserHotel(HotelModel hotelModel) {
         hotels.removeIf(hotel -> hotel.getHotelName().equals(hotelModel.getHotelName()));
         hotelModel.deleteUserSave(this);
+    }
+
+    public boolean deleteNotification(NotificationModel notificationModel) {
+        for (NotificationModel notification : notifications) {
+            if (notification.getId() == notificationModel.getId()) {
+                notifications.remove(notification);
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public List<HotelModel> getUserHotels() {
@@ -217,4 +228,9 @@ public class UserModel {
     public void addNotification(NotificationModel notificationModel) {
         notifications.add(notificationModel);
     }
+
+    public List<NotificationModel> getNotifications() {
+        return notifications;
+    }
+
 }
