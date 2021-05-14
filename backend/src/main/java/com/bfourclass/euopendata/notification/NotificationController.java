@@ -60,6 +60,7 @@ public class NotificationController {
         return new ResponseEntity<>(new ResponseSucces("Notification deleted successfully"), HttpStatus.OK);
     }
 
+
     @PutMapping("/notification")
     public ResponseEntity<Object> markAsRead(@RequestHeader(name = "Authorization") String token, @RequestParam(name = "id") long notificationId) {
         ResponseEntity<Object> errorResponse = userService.checkUserToken(token);
