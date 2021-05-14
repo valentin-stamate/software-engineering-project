@@ -5,7 +5,7 @@ import com.bfourclass.euopendata.hotel.HotelModel;
 import com.bfourclass.euopendata.hotel.HotelRepository;
 import com.bfourclass.euopendata.hotel.json.HotelJSON;
 import com.bfourclass.euopendata.notification.json.Notification;
-import com.bfourclass.euopendata.requests.APIError;
+import com.bfourclass.euopendata.requests.ResponseError;
 import com.bfourclass.euopendata.security.StringGenerator;
 import com.bfourclass.euopendata.user.auth.SecurityContext;
 import com.bfourclass.euopendata.user.json.OwnerRegisterJSONRequest;
@@ -109,12 +109,12 @@ public class UserService {
     public ResponseEntity<Object> checkUserToken(String token) {
         // check if token exists in request
         if (token == null) {
-            return new ResponseEntity<>(new APIError("Missing Authorization header"), HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(new ResponseError("Missing Authorization header"), HttpStatus.UNAUTHORIZED);
         }
 
         // check if token exists in SecurityContext
         if (!checkTokenIsValid(token)) {
-            return new ResponseEntity<>(new APIError("Invalid Authorization header"), HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(new ResponseError("Invalid Authorization header"), HttpStatus.UNAUTHORIZED);
         }
 
         return null;

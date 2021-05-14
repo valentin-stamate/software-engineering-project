@@ -1,8 +1,8 @@
 package com.bfourclass.euopendata.notification;
 
 import com.bfourclass.euopendata.notification.json.Notification;
-import com.bfourclass.euopendata.requests.APIError;
-import com.bfourclass.euopendata.requests.APISuccess;
+import com.bfourclass.euopendata.requests.ResponseError;
+import com.bfourclass.euopendata.requests.ResponseSucces;
 import com.bfourclass.euopendata.user.UserModel;
 import com.bfourclass.euopendata.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,10 +52,10 @@ public class NotificationController {
 
         if (userService.deleteUserNotification(userModel, notificationId)) {
             notificationService.deleteNotification(notificationId);
-            return new ResponseEntity<>(new APISuccess("Notification deleted successfully"), HttpStatus.OK);
+            return new ResponseEntity<>(new ResponseSucces("Notification deleted successfully"), HttpStatus.OK);
         }
 
-        return new ResponseEntity<>(new APIError("Error deleting notification"), HttpStatus.OK);
+        return new ResponseEntity<>(new ResponseError("Error deleting notification"), HttpStatus.OK);
     }
 
     @PutMapping("/notifications")
@@ -67,7 +67,7 @@ public class NotificationController {
 
         notificationService.markAsRead(notificationId);
 
-        return new ResponseEntity<>(new APISuccess("Notification marked as read"), HttpStatus.OK);
+        return new ResponseEntity<>(new ResponseSucces("Notification marked as read"), HttpStatus.OK);
     }
 
     @MessageMapping("/notification")

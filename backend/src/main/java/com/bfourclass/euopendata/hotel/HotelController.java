@@ -7,8 +7,8 @@ import com.bfourclass.euopendata.hotel.json.HotelJSON;
 import com.bfourclass.euopendata.hotel.json.HotelSearchResultJSON;
 import com.bfourclass.euopendata.notification.NotificationModel;
 import com.bfourclass.euopendata.notification.NotificationService;
-import com.bfourclass.euopendata.requests.APIError;
-import com.bfourclass.euopendata.requests.APISuccess;
+import com.bfourclass.euopendata.requests.ResponseError;
+import com.bfourclass.euopendata.requests.ResponseSucces;
 import com.bfourclass.euopendata.user.UserModel;
 import com.bfourclass.euopendata.user.UserService;
 import com.bfourclass.euopendata.user.forms.FormValidator;
@@ -85,16 +85,16 @@ public class HotelController {
         }
 
         if (!FormValidator.isValidHotelAddForm(request)) {
-            return new ResponseEntity<>(new APIError("invalid form"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ResponseError("invalid form"), HttpStatus.BAD_REQUEST);
         }
 
         UserModel user = userService.getUserFromToken(token);
         if (!user.isOwner()) {
-            return new ResponseEntity<>(new APIError("not a hotel owner"), HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(new ResponseError("not a hotel owner"), HttpStatus.UNAUTHORIZED);
         }
         HotelModel hotel = new HotelModel(request.getIdentifier(), request.getName(), request.getLocation(), request.getPhotoLink(), request.getDescription(), request.getPrice(), user.getId());
         hotelService.save(hotel);
-        return new ResponseEntity<>(new APISuccess("added hotel successfully"), HttpStatus.OK);
+        return new ResponseEntity<>(new ResponseSucces("added hotel successfully"), HttpStatus.OK);
     }
 
     /*TODO implement update hotel endpoint*/
@@ -120,7 +120,7 @@ public class HotelController {
         hotelModel.setPhotoLink(hotelJSON.photoLink);
         hotelService.save(hotelModel);
 
-        return new ResponseEntity<>(new APISuccess("hotel updated successfully"), HttpStatus.OK);
+        return new ResponseEntity<>(new ResponseSucces("hotel updated successfully"), HttpStatus.OK);
     }
     /* TODO Hotel Information */
 
@@ -134,7 +134,7 @@ public class HotelController {
         }
         hotelService.delete(hotelModel);
 
-        return new ResponseEntity<>(new APISuccess("hotel deleted successfully"), HttpStatus.OK);
+        return new ResponseEntity<>(new ResponseSucces("hotel deleted successfully"), HttpStatus.OK);
     }
 
 

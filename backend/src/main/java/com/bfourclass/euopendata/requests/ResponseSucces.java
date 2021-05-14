@@ -1,9 +1,9 @@
 package com.bfourclass.euopendata.requests;
 
-public class APIError {
+public class ResponseSucces {
     public final String message;
 
-    public APIError(String message) {
+    public ResponseSucces(String message) {
         this.message = message;
     }
 }

@@ -51,6 +51,11 @@ public class CovidStatisticsAPI implements Runnable {
                 covidStatisticsCache.get(key).addItem(item);
             }
         } catch (IOException | CsvValidationException e) {
+            System.out.println(
+                    "You!, yeah you the one witch you comment me every time.\n" +
+                    "This error is happening in other thread so it has no effect on the main thread.\n" +
+                    "To solve me, create an empty file here: src/main/resources/static/covid_statistics.csv\n" +
+                    "It's done, as all things should be");
             e.printStackTrace();
         }
 

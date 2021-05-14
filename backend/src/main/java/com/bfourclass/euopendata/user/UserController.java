@@ -3,8 +3,8 @@ package com.bfourclass.euopendata.user;
 import com.bfourclass.euopendata.hotel.HotelModel;
 import com.bfourclass.euopendata.hotel.HotelService;
 import com.bfourclass.euopendata.hotel.json.HotelJSON;
-import com.bfourclass.euopendata.requests.APIError;
-import com.bfourclass.euopendata.requests.APISuccess;
+import com.bfourclass.euopendata.requests.ResponseError;
+import com.bfourclass.euopendata.requests.ResponseSucces;
 import com.bfourclass.euopendata.security.SimpleHashingAlgo;
 import com.bfourclass.euopendata.user.forms.FormValidator;
 import com.bfourclass.euopendata.user.json.*;
@@ -72,10 +72,10 @@ public class UserController {
                 responseError.append("<b>").append(hotelJSON.hotelName).append(append);
             }
 
-            return new ResponseEntity<>(new APIError(String.format("Hotels: %s are already saved", responseError)), HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity<>(new ResponseError(String.format("Hotels: %s are already saved", responseError)), HttpStatus.NOT_ACCEPTABLE);
         }
 
-        return new ResponseEntity<>(new APISuccess("Locations added successfully"), HttpStatus.OK);
+        return new ResponseEntity<>(new ResponseSucces("Locations added successfully"), HttpStatus.OK);
     }
 
     @DeleteMapping("user/delete_hotel")
@@ -101,21 +101,21 @@ public class UserController {
 
         String errorMessage = request.isValid();
         if (errorMessage != null) {
-            return new ResponseEntity<>(new APIError(errorMessage), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ResponseError(errorMessage), HttpStatus.BAD_REQUEST);
         }
 
         if (!userService.userExists(request.login)) {
-            return new ResponseEntity<>(new APIError("User does not exist"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ResponseError("User does not exist"), HttpStatus.BAD_REQUEST);
         }
 
         UserModel userModel = userService.getUserByLogin(request.login);
 
         if (!userModel.checkUserPassword(request.password)) {
-            return new ResponseEntity<>(new APIError("Wrong password"), HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(new ResponseError("Wrong password"), HttpStatus.UNAUTHORIZED);
         }
 
         if (!userModel.isActivated()) {
-            return new ResponseEntity<>(new APIError("Account not activated"), HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(new ResponseError("Account not activated"), HttpStatus.UNAUTHORIZED);
         }
 
         String token = userService.loginUserReturnToken(userModel.getUsername());
@@ -128,15 +128,15 @@ public class UserController {
 
         String errorMessage = form.isValid();
         if (errorMessage != null) {
-            return new ResponseEntity<>(new APIError(errorMessage), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ResponseError(errorMessage), HttpStatus.BAD_REQUEST);
         }
 
         if (userService.userExists(form.username)) {
-            return new ResponseEntity<>(new APIError("Username is taken"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ResponseError("Username is taken"), HttpStatus.BAD_REQUEST);
         }
 
         if (userService.userExists(form.email)) {
-            return new ResponseEntity<>(new APIError("Email already used"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ResponseError("Email already used"), HttpStatus.BAD_REQUEST);
         }
 
         userService.createUserByForm(form);
@@ -150,7 +150,7 @@ public class UserController {
 //            return new ResponseEntity<>(new APIError("Error sending verification email"), HttpStatus.NOT_ACCEPTABLE);
 //        }
 
-        return new ResponseEntity<>(new APISuccess("Registration successful"), HttpStatus.OK);
+        return new ResponseEntity<>(new ResponseSucces("Registration successful"), HttpStatus.OK);
     }
 
     @PostMapping(value = "owner/register")
@@ -158,15 +158,15 @@ public class UserController {
 
         String errorMessage = form.isValid();
         if (errorMessage != null) {
-            return new ResponseEntity<>(new APIError(errorMessage), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ResponseError(errorMessage), HttpStatus.BAD_REQUEST);
         }
 
         if (userService.userExists(form.username)) {
-            return new ResponseEntity<>(new APIError("Username is taken"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ResponseError("Username is taken"), HttpStatus.BAD_REQUEST);
         }
 
         if (userService.userExists(form.email)) {
-            return new ResponseEntity<>(new APIError("Email already used"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ResponseError("Email already used"), HttpStatus.BAD_REQUEST);
         }
 
         userService.createOwnerByForm(form);
@@ -180,7 +180,7 @@ public class UserController {
 //            return new ResponseEntity<>(new APIError("Error sending verification email"), HttpStatus.NOT_ACCEPTABLE);
 //        }
 
-        return new ResponseEntity<>(new APISuccess("Registration successful"), HttpStatus.OK);
+        return new ResponseEntity<>(new ResponseSucces("Registration successful"), HttpStatus.OK);
     }
 
     @GetMapping("owner/hotels")
@@ -205,39 +205,39 @@ public class UserController {
     public ResponseEntity<Object> resendActivationToken(@RequestBody UserLoginJSON request) {
 
         if (!userService.userExists(request.login)) {
-            return new ResponseEntity<>(new APIError("User does not exist"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ResponseError("User does not exist"), HttpStatus.BAD_REQUEST);
         }
 
         UserModel userModel = userService.getUserByLogin(request.login);
 
         if (!userModel.checkUserPassword(request.password)) {
-            return new ResponseEntity<>(new APIError("Wrong password"), HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(new ResponseError("Wrong password"), HttpStatus.UNAUTHORIZED);
         }
 
         if (userModel.isActivated()) {
-            return new ResponseEntity<>(new APIError("Your account is already activated"), HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(new ResponseError("Your account is already activated"), HttpStatus.UNAUTHORIZED);
         }
 
         if (!userService.sendUserActivationEmail(userModel)) {
-            return new ResponseEntity<>(new APIError("Error sending email"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ResponseError("Error sending email"), HttpStatus.BAD_REQUEST);
         }
 
-        return new ResponseEntity<>(new APISuccess("Verification token resend"), HttpStatus.OK);
+        return new ResponseEntity<>(new ResponseSucces("Verification token resend"), HttpStatus.OK);
     }
 
     @GetMapping(value = "user/verify")
     public ResponseEntity<Object> verifyUser(@RequestParam(name = "user_verification_key") String userKey, @RequestParam(name = "new_email", required = false) String newEmail) {
         if (newEmail == null) {
             if (userVerificationService.activateUser(userKey)) {
-                return new ResponseEntity<>(new APISuccess("User successfully activated. Now you can log in"), HttpStatus.OK);
+                return new ResponseEntity<>(new ResponseSucces("User successfully activated. Now you can log in"), HttpStatus.OK);
             }
         } else {
             /* TODO verify if the new email is already taken */
             UserModel userModel = userVerificationService.getUserModel(userKey);
             userVerificationService.changeEmail(userModel, newEmail);
-            return new ResponseEntity<>(new APISuccess("Email changed successfully."), HttpStatus.OK);
+            return new ResponseEntity<>(new ResponseSucces("Email changed successfully."), HttpStatus.OK);
         }
-        return new ResponseEntity<>(new APIError("Wrong verification key"), HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(new ResponseError("Wrong verification key"), HttpStatus.NOT_FOUND);
     }
 
     @GetMapping("user/hotels")
@@ -265,17 +265,17 @@ public class UserController {
         UserModel userModel = userService.getUserFromToken(token);
 
         if (!FormValidator.isValidUsername(userModel.getUsername())) {
-            return new ResponseEntity(new APIError("Invalid username"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity(new ResponseError("Invalid username"), HttpStatus.BAD_REQUEST);
         }
 
         if (!FormValidator.isValidLink(userModel.getProfilePhotoLink())) {
-            return new ResponseEntity(new APIError("Invalid photo-link"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity(new ResponseError("Invalid photo-link"), HttpStatus.BAD_REQUEST);
         }
 
         userModel.setProfilePhotoLink(userJSON.profilePhotoLink);
         userModel.setUsername(userJSON.username);
         userService.updateUser(userModel);
-        return new ResponseEntity(new APISuccess("User update with success"), HttpStatus.OK);
+        return new ResponseEntity(new ResponseSucces("User update with success"), HttpStatus.OK);
 
     }
 
@@ -287,14 +287,14 @@ public class UserController {
         }
         UserModel userModel = userService.getUserFromToken(token);
         if (!userModel.checkUserPassword(userJSON.oldPassword)) {
-            return new ResponseEntity(new APIError("Invalid current password"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity(new ResponseError("Invalid current password"), HttpStatus.BAD_REQUEST);
         }
         if (!FormValidator.isValidPassword(userJSON.newPassword)) {
-            return new ResponseEntity(new APIError("Invalid new password"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity(new ResponseError("Invalid new password"), HttpStatus.BAD_REQUEST);
         }
         userModel.setPassword(SimpleHashingAlgo.hash(userJSON.newPassword));
         userService.updateUser(userModel);
-        return new ResponseEntity(new APISuccess("User updated with success"), HttpStatus.OK);
+        return new ResponseEntity(new ResponseSucces("User updated with success"), HttpStatus.OK);
     }
 
     @PostMapping("user/update_email")
@@ -305,10 +305,10 @@ public class UserController {
         }
         UserModel userModel = userService.getUserFromToken(token);
         if (!FormValidator.isValidEmail(userModel.getEmail())) {
-            return new ResponseEntity(new APIError("Invalid email"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity(new ResponseError("Invalid email"), HttpStatus.BAD_REQUEST);
         }
         userService.sendEmailVerificationUpdate(userModel, userJSON.email);
-        return new ResponseEntity(new APISuccess("An email was sent to you new address."), HttpStatus.OK);
+        return new ResponseEntity(new ResponseSucces("An email was sent to you new address."), HttpStatus.OK);
     }
 
     /* User as admin */
@@ -329,10 +329,10 @@ public class UserController {
 
             userModel.addHotel(hotelModel);
         } else {
-            return new ResponseEntity<>(new APIError("Hotel is already saved"), HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity<>(new ResponseError("Hotel is already saved"), HttpStatus.NOT_ACCEPTABLE);
         }
 
-        return new ResponseEntity<>(new APISuccess("Location added successfully"), HttpStatus.OK);
+        return new ResponseEntity<>(new ResponseSucces("Location added successfully"), HttpStatus.OK);
     }
 
     @DeleteMapping("admin/delete_hotel")
@@ -359,20 +359,20 @@ public class UserController {
             @RequestHeader(name = "Authorization", required = true) String token) {
 
         if (!userService.checkTokenIsValid(token)) {
-            return new ResponseEntity<>(new APIError("unauthorized"), HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(new ResponseError("unauthorized"), HttpStatus.UNAUTHORIZED);
         }
         UserModel admin = userService.getUserFromToken(token);
         if (!admin.isAdmin()) {
-            return new ResponseEntity<>(new APIError("unauthorized"), HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(new ResponseError("unauthorized"), HttpStatus.UNAUTHORIZED);
         }
         if (username == null) {
-            return new ResponseEntity<>(new APIError("username query unspecified"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ResponseError("username query unspecified"), HttpStatus.BAD_REQUEST);
         }
         if (!userService.userExists(username)) {
-            return new ResponseEntity<>(new APIError("username doesn't exist"), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new ResponseError("username doesn't exist"), HttpStatus.NOT_FOUND);
         }
         userService.makeAdmin(username);
-        return new ResponseEntity<>(new APISuccess("successfully added admin"), HttpStatus.OK);
+        return new ResponseEntity<>(new ResponseSucces("successfully added admin"), HttpStatus.OK);
     }
 
     @PatchMapping("(admin/remove_admin)")
@@ -381,20 +381,20 @@ public class UserController {
             @RequestHeader(name = "Authorization", required = true) String token) {
 
         if (!userService.checkTokenIsValid(token)) {
-            return new ResponseEntity<>(new APIError("unauthorized"), HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(new ResponseError("unauthorized"), HttpStatus.UNAUTHORIZED);
         }
         UserModel admin = userService.getUserFromToken(token);
         if (!admin.isAdmin()) {
-            return new ResponseEntity<>(new APIError("unauthorized"), HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(new ResponseError("unauthorized"), HttpStatus.UNAUTHORIZED);
         }
         if (username == null) {
-            return new ResponseEntity<>(new APIError("username query unspecified"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ResponseError("username query unspecified"), HttpStatus.BAD_REQUEST);
         }
         if (!userService.userExists(username)) {
-            return new ResponseEntity<>(new APIError("username doesn't exist"), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new ResponseError("username doesn't exist"), HttpStatus.NOT_FOUND);
         }
         userService.removeAdmin(username);
-        return new ResponseEntity<>(new APISuccess("successfully added admin"), HttpStatus.OK);
+        return new ResponseEntity<>(new ResponseSucces("successfully added admin"), HttpStatus.OK);
     }
 
     @DeleteMapping("user/delete_search_query")
@@ -408,7 +408,7 @@ public class UserController {
 
         /* TODO, explicit the error */
         userService.removeSearchedHotel(userModel, id);
-        return new ResponseEntity<>(new APISuccess("Deleted Successfully"), HttpStatus.OK);
+        return new ResponseEntity<>(new ResponseSucces("Deleted Successfully"), HttpStatus.OK);
     }
 
     @GetMapping("user/get_history")

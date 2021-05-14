@@ -7,11 +7,10 @@ import com.bfourclass.euopendata.external_api.instance.location.LocationStatisti
 import com.bfourclass.euopendata.external_api.instance.numbeo_data.CriminalityStatistics;
 import com.bfourclass.euopendata.external_api.instance.weather.current_weather.Weather;
 import com.bfourclass.euopendata.external_api.instance.weather.Forecast;
-import com.bfourclass.euopendata.external_api.instance.weather.statistical_weather.StatisticalWeather;
 import com.bfourclass.euopendata.external_api.json.CovidNewsJSON;
 import com.bfourclass.euopendata.hotel.HotelService;
 import com.bfourclass.euopendata.hotel.json.HotelJSON;
-import com.bfourclass.euopendata.requests.APIError;
+import com.bfourclass.euopendata.requests.ResponseError;
 import com.bfourclass.euopendata.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -95,7 +94,7 @@ public class ExternalApiController {
             startDate = Util.toDate(start);
             endDate = Util.toDate(end);
         } catch (ParseException e) {
-            return new ResponseEntity<>(new APIError("Invalid date format"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ResponseError("Invalid date format"), HttpStatus.BAD_REQUEST);
         }
 
         for (CovidStatistics covidInfo : covidStatistics) {
