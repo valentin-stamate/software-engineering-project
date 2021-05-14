@@ -4,6 +4,7 @@ import com.bfourclass.euopendata.hotel.HotelModel;
 import com.bfourclass.euopendata.hotel.HotelService;
 import com.bfourclass.euopendata.hotel_review.json.HotelNewReviewJSON;
 import com.bfourclass.euopendata.hotel_review.json.HotelReviewJSON;
+import com.bfourclass.euopendata.hotel_review.json.ReviewResponse;
 import com.bfourclass.euopendata.requests.ResponseError;
 import com.bfourclass.euopendata.requests.ResponseSucces;
 import com.bfourclass.euopendata.user.UserModel;
@@ -39,6 +40,19 @@ public class HotelReviewController {
         if (hotelModel != null) {
             hotelReviews = hotelModel.getReviewsAsJSON();
             return new ResponseEntity<>(hotelReviews, HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>(new ResponseError("Hotel not found"), HttpStatus.NOT_FOUND);
+    }
+
+    @GetMapping("review")
+    public ResponseEntity<Object> getReview(@RequestParam(name = "id") long id) {
+
+        HotelReviewModel hotelModel = hotelReviewService.getHotelReviewById(id);
+
+        if (hotelModel != null) {
+            ReviewResponse reviewResponse = new ReviewResponse(hotelModel.getId(), hotelModel.getHotel().getId(), hotelModel.getRating(), hotelModel.getReviewMessage(), hotelModel.getReviewDate());
+            return new ResponseEntity<>(reviewResponse, HttpStatus.OK);
         }
 
         return new ResponseEntity<>(new ResponseError("Hotel not found"), HttpStatus.NOT_FOUND);

@@ -16,13 +16,11 @@ public class HotelReviewService {
         this.hotelReviewRepository = hotelReviewRepository;
     }
 
-    public HotelReviewModel getHotelReviewById(Long reviewId) {
+    public HotelReviewModel getHotelReviewById(long reviewId) {
         Optional<HotelReviewModel> hotelModelOptional = hotelReviewRepository.findById(reviewId);
 
-        if (hotelModelOptional.isPresent()) {
-            return hotelModelOptional.get();
-        }
+        return hotelModelOptional.orElse(null);
 
-        return null;
     }
+
 }
