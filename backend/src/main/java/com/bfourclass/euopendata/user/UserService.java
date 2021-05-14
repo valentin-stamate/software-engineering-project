@@ -4,7 +4,6 @@ import com.bfourclass.euopendata.email.EmailService;
 import com.bfourclass.euopendata.hotel.HotelModel;
 import com.bfourclass.euopendata.hotel.HotelRepository;
 import com.bfourclass.euopendata.hotel.json.HotelJSON;
-import com.bfourclass.euopendata.notification.json.Notification;
 import com.bfourclass.euopendata.requests.ResponseError;
 import com.bfourclass.euopendata.security.StringGenerator;
 import com.bfourclass.euopendata.user.auth.SecurityContext;
@@ -18,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
 

@@ -1,18 +1,15 @@
 package com.bfourclass.euopendata.notification;
 
-import com.bfourclass.euopendata.notification.json.Notification;
 import com.bfourclass.euopendata.requests.ResponseError;
 import com.bfourclass.euopendata.requests.ResponseSucces;
 import com.bfourclass.euopendata.user.UserModel;
 import com.bfourclass.euopendata.user.UserService;
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
@@ -36,7 +33,7 @@ public class NotificationController {
 
         UserModel userModel = userService.getUserFromToken(token);
 
-        List<Notification> notifications = notificationService.getUserNotifications(userModel);
+        List<NotificationModel> notifications = notificationService.getUserNotifications(userModel);
 
         return new ResponseEntity<>(notifications, HttpStatus.OK);
     }
@@ -78,15 +75,7 @@ public class NotificationController {
 
     @MessageMapping("/notification")
     @SendTo("/view/notifications")
-    public Notification sendNotification(Notification notification) {
-
-        NotificationModel notificationModel = notificationService.getById(notification.id);
-
-        List<UserModel> userModels = userService.getAll();
-        for (UserModel userModel : userModels) {
-            notificationService.addUserNotification(userModel, notificationModel);
-        }
-
+    public NotificationModel sendNotification(NotificationModel notification) {
         return notification;
     }
 }

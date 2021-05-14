@@ -105,12 +105,14 @@ public class HotelController {
         if (errorResponse != null) {
             return errorResponse;
         }
+
         for (UserModel user : hotelModel.getUserSaves()) {
-            NotificationModel notification= new NotificationModel("Hotel " + hotelJSON.hotelName + " was updated");
-            user.addNotification(notification);
-            userService.saveUser(user);
+            NotificationModel notification = new NotificationModel("Hotel " + hotelJSON.hotelName + " was updated");
             notificationService.save(notification);
+
+            notificationService.addUserNotification(user, notification);
         }
+
         hotelModel.setHotelName(hotelJSON.hotelName);
         hotelModel.setLocationName(hotelJSON.locationName);
         hotelModel.setAverageRating(hotelJSON.averageRating);

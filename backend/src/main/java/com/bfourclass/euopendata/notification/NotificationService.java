@@ -1,12 +1,9 @@
 package com.bfourclass.euopendata.notification;
 
-import com.bfourclass.euopendata.notification.json.Notification;
 import com.bfourclass.euopendata.user.UserModel;
 import com.bfourclass.euopendata.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -40,16 +37,8 @@ public class NotificationService {
         notificationRepository.save(notification);
     }
 
-    public List<Notification> getUserNotifications(UserModel userModel) {
-        List<NotificationModel> notificationModels = userModel.getNotifications();
-
-        List<Notification> notificationList = new ArrayList<>();
-
-        for (NotificationModel notificationModel : notificationModels) {
-            notificationList.add(new Notification(notificationModel.getId(), notificationModel.getMessage(), notificationModel.isRead()));
-        }
-
-        return notificationList;
+    public List<NotificationModel> getUserNotifications(UserModel userModel) {
+        return userModel.getNotifications();
     }
 
     public boolean deleteUserNotification(UserModel userModel, NotificationModel notificationModel) {
