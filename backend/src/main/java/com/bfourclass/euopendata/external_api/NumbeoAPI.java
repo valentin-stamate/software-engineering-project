@@ -123,7 +123,10 @@ public class NumbeoAPI {
         String command = "curl https://www.numbeo.com/pollution/in/" + cityName + "/";
         ProcessBuilder processBuilder = new ProcessBuilder(command.split(" "));
 
-        processBuilder.directory(new File("C:\\"));
+        if(System.getProperty("os.name").startsWith("Windows")) // Windows
+            processBuilder.directory(new File("C:\\"));
+        else // Linux
+            processBuilder.directory(new File("~"));
         Process process = processBuilder.start();
 
         InputStream inputStream = process.getInputStream();
