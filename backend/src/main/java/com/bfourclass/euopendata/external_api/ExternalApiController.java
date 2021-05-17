@@ -5,6 +5,7 @@ import com.bfourclass.euopendata.external_api.instance.covid_news.SearchResultJS
 import com.bfourclass.euopendata.external_api.instance.covid_statistics.CovidStatistics;
 import com.bfourclass.euopendata.external_api.instance.location.LocationStatisticsJSON;
 import com.bfourclass.euopendata.external_api.instance.numbeo_data.CriminalityStatistics;
+import com.bfourclass.euopendata.external_api.instance.numbeo_data.PollutionStatistics;
 import com.bfourclass.euopendata.external_api.instance.weather.current_weather.Weather;
 import com.bfourclass.euopendata.external_api.instance.weather.Forecast;
 import com.bfourclass.euopendata.external_api.json.CovidNewsJSON;
@@ -52,7 +53,9 @@ public class ExternalApiController {
 
         AirPollution airPollution = ExternalAPI.getAirPollution(location);
         CriminalityStatistics criminalityStatistics=ExternalAPI.getCriminalityStatistics(location);
-        LocationStatisticsJSON locationStatistics = new LocationStatisticsJSON(hotels, weather, covidStatistics, searchResultJSON,airPollution,criminalityStatistics);
+        PollutionStatistics pollutionStatistics = ExternalAPI.getPollutionStatistics(location);
+        LocationStatisticsJSON locationStatistics = new LocationStatisticsJSON(hotels, weather, covidStatistics,
+                searchResultJSON, airPollution,criminalityStatistics, pollutionStatistics);
 
         return new ResponseEntity<>(locationStatistics, HttpStatus.OK);
     }
@@ -160,5 +163,18 @@ public class ExternalApiController {
         LocalDate localDate = LocalDate.parse(date);
 
         return new ResponseEntity<>(ExternalAPI.getStatisticWeather(location, localDate), HttpStatus.OK);
+    }
+
+    @GetMapping("/pollution")
+    public ResponseEntity<Object> getLocationPollutionStatistics(@RequestParam(name = "locations") String locationsString) {
+        String[] locations = locationsString.split(",");
+
+        List<PollutionStatistics> pollutionStatistics = new ArrayList<>();
+
+        for (String location : locations) {
+            pollutionStatistics.add(ExternalAPI.getPollutionStatistics(location));
+        }
+
+        return new ResponseEntity<>(pollutionStatistics, HttpStatus.OK);
     }
 }

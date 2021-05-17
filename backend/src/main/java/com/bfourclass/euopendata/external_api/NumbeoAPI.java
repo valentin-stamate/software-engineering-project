@@ -1,6 +1,7 @@
 package com.bfourclass.euopendata.external_api;
 
 import com.bfourclass.euopendata.external_api.instance.numbeo_data.CriminalityStatistics;
+import com.bfourclass.euopendata.external_api.instance.numbeo_data.PollutionStatistics;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -12,7 +13,7 @@ import java.util.Locale;
 import java.util.stream.Collectors;
 
 public class NumbeoAPI {
-    private static CriminalityStatistics parseHTMLCode(String cityName, String htmlCode) {
+    private static CriminalityStatistics parseCriminalityHTMLCode(String cityName, String htmlCode) {
         Document htmlParser = Jsoup.parse(htmlCode);
 
         // Verifying if "City not found" exception was raised
@@ -81,6 +82,56 @@ public class NumbeoAPI {
         process.destroy();
 
         // Processing the html code and creating an instance
-        return parseHTMLCode(cityName, data);
+        return parseCriminalityHTMLCode(cityName, data);
+    }
+
+    private static PollutionStatistics parsePollutionHTMLCode(String htmlCode)
+    {
+        Document htmlParser = Jsoup.parse(htmlCode);
+
+        // Verifying if "City not found" exception was raised
+        if(htmlParser.select("div[style=\"error_message\"]").size() > 0)
+            return null;
+
+        // Parsing data
+        Element container;
+        Elements elements;
+        PollutionStatistics pollutionStatistics = new PollutionStatistics();
+
+        // Parsing data on pollution index container
+        container = htmlParser.select(".table_indices").get(0);
+        elements = container.select("td[style=\"text-align: right\"]");
+        pollutionStatistics.setPollutionIndex(Double.valueOf(elements.get(0).text()));
+
+        // Parsing data on pollution container
+        container = htmlParser.select("table[class=\"table_builder_with_value_explanation data_wide_table\"]").get(0);
+        elements = container.select("td[class=\"indexValueTd\"]");
+        pollutionStatistics.setDrinkingWaterPollutionAndInaccesibilityIndex(Double.valueOf(elements.get(1).text()));
+        pollutionStatistics.setDissatisfactionGarbageDisposalIndex(Double.valueOf(elements.get(2).text()));
+        pollutionStatistics.setDirtyAndUntidyIndex(Double.valueOf(elements.get(3).text()));
+        pollutionStatistics.setNoiseAndLightPollutionIndex(Double.valueOf(elements.get(4).text()));
+        pollutionStatistics.setWaterPollutionIndex(Double.valueOf(elements.get(5).text()));
+        pollutionStatistics.setDissatisfactionGreenAndParksIndex(Double.valueOf(elements.get(7).text()));
+
+        return pollutionStatistics;
+    }
+
+    public static PollutionStatistics requestPollutionStatistics(String cityName) throws IOException
+    {
+        // Requesting HTML page
+        cityName = cityName.substring(0, 1).toUpperCase() + cityName.substring(1);
+        String command = "curl https://www.numbeo.com/pollution/in/" + cityName + "/";
+        ProcessBuilder processBuilder = new ProcessBuilder(command.split(" "));
+
+        processBuilder.directory(new File("C:\\"));
+        Process process = processBuilder.start();
+
+        InputStream inputStream = process.getInputStream();
+        String data = new BufferedReader(new InputStreamReader(inputStream))
+                .lines().collect(Collectors.joining("\n"));
+        process.destroy();
+
+        // Processing the html code and creating an instance
+        return parsePollutionHTMLCode(data);
     }
 }

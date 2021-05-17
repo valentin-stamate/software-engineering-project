@@ -6,6 +6,7 @@ import com.bfourclass.euopendata.external_api.instance.aqicn_data.AirPollution;
 import com.bfourclass.euopendata.external_api.instance.covid_news.SearchResultJSON;
 import com.bfourclass.euopendata.external_api.instance.covid_statistics.CovidStatistics;
 import com.bfourclass.euopendata.external_api.instance.numbeo_data.CriminalityStatistics;
+import com.bfourclass.euopendata.external_api.instance.numbeo_data.PollutionStatistics;
 import com.bfourclass.euopendata.external_api.instance.weather.current_weather.Weather;
 import com.bfourclass.euopendata.external_api.instance.weather.Forecast;
 import com.bfourclass.euopendata.external_api.instance.weather.statistical_weather.StatisticalWeather;
@@ -25,10 +26,9 @@ public abstract class ExternalAPI {
         try {
             return NumbeoAPI.requestCriminalityStatistics(location);
         } catch (IOException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
+            return null;
         }
-
-        return null;
     }
 
     public static List<SearchResultJSON> getGoogleSearchResults(String query, int results) {
@@ -43,10 +43,9 @@ public abstract class ExternalAPI {
         try {
             return AQICNDataAPI.requestAirPollution(location);
         } catch (IOException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
+            return null;
         }
-
-        return null;
     }
 
     public static Forecast getForecast(String location) {
@@ -64,4 +63,12 @@ public abstract class ExternalAPI {
         return StatisticalWeather.mean(statisticalWeatherList);
     }
 
+    public static PollutionStatistics getPollutionStatistics(String location) {
+        try {
+            return NumbeoAPI.requestPollutionStatistics(location);
+        } catch (IOException e) {
+            //e.printStackTrace();
+            return null;
+        }
+    }
 }
