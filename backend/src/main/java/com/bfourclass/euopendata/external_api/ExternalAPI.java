@@ -2,7 +2,6 @@ package com.bfourclass.euopendata.external_api;
 
 import com.bfourclass.euopendata.external_api.covid.GoogleSearchAPI;
 import com.bfourclass.euopendata.external_api.covid.CovidStatisticsAPI;
-import com.bfourclass.euopendata.external_api.instance.aqicn_data.AirPollution;
 import com.bfourclass.euopendata.external_api.instance.covid_news.SearchResultJSON;
 import com.bfourclass.euopendata.external_api.instance.covid_statistics.CovidStatistics;
 import com.bfourclass.euopendata.external_api.instance.numbeo_data.CriminalityStatistics;
@@ -39,15 +38,6 @@ public abstract class ExternalAPI {
         return CovidStatisticsAPI.getCovidStatistics(country);
     }
 
-    public static AirPollution getAirPollution(String location) {
-        try {
-            return AQICNDataAPI.requestAirPollution(location);
-        } catch (IOException e) {
-            //e.printStackTrace();
-            return null;
-        }
-    }
-
     public static Forecast getForecast(String location) {
         return OpenWeatherAPI.requestForecast(location);
     }
@@ -65,7 +55,9 @@ public abstract class ExternalAPI {
 
     public static PollutionStatistics getPollutionStatistics(String location) {
         try {
-            return NumbeoAPI.requestPollutionStatistics(location);
+            PollutionStatistics pollutionStatistics = NumbeoAPI.requestPollutionStatistics(location);
+            pollutionStatistics = AQICNDataAPI.requestAirPollution(location, pollutionStatistics);
+            return pollutionStatistics;
         } catch (IOException e) {
             //e.printStackTrace();
             return null;

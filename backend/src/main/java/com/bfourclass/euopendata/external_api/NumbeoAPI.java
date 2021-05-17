@@ -85,7 +85,7 @@ public class NumbeoAPI {
         return parseCriminalityHTMLCode(cityName, data);
     }
 
-    private static PollutionStatistics parsePollutionHTMLCode(String htmlCode)
+    private static PollutionStatistics parsePollutionHTMLCode(String htmlCode, String location)
     {
         Document htmlParser = Jsoup.parse(htmlCode);
 
@@ -96,7 +96,7 @@ public class NumbeoAPI {
         // Parsing data
         Element container;
         Elements elements;
-        PollutionStatistics pollutionStatistics = new PollutionStatistics();
+        PollutionStatistics pollutionStatistics = new PollutionStatistics(location);
 
         // Parsing data on pollution index container
         container = htmlParser.select(".table_indices").get(0);
@@ -132,6 +132,6 @@ public class NumbeoAPI {
         process.destroy();
 
         // Processing the html code and creating an instance
-        return parsePollutionHTMLCode(data);
+        return parsePollutionHTMLCode(data, cityName);
     }
 }

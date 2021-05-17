@@ -1,6 +1,5 @@
 package com.bfourclass.euopendata.external_api;
 
-import com.bfourclass.euopendata.external_api.instance.aqicn_data.AirPollution;
 import com.bfourclass.euopendata.external_api.instance.covid_news.SearchResultJSON;
 import com.bfourclass.euopendata.external_api.instance.covid_statistics.CovidStatistics;
 import com.bfourclass.euopendata.external_api.instance.location.LocationStatisticsJSON;
@@ -51,11 +50,10 @@ public class ExternalApiController {
             searchResultJSON = results.get(0);
         }
 
-        AirPollution airPollution = ExternalAPI.getAirPollution(location);
         CriminalityStatistics criminalityStatistics=ExternalAPI.getCriminalityStatistics(location);
         PollutionStatistics pollutionStatistics = ExternalAPI.getPollutionStatistics(location);
         LocationStatisticsJSON locationStatistics = new LocationStatisticsJSON(hotels, weather, covidStatistics,
-                searchResultJSON, airPollution,criminalityStatistics, pollutionStatistics);
+                searchResultJSON, criminalityStatistics, pollutionStatistics);
 
         return new ResponseEntity<>(locationStatistics, HttpStatus.OK);
     }
@@ -142,19 +140,6 @@ public class ExternalApiController {
         }
 
         return new ResponseEntity<>(covidNewsList, HttpStatus.OK);
-    }
-
-    @GetMapping("/air_pollution")
-    public ResponseEntity<Object> getLocationAirPollution(@RequestParam(name = "locations") String locationsString) {
-        String[] locations = locationsString.split(",");
-
-        List<AirPollution> airPollutions = new ArrayList<>();
-
-        for (String location : locations) {
-            airPollutions.add(ExternalAPI.getAirPollution(location));
-        }
-
-        return new ResponseEntity<>(airPollutions, HttpStatus.OK);
     }
 
     @GetMapping("/statistical_weather")
