@@ -208,7 +208,7 @@ public class NumbeoAPI {
         Document htmlParser = Jsoup.parse(htmlCode);
 
 //         Verifying if "City not found" exception was raised
-        if(htmlParser.select("div[style=\"error_message\"]").size() > 0)
+        if (htmlParser.select("div[style=\"error_message\"]").size() > 0)
             return null;
 
         // Parsing data
@@ -218,15 +218,15 @@ public class NumbeoAPI {
 
         // Parsing data on restaurant container
         container = htmlParser.select("table[class=\"data_wide_table new_bar_table\"]").get(0);
-        elements = container.select("td[class=\"priceValue\"]");
-        restaurantsStatistics.setSimpleMeal1PersonPrice(Double.valueOf(elements.get(1).text()));
-        restaurantsStatistics.setFullMeal2PersonsPrice(Double.valueOf(elements.get(2).text()));
-        restaurantsStatistics.setMcMealPrice(Double.valueOf(elements.get(3).text()));
-        restaurantsStatistics.setBeerDraughtPrice(Double.valueOf(elements.get(4).text()));
-        restaurantsStatistics.setBeerBottlePrice(Double.valueOf(elements.get(5).text()));
-        restaurantsStatistics.setCappuccinoPrice(Double.valueOf(elements.get(7).text()));
-        restaurantsStatistics.setCokePrice(Double.valueOf(elements.get(8).text()));
-        restaurantsStatistics.setWaterPrice(Double.valueOf(elements.get(9).text()));
+        elements = container.select("span[class=\"first_currency\"]");
+        restaurantsStatistics.setSimpleMeal1PersonPrice((elements.get(1).text()).replaceAll("&nbsp;", " "));
+        restaurantsStatistics.setFullMeal2PersonsPrice((elements.get(2).text()).replaceAll("&nbsp;", " "));
+        restaurantsStatistics.setMcMealPrice((elements.get(3).text()).replaceAll("&nbsp;", " "));
+        restaurantsStatistics.setBeerDraughtPrice((elements.get(4).text()).replaceAll("&nbsp;", " "));
+        restaurantsStatistics.setBeerBottlePrice((elements.get(5).text()).replaceAll("&nbsp;", " "));
+        restaurantsStatistics.setCappuccinoPrice((elements.get(7).text()).replaceAll("&nbsp;", " "));
+        restaurantsStatistics.setCokePrice((elements.get(8).text()).replaceAll("&nbsp;", " "));
+        restaurantsStatistics.setWaterPrice((elements.get(9).text()).replaceAll("&nbsp;", " "));
 
         return restaurantsStatistics;
     }

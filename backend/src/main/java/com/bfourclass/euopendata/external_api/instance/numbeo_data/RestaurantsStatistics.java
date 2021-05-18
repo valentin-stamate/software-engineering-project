@@ -3,14 +3,14 @@ package com.bfourclass.euopendata.external_api.instance.numbeo_data;
 public class RestaurantsStatistics {
     /*Every attribute represent the average price of something in a specific location (City)*/
     private String location;
-    private Double simpleMeal1PersonPrice;
-    private Double fullMeal2PersonsPrice;
-    private Double McMealPrice;
-    private Double beerDraughtPrice;
-    private Double beerBottlePrice;
-    private Double cappuccinoPrice;
-    private Double CokePrice;
-    private Double WaterPrice;
+    private String simpleMeal1PersonPrice;
+    private String fullMeal2PersonsPrice;
+    private String McMealPrice;
+    private String beerDraughtPrice;
+    private String beerBottlePrice;
+    private String cappuccinoPrice;
+    private String CokePrice;
+    private String WaterPrice;
 
     public RestaurantsStatistics(String location) {
         this.location = location;
@@ -24,67 +24,67 @@ public class RestaurantsStatistics {
         this.location = location;
     }
 
-    public Double getSimpleMeal1PersonPrice() {
+    public String getSimpleMeal1PersonPrice() {
         return simpleMeal1PersonPrice;
     }
 
-    public void setSimpleMeal1PersonPrice(Double simpleMeal1PersonPrice) {
+    public void setSimpleMeal1PersonPrice(String simpleMeal1PersonPrice) {
         this.simpleMeal1PersonPrice = simpleMeal1PersonPrice;
     }
 
-    public Double getFullMeal2PersonsPrice() {
+    public String getFullMeal2PersonsPrice() {
         return fullMeal2PersonsPrice;
     }
 
-    public void setFullMeal2PersonsPrice(Double fullMeal2PersonsPrice) {
+    public void setFullMeal2PersonsPrice(String fullMeal2PersonsPrice) {
         this.fullMeal2PersonsPrice = fullMeal2PersonsPrice;
     }
 
-    public Double getMcMealPrice() {
+    public String getMcMealPrice() {
         return McMealPrice;
     }
 
-    public void setMcMealPrice(Double mcMealPrice) {
+    public void setMcMealPrice(String mcMealPrice) {
         McMealPrice = mcMealPrice;
     }
 
-    public Double getBeerDraughtPrice() {
+    public String getBeerDraughtPrice() {
         return beerDraughtPrice;
     }
 
-    public void setBeerDraughtPrice(Double beerDraughtPrice) {
+    public void setBeerDraughtPrice(String beerDraughtPrice) {
         this.beerDraughtPrice = beerDraughtPrice;
     }
 
-    public Double getBeerBottlePrice() {
+    public String getBeerBottlePrice() {
         return beerBottlePrice;
     }
 
-    public void setBeerBottlePrice(Double beerBottlePrice) {
+    public void setBeerBottlePrice(String beerBottlePrice) {
         this.beerBottlePrice = beerBottlePrice;
     }
 
-    public Double getCappuccinoPrice() {
+    public String getCappuccinoPrice() {
         return cappuccinoPrice;
     }
 
-    public void setCappuccinoPrice(Double cappuccinoPrice) {
+    public void setCappuccinoPrice(String cappuccinoPrice) {
         this.cappuccinoPrice = cappuccinoPrice;
     }
 
-    public Double getCokePrice() {
+    public String getCokePrice() {
         return CokePrice;
     }
 
-    public void setCokePrice(Double cokePrice) {
+    public void setCokePrice(String cokePrice) {
         CokePrice = cokePrice;
     }
 
-    public Double getWaterPrice() {
+    public String getWaterPrice() {
         return WaterPrice;
     }
 
-    public void setWaterPrice(Double waterPrice) {
+    public void setWaterPrice(String waterPrice) {
         WaterPrice = waterPrice;
     }
 }
