@@ -1,6 +1,7 @@
 package com.bfourclass.euopendata.external_api;
 
 import com.bfourclass.euopendata.external_api.co2_emissions.CO2EmissionsAPI;
+import com.bfourclass.euopendata.external_api.gasoline_price.GasolinePriceAPI;
 import com.bfourclass.euopendata.external_api.instance.covid_news.SearchResultJSON;
 import com.bfourclass.euopendata.external_api.instance.covid_statistics.CovidStatistics;
 import com.bfourclass.euopendata.external_api.instance.location.LocationStatisticsJSON;
@@ -182,5 +183,10 @@ public class ExternalApiController {
         }
 
         return new ResponseEntity<>(restaurantsStatistics, HttpStatus.OK);
+    }
+
+    @GetMapping("/gasoline_price")
+    public ResponseEntity<Object> getGasolinePrice(@RequestParam String country) {
+        return new ResponseEntity<>(GasolinePriceAPI.get(country), HttpStatus.OK);
     }
 }
