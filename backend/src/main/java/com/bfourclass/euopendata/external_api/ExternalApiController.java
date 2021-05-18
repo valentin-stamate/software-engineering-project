@@ -1,6 +1,8 @@
 package com.bfourclass.euopendata.external_api;
 
+import com.bfourclass.euopendata.external_api.co2_emissions.CO2Emissions;
 import com.bfourclass.euopendata.external_api.co2_emissions.CO2EmissionsAPI;
+import com.bfourclass.euopendata.external_api.gasoline_price.GasolinePrice;
 import com.bfourclass.euopendata.external_api.gasoline_price.GasolinePriceAPI;
 import com.bfourclass.euopendata.external_api.instance.covid_news.SearchResultJSON;
 import com.bfourclass.euopendata.external_api.instance.covid_statistics.CovidStatistics;
@@ -169,8 +171,16 @@ public class ExternalApiController {
     }
 
     @GetMapping("/co2_emissions")
-    public ResponseEntity<Object> getCO2Emissions(@RequestParam String country) {
-        return new ResponseEntity<>(CO2EmissionsAPI.get(country), HttpStatus.OK);
+    public ResponseEntity<Object> getCO2Emissions(@RequestParam(name = "countries") String countriesString) {
+        String[] countries = countriesString.split(",");
+
+        List<CO2Emissions> list = new ArrayList<>();
+
+        for (String country : countries) {
+            list.add(CO2EmissionsAPI.get(country));
+        }
+
+        return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
     @GetMapping("/restaurants")
@@ -187,8 +197,16 @@ public class ExternalApiController {
     }
 
     @GetMapping("/gasoline_price")
-    public ResponseEntity<Object> getGasolinePrice(@RequestParam String country) {
-        return new ResponseEntity<>(GasolinePriceAPI.get(country), HttpStatus.OK);
+    public ResponseEntity<Object> getGasolinePrice(@RequestParam(name = "countries") String countriesList) {
+        String[] countries = countriesList.split(",");
+
+        List<GasolinePrice> list = new ArrayList<>();
+
+        for (String country : countries) {
+            list.add(GasolinePriceAPI.get(country));
+        }
+
+        return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
     @GetMapping("/costofliving_statistics")
