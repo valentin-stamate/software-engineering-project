@@ -3,14 +3,14 @@ package com.bfourclass.euopendata.external_api.instance.numbeo_data;
 public class RestaurantsStatistics {
     /*Every attribute represent the average price of something in a specific location (City)*/
     private String location;
-    private Float simpleMeal1PersonPrice;
-    private Float fullMeal2PersonsPrice;
-    private Float McMealPrice;
-    private Float beerDraughtPrice;
-    private Float beerBottlePrice;
-    private Float cappuccinoPrice;
-    private Float CokePrice;
-    private Float WaterPrice;
+    private Double simpleMeal1PersonPrice;
+    private Double fullMeal2PersonsPrice;
+    private Double McMealPrice;
+    private Double beerDraughtPrice;
+    private Double beerBottlePrice;
+    private Double cappuccinoPrice;
+    private Double CokePrice;
+    private Double WaterPrice;
 
     public RestaurantsStatistics(String location) {
         this.location = location;
@@ -24,7 +24,7 @@ public class RestaurantsStatistics {
         this.location = location;
     }
 
-    public Float getSimpleMeal1PersonPrice() {
+    public Double getSimpleMeal1PersonPrice() {
         return simpleMeal1PersonPrice;
     }
 
@@ -32,7 +32,7 @@ public class RestaurantsStatistics {
         this.simpleMeal1PersonPrice = simpleMeal1PersonPrice;
     }
 
-    public Float getFullMeal2PersonsPrice() {
+    public Double getFullMeal2PersonsPrice() {
         return fullMeal2PersonsPrice;
     }
 
@@ -40,7 +40,7 @@ public class RestaurantsStatistics {
         this.fullMeal2PersonsPrice = fullMeal2PersonsPrice;
     }
 
-    public Float getMcMealPrice() {
+    public Double getMcMealPrice() {
         return McMealPrice;
     }
 
@@ -48,7 +48,7 @@ public class RestaurantsStatistics {
         McMealPrice = mcMealPrice;
     }
 
-    public Float getBeerDraughtPrice() {
+    public Double getBeerDraughtPrice() {
         return beerDraughtPrice;
     }
 
@@ -56,7 +56,7 @@ public class RestaurantsStatistics {
         this.beerDraughtPrice = beerDraughtPrice;
     }
 
-    public Float getBeerBottlePrice() {
+    public Double getBeerBottlePrice() {
         return beerBottlePrice;
     }
 
@@ -64,7 +64,7 @@ public class RestaurantsStatistics {
         this.beerBottlePrice = beerBottlePrice;
     }
 
-    public Float getCappuccinoPrice() {
+    public Double getCappuccinoPrice() {
         return cappuccinoPrice;
     }
 
@@ -72,7 +72,7 @@ public class RestaurantsStatistics {
         this.cappuccinoPrice = cappuccinoPrice;
     }
 
-    public Float getCokePrice() {
+    public Double getCokePrice() {
         return CokePrice;
     }
 
@@ -80,7 +80,7 @@ public class RestaurantsStatistics {
         CokePrice = cokePrice;
     }
 
-    public Float getWaterPrice() {
+    public Double getWaterPrice() {
         return WaterPrice;
     }
 
