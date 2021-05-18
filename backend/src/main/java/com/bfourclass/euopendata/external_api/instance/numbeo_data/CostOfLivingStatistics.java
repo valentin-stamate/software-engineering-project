@@ -8,7 +8,7 @@ public class CostOfLivingStatistics {
 
     // Prices on an inexpensive restaurant
     private String averageMealPrice;
-    private String capuccinoPrice;
+    private String cappuccinoPrice;
 
     // Prices at market
     private String domesticBeerPrice;
@@ -27,7 +27,7 @@ public class CostOfLivingStatistics {
         monthlyPersonCost = null;
         averageMealPrice = null;
         domesticBeerPrice = null;
-        capuccinoPrice = null;
+        cappuccinoPrice = null;
         waterPrice = null;
         milkPrice = null;
         breadPrice = null;
@@ -62,12 +62,12 @@ public class CostOfLivingStatistics {
         this.domesticBeerPrice = domesticBeerPrice;
     }
 
-    public String getCapuccinoPrice() {
-        return capuccinoPrice;
+    public String getCappuccinoPrice() {
+        return cappuccinoPrice;
     }
 
-    public void setCapuccinoPrice(String capuccinoPrice) {
-        this.capuccinoPrice = capuccinoPrice;
+    public void setCappuccinoPrice(String cappuccinoPrice) {
+        this.cappuccinoPrice = cappuccinoPrice;
     }
 
     public String getWaterPrice() {

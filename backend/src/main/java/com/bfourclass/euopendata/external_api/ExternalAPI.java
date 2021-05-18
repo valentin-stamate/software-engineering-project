@@ -1,13 +1,9 @@
 package com.bfourclass.euopendata.external_api;
 
-import com.bfourclass.euopendata.external_api.covid.GoogleSearchAPI;
-import com.bfourclass.euopendata.external_api.covid.CovidStatisticsAPI;
+import com.bfourclass.euopendata.external_api.covid.*;
 import com.bfourclass.euopendata.external_api.instance.covid_news.SearchResultJSON;
 import com.bfourclass.euopendata.external_api.instance.covid_statistics.CovidStatistics;
-import com.bfourclass.euopendata.external_api.instance.numbeo_data.CostOfLivingStatistics;
-import com.bfourclass.euopendata.external_api.instance.numbeo_data.CriminalityStatistics;
-import com.bfourclass.euopendata.external_api.instance.numbeo_data.PollutionStatistics;
-import com.bfourclass.euopendata.external_api.instance.numbeo_data.RestaurantsStatistics;
+import com.bfourclass.euopendata.external_api.instance.numbeo_data.*;
 import com.bfourclass.euopendata.external_api.instance.weather.current_weather.Weather;
 import com.bfourclass.euopendata.external_api.instance.weather.Forecast;
 import com.bfourclass.euopendata.external_api.instance.weather.statistical_weather.StatisticalWeather;
@@ -67,7 +63,12 @@ public abstract class ExternalAPI {
     }
 
     public static RestaurantsStatistics getRestaurantsStatistics(String location) {
-        return null;
+        try {
+            return NumbeoAPI.requestRestaurantStatistics(location);
+        } catch (IOException e) {
+            //e.printStackTrace();
+            return null;
+        }
     }
 
     public static CostOfLivingStatistics getCostOfLivingStatistics(String location) {

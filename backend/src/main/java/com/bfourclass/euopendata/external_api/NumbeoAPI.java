@@ -1,9 +1,7 @@
 package com.bfourclass.euopendata.external_api;
 
-import com.bfourclass.euopendata.external_api.instance.numbeo_data.CostOfLivingStatistics;
-import com.bfourclass.euopendata.external_api.instance.numbeo_data.CriminalityStatistics;
-import com.bfourclass.euopendata.external_api.instance.numbeo_data.PollutionStatistics;
-import com.bfourclass.euopendata.external_api.instance.numbeo_data.RestaurantsStatistics;
+import com.bfourclass.euopendata.external_api.instance.numbeo_data.*;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -109,7 +107,7 @@ public class NumbeoAPI {
         elements = container.select("span[class=\"first_currency\"]");
         costOfLivingStatistics.setAverageMealPrice(elements.get(0).text().replaceAll("&nbsp;", " "));
         costOfLivingStatistics.setDomesticBeerPrice(elements.get(24).text().replaceAll("&nbsp;", " "));
-        costOfLivingStatistics.setCapuccinoPrice(elements.get(5).text().replaceAll("&nbsp;", " "));
+        costOfLivingStatistics.setCappuccinoPrice(elements.get(5).text().replaceAll("&nbsp;", " "));
         costOfLivingStatistics.setWaterPrice(elements.get(22).text().replaceAll("&nbsp;", " "));
         costOfLivingStatistics.setMilkPrice(elements.get(8).text().replaceAll("&nbsp;", " "));
         costOfLivingStatistics.setBreadPrice(elements.get(9).text().replaceAll("&nbsp;", " "));
