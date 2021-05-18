@@ -69,6 +69,7 @@ public abstract class ExternalAPI {
     public static RestaurantsStatistics getRestaurantsStatistics(String location) {
         return null;
     }
+
     public static CostOfLivingStatistics getCostOfLivingStatistics(String location) {
         try {
             return NumbeoAPI.requestCostOfLivingStatistics(location);
