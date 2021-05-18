@@ -1,7 +1,9 @@
 package com.bfourclass.euopendata.external_api;
 
-import com.bfourclass.euopendata.external_api.instance.numbeo_data.*;
-
+import com.bfourclass.euopendata.external_api.instance.numbeo_data.CostOfLivingStatistics;
+import com.bfourclass.euopendata.external_api.instance.numbeo_data.CriminalityStatistics;
+import com.bfourclass.euopendata.external_api.instance.numbeo_data.PollutionStatistics;
+import com.bfourclass.euopendata.external_api.instance.numbeo_data.RestaurantsStatistics;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -17,7 +19,7 @@ public class NumbeoAPI {
         Document htmlParser = Jsoup.parse(htmlCode);
 
         // Verifying if "City not found" exception was raised
-        if(htmlParser.select("div[style=\"error_message\"]").size() > 0)
+        if (htmlParser.select("div[style=\"error_message\"]").size() > 0)
             return null;
 
         // Parsing data
@@ -61,7 +63,7 @@ public class NumbeoAPI {
         cityName = cityName.toLowerCase(Locale.ROOT);
 
         // Non-english name bug fix
-        if(cityName.equals("bucuresti"))
+        if (cityName.equals("bucuresti"))
             cityName = "bucharest";
 
         // Requesting HTML page
@@ -69,7 +71,7 @@ public class NumbeoAPI {
         String command = "curl https://www.numbeo.com/crime/in/" + cityName + "/";
         ProcessBuilder processBuilder = new ProcessBuilder(command.split(" "));
 
-        if(System.getProperty("os.name").startsWith("Windows")) // Windows
+        if (System.getProperty("os.name").startsWith("Windows")) // Windows
             processBuilder.directory(new File("C:\\"));
         else // Linux
             processBuilder.directory(new File("~"));
@@ -89,13 +91,13 @@ public class NumbeoAPI {
         Document htmlParser = Jsoup.parse(htmlCode);
 
         // Verifying if "City not found" exception was raised
-        if(htmlParser.select("div[style=\"error_message\"]").size() > 0)
+        if (htmlParser.select("div[style=\"error_message\"]").size() > 0)
             return null;
 
         // Parsing data
         Element container;
         Elements elements;
-        CostOfLivingStatistics costOfLivingStatistics=new CostOfLivingStatistics();
+        CostOfLivingStatistics costOfLivingStatistics = new CostOfLivingStatistics();
 
         // Parsing data on summary container
         container = htmlParser.select("div[class=\"seeding-call table_color summary limit_size_ad_right padding_lower other_highlight_color\"]").get(0);
@@ -127,7 +129,7 @@ public class NumbeoAPI {
         cityName = cityName.toLowerCase(Locale.ROOT);
 
         // Non-english name bug fix
-        if(cityName.equals("bucuresti"))
+        if (cityName.equals("bucuresti"))
             cityName = "bucharest";
 
         // Requesting HTML page
@@ -135,7 +137,7 @@ public class NumbeoAPI {
         String command = "curl https://www.numbeo.com/cost-of-living/in/" + cityName + "/";
         ProcessBuilder processBuilder = new ProcessBuilder(command.split(" "));
 
-        if(System.getProperty("os.name").startsWith("Windows")) // Windows
+        if (System.getProperty("os.name").startsWith("Windows")) // Windows
             processBuilder.directory(new File("C:\\"));
         else // Linux
             processBuilder.directory(new File("~"));
@@ -151,12 +153,11 @@ public class NumbeoAPI {
         return parseCostOfLivingHTMLCode(cityName, data);
     }
 
-    private static PollutionStatistics parsePollutionHTMLCode(String htmlCode, String location)
-    {
+    private static PollutionStatistics parsePollutionHTMLCode(String htmlCode, String location) {
         Document htmlParser = Jsoup.parse(htmlCode);
 
         // Verifying if "City not found" exception was raised
-        if(htmlParser.select("div[style=\"error_message\"]").size() > 0)
+        if (htmlParser.select("div[style=\"error_message\"]").size() > 0)
             return null;
 
         // Parsing data
@@ -182,14 +183,13 @@ public class NumbeoAPI {
         return pollutionStatistics;
     }
 
-    public static PollutionStatistics requestPollutionStatistics(String cityName) throws IOException
-    {
+    public static PollutionStatistics requestPollutionStatistics(String cityName) throws IOException {
         // Requesting HTML page
         cityName = cityName.substring(0, 1).toUpperCase() + cityName.substring(1);
         String command = "curl https://www.numbeo.com/pollution/in/" + cityName + "/";
         ProcessBuilder processBuilder = new ProcessBuilder(command.split(" "));
 
-        if(System.getProperty("os.name").startsWith("Windows")) // Windows
+        if (System.getProperty("os.name").startsWith("Windows")) // Windows
             processBuilder.directory(new File("C:\\"));
         else // Linux
             processBuilder.directory(new File("~"));
@@ -203,11 +203,11 @@ public class NumbeoAPI {
         // Processing the html code and creating an instance
         return parsePollutionHTMLCode(data, cityName);
     }
-    private static RestaurantsStatistics parseRestaurantsHTMLCode(String htmlCode, String location)
-    {
+
+    private static RestaurantsStatistics parseRestaurantsHTMLCode(String htmlCode, String location) {
         Document htmlParser = Jsoup.parse(htmlCode);
 
-        // Verifying if "City not found" exception was raised
+//         Verifying if "City not found" exception was raised
         if(htmlParser.select("div[style=\"error_message\"]").size() > 0)
             return null;
 
@@ -216,14 +216,9 @@ public class NumbeoAPI {
         Elements elements;
         RestaurantsStatistics restaurantsStatistics = new RestaurantsStatistics(location);
 
-        // Parsing data on pollution index container
-        container = htmlParser.select(".table_indices").get(0);
-        elements = container.select("td[style=\"text-align: right\"]");
-
-
         // Parsing data on restaurant container
-        container = htmlParser.select("table[class=\"table_builder_with_value_explanation data_wide_table\"]").get(0);
-        elements = container.select("td[class=\"indexValueTd\"]");
+        container = htmlParser.select("table[class=\"data_wide_table new_bar_table\"]").get(0);
+        elements = container.select("td[class=\"priceValue\"]");
         restaurantsStatistics.setSimpleMeal1PersonPrice(Double.valueOf(elements.get(1).text()));
         restaurantsStatistics.setFullMeal2PersonsPrice(Double.valueOf(elements.get(2).text()));
         restaurantsStatistics.setMcMealPrice(Double.valueOf(elements.get(3).text()));
@@ -235,14 +230,14 @@ public class NumbeoAPI {
 
         return restaurantsStatistics;
     }
-    public static RestaurantsStatistics requestRestaurantStatistics(String cityName) throws IOException
-    {
+
+    public static RestaurantsStatistics requestRestaurantStatistics(String cityName) throws IOException {
         // Requesting HTML page
         cityName = cityName.substring(0, 1).toUpperCase() + cityName.substring(1);
         String command = "curl https://www.numbeo.com/cost-of-living/in/" + cityName + "/";
         ProcessBuilder processBuilder = new ProcessBuilder(command.split(" "));
 
-        if(System.getProperty("os.name").startsWith("Windows")) // Windows
+        if (System.getProperty("os.name").startsWith("Windows")) // Windows
             processBuilder.directory(new File("C:\\"));
         else // Linux
             processBuilder.directory(new File("~"));
@@ -252,7 +247,6 @@ public class NumbeoAPI {
         String data = new BufferedReader(new InputStreamReader(inputStream))
                 .lines().collect(Collectors.joining("\n"));
         process.destroy();
-
         // Processing the html code and creating an instance
         return parseRestaurantsHTMLCode(data, cityName);
     }

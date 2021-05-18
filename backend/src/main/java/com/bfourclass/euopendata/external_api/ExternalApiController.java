@@ -188,11 +188,11 @@ public class ExternalApiController {
         String[] locations = locationsString.split(",");
 
         List<RestaurantsStatistics> restaurantsStatistics = new ArrayList<>();
-
+        System.out.println("getting stats");
         for (String location : locations) {
             restaurantsStatistics.add(ExternalAPI.getRestaurantsStatistics(location));
         }
-
+        System.out.println("done stats");
         return new ResponseEntity<>(restaurantsStatistics, HttpStatus.OK);
     }
 
