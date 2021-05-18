@@ -4,6 +4,7 @@ import com.bfourclass.euopendata.external_api.covid.GoogleSearchAPI;
 import com.bfourclass.euopendata.external_api.covid.CovidStatisticsAPI;
 import com.bfourclass.euopendata.external_api.instance.covid_news.SearchResultJSON;
 import com.bfourclass.euopendata.external_api.instance.covid_statistics.CovidStatistics;
+import com.bfourclass.euopendata.external_api.instance.numbeo_data.CostOfLivingStatistics;
 import com.bfourclass.euopendata.external_api.instance.numbeo_data.CriminalityStatistics;
 import com.bfourclass.euopendata.external_api.instance.numbeo_data.PollutionStatistics;
 import com.bfourclass.euopendata.external_api.instance.numbeo_data.RestaurantsStatistics;
@@ -67,5 +68,13 @@ public abstract class ExternalAPI {
 
     public static RestaurantsStatistics getRestaurantsStatistics(String location) {
         return null;
+    }
+    public static CostOfLivingStatistics getCostOfLivingStatistics(String location) {
+        try {
+            return NumbeoAPI.requestCostOfLiving(location);
+        } catch (IOException e) {
+            //e.printStackTrace();
+            return null;
+        }
     }
 }
