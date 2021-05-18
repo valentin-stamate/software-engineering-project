@@ -1,5 +1,6 @@
 package com.bfourclass.euopendata.external_api;
 
+import com.bfourclass.euopendata.external_api.co2_emissions.CO2EmissionsAPI;
 import com.bfourclass.euopendata.external_api.instance.covid_news.SearchResultJSON;
 import com.bfourclass.euopendata.external_api.instance.covid_statistics.CovidStatistics;
 import com.bfourclass.euopendata.external_api.instance.location.LocationStatisticsJSON;
@@ -18,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.text.ParseException;
 import java.time.LocalDate;
@@ -161,5 +163,10 @@ public class ExternalApiController {
         }
 
         return new ResponseEntity<>(pollutionStatistics, HttpStatus.OK);
+    }
+
+    @GetMapping("/co2_emissions")
+    public ResponseEntity<Object> getCO2Emissions(@RequestParam String country) {
+        return new ResponseEntity<>(CO2EmissionsAPI.get(country), HttpStatus.OK);
     }
 }

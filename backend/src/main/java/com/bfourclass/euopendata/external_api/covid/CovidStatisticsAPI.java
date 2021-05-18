@@ -2,23 +2,24 @@ package com.bfourclass.euopendata.external_api.covid;
 
 import com.bfourclass.euopendata.external_api.instance.covid_statistics.CovidStatistics;
 import com.bfourclass.euopendata.external_api.instance.covid_statistics.Item;
-import com.opencsv.CSVReader;
-import com.opencsv.exceptions.CsvValidationException;
-
+import com.bfourclass.euopendata.external_api.util.CsvReader;
 import java.io.*;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import static com.bfourclass.euopendata.external_api.util.Util.toInt;
 
 public class CovidStatisticsAPI implements Runnable {
 
     private static final String COVID_STATISTICS_URL = "https://covid.ourworldindata.org/data/owid-covid-data.csv";
-    private static final String COVID_STATISTICS_LOCAL_PATH = "src/main/resources/static/covid_statistics.csv";
+    private static final String COVID_STATISTICS_LOCAL_PATH = "src/main/resources/static/statistics/covid_statistics.csv";
     private static String lastUpdate;
 
-    private static Map<String, CovidStatistics> covidStatisticsCache = new HashMap<>();
+    private static final Map<String, CovidStatistics> covidStatisticsCache = new HashMap<>();
 
     public static CovidStatistics getCovidStatistics(String country) {
         if (covidStatisticsCache.containsKey(country)) {
@@ -32,41 +33,25 @@ public class CovidStatisticsAPI implements Runnable {
     private void updateData() {
         downloadData();
 
-        try (CSVReader csvReader = new CSVReader(new FileReader(COVID_STATISTICS_LOCAL_PATH));) {
-            String[] values = null;
-            csvReader.readNext();
+        CsvReader csvReader = new CsvReader(COVID_STATISTICS_LOCAL_PATH);
+        List<String[]> rows = csvReader.read();
 
-            covidStatisticsCache.clear();
+        covidStatisticsCache.clear();
 
-            while ((values = csvReader.readNext()) != null) {
-                CovidStatistics covidStatistics = new CovidStatistics(values[0], values[1], values[2]);
+        for (String[] row : rows) {
+            CovidStatistics covidStatistics = new CovidStatistics(row[0], row[1], row[2]);
 
-                Item item = new Item(values[3], toInt(values[5]), toInt(values[4]), toInt(values[8]), toInt(values[7]));
-                String key = covidStatistics.country;
+            Item item = new Item(row[3], toInt(row[5]), toInt(row[4]), toInt(row[8]), toInt(row[7]));
+            String key = covidStatistics.country;
 
-                if (!covidStatisticsCache.containsKey(key)) {
-                    covidStatisticsCache.put(key, covidStatistics);
-                }
-
-                covidStatisticsCache.get(key).addItem(item);
+            if (!covidStatisticsCache.containsKey(key)) {
+                covidStatisticsCache.put(key, covidStatistics);
             }
-        } catch (IOException | CsvValidationException e) {
-            System.out.println(
-                    "You!, yeah you the one witch you comment me every time.\n" +
-                    "This error is happening in other thread so it has no effect on the main thread.\n" +
-                    "To solve me, create an empty file here: src/main/resources/static/covid_statistics.csv\n" +
-                    "It's done, as all things should be");
-            e.printStackTrace();
+
+            covidStatisticsCache.get(key).addItem(item);
         }
 
         updateUpdateTime();
-    }
-
-    private int toInt(String value) {
-        if (value.length() == 0) {
-            return 0;
-        }
-        return (int)Double.parseDouble(value);
     }
 
     private static void downloadData() {
