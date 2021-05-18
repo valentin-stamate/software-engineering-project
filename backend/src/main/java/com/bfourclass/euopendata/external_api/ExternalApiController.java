@@ -5,6 +5,7 @@ import com.bfourclass.euopendata.external_api.gasoline_price.GasolinePriceAPI;
 import com.bfourclass.euopendata.external_api.instance.covid_news.SearchResultJSON;
 import com.bfourclass.euopendata.external_api.instance.covid_statistics.CovidStatistics;
 import com.bfourclass.euopendata.external_api.instance.location.LocationStatisticsJSON;
+import com.bfourclass.euopendata.external_api.instance.numbeo_data.CostOfLivingStatistics;
 import com.bfourclass.euopendata.external_api.instance.numbeo_data.CriminalityStatistics;
 import com.bfourclass.euopendata.external_api.instance.numbeo_data.PollutionStatistics;
 import com.bfourclass.euopendata.external_api.instance.numbeo_data.RestaurantsStatistics;
@@ -189,4 +190,18 @@ public class ExternalApiController {
     public ResponseEntity<Object> getGasolinePrice(@RequestParam String country) {
         return new ResponseEntity<>(GasolinePriceAPI.get(country), HttpStatus.OK);
     }
+
+    @GetMapping("/costofliving_statistics")
+    public ResponseEntity<Object> getLocationCostOfLivingStatistics(@RequestParam(name = "locations") String locationsString) {
+        String[] locations = locationsString.split(",");
+
+        List<CostOfLivingStatistics> costOfLivingStatistics = new ArrayList<>();
+
+        for (String location : locations) {
+            costOfLivingStatistics.add(ExternalAPI.getCostOfLivingStatistics(location));
+        }
+
+        return new ResponseEntity<>(costOfLivingStatistics, HttpStatus.OK);
+    }
+
 }

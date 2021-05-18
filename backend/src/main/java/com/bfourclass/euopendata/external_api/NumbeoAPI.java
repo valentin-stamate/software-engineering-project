@@ -1,5 +1,6 @@
 package com.bfourclass.euopendata.external_api;
 
+import com.bfourclass.euopendata.external_api.instance.numbeo_data.CostOfLivingStatistics;
 import com.bfourclass.euopendata.external_api.instance.numbeo_data.CriminalityStatistics;
 import com.bfourclass.euopendata.external_api.instance.numbeo_data.PollutionStatistics;
 import com.bfourclass.euopendata.external_api.instance.numbeo_data.RestaurantsStatistics;
@@ -84,6 +85,72 @@ public class NumbeoAPI {
 
         // Processing the html code and creating an instance
         return parseCriminalityHTMLCode(cityName, data);
+    }
+
+    private static CostOfLivingStatistics parseCostOfLivingHTMLCode(String cityName, String htmlCode) {
+        Document htmlParser = Jsoup.parse(htmlCode);
+
+        // Verifying if "City not found" exception was raised
+        if(htmlParser.select("div[style=\"error_message\"]").size() > 0)
+            return null;
+
+        // Parsing data
+        Element container;
+        Elements elements;
+        CostOfLivingStatistics costOfLivingStatistics=new CostOfLivingStatistics();
+
+        // Parsing data on summary container
+        container = htmlParser.select("div[class=\"seeding-call table_color summary limit_size_ad_right padding_lower other_highlight_color\"]").get(0);
+        elements = container.select("span[class=\"emp_number\"]");
+        costOfLivingStatistics.setMonthlyPersonCost(elements.get(1).text());
+
+        // Parsing data on data container
+        container = htmlParser.select("table[class=\"data_wide_table new_bar_table\"]").get(0);
+        elements = container.select("span[class=\"first_currency\"]");
+        costOfLivingStatistics.setAverageMealPrice(elements.get(0).text().replaceAll("&nbsp;", " "));
+        costOfLivingStatistics.setDomesticBeerPrice(elements.get(24).text().replaceAll("&nbsp;", " "));
+        costOfLivingStatistics.setCapuccinoPrice(elements.get(5).text().replaceAll("&nbsp;", " "));
+        costOfLivingStatistics.setWaterPrice(elements.get(22).text().replaceAll("&nbsp;", " "));
+        costOfLivingStatistics.setMilkPrice(elements.get(8).text().replaceAll("&nbsp;", " "));
+        costOfLivingStatistics.setBreadPrice(elements.get(9).text().replaceAll("&nbsp;", " "));
+        costOfLivingStatistics.setApplesPrice(elements.get(15).text().replaceAll("&nbsp;", " "));
+        costOfLivingStatistics.setCigarettesPrice(elements.get(26).text().replaceAll("&nbsp;", " "));
+        costOfLivingStatistics.setBusTicketPrice(elements.get(27).text().replaceAll("&nbsp;", " "));
+        costOfLivingStatistics.setTaxiKmPrice(elements.get(30).text().replaceAll("&nbsp;", " "));
+        costOfLivingStatistics.setGasolinePrice(elements.get(32).text().replaceAll("&nbsp;", " "));
+
+        return costOfLivingStatistics;
+    }
+
+    public static CostOfLivingStatistics requestCostOfLivingStatistics(String cityName) throws IOException {
+        // Getting rid of diacritics
+        cityName = Normalizer.normalize(cityName, Normalizer.Form.NFD);
+        cityName = cityName.replaceAll("\\p{M}", "");
+        cityName = cityName.toLowerCase(Locale.ROOT);
+
+        // Non-english name bug fix
+        if(cityName.equals("bucuresti"))
+            cityName = "bucharest";
+
+        // Requesting HTML page
+        cityName = cityName.substring(0, 1).toUpperCase() + cityName.substring(1);
+        String command = "curl https://www.numbeo.com/cost-of-living/in/" + cityName + "/";
+        ProcessBuilder processBuilder = new ProcessBuilder(command.split(" "));
+
+        if(System.getProperty("os.name").startsWith("Windows")) // Windows
+            processBuilder.directory(new File("C:\\"));
+        else // Linux
+            processBuilder.directory(new File("~"));
+
+        Process process = processBuilder.start();
+
+        InputStream inputStream = process.getInputStream();
+        String data = new BufferedReader(new InputStreamReader(inputStream))
+                .lines().collect(Collectors.joining("\n"));
+        process.destroy();
+
+        // Processing the html code and creating an instance
+        return parseCostOfLivingHTMLCode(cityName, data);
     }
 
     private static PollutionStatistics parsePollutionHTMLCode(String htmlCode, String location)
