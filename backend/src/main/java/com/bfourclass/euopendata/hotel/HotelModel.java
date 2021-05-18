@@ -2,6 +2,7 @@ package com.bfourclass.euopendata.hotel;
 
 import com.bfourclass.euopendata.hotel_review.HotelReviewModel;
 import com.bfourclass.euopendata.hotel_review.json.HotelReviewJSON;
+import com.bfourclass.euopendata.security.SimpleHashingAlgo;
 import com.bfourclass.euopendata.user.UserModel;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -20,6 +21,9 @@ public class HotelModel {
 
     @Column(unique = true)
     private String identifier;
+
+    @Column(unique = true)
+    private String hotelUrl;
 
     @OneToMany
     private final Set<HotelReviewModel> hotelReviews = new HashSet<>();
@@ -41,15 +45,17 @@ public class HotelModel {
     @JsonIgnore
     private final List<UserModel> userSaves = new ArrayList<>();
 
-    public HotelModel(String identifier, String hotelName, String locationName) {
-        this.identifier = identifier;
+    public HotelModel(String hotelUrl, String hotelName, String locationName) {
+        this.identifier = SimpleHashingAlgo.hash(hotelUrl);
+        this.hotelUrl = hotelUrl;
         this.hotelName = hotelName;
         this.locationName = locationName;
     }
 
     // constructor with fields needed in the web app
-    public HotelModel(String identifier, String hotelName, String locationName, String photoLink, String description, float price, Long ownerId) {
-        this.identifier = identifier;
+    public HotelModel(String hotelUrl, String hotelName, String locationName, String photoLink, String description, float price, Long ownerId) {
+        this.identifier = SimpleHashingAlgo.hash(hotelUrl);
+        this.hotelUrl = hotelUrl;
         this.hotelName = hotelName;
         this.locationName = locationName;
         this.photoLink = photoLink;
@@ -202,5 +208,9 @@ public class HotelModel {
 
     public void setVotes(int votes) {
         this.votes = votes;
+    }
+
+    public String getHotelUrl() {
+        return hotelUrl;
     }
 }

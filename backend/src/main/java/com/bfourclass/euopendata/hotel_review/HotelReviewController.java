@@ -31,11 +31,11 @@ public class HotelReviewController {
     }
 
     @GetMapping("hotel/reviews")
-    public ResponseEntity<Object> getHotelReviews(@RequestParam(name = "hotel_id") long id) {
+    public ResponseEntity<Object> getHotelReviews(@RequestParam(name = "hotel_identifier") String identifier) {
 
         List<HotelReviewJSON> hotelReviews = null;
 
-        HotelModel hotelModel = hotelService.getHotelById(id);
+        HotelModel hotelModel = hotelService.getHotelByIdentifier(identifier);
 
         if (hotelModel != null) {
             hotelReviews = hotelModel.getReviewsAsJSON();

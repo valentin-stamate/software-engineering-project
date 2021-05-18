@@ -134,7 +134,7 @@ public class UserService {
         List<HotelModel> hotels = userModel.getUserHotels();
 
         for (HotelModel hotelModel : hotels) {
-            response.add(new HotelJSON(hotelModel.getId(), hotelModel.getIdentifier(), hotelModel.getHotelName(), hotelModel.getLocationName(), hotelModel.getAverageRating(), hotelModel.getVotes(),hotelModel.getPhotoLink(),hotelModel.getDescription(),hotelModel.getPrice()));
+            response.add(new HotelJSON(hotelModel.getId(), hotelModel.getIdentifier(), hotelModel.getHotelUrl(), hotelModel.getHotelName(), hotelModel.getLocationName(), hotelModel.getAverageRating(), hotelModel.getVotes(),hotelModel.getPhotoLink(),hotelModel.getDescription(),hotelModel.getPrice()));
         }
 
         return response;

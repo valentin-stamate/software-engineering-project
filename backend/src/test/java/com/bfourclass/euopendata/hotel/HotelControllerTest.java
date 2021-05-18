@@ -29,7 +29,7 @@ public class HotelControllerTest {
         ArgumentCaptor<NotificationModel> notificationCaptor = ArgumentCaptor.forClass(NotificationModel.class);
 
         doNothing().when(notificationService).addUserNotification(userCaptor.capture(), notificationCaptor.capture());
-        hotelController.updateHotel(new HotelJSON(1L, null, null, null, 0.0, 0, null, null, 0f), "token");
+        hotelController.updateHotel(new HotelJSON(1L, null, null, null, null, 0.0, 0, null, null, 0f), "token");
         List<NotificationModel> notificationModelList = notificationCaptor.getAllValues();
         List<UserModel> userModelList = userCaptor.getAllValues();
 

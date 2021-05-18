@@ -26,9 +26,9 @@ public class InitialConfiguration {
             UserModel owner = new UserModel("hotelowner", "hotel@owner.com", SimpleHashingAlgo.hash("ownerrr"), "", true);
 
 
-            HotelModel hotelModelA = new HotelModel("ro/arnia", "Hotel Arnia", "Iași");
-            HotelModel hotelModelB = new HotelModel("ro/terra-iasi-valea-lupului", "Hotel Terra Iasi", "Iași");
-            HotelModel hotelModelC = new HotelModel("hotel/ro/b-house-rooms", "B House Rooms", "Iași");
+            HotelModel hotelModelA = new HotelModel("https://www.booking.com/hotel/ro/arnia", "Hotel Arnia", "Iași");
+            HotelModel hotelModelB = new HotelModel("https://www.booking.com/hotel/ro/terra-iasi-valea-lupului", "Hotel Terra Iasi", "Iași");
+            HotelModel hotelModelC = new HotelModel("https://www.booking.com/hotel/hotel/ro/b-house-rooms", "B House Rooms", "Iași");
 
             userModelA.activateUser();
             userModelB.activateUser();
