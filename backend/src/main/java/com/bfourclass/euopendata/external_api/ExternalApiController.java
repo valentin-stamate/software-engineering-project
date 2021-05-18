@@ -6,6 +6,7 @@ import com.bfourclass.euopendata.external_api.instance.covid_statistics.CovidSta
 import com.bfourclass.euopendata.external_api.instance.location.LocationStatisticsJSON;
 import com.bfourclass.euopendata.external_api.instance.numbeo_data.CriminalityStatistics;
 import com.bfourclass.euopendata.external_api.instance.numbeo_data.PollutionStatistics;
+import com.bfourclass.euopendata.external_api.instance.numbeo_data.RestaurantsStatistics;
 import com.bfourclass.euopendata.external_api.instance.weather.current_weather.Weather;
 import com.bfourclass.euopendata.external_api.instance.weather.Forecast;
 import com.bfourclass.euopendata.external_api.json.CovidNewsJSON;
@@ -168,5 +169,18 @@ public class ExternalApiController {
     @GetMapping("/co2_emissions")
     public ResponseEntity<Object> getCO2Emissions(@RequestParam String country) {
         return new ResponseEntity<>(CO2EmissionsAPI.get(country), HttpStatus.OK);
+    }
+
+    @GetMapping("/restaurants")
+    public ResponseEntity<Object> getLocationRestaurantsStatistics(@RequestParam(name = "locations") String locationsString){
+        String[] locations = locationsString.split(",");
+
+        List<RestaurantsStatistics> restaurantsStatistics = new ArrayList<>();
+
+        for (String location : locations) {
+            restaurantsStatistics.add(ExternalAPI.getRestaurantsStatistics(location));
+        }
+
+        return new ResponseEntity<>(restaurantsStatistics, HttpStatus.OK);
     }
 }

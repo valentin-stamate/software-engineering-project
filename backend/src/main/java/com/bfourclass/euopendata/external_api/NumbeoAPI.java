@@ -2,6 +2,7 @@ package com.bfourclass.euopendata.external_api;
 
 import com.bfourclass.euopendata.external_api.instance.numbeo_data.CriminalityStatistics;
 import com.bfourclass.euopendata.external_api.instance.numbeo_data.PollutionStatistics;
+import com.bfourclass.euopendata.external_api.instance.numbeo_data.RestaurantsStatistics;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -136,5 +137,58 @@ public class NumbeoAPI {
 
         // Processing the html code and creating an instance
         return parsePollutionHTMLCode(data, cityName);
+    }
+    private static RestaurantsStatistics parseRestaurantsHTMLCode(String htmlCode, String location)
+    {
+        Document htmlParser = Jsoup.parse(htmlCode);
+
+        // Verifying if "City not found" exception was raised
+        if(htmlParser.select("div[style=\"error_message\"]").size() > 0)
+            return null;
+
+        // Parsing data
+        Element container;
+        Elements elements;
+        RestaurantsStatistics restaurantsStatistics = new RestaurantsStatistics(location);
+
+        // Parsing data on pollution index container
+        container = htmlParser.select(".table_indices").get(0);
+        elements = container.select("td[style=\"text-align: right\"]");
+
+
+        // Parsing data on restaurant container
+        container = htmlParser.select("table[class=\"table_builder_with_value_explanation data_wide_table\"]").get(0);
+        elements = container.select("td[class=\"indexValueTd\"]");
+        restaurantsStatistics.setSimpleMeal1PersonPrice(Double.valueOf(elements.get(1).text()));
+        restaurantsStatistics.setFullMeal2PersonsPrice(Double.valueOf(elements.get(2).text()));
+        restaurantsStatistics.setMcMealPrice(Double.valueOf(elements.get(3).text()));
+        restaurantsStatistics.setBeerDraughtPrice(Double.valueOf(elements.get(4).text()));
+        restaurantsStatistics.setBeerBottlePrice(Double.valueOf(elements.get(5).text()));
+        restaurantsStatistics.setCappuccinoPrice(Double.valueOf(elements.get(7).text()));
+        restaurantsStatistics.setCokePrice(Double.valueOf(elements.get(8).text()));
+        restaurantsStatistics.setWaterPrice(Double.valueOf(elements.get(9).text()));
+
+        return restaurantsStatistics;
+    }
+    public static RestaurantsStatistics requestRestaurantStatistics(String cityName) throws IOException
+    {
+        // Requesting HTML page
+        cityName = cityName.substring(0, 1).toUpperCase() + cityName.substring(1);
+        String command = "curl https://www.numbeo.com/cost-of-living/in/" + cityName + "/";
+        ProcessBuilder processBuilder = new ProcessBuilder(command.split(" "));
+
+        if(System.getProperty("os.name").startsWith("Windows")) // Windows
+            processBuilder.directory(new File("C:\\"));
+        else // Linux
+            processBuilder.directory(new File("~"));
+        Process process = processBuilder.start();
+
+        InputStream inputStream = process.getInputStream();
+        String data = new BufferedReader(new InputStreamReader(inputStream))
+                .lines().collect(Collectors.joining("\n"));
+        process.destroy();
+
+        // Processing the html code and creating an instance
+        return parseRestaurantsHTMLCode(data, cityName);
     }
 }
