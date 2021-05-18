@@ -2,121 +2,135 @@ package com.bfourclass.euopendata.external_api.instance.numbeo_data;
 
 public class CostOfLivingStatistics {
     /*
-     * For each attribute, you can interpret the value as it follows:
-     *      - VERY LOW level, if value is lower than 20
-     *      - LOW level, if value is between 20 and 40
-     *      - MODERATE level, if value is between 40 and 60
-     *      - HIGH level, if value is between 60 and 80
-     *      - VERY HIGH level, if value is higher than 80
-     *
-     *
+    * Every attribute's value is an estimation of the price, with values in local currency.
      */
-    private double monthlyPersonCost;
-    private double averageMealPrice;
-    private double domesticBeerPrice;
-    private double capuccinoPrice;
-    private double waterPrice;
-    private double milkPrice;
-    private double breadPrice;
-    private double applesPrice;
-    private double cigarettesPrice;
-    private double busTicketPrice;
-    private double taxiKmPrice;
-    private double gasolinePrice;
+    private String monthlyPersonCost;
 
-    public double getMonthlyPersonCost() {
+    // Prices on an inexpensive restaurant
+    private String averageMealPrice;
+    private String capuccinoPrice;
+
+    // Prices at market
+    private String domesticBeerPrice;
+    private String waterPrice;
+    private String milkPrice;
+    private String breadPrice;
+    private String applesPrice;
+    private String cigarettesPrice;
+
+    // Transportation prices
+    private String busTicketPrice;
+    private String taxiKmPrice;
+    private String gasolinePrice;
+
+    public CostOfLivingStatistics() {
+        monthlyPersonCost = null;
+        averageMealPrice = null;
+        domesticBeerPrice = null;
+        capuccinoPrice = null;
+        waterPrice = null;
+        milkPrice = null;
+        breadPrice = null;
+        applesPrice = null;
+        cigarettesPrice = null;
+        busTicketPrice = null;
+        taxiKmPrice = null;
+        gasolinePrice = null;
+    }
+
+    public String getMonthlyPersonCost() {
         return monthlyPersonCost;
     }
 
-    public void setMonthlyPersonCost(double monthlyPersonCost) {
+    public void setMonthlyPersonCost(String monthlyPersonCost) {
         this.monthlyPersonCost = monthlyPersonCost;
     }
 
-    public double getAverageMealPrice() {
+    public String getAverageMealPrice() {
         return averageMealPrice;
     }
 
-    public void setAverageMealPrice(double averageMealPrice) {
+    public void setAverageMealPrice(String averageMealPrice) {
         this.averageMealPrice = averageMealPrice;
     }
 
-    public double getDomesticBeerPrice() {
+    public String getDomesticBeerPrice() {
         return domesticBeerPrice;
     }
 
-    public void setDomesticBeerPrice(double domesticBeerPrice) {
+    public void setDomesticBeerPrice(String domesticBeerPrice) {
         this.domesticBeerPrice = domesticBeerPrice;
     }
 
-    public double getCapuccinoPrice() {
+    public String getCapuccinoPrice() {
         return capuccinoPrice;
     }
 
-    public void setCapuccinoPrice(double capuccinoPrice) {
+    public void setCapuccinoPrice(String capuccinoPrice) {
         this.capuccinoPrice = capuccinoPrice;
     }
 
-    public double getWaterPrice() {
+    public String getWaterPrice() {
         return waterPrice;
     }
 
-    public void setWaterPrice(double waterPrice) {
+    public void setWaterPrice(String waterPrice) {
         this.waterPrice = waterPrice;
     }
 
-    public double getMilkPrice() {
+    public String getMilkPrice() {
         return milkPrice;
     }
 
-    public void setMilkPrice(double milkPrice) {
+    public void setMilkPrice(String milkPrice) {
         this.milkPrice = milkPrice;
     }
 
-    public double getBreadPrice() {
+    public String getBreadPrice() {
         return breadPrice;
     }
 
-    public void setBreadPrice(double breadPrice) {
+    public void setBreadPrice(String breadPrice) {
         this.breadPrice = breadPrice;
     }
 
-    public double getApplesPrice() {
+    public String getApplesPrice() {
         return applesPrice;
     }
 
-    public void setApplesPrice(double applesPrice) {
+    public void setApplesPrice(String applesPrice) {
         this.applesPrice = applesPrice;
     }
 
-    public double getCigarettesPrice() {
+    public String getCigarettesPrice() {
         return cigarettesPrice;
     }
 
-    public void setCigarettesPrice(double cigarettesPrice) {
+    public void setCigarettesPrice(String cigarettesPrice) {
         this.cigarettesPrice = cigarettesPrice;
     }
 
-    public double getBusTicketPrice() {
+    public String getBusTicketPrice() {
         return busTicketPrice;
     }
 
-    public void setBusTicketPrice(double busTicketPrice) {
+    public void setBusTicketPrice(String busTicketPrice) {
         this.busTicketPrice = busTicketPrice;
     }
 
-    public double getTaxiKmPrice() {
+    public String getTaxiKmPrice() {
         return taxiKmPrice;
     }
 
-    public void setTaxiKmPrice(double taxiKmPrice) {
+    public void setTaxiKmPrice(String taxiKmPrice) {
         this.taxiKmPrice = taxiKmPrice;
     }
 
-    public double getGasolinePrice() {
+    public String getGasolinePrice() {
         return gasolinePrice;
     }
 
-    public void setGasolinePrice(double gasolinePrice) {
+    public void setGasolinePrice(String gasolinePrice) {
         this.gasolinePrice = gasolinePrice;
     }
 }

@@ -87,7 +87,7 @@ public class NumbeoAPI {
         return parseCriminalityHTMLCode(cityName, data);
     }
 
-    private static CostOfLivingStatistics parseCostOfLiving(String cityName, String htmlCode) {
+    private static CostOfLivingStatistics parseCostOfLivingHTMLCode(String cityName, String htmlCode) {
         Document htmlParser = Jsoup.parse(htmlCode);
 
         // Verifying if "City not found" exception was raised
@@ -99,32 +99,30 @@ public class NumbeoAPI {
         Elements elements;
         CostOfLivingStatistics costOfLivingStatistics=new CostOfLivingStatistics();
 
-        // Parsing data on safety and crime indexes container
-        container = htmlParser.select("table[class=\"seeding-call table_color summary limit_size_ad_right padding_lower other_highlight_color\"]").get(0);
+        // Parsing data on summary container
+        container = htmlParser.select("div[class=\"seeding-call table_color summary limit_size_ad_right padding_lower other_highlight_color\"]").get(0);
         elements = container.select("span[class=\"emp_number\"]");
-        costOfLivingStatistics.setMonthlyPersonCost(Double.valueOf(elements.get(1).text().split("lei")[0]));
+        costOfLivingStatistics.setMonthlyPersonCost(elements.get(1).text());
 
-        // Parsing data on crime rates container
+        // Parsing data on data container
         container = htmlParser.select("table[class=\"data_wide_table new_bar_table\"]").get(0);
         elements = container.select("span[class=\"first_currency\"]");
-        costOfLivingStatistics.setAverageMealPrice(Double.valueOf(elements.get(0).text().split("&nbsp;")[0]));
-        costOfLivingStatistics.setDomesticBeerPrice(Double.valueOf(elements.get(24).text().split("&nbsp;")[0]));
-        costOfLivingStatistics.setCapuccinoPrice(Double.valueOf(elements.get(5).text().split("&nbsp;")[0]));
-        costOfLivingStatistics.setWaterPrice(Double.valueOf(elements.get(22).text().split("&nbsp;")[0]));
-        costOfLivingStatistics.setMilkPrice(Double.valueOf(elements.get(8).text().split("&nbsp;")[0]));
-        costOfLivingStatistics.setBreadPrice(Double.valueOf(elements.get(9).text().split("&nbsp;")[0]));
-        costOfLivingStatistics.setApplesPrice(Double.valueOf(elements.get(15).text().split("&nbsp;")[0]));
-        costOfLivingStatistics.setCigarettesPrice(Double.valueOf(elements.get(26).text().split("&nbsp;")[0]));
-        costOfLivingStatistics.setBusTicketPrice(Double.valueOf(elements.get(27).text().split("&nbsp;")[0]));
-        costOfLivingStatistics.setTaxiKmPrice(Double.valueOf(elements.get(30).text().split("&nbsp;")[0]));
-        costOfLivingStatistics.setGasolinePrice(Double.valueOf(elements.get(32).text().split("&nbsp;")[0]));
-
-
+        costOfLivingStatistics.setAverageMealPrice(elements.get(0).text().replaceAll("&nbsp;", " "));
+        costOfLivingStatistics.setDomesticBeerPrice(elements.get(24).text().replaceAll("&nbsp;", " "));
+        costOfLivingStatistics.setCapuccinoPrice(elements.get(5).text().replaceAll("&nbsp;", " "));
+        costOfLivingStatistics.setWaterPrice(elements.get(22).text().replaceAll("&nbsp;", " "));
+        costOfLivingStatistics.setMilkPrice(elements.get(8).text().replaceAll("&nbsp;", " "));
+        costOfLivingStatistics.setBreadPrice(elements.get(9).text().replaceAll("&nbsp;", " "));
+        costOfLivingStatistics.setApplesPrice(elements.get(15).text().replaceAll("&nbsp;", " "));
+        costOfLivingStatistics.setCigarettesPrice(elements.get(26).text().replaceAll("&nbsp;", " "));
+        costOfLivingStatistics.setBusTicketPrice(elements.get(27).text().replaceAll("&nbsp;", " "));
+        costOfLivingStatistics.setTaxiKmPrice(elements.get(30).text().replaceAll("&nbsp;", " "));
+        costOfLivingStatistics.setGasolinePrice(elements.get(32).text().replaceAll("&nbsp;", " "));
 
         return costOfLivingStatistics;
     }
 
-    public static CostOfLivingStatistics requestCostOfLiving(String cityName) throws IOException {
+    public static CostOfLivingStatistics requestCostOfLivingStatistics(String cityName) throws IOException {
         // Getting rid of diacritics
         cityName = Normalizer.normalize(cityName, Normalizer.Form.NFD);
         cityName = cityName.replaceAll("\\p{M}", "");
@@ -152,7 +150,7 @@ public class NumbeoAPI {
         process.destroy();
 
         // Processing the html code and creating an instance
-        return parseCostOfLiving(cityName, data);
+        return parseCostOfLivingHTMLCode(cityName, data);
     }
 
     private static PollutionStatistics parsePollutionHTMLCode(String htmlCode, String location)

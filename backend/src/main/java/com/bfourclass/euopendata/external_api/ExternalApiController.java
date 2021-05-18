@@ -184,8 +184,8 @@ public class ExternalApiController {
 
         return new ResponseEntity<>(restaurantsStatistics, HttpStatus.OK);
     }
-    @GetMapping("/cost_of_living")
-    public ResponseEntity<Object> getLocationCostOfLiving(@RequestParam(name = "locations") String locationsString) {
+    @GetMapping("/costofliving_statistics")
+    public ResponseEntity<Object> getLocationCostOfLivingStatistics(@RequestParam(name = "locations") String locationsString) {
         String[] locations = locationsString.split(",");
 
         List<CostOfLivingStatistics> costOfLivingStatistics = new ArrayList<>();

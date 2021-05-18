@@ -71,7 +71,7 @@ public abstract class ExternalAPI {
     }
     public static CostOfLivingStatistics getCostOfLivingStatistics(String location) {
         try {
-            return NumbeoAPI.requestCostOfLiving(location);
+            return NumbeoAPI.requestCostOfLivingStatistics(location);
         } catch (IOException e) {
             //e.printStackTrace();
             return null;
