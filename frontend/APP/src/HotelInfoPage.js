@@ -4,6 +4,7 @@ import Credentials from './Credentials';
 import ClientLogin from './ClientLogin';
 import Client from './Client';
 import Hotel from './Hotel';
+import FetchHotelInfo from './FetchHotelInfo';
 import './hotelInfo.css';
 
 class HotelInfoPage extends react.Component{
@@ -19,6 +20,34 @@ class HotelInfoPage extends react.Component{
         this.client=new Client(this.state.client.username,this.state.client.email,this.state.client.profilePic,this.state.client.auth);
         this.hotel=new Hotel(item.id,item.identifier,item.hotelName,item.locationName,item.averageRating,item.votes,item.hotelUrl,item.photoLink,item.description,item.price);
         this.items=[];
+
+        this.hotelInfo=FetchHotelInfo.fetchInfo(this.hotel.hotelUrl+".html");
+
+        this.images=[];
+        this.indicators=[];
+
+        this.images.push(
+            <div class="item active">
+                    <img style={{width:"400px",height:"300px"}} src={this.hotelInfo.img[0]} class="img-responsive" alt="error" />
+                </div>
+        );
+        this.indicators.push(
+            <li data-target="#myCarousel-2" data-slide-to="0" class="active"></li>
+        );
+
+        for(const [index,url] of this.hotelInfo.img.entries()){
+            if(index==0){
+                continue;
+            }
+            this.indicators.push(
+                <li data-target="#myCarousel-2" data-slide-to={index} class=""></li>
+            );
+            this.images.push(
+                <div class="item">
+                    <img style={{width:"400px",height:"300px"}} src={url} class="img-responsive" alt="error" />
+                </div>
+            );
+        }
     }
 
     myChangeHandler = (event) => {
@@ -44,7 +73,7 @@ class HotelInfoPage extends react.Component{
         if(this.state.refreshReviews){
             this.items=[];
             this.state.refreshReviews=false;
-            var reviews=this.client.get_reviews(this.hotel.id);
+            var reviews=this.client.get_reviews(this.hotel.identifier);
 
             for(const [index,item] of reviews.entries()){
             this.items.push(
@@ -68,8 +97,11 @@ class HotelInfoPage extends react.Component{
             }
         }
 
+        
+
 
         return(
+
 <div class="hotel-info">
 <div class="topnav">
         <a class="active" href="#home">Home</a>
@@ -84,35 +116,10 @@ class HotelInfoPage extends react.Component{
                 <div class="product-image">
                     <div id="myCarousel-2" class="carousel slide">
                         <ol class="carousel-indicators">
-                            <li data-target="#myCarousel-2" data-slide-to="0" class=""></li>
-                            <li data-target="#myCarousel-2" data-slide-to="1" class="active"></li>
-                            <li data-target="#myCarousel-2" data-slide-to="2" class=""></li>
-                            <li data-target="#myCarousel-2" data-slide-to="3" class=""></li>
-                            <li data-target="#myCarousel-2" data-slide-to="4" class=""></li>
-                            <li data-target="#myCarousel-2" data-slide-to="5" class=""></li>
+                            {this.indicators}
                         </ol>
                         <div class="carousel-inner">
-                            <div class="item active">
-                                <img src={require("./images/p0.jpg").default} class="img-responsive" alt="" />
-                            </div>
-                            <div class="item">
-                                <img src={require("./images/p1.jpg").default} class="img-responsive" alt="" />
-                            </div>
-                            <div class="item">
-                                <img src={require("./images/p2.jpg").default} class="img-responsive" alt="" />
-                            </div>
-                            <div class="item">
-                                <img src={require("./images/p3.jpg").default} class="img-responsive" alt="" />
-                            </div>
-                            <div class="item">
-                                <img src={require("./images/p4.jpg").default} class="img-responsive" alt="" />
-                            </div>
-                            <div class="item">
-                                <img src={require("./images/p5.jpg").default} class="img-responsive" alt="" />
-                            </div>
-                            <div class="item">
-                                <img src={require("./images/p6.jpg").default} class="img-responsive" alt="" />
-                            </div>
+                            {this.images}
                         </div>
                         <a class="left carousel-control" href="#myCarousel-2" data-slide="prev"> <span class="glyphicon glyphicon-chevron-left"></span> </a>
                         <a class="right carousel-control" href="#myCarousel-2" data-slide="next"> <span class="glyphicon glyphicon-chevron-right"></span> </a>
@@ -142,15 +149,11 @@ class HotelInfoPage extends react.Component{
                 </h2>
                 
                 <hr />
-                <h3 class="price-container">
-                    $159.99
-                    <small>*includes tax</small>
-                </h3>
                 <span class="badge">Most Popular Facilities:</span>
                 <div class="certified">
                     <ul>
                         <li>
-                            <i class="fas fa-utensils"><span>3 Restaurants</span></i>
+                            <i class="fas fa-utensils"><span>{this.hotelInfo.facilities}</span></i>
                         </li>
                         <li>
                             <i class="fas fa-swimming-pool"><span> Swimming Pool</span></i>
@@ -184,14 +187,7 @@ class HotelInfoPage extends react.Component{
                         <div class="tab-pane fade active in" id="more-information">
                             <br />
                             <strong>Hotel Description</strong>
-                            <p>
-                                Hotel Café Royal is an iconic luxury 5-star hotel in the heart of central London. With the hotel located to the South-West of Mayfair and Soho to the South, the property is positioned on Regent Street, within 1.6 km from Theatreland, Buckingham Palace, Westminster and the British Museum. The shopping areas of Bond Street, Oxford Street and Savile Row are a short 6-minute walk away.</p>
-
-                            <p>A London landmark, the hotel features 160 contemporary guestrooms, including 54 suites and 7 signature suites. Each is designed with careful detail and features complimentary WiFi, Bang & Olufsen entertainment systems, media hubs and luxury bathroom amenities. Certain Suites offer a complimentary mini-bar including snacks and soft drinks.</p>
-
-                            <p>After a busy day, guests can relax in the Akasha Holistic Wellbeing Center, which features a state-of-the-art-gym, a large lap pool, a sauna, a Hammam/steam room and a wide range of spa treatments.
-
-                            Hotel Café Royal also offers a selection of restaurants and bars for guests to enjoy. At the heart of the hotel, is the Cakes and Bubbles by Albert Adria. The Green Bar serves a selection of cocktails. Restored to revive the ornate Louis XVI décor and detailing, the Oscar Wilde Lounge offers afternoon tea.</p>
+                            {this.hotelInfo.desc}
                         </div>
                         <div class="tab-pane fade" id="specifications">
                             <br />

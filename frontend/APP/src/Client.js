@@ -74,7 +74,7 @@ class Client extends User{
 
     get_reviews(id){
         var data={
-            hotel_id:id
+            hotel_identifier:id
         };
         var result=FetchData.makeAuthRequest('https://euopendata.herokuapp.com/hotel/reviews', 'GET', data, this.auth);
         return result;
