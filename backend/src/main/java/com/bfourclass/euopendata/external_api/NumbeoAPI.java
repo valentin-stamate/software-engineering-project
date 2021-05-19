@@ -113,13 +113,8 @@ public class NumbeoAPI {
         // Parsing data on data container
         container = htmlParser.select("table[class=\"data_wide_table new_bar_table\"]").get(0);
         elements = container.select("span[class=\"first_currency\"]");
-        costOfLivingStatistics.setAverageMealPrice(elements.get(0).text().replaceAll("&nbsp;", " "));
         costOfLivingStatistics.setDomesticBeerPrice(elements.get(24).text().replaceAll("&nbsp;", " "));
-        costOfLivingStatistics.setCappuccinoPrice(elements.get(5).text().replaceAll("&nbsp;", " "));
         costOfLivingStatistics.setWaterPrice(elements.get(22).text().replaceAll("&nbsp;", " "));
-        costOfLivingStatistics.setMilkPrice(elements.get(8).text().replaceAll("&nbsp;", " "));
-        costOfLivingStatistics.setBreadPrice(elements.get(9).text().replaceAll("&nbsp;", " "));
-        costOfLivingStatistics.setApplesPrice(elements.get(15).text().replaceAll("&nbsp;", " "));
         costOfLivingStatistics.setCigarettesPrice(elements.get(26).text().replaceAll("&nbsp;", " "));
         costOfLivingStatistics.setBusTicketPrice(elements.get(27).text().replaceAll("&nbsp;", " "));
         costOfLivingStatistics.setTaxiKmPrice(elements.get(30).text().replaceAll("&nbsp;", " "));
