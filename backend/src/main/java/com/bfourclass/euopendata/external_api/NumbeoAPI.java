@@ -102,7 +102,13 @@ public class NumbeoAPI {
         // Parsing data on summary container
         container = htmlParser.select("div[class=\"seeding-call table_color summary limit_size_ad_right padding_lower other_highlight_color\"]").get(0);
         elements = container.select("span[class=\"emp_number\"]");
-        costOfLivingStatistics.setMonthlyPersonCost(elements.get(1).text());
+        if(elements.get(1).text().contains("(")) {
+            String temp = elements.get(1).text().split("\\(")[1];
+            temp = temp.split("\\)")[0];
+            costOfLivingStatistics.setMonthlyPersonCost(temp.trim());
+        }
+        else
+            costOfLivingStatistics.setMonthlyPersonCost(elements.get(1).text());
 
         // Parsing data on data container
         container = htmlParser.select("table[class=\"data_wide_table new_bar_table\"]").get(0);
