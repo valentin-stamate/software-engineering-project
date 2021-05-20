@@ -1,6 +1,7 @@
 package com.bfourclass.euopendata.external_api;
 
 import com.bfourclass.euopendata.external_api.covid.*;
+import com.bfourclass.euopendata.external_api.food.FoodPrice;
 import com.bfourclass.euopendata.external_api.instance.covid_news.SearchResultJSON;
 import com.bfourclass.euopendata.external_api.instance.covid_statistics.CovidStatistics;
 import com.bfourclass.euopendata.external_api.instance.numbeo_data.*;
@@ -78,5 +79,9 @@ public abstract class ExternalAPI {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public static List<FoodPrice> getFoodPrice(String location) {
+        return List.of();
     }
 }
