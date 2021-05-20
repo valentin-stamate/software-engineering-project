@@ -38,6 +38,7 @@ export default class UserController {
     }
 
     static async saveUserHotel(hotels) {
+        console.log(hotels);
         if (hotels.length == 0) {
             return { succes: false, message: "Nothing to save!" };
         }
@@ -97,7 +98,7 @@ export default class UserController {
 }
 
 async function handleLoginResponse(response) {
-    return await response.json().then(function (json) {
+    return await response.json().then(function(json) {
         if (response.status == 200) {
             console.log(json);
             let token = json.authorizationToken;
@@ -112,7 +113,7 @@ async function handleLoginResponse(response) {
 }
 
 async function handleSaveResponse(response) {
-    return await response.text().then(function (text) {
+    return await response.text().then(function(text) {
         if (response.status == 200) {
             return { succes: true, message: "Hotels saved succesfuly!" };
         } else {
@@ -122,7 +123,7 @@ async function handleSaveResponse(response) {
 }
 
 async function handleLoadResponse(response) {
-    return await response.json().then(function (json) {
+    return await response.json().then(function(json) {
         if (response.status == 200) {
             return { succes: true, message: json };
         } else {
@@ -132,7 +133,7 @@ async function handleLoadResponse(response) {
 }
 
 async function handleDeleteResponse(response) {
-    return await response.text().then(function (text) {
+    return await response.text().then(function(text) {
         if (response.status == 200) {
             return { succes: true, message: "Hotel deleted succesfuly!" };
         } else {
