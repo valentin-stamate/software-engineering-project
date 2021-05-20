@@ -71,6 +71,14 @@ public abstract class ExternalAPI {
             return null;
         }
     }
+    public static HealthCareStatistics getHealthCareStatistics(String location){
+        try{
+            return NumbeoAPI.requestHealthCareStatistics(location);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
     public static CostOfLivingStatistics getCostOfLivingStatistics(String location) {
         try {

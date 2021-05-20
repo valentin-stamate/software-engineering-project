@@ -9,10 +9,7 @@ import com.bfourclass.euopendata.external_api.gasoline_price.GasolinePriceAPI;
 import com.bfourclass.euopendata.external_api.instance.covid_news.SearchResultJSON;
 import com.bfourclass.euopendata.external_api.instance.covid_statistics.CovidStatistics;
 import com.bfourclass.euopendata.external_api.instance.location.LocationStatisticsJSON;
-import com.bfourclass.euopendata.external_api.instance.numbeo_data.CostOfLivingStatistics;
-import com.bfourclass.euopendata.external_api.instance.numbeo_data.CriminalityStatistics;
-import com.bfourclass.euopendata.external_api.instance.numbeo_data.PollutionStatistics;
-import com.bfourclass.euopendata.external_api.instance.numbeo_data.RestaurantsStatistics;
+import com.bfourclass.euopendata.external_api.instance.numbeo_data.*;
 import com.bfourclass.euopendata.external_api.instance.weather.current_weather.Weather;
 import com.bfourclass.euopendata.external_api.instance.weather.Forecast;
 import com.bfourclass.euopendata.external_api.json.CovidNewsJSON;
@@ -191,12 +188,24 @@ public class ExternalApiController {
         String[] locations = locationsString.split(",");
 
         List<RestaurantsStatistics> restaurantsStatistics = new ArrayList<>();
-        System.out.println("getting stats");
+
         for (String location : locations) {
             restaurantsStatistics.add(ExternalAPI.getRestaurantsStatistics(location));
         }
-        System.out.println("done stats");
+
         return new ResponseEntity<>(restaurantsStatistics, HttpStatus.OK);
+    }
+    @GetMapping("/healthcare")
+    public ResponseEntity<Object> getLocationHealthCareStatistics(@RequestParam(name = "locations") String locationsString){
+        String[] locations = locationsString.split(",");
+
+        List<HealthCareStatistics> healthCareStatistics = new ArrayList<>();
+
+        for (String location : locations) {
+            healthCareStatistics.add(ExternalAPI.getHealthCareStatistics(location));
+        }
+
+        return new ResponseEntity<>(healthCareStatistics, HttpStatus.OK);
     }
 
     @GetMapping("/gasoline_price")
