@@ -109,6 +109,11 @@
     padding: 0;
 }
 
+#pollution_card td {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
 .pollution_card__content {
     text-align: center;
     font-size: 1em;
@@ -138,6 +143,11 @@
     color: #666;
     margin-top: 10px;
     padding: 0;
+}
+
+#criminality_card td {
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
 #criminality_card__container {
@@ -181,6 +191,6 @@
 }
 
 .rating_star {
-    width: 50px;
-    height: 50px;
+    width: 45px;
+    height: 45px;
 }

@@ -96,7 +96,7 @@ async function addForecastCards(forecast) {
     let curr_date = new Date();
 
     let j = 0;
-    for (let i = 0; i < 4; i++) {
+    for (let i = 0; i < 5; i++) {
         let card_info = [];
         while (sameDay(curr_date, new Date(list[j].dt * 1000))) {
             card_info.push(list[j]);
@@ -314,34 +314,54 @@ function addCovidChart(covid_data) {
 async function addPolution(airPollution) {
     let pollution_container = document.getElementById("pollution_card");
 
-    if (airPollution === null) {
+    if (!airPollution) {
         airPollution = {
             airQualityIndex: 'N/A',
-            pm10Value: 'N/A',
-            airPressure: 'N/A'
+            pm10ValueIndex: 'N/A',
+            pm25ValueIndex: 'N/A',
+	    waterPollutionIndex: 'N/A',
+	    o3ValueIndex: 'N/A',
+ 	    no2ValueIndex: 'N/A',
+ 	    so2ValueIndex: 'N/A',
+ 	    covalueIndex: 'N/A',
         }
     }
 
-    addPolutionItem(pollution_container, 'air quality index', airPollution.airQualityIndex);
-    addPolutionItem(pollution_container, 'pm10', airPollution.pm10Value);
-    addPolutionItem(pollution_container, 'air pressure', airPollution.airPressure);
-
-    let image = `<img id="pollution_icon" src="" alt="air pollution">`;
+    let image = `
+    <table>
+        <tbody id="polution_card__container">
+            <tr id="pollution_first"></tr>
+            <tr id="pollution_second"></tr>
+        </tbody>
+    </table>
+    <img id="pollution_icon" src="" alt="criminality">`;
 
     pollution_container.innerHTML += image;
-
     let pollution_icon = document.getElementById("pollution_icon");
-
     pollution_icon.src = chrome.runtime.getURL("src/images/air_polution.png");
+
+
+    pollution_container = document.getElementById("pollution_first");
+    addPolutionItem(pollution_container, 'air quality index', airPollution.airQualityIndex);
+    addPolutionItem(pollution_container, 'pm10 value', airPollution.pm10ValueIndex);
+    addPolutionItem(pollution_container, 'pm25 value', airPollution.pm25ValueIndex);
+    addPolutionItem(pollution_container, 'water pollution', airPollution.waterPollutionIndex);
+
+    pollution_container = document.getElementById("pollution_second");
+    addPolutionItem(pollution_container, 'O3 value', airPollution.o3ValueIndex);
+    addPolutionItem(pollution_container, 'NO2 value', airPollution.no2ValueIndex);
+    addPolutionItem(pollution_container, 'SO2 value', airPollution.so2ValueIndex);
+    addPolutionItem(pollution_container, 'CO value', airPollution.covalueIndex);
+    
 
 }
 
 async function addPolutionItem(pollution_container, text, value) {
-    let pollution_item = `
+    let pollution_item = ` <td>
     <div class="pollution_card__content">
         <p>${text}</p>
-        <p class="pollution_card__content__value"><b>${value}</b></p>
-    </div>
+        <p class="pollution_card__content__value"><b>${(value == null)?'N/A':value}</b></p>
+    </div></td>
     `;
 
     pollution_container.innerHTML += pollution_item;

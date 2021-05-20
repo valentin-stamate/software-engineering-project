@@ -30,7 +30,7 @@ chrome.runtime.onMessage.addListener(
             let url1 = host_url + "forecast?locations=" + request.hotelLocation;
             let url2 = host_url + "covid_statistics?countries=" + "Romania";
             let url3 = host_url + "covid_news?locations=" + request.hotelLocation + "&max_results=2"
-            let url4 = host_url + "air_pollution?locations=" + request.hotelLocation;
+            let url4 = host_url + "pollution?locations=" + request.hotelLocation;
             let url5 = host_url + "criminality_statistics?locations=" + request.hotelLocation;
 
             responses = fetchDataAboutLocation(url1, url2, url3, url4, url5).then(
