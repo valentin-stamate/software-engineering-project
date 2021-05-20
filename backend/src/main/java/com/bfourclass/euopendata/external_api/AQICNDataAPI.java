@@ -24,7 +24,7 @@ abstract class AQICNDataAPI
         if(System.getProperty("os.name").startsWith("Windows")) // Windows
             processBuilder.directory(new File("C:\\"));
         else // Linux
-            processBuilder.directory(new File("~"));
+            processBuilder.directory(new File("."));
 
         Process process = processBuilder.start();
 

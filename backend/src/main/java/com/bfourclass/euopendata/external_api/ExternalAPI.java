@@ -23,7 +23,7 @@ public abstract class ExternalAPI {
         try {
             return NumbeoAPI.requestCriminalityStatistics(location);
         } catch (IOException e) {
-            //e.printStackTrace();
+            e.printStackTrace();
             return null;
         }
     }
@@ -57,7 +57,7 @@ public abstract class ExternalAPI {
             pollutionStatistics = AQICNDataAPI.requestAirPollution(location, pollutionStatistics);
             return pollutionStatistics;
         } catch (IOException e) {
-            //e.printStackTrace();
+            e.printStackTrace();
             return null;
         }
     }
@@ -66,7 +66,7 @@ public abstract class ExternalAPI {
         try {
             return NumbeoAPI.requestRestaurantStatistics(location);
         } catch (IOException e) {
-            //e.printStackTrace();
+            e.printStackTrace();
             return null;
         }
     }
@@ -75,7 +75,7 @@ public abstract class ExternalAPI {
         try {
             return NumbeoAPI.requestCostOfLivingStatistics(location);
         } catch (IOException e) {
-            //e.printStackTrace();
+            e.printStackTrace();
             return null;
         }
     }

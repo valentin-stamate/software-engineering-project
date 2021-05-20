@@ -136,8 +136,9 @@ public class NumbeoAPI {
         Document htmlParser = Jsoup.parse(htmlCode);
 
         // Verifying if "City not found" exception was raised
-        if (htmlParser.select("div[style=\"error_message\"]").size() > 0)
+        if (htmlParser.select("div[style=\"error_message\"]").size() > 0) {
             return null;
+        }
 
         // Parsing data
         Element container;
