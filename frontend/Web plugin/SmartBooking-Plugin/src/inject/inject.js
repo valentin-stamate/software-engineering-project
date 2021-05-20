@@ -56,9 +56,13 @@ async function addStatistics(_stats) {
     stats_div.innerHTML += `<section id="weather-statistics"></section>`;
     stats_div.innerHTML += `<section id="pollution_card"></section>`;
     stats_div.innerHTML += `<section id="criminality_card"></section>`;
+    stats_div.innerHTML += `<section id="living_cost_card"></section>`;
+    stats_div.innerHTML += `<section id="restaurants_card"></section>`;
     stats_div.innerHTML += `<section id="rating"></section>`;
 
-    addRating();
+    addRestaurants(_stats.restaurants);
+    addCostOfLiving(_stats.living_cost, _stats.gasoline);
+    addRating(_stats.rating);
     addCriminality(_stats.criminality);
     addPolution(_stats.airPollution);
     addCovidStatistics(_stats.covid);
@@ -319,11 +323,11 @@ async function addPolution(airPollution) {
             airQualityIndex: 'N/A',
             pm10ValueIndex: 'N/A',
             pm25ValueIndex: 'N/A',
-	    waterPollutionIndex: 'N/A',
-	    o3ValueIndex: 'N/A',
- 	    no2ValueIndex: 'N/A',
- 	    so2ValueIndex: 'N/A',
- 	    covalueIndex: 'N/A',
+            waterPollutionIndex: 'N/A',
+            o3ValueIndex: 'N/A',
+            no2ValueIndex: 'N/A',
+            so2ValueIndex: 'N/A',
+            covalueIndex: 'N/A',
         }
     }
 
@@ -352,7 +356,7 @@ async function addPolution(airPollution) {
     addPolutionItem(pollution_container, 'NO2 value', airPollution.no2ValueIndex);
     addPolutionItem(pollution_container, 'SO2 value', airPollution.so2ValueIndex);
     addPolutionItem(pollution_container, 'CO value', airPollution.covalueIndex);
-    
+
 
 }
 
@@ -428,15 +432,7 @@ async function addCriminalityItem(criminality_container, text, value) {
     criminality_container.innerHTML += criminality_item;
 }
 
-async function addRating(reviws) {
-    reviews = [{
-        "id": 3,
-        "userName": "plugin",
-        "userRating": 8,
-        "reviewMessage": "I like it. Maybe",
-        "reviewDate": "2021-04-29 16:26:28.705"
-    }]
-
+async function addRating(reviews) {
     let rating = document.getElementById("rating");
 
     let rating_content = `
@@ -468,4 +464,99 @@ async function addStar(rating_stars_container, checked = false) {
     let star_file_name = checked ? 'checked_star.png' : 'unchecked_star.png';
     let source = chrome.runtime.getURL('src/images/' + star_file_name);
     rating_stars_container.innerHTML += `<img class="rating_star" src="${source}" alt=""></img>`
+}
+
+async function addCostOfLiving(living_cost, gasoline) {
+
+    let living_cost_container = document.getElementById("living_cost_card");
+
+    let container = `
+    <table>
+        <tbody id="living_cost_card__container">
+            <tr id="living_cost_first"></tr>
+            <tr id="living_cost_second"></tr>
+        </tbody>
+    </table>
+    <img id="living_cost_icon" src="" alt="living_cost">
+    `;
+
+    living_cost_container.innerHTML += container;
+
+    let living_cost_icon = document.getElementById("living_cost_icon");
+    living_cost_icon.src = chrome.runtime.getURL("src/images/living.png");
+
+    living_cost_container = document.getElementById("living_cost_first");
+
+    addliving_costItem(living_cost_container, 'gasoline price', living_cost.gasolinePrice + " /l");
+    addliving_costItem(living_cost_container, 'gasoline price country', gasoline.price + " " + gasoline.measure);
+    addliving_costItem(living_cost_container, 'domestic beer', living_cost.domesticBeerPrice);
+    addliving_costItem(living_cost_container, 'water price', living_cost.waterPrice);
+
+    living_cost_container = document.getElementById("living_cost_second");
+
+    addliving_costItem(living_cost_container, 'cigarettes price', living_cost.cigarettesPrice);
+    addliving_costItem(living_cost_container, 'bus ticket', living_cost.busTicketPrice);
+    addliving_costItem(living_cost_container, 'taxi', living_cost.taxiKmPrice + "/km");
+    addliving_costItem(living_cost_container, 'monthly cost', living_cost.monthlyPersonCost);
+}
+
+async function addliving_costItem(living_cost_container, text, value) {
+    let living_cost_item = `
+    <td>
+        <div class="living_cost_card__content">
+            <p>${text}</p>
+            <p class="living_cost_card__content__value"><b>${value}</b></p>
+        </div>
+    </td>
+    `;
+
+    living_cost_container.innerHTML += living_cost_item;
+}
+
+
+async function addRestaurants(restaurants) {
+
+    let restaurants_container = document.getElementById("restaurants_card");
+
+    let container = `
+    <table>
+        <tbody id="restaurants_card__container">
+            <tr id="restaurants_first"></tr>
+            <tr id="restaurants_second"></tr>
+        </tbody>
+    </table>
+    <img id="restaurants_icon" src="" alt="restaurants">
+    `;
+
+    restaurants_container.innerHTML += container;
+
+    let restaurants_icon = document.getElementById("restaurants_icon");
+    restaurants_icon.src = chrome.runtime.getURL("src/images/restaurant.png");
+
+    restaurants_container = document.getElementById("restaurants_first");
+
+    addrestaurantsItem(restaurants_container, 'simple 1 person meal', restaurants.simpleMeal1PersonPrice);
+    addrestaurantsItem(restaurants_container, 'full 2 persons meal', restaurants.fullMeal2PersonsPrice);
+    addrestaurantsItem(restaurants_container, 'beer draught', restaurants.beerDraughtPrice);
+    addrestaurantsItem(restaurants_container, 'beer bottle', restaurants.beerBottlePrice);
+
+    restaurants_container = document.getElementById("restaurants_second");
+
+    addrestaurantsItem(restaurants_container, 'capucciono', restaurants.cappuccinoPrice);
+    addrestaurantsItem(restaurants_container, 'water', restaurants.waterPrice);
+    addrestaurantsItem(restaurants_container, 'mc meal', restaurants.mcMealPrice);
+    addrestaurantsItem(restaurants_container, 'coke', restaurants.cokePrice);
+}
+
+async function addrestaurantsItem(restaurants_container, text, value) {
+    let restaurants_item = `
+    <td>
+        <div class="restaurants_card__content">
+            <p>${text}</p>
+            <p class="restaurants_card__content__value"><b>${value}</b></p>
+        </div>
+    </td>
+    `;
+
+    restaurants_container.innerHTML += restaurants_item;
 }

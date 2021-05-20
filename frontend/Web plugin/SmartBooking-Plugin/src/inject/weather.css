@@ -120,8 +120,8 @@
 }
 
 #pollution_icon {
-    width: 50px;
-    height: 50px;
+    width: 75px;
+    height: 75px;
 }
 
 .pollution_card__content__value b {
@@ -193,4 +193,84 @@
 .rating_star {
     width: 45px;
     height: 45px;
+}
+
+#living_cost_card {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-evenly;
+    width: 96%;
+    box-shadow: 0px 0.2em 0.4em rgb(0, 0, 0, 0.6);
+    background: white;
+    color: #666;
+    margin-top: 10px;
+    padding: 0;
+}
+
+#living_cost_card td {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+#living_cost_card__container {
+    display: inline-block;
+}
+
+.living_cost_card__content {
+    text-align: center;
+    font-size: 1em;
+}
+
+#living_cost_icon {
+    width: 75px;
+    height: 75px;
+}
+
+.living_cost_card__content__value b {
+    font-size: 2em;
+}
+
+.living_cost_card__content p {
+    padding: 5px;
+    margin: 0;
+}
+
+#restaurants_card {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-evenly;
+    width: 96%;
+    box-shadow: 0px 0.2em 0.4em rgb(0, 0, 0, 0.6);
+    background: white;
+    color: #666;
+    margin-top: 10px;
+    padding: 0;
+}
+
+#restaurants_card td {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+#restaurants_card__container {
+    display: inline-block;
+}
+
+.restaurants_card__content {
+    text-align: center;
+    font-size: 1em;
+}
+
+#restaurants_icon {
+    width: 75px;
+    height: 75px;
+}
+
+.restaurants_card__content__value b {
+    font-size: 2em;
+}
+
+.restaurants_card__content p {
+    padding: 5px;
+    margin: 0;
 }
