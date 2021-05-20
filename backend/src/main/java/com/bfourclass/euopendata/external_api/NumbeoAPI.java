@@ -69,19 +69,8 @@ public class NumbeoAPI {
         // Requesting HTML page
         cityName = cityName.substring(0, 1).toUpperCase() + cityName.substring(1);
         String command = "curl https://www.numbeo.com/crime/in/" + cityName + "/";
-        ProcessBuilder processBuilder = new ProcessBuilder(command.split(" "));
 
-        if (System.getProperty("os.name").startsWith("Windows")) // Windows
-            processBuilder.directory(new File("C:\\"));
-        else // Linux
-            processBuilder.directory(new File("."));
-
-        Process process = processBuilder.start();
-
-        InputStream inputStream = process.getInputStream();
-        String data = new BufferedReader(new InputStreamReader(inputStream))
-                .lines().collect(Collectors.joining("\n"));
-        process.destroy();
+        String data = getTextFromCommand(command);
 
         // Processing the html code and creating an instance
         return parseCriminalityHTMLCode(cityName, data);
@@ -136,19 +125,8 @@ public class NumbeoAPI {
         // Requesting HTML page
         cityName = cityName.substring(0, 1).toUpperCase() + cityName.substring(1);
         String command = "curl https://www.numbeo.com/cost-of-living/in/" + cityName + "/";
-        ProcessBuilder processBuilder = new ProcessBuilder(command.split(" "));
 
-        if (System.getProperty("os.name").startsWith("Windows")) // Windows
-            processBuilder.directory(new File("C:\\"));
-        else // Linux
-            processBuilder.directory(new File("."));
-
-        Process process = processBuilder.start();
-
-        InputStream inputStream = process.getInputStream();
-        String data = new BufferedReader(new InputStreamReader(inputStream))
-                .lines().collect(Collectors.joining("\n"));
-        process.destroy();
+        String data = getTextFromCommand(command);
 
         // Processing the html code and creating an instance
         return parseCostOfLivingHTMLCode(cityName, data);
@@ -188,18 +166,8 @@ public class NumbeoAPI {
         // Requesting HTML page
         cityName = cityName.substring(0, 1).toUpperCase() + cityName.substring(1);
         String command = "curl https://www.numbeo.com/pollution/in/" + cityName + "/";
-        ProcessBuilder processBuilder = new ProcessBuilder(command.split(" "));
 
-        if (System.getProperty("os.name").startsWith("Windows")) // Windows
-            processBuilder.directory(new File("C:\\"));
-        else // Linux
-            processBuilder.directory(new File("."));
-        Process process = processBuilder.start();
-
-        InputStream inputStream = process.getInputStream();
-        String data = new BufferedReader(new InputStreamReader(inputStream))
-                .lines().collect(Collectors.joining("\n"));
-        process.destroy();
+        String data = getTextFromCommand(command);
 
         // Processing the html code and creating an instance
         return parsePollutionHTMLCode(data, cityName);
@@ -236,6 +204,14 @@ public class NumbeoAPI {
         // Requesting HTML page
         cityName = cityName.substring(0, 1).toUpperCase() + cityName.substring(1);
         String command = "curl https://www.numbeo.com/cost-of-living/in/" + cityName + "/";
+
+        String data = getTextFromCommand(command);
+
+        // Processing the html code and creating an instance
+        return parseRestaurantsHTMLCode(data, cityName);
+    }
+
+    private static String getTextFromCommand(String command) throws IOException {
         ProcessBuilder processBuilder = new ProcessBuilder(command.split(" "));
 
         if (System.getProperty("os.name").startsWith("Windows")) // Windows
@@ -248,7 +224,7 @@ public class NumbeoAPI {
         String data = new BufferedReader(new InputStreamReader(inputStream))
                 .lines().collect(Collectors.joining("\n"));
         process.destroy();
-        // Processing the html code and creating an instance
-        return parseRestaurantsHTMLCode(data, cityName);
+
+        return data;
     }
 }
