@@ -37,6 +37,7 @@ async function getStatistics() {
     var _data = {
         sendStatistics: true,
         hotelLocation: destination,
+        hotelIdentifier: identifier
     }
     chrome.runtime.sendMessage(_data, function(response) {
         console.log(response);
@@ -433,6 +434,13 @@ async function addCriminalityItem(criminality_container, text, value) {
 }
 
 async function addRating(reviews) {
+
+    if (reviews.message == "Hotel not found") {
+        reviews = {
+            length: 0
+        };
+    }
+
     let rating = document.getElementById("rating");
 
     let rating_content = `

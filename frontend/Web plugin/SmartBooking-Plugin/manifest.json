@@ -22,6 +22,7 @@
             "https://www.booking.com/hotel/*"
         ],
         "js": [
+            "js/sha1/sha1.js",
             "js/chartjs/chart.min.js",
             "src/inject/data.js",
             "src/inject/inject.js"

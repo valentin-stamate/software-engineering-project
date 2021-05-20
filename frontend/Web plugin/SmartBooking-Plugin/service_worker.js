@@ -32,7 +32,7 @@ chrome.runtime.onMessage.addListener(
             let url3 = host_url + "covid_news?locations=" + request.hotelLocation + "&max_results=2"
             let url4 = host_url + "pollution?locations=" + request.hotelLocation;
             let url5 = host_url + "criminality_statistics?locations=" + request.hotelLocation;
-            let url6 = host_url + "hotel/reviews?hotel_identifier=" + "db21cd3c9a9b9951a22a146299d0cf88c0d44dd0"; // identifyier needed here
+            let url6 = host_url + "hotel/reviews?hotel_identifier=" + request.hotelIdentifier;
             let url7 = host_url + "costofliving_statistics?locations=" + request.hotelLocation;
             let url8 = host_url + "restaurants?locations=" + request.hotelLocation;
             let url9 = host_url + "gasoline_price?countries=Romania";

@@ -23,9 +23,10 @@ var checkin = document.getElementsByClassName("sb-date-field__display")[0];
 var checkout = document.getElementsByClassName("sb-date-field__display")[1];
 var checkInText = checkin.innerText;
 var checkOutText = checkout.innerText;
+var identifier = "";
 
-function setInValues(){
-    var wordsIn =  checkInText.split(' ');
+function setInValues() {
+    var wordsIn = checkInText.split(' ');
     var tmpIn = wordsIn[0].split(',');
     dayOfWeekIn = tmpIn[0];
     dayOfMonthIn = wordsIn[1];
@@ -38,6 +39,7 @@ function setInValues(){
     dayOfMonthOut = wordsOut[1];
     monthOut = wordsOut[2];
     yearOut = wordsOut[3];
+    identifier = sha1(window.location.href);
 }
 setInValues();
 
@@ -50,6 +52,6 @@ console.log("Destination = " + destination);
 
 function sameDay(d1, d2) {
     return d1.getFullYear() === d2.getFullYear() &&
-      d1.getMonth() === d2.getMonth() &&
-      d1.getDate() === d2.getDate();
-  }
+        d1.getMonth() === d2.getMonth() &&
+        d1.getDate() === d2.getDate();
+}
