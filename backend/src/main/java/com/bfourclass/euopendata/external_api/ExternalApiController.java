@@ -2,6 +2,8 @@ package com.bfourclass.euopendata.external_api;
 
 import com.bfourclass.euopendata.external_api.co2_emissions.CO2Emissions;
 import com.bfourclass.euopendata.external_api.co2_emissions.CO2EmissionsAPI;
+import com.bfourclass.euopendata.external_api.food.FoodCache;
+import com.bfourclass.euopendata.external_api.food.FoodPrice;
 import com.bfourclass.euopendata.external_api.gasoline_price.GasolinePrice;
 import com.bfourclass.euopendata.external_api.gasoline_price.GasolinePriceAPI;
 import com.bfourclass.euopendata.external_api.instance.covid_news.SearchResultJSON;
@@ -37,6 +39,7 @@ import java.util.stream.Collectors;
 public class ExternalApiController {
 
     private final HotelService hotelService;
+    private final FoodCache foodCache = new FoodCache();
 
     @Autowired
     public ExternalApiController(HotelService hotelService) {
@@ -222,4 +225,17 @@ public class ExternalApiController {
         return new ResponseEntity<>(costOfLivingStatistics, HttpStatus.OK);
     }
 
+    @GetMapping("/food_price")
+    public ResponseEntity<Object> getLocationFoodPrice(@RequestParam(name = "location") String locationSring) {
+
+        List<FoodPrice> foodPrices = foodCache.verifyLocation(locationSring);
+
+        if(foodPrices != null){
+            return new ResponseEntity<>(foodPrices, HttpStatus.OK);
+        }else{
+            foodPrices = ExternalAPI.getFoodPrice(locationSring);
+            foodCache.addLocationPrice(locationSring,foodPrices);
+            return new ResponseEntity<>(foodPrices,HttpStatus.OK);
+        }
+    }
 }
