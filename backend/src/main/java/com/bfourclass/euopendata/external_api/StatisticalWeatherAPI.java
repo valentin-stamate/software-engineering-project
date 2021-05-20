@@ -2,6 +2,7 @@ package com.bfourclass.euopendata.external_api;
 
 import com.bfourclass.euopendata.external_api.instance.weather.statistical_weather.StatisticalWeather;
 import com.bfourclass.euopendata.secrets.Secrets;
+import com.bfourclass.euopendata.util.Static;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -15,6 +16,10 @@ import java.util.Locale;
 public class StatisticalWeatherAPI {
 
     protected static StatisticalWeather getStatisticalWeather(String location, LocalDate startDate) {
+        if (Static.romanianCountyToRomanian.containsKey(location)) {
+            location = Static.romanianCountyToRomanian.get(location);
+        }
+
         location = location.toLowerCase(Locale.ROOT);
         location = location.replace(" ", "%20");
 

@@ -49,13 +49,18 @@ public class UserController {
         List<HotelJSON> alreadySavedHotels = new ArrayList<>();
 
         for (HotelJSON hotelJSON : request) {
+
+            System.out.println(hotelJSON);
+
             if (!userModel.hasHotel(hotelJSON.hotelName)) {
-                HotelModel hotelModel = new HotelModel(hotelJSON.identifier, hotelJSON.hotelName, hotelJSON.locationName);
+                HotelModel hotelModel = new HotelModel(hotelJSON.hotelUrl, hotelJSON.hotelName, hotelJSON.locationName);
 
                 hotelService.createHotelIfNotExists(hotelModel);
 
                 /* TODO find a properly primary key when the id is not given */
-                hotelModel = hotelService.getHotelByIdentifier(hotelJSON.identifier);
+                hotelModel = hotelService.getHotelByIdentifier(hotelModel.getIdentifier());
+
+                System.out.println(hotelModel.getId());
 
                 userService.addHotel(userModel, hotelModel);
             } else {

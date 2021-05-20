@@ -65,6 +65,19 @@ public class ExternalApiController {
         return new ResponseEntity<>(locationStatistics, HttpStatus.OK);
     }
 
+    @GetMapping("/weather")
+    public ResponseEntity<Object> getWeather(@RequestParam(name = "locations") String locationString) {
+        String[] locations = locationString.split(",");
+
+        List<Weather> weatherList = new ArrayList<>();
+
+        for (String location : locations) {
+            weatherList.add(OpenWeatherAPI.requestWeather(location));
+        }
+
+        return new ResponseEntity<>(weatherList, HttpStatus.OK);
+    }
+
     @GetMapping("/forecast")
     public ResponseEntity<Object> getLocationForecast(@RequestParam(name = "locations") String locationString) {
         String[] locations = locationString.split(",");

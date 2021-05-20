@@ -2,10 +2,10 @@ package com.bfourclass.euopendata.external_api.co2_emissions;
 
 public class Item {
     public final int year;
-    public final double price;
+    public final double quantity;
 
-    public Item(int year, double price) {
+    public Item(int year, double quantity) {
         this.year = year;
-        this.price = price;
+        this.quantity = quantity;
     }
 }

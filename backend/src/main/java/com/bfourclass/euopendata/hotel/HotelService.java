@@ -32,13 +32,14 @@ public class HotelService {
     public void delete(HotelModel hotelModel){hotelRepository.delete(hotelModel);}
 
     public void createHotelIfNotExists(HotelModel hotelModel) {
-        if (!locationExists(hotelModel.getHotelName())) {
+        if (!locationExists(hotelModel.getIdentifier())) {
             hotelRepository.save(hotelModel);
+            System.out.println("Not exist");
         }
     }
 
-    private boolean locationExists(String hotelName) {
-        return hotelRepository.getHotelByName(hotelName) != null;
+    private boolean locationExists(String identifier) {
+        return hotelRepository.findByIdentifier(identifier) != null;
     }
 
     public List<HotelJSON> getHotels() {

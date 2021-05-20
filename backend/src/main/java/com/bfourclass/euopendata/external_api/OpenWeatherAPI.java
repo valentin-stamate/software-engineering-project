@@ -3,6 +3,7 @@ package com.bfourclass.euopendata.external_api;
 import com.bfourclass.euopendata.external_api.instance.weather.current_weather.Weather;
 import com.bfourclass.euopendata.external_api.instance.weather.Forecast;
 import com.bfourclass.euopendata.secrets.Secrets;
+import com.bfourclass.euopendata.util.Static;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -14,6 +15,10 @@ import java.util.Locale;
 abstract class OpenWeatherAPI {
 
     protected static Weather requestWeather(String location) {
+        if (Static.romanianCountyToRomanian.containsKey(location)) {
+            location = Static.romanianCountyToRomanian.get(location);
+        }
+
         location = location.toLowerCase(Locale.ROOT);
         location = location.replace(" ", "%20");
         String requestURL = "http://api.openweathermap.org/data/2.5/weather?q=" + location + "&APPID=" + Secrets.OPEN_WEATHER_API_KEY;
@@ -33,6 +38,10 @@ abstract class OpenWeatherAPI {
     }
 
     protected static Forecast requestForecast(String location) {
+        if (Static.romanianCountyToRomanian.containsKey(location)) {
+            location = Static.romanianCountyToRomanian.get(location);
+        }
+
         location = location.replace(" ", "%20");
         String requestURL = String.format("http://api.openweathermap.org/data/2.5/forecast?q=%s&appid=%s", location, Secrets.OPEN_WEATHER_API_KEY);
 

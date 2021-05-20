@@ -2,6 +2,7 @@ package com.bfourclass.euopendata;
 
 import com.bfourclass.euopendata.external_api.ExternalAPI;
 import com.bfourclass.euopendata.external_api.covid.CovidStatisticsAPI;
+import com.bfourclass.euopendata.util.Util;
 import org.junit.jupiter.api.Test;
 
 import java.io.*;
@@ -42,6 +43,11 @@ public class JustTests {
         System.out.println("Ana are mere");
 
         process.destroy();
+    }
+
+    @Test
+    public void removeDiacritics() {
+        System.out.print(Util.removeDiacritics("Târgu Mureș"));
     }
 
 }
