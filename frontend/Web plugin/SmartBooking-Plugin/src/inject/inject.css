@@ -91,7 +91,7 @@
     /* or whatever color you prefer */
 }
 
-#covid-statistics {
+#covid-statistics, #co2-statistics {
     width: 96%;
     margin: auto;
 }
@@ -110,4 +110,8 @@
     justify-content: center;
     width: 96%;
     margin-bottom: auto;
+}
+
+.hidden {
+    display: none;
 }
