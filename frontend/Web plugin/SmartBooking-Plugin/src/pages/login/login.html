@@ -1,33 +1,39 @@
 <!DOCTYPE html>
 <html>
-  <head>
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-	<link rel="stylesheet" href="../style.css">
-	<script defer src="/js/jquery/dist/jquery.min.js"></script>
-	<script defer src="/js/custom-alert/custom-alert.js"></script>
-	<script defer type="module" src="login.js"></script>
-  </head>
-  <body>
-	  <header class="header">
-		<h2>Sign in</h2>
-		<a href="./../popup.html" style="margin-left: auto;" class="btn-head round">&#8249;</a>
-	  </header>
-		
-	  <main id="main">
-	   <div action="" method="POST" id="form">
-		<div class="input-container">
-		  <input class="input-field" type="text" placeholder="Username/Email" id="usr_email" name="usr_email" required>
-		  <i class="fa fa-user icon"></i>
-		</div>
-		
-		<div class="input-container">
-		  <input class="input-field" type="password" placeholder="Password" id="password" name="password" required>
-		  <i class="fa fa-key icon"></i>
-		</div>
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+		<link rel="stylesheet" href="../style.css">
+		<script defer src="/js/jquery/dist/jquery.min.js"></script>
+		<script defer src="/js/custom-alert/custom-alert.js"></script>
+		<script defer type="module" src="login.js"></script>
+	</head>
+	<body>
+		<header class="header">
+			<h2>Sign in</h2>
+			<a href="./../popup.html" style="margin-left: auto;" class="btn-head round">&#8249;</a>
+		</header>
+			
+		<main id="main">
+		<div action="" method="POST" id="form">
+			<div class="input-container">
+			<input class="input-field" type="text" placeholder="Username/Email" id="usr_email" name="usr_email" required>
+			<i class="fa fa-user icon"></i>
+			</div>
+			
+			<div class="input-container">
+			<input class="input-field" type="password" placeholder="Password" id="password" name="password" required>
+			<i class="fa fa-key icon"></i>
+			</div>
 
-		<button id="send-button" class="btn"/>Login</button>
-		</div>
-	  </main>
-  </body>
+			<div style="text-align:center;">
+				<h3>You don't have an account? You can signup <a target="_blank" style="color:blue;" href="https://smart-booking-ba548.web.app/signup">here</a></h3>
+			</div>
+
+			<button id="send-button" class="btn">Login</button>
+			</div>
+		</main>
+
+		
+  	</body>
 </html>

@@ -8,7 +8,7 @@ async function getStatistics() {
     };
     let stats_div = document.getElementById("statistics-container");
     stats_div.innerHTML = "<h3>Still fetching data from server!</h3>";
-    chrome.runtime.sendMessage(_data, function (response) {
+    chrome.runtime.sendMessage(_data, function(response) {
         console.log(response);
         addStatistics(response);
     });
@@ -17,31 +17,68 @@ getStatistics();
 
 async function addStatistics(_stats) {
     let stats_div = document.getElementById("statistics-container");
-    stats_div.innerHTML = `<section id="covid-statistics"><canvas id="covid-chart"></canvas></section>`;
+    stats_div.innerHTML = `
+    <button style="cursor:pointer; width:96%; margin:auto; margin-top: 1px;" id="show_covid">
+        <b>Toggle covid status chart</b> </button>
+    <section class="hidden" id="covid-statistics">
+    <canvas id="covid-chart"></canvas></section>`;
     stats_div.innerHTML += `<section id="covid-news"></section>`;
     stats_div.innerHTML += `<section id="weather-statistics"></section>`;
     stats_div.innerHTML += `<section id="pollution_card"></section>`;
+    stats_div.innerHTML += `
+    <button style="cursor:pointer; width:96%; margin:auto; margin-top: 1px;" id="show_co2">
+        <b>Toggle CO2 emissions chart</b> </button>
+    <section class="hidden" id="co2-statistics">
+    <canvas id="co2_statistics-chart"></canvas></section>`;
     stats_div.innerHTML += `<section id="criminality_card"></section>`;
     stats_div.innerHTML += `<section id="living_cost_card"></section>`;
     stats_div.innerHTML += `<section id="restaurants_card"></section>`;
+    stats_div.innerHTML += `<section id="healthcare_card"></section>`;
+    stats_div.innerHTML += `<section id="food_card"></section>`;
     stats_div.innerHTML += `<section id="rating"></section>`;
 
-    addRestaurants(_stats.restaurants);
-    addCostOfLiving(_stats.living_cost, _stats.gasoline);
-    addRating(_stats.rating);
-    addCriminality(_stats.criminality);
-    addPolution(_stats.airPollution);
+
+    document.getElementById("show_co2").onclick = toggleCo2PollutionChart;
+    document.getElementById("show_covid").onclick = toggleCovidPollutionChart;
+
     addCovidStatistics(_stats.covid);
     addCovidNews(_stats.covid_news);
     addForecastCards(_stats.forecast);
+    addPolution(_stats.airPollution);
+    addCo2Emissions(_stats.co2Pollution);
+    addCriminality(_stats.criminality);
+    addCostOfLiving(_stats.living_cost, _stats.gasoline);
+    addRestaurants(_stats.restaurants);
+    addFood(_stats.food);
+    addHealthcare(_stats.healthcare);
+    addRating(_stats.rating);
 }
 
 //add covid info section
 async function addCovidStatistics(covid) {
-    //TO DO
-    setGlobalLabel();
+    setCovidGlobalLabel();
     let covid_data = covid.items.slice(-nrCovidDays);
     addCovidChart(covid_data);
+}
+
+function toggleCovidPollutionChart() {
+    let poll_chart = document.getElementById("covid-statistics");
+    poll_chart.classList.toggle("hidden");
+}
+
+function toggleCo2PollutionChart() {
+    let poll_chart = document.getElementById("co2-statistics");
+    poll_chart.classList.toggle("hidden");
+}
+
+var co2labels = [];
+var co2quantity = [];
+async function addCo2Emissions(co2) {
+    co2.forEach((item) => {
+        co2labels.push(item.year);
+        co2quantity.push(item.quantity);
+    });
+    addCo2Chart();
 }
 
 async function addCovidNews(covid_news) {
@@ -148,10 +185,10 @@ async function addForecastItem(_forecast) {
 }
 
 // covid chart section
-var labels = [];
+var covidlabels = [];
 var nrCovidDays = 14;
 
-function setGlobalLabel() {
+function setCovidGlobalLabel() {
     for (var i = nrCovidDays - 1; i >= 0; i--) {
         var today = new Date();
         today.setDate(today.getDate() - i - 1);
@@ -160,7 +197,7 @@ function setGlobalLabel() {
         var year = today.getFullYear();
 
         var result = day + "/" + month + "/" + year;
-        labels.push(result);
+        covidlabels.push(result);
     }
 }
 
@@ -174,13 +211,71 @@ function initializeCovidData(covid_data) {
     });
 }
 
+function addCo2Chart() {
+    const poll_chart = document.getElementById("co2_statistics-chart");
+    let chart = new Chart(poll_chart, {
+        type: "line",
+        data: {
+            labels: co2labels,
+            datasets: [
+                {
+                    label: "Co2 quantity in tones",
+                    fill: false,
+                    lineTension: 0.1,
+                    backgroundColor: "rgba(0, 0, 255, 0.5)",
+                    borderColor: "rgba(0, 0, 255, 1)",
+                    borderCapStyle: "butt",
+                    broderDash: [],
+                    borderDashOffset: 0.0,
+                    borderJoinStyle: "mitter",
+                    pointBorderColor: "rgba(92, 86, 110, 1)",
+                    pointBackgoundColor: "#fff",
+                    pointBorderWidth: 1,
+                    pointHoverRadius: 5,
+                    pointHoverBackgroundColor: "rgba(208, 86, 165, 0.86)",
+                    pointHoverBorderColor: "rgba(208, 86, 10, 0.86)",
+                    pointHoverBorderWidth: 2,
+                    pointRadius: 1,
+                    pointHitRadius: 10,
+                    data: co2quantity,
+                },
+            ],
+        },
+        options: {
+            responsive: true,
+            scales: {
+                xAxes: [
+                    {
+                        stacked: true,
+                    },
+                ],
+                yAxes: [
+                    {
+                        stacked: true,
+                    },
+                ],
+            },
+            plugins: {
+                legend: {
+                    display: true,
+                    position: "top",
+                    align: "center",
+                },
+                title: {
+                    display: false,
+                },
+            },
+        },
+    });
+}
+
 function addCovidChart(covid_data) {
     initializeCovidData(covid_data);
     const ch = document.getElementById("covid-chart");
     let chart = new Chart(ch, {
         type: "line",
         data: {
-            labels: labels,
+            labels: covidlabels,
             datasets: [
                 {
                     label: "New cases",
@@ -229,16 +324,12 @@ function addCovidChart(covid_data) {
         options: {
             responsive: true,
             scales: {
-                xAxes: [
-                    {
-                        stacked: true,
-                    },
-                ],
-                yAxes: [
-                    {
-                        stacked: true,
-                    },
-                ],
+                xAxes: [{
+                    stacked: true,
+                }, ],
+                yAxes: [{
+                    stacked: true,
+                }, ],
             },
             plugins: {
                 legend: {
@@ -528,4 +619,103 @@ async function addrestaurantsItem(restaurants_container, text, value) {
     `;
 
     restaurants_container.innerHTML += restaurants_item;
+}
+
+async function addHealthcare(healthcare) {
+    let healthcare_container = document.getElementById("healthcare_card");
+
+    if (!healthcare) {
+        healthcare = {
+            skillAndCompetencyOfMedicalStaff: "N/A",
+            speedInCompletingExaminationAndReports: "N/A",
+            equipmentForModernDiagnosisAndTreatment: "N/A",
+            accuracyAndCompletenessInFillingOutReports: "N/A",
+            friendlinessAndCourtesyOfTheStaff: "N/A",
+            satisfactionWithResponsivenessInMedicalInstitutions: "N/A",
+            satisfactionWithCostToYou: "N/A",
+            convenienceOfLocationForYou: "N/A",
+        };
+    }
+
+    let container = `
+    <table>
+        <tbody id="healthcare_card__container">
+            <tr id="healthcare_first"></tr>
+            <tr id="healthcare_second"></tr>
+        </tbody>
+    </table>
+    <img id="healthcare_icon" src="" alt="healthcare">
+    `;
+
+    healthcare_container.innerHTML += container;
+
+    let healthcare_icon = document.getElementById("healthcare_icon");
+    healthcare_icon.src = chrome.runtime.getURL("src/images/healthcare.png");
+
+    healthcare_container = document.getElementById("healthcare_first");
+
+    addhealthcareItem(healthcare_container, "skill and competency", healthcare.skillAndCompetencyOfMedicalStaff);
+    addhealthcareItem(healthcare_container, "examination reports", healthcare.speedInCompletingExaminationAndReports);
+    addhealthcareItem(healthcare_container, "modern diagnosis", healthcare.equipmentForModernDiagnosisAndTreatment);
+    addhealthcareItem(healthcare_container, "report filling", healthcare.accuracyAndCompletenessInFillingOutReports);
+
+    healthcare_container = document.getElementById("healthcare_second");
+
+    addhealthcareItem(healthcare_container, "friendliness", healthcare.friendlinessAndCourtesyOfTheStaff);
+    addhealthcareItem(healthcare_container, "satisfaction with responsivness", healthcare.satisfactionWithResponsivenessInMedicalInstitutions);
+    addhealthcareItem(healthcare_container, "satisfaction to you", healthcare.satisfactionWithCostToYou);
+    addhealthcareItem(healthcare_container, "convenience", healthcare.convenienceOfLocationForYou);
+}
+
+async function addhealthcareItem(healthcare_container, text, value) {
+    let healthcare_item = `
+    <td>
+        <div class="healthcare_card__content">
+            <p>${text}</p>
+            <p class="healthcare_card__content__value"><b>${value}</b></p>
+        </div>
+    </td>
+    `;
+
+    healthcare_container.innerHTML += healthcare_item;
+}
+
+async function addFood(food) {
+    let food_container = document.getElementById("food_card");
+
+    let container = `
+    <table>
+        <tbody id="food_card__container">
+            <tr id="food_first"></tr>
+            <tr id="food_second"></tr>
+        </tbody>
+    </table>
+    <img id="food_icon" src="" alt="food">
+    `;
+
+    food_container.innerHTML += container;
+
+    let food_icon = document.getElementById("food_icon");
+    food_icon.src = chrome.runtime.getURL("src/images/groceries.png");
+
+    food_container1 = document.getElementById("food_first");
+    food_container2 = document.getElementById("food_second");
+
+    for (i = 0; i < 4; i++) {
+        addfoodItem(food_container1, food[i].name, food[i].price);
+        addfoodItem(food_container2, food[4 + i].name, food[4 + i].price);
+    }
+}
+
+async function addfoodItem(food_container, text, value) {
+    let food_item = `
+    <td>
+        <div class="food_card__content">
+            <p>${text}</p>
+            <p class="food_card__content__value"><b>${value}</b></p>
+        </div>
+    </td>
+    `;
+
+    food_container.innerHTML += food_item;
 }
