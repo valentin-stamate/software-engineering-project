@@ -23,7 +23,7 @@ public class FoodPrice {
 
     public void setPrice(String price) {
         try {
-            price = price.substring(0, price.indexOf(".") + 3);
+            price = price.substring(0, price.indexOf(".") + 3) + " lei";
         } catch (Exception e) { }
         this.price = price;
     }

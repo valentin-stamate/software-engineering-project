@@ -247,7 +247,7 @@ public class ExternalApiController {
     }
 
     @GetMapping("/food_price")
-    public ResponseEntity<Object> getLocationFoodPrice(@RequestParam(name = "locationString") String locationString) {
+    public ResponseEntity<Object> getLocationFoodPrice(@RequestParam(name = "locations") String locationString) {
 
         List<FoodPrice> foodPrices = foodCache.verifyLocation(locationString);
 
