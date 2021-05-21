@@ -254,10 +254,12 @@ public class ExternalApiController {
 
         if(foodPrices != null){
             return new ResponseEntity<>(foodPrices, HttpStatus.OK);
-        }else{
-            foodPrices = ExternalAPI.getFoodPrice(locationSring);
-            foodCache.addLocationPrice(locationSring,foodPrices);
-            return new ResponseEntity<>(foodPrices,HttpStatus.OK);
         }
+
+        foodPrices = ExternalAPI.getFoodPrice(locationSring);
+        foodCache.addLocationPrice(locationSring,foodPrices);
+
+        return new ResponseEntity<>(foodPrices,HttpStatus.OK);
+
     }
 }
