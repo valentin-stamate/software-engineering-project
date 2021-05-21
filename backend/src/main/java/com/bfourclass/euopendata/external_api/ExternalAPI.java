@@ -1,6 +1,7 @@
 package com.bfourclass.euopendata.external_api;
 
 import com.bfourclass.euopendata.external_api.covid.*;
+import com.bfourclass.euopendata.external_api.food.CityPricesResponse;
 import com.bfourclass.euopendata.external_api.food.FoodPrice;
 import com.bfourclass.euopendata.external_api.instance.covid_news.SearchResultJSON;
 import com.bfourclass.euopendata.external_api.instance.covid_statistics.CovidStatistics;
@@ -8,11 +9,14 @@ import com.bfourclass.euopendata.external_api.instance.numbeo_data.*;
 import com.bfourclass.euopendata.external_api.instance.weather.current_weather.Weather;
 import com.bfourclass.euopendata.external_api.instance.weather.Forecast;
 import com.bfourclass.euopendata.external_api.instance.weather.statistical_weather.StatisticalWeather;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.HtmlUtils;
 
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public abstract class ExternalAPI {
 
@@ -90,6 +94,19 @@ public abstract class ExternalAPI {
     }
 
     public static List<FoodPrice> getFoodPrice(String location) {
-        return List.of();
+        final String marketEnding = ", Markets";
+        final String escaped = HtmlUtils.htmlEscape(location);
+        final String query = "https://www.numbeo.com/api/city_prices?api_key=apdv3cfmwz5v6x&query=%s";
+        final String requestUrl = String.format(query, escaped);
+        final CityPricesResponse response = new RestTemplate().getForObject(requestUrl, CityPricesResponse.class);
+        if (response == null) {
+            return List.of();
+        }
+        return response.getPrices().stream()
+                .filter(cityPrice -> cityPrice.getItemName().endsWith(marketEnding))
+                .map(cityPrice -> new FoodPrice(
+                        cityPrice.getItemName().replace(marketEnding, ""),
+                        cityPrice.getAveragePrice() + " " + response.getCurrency()))
+                .collect(Collectors.toList());
     }
 }
