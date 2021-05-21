@@ -8,7 +8,7 @@ async function getStatistics() {
     };
     let stats_div = document.getElementById("statistics-container");
     stats_div.innerHTML = "<h3>Still fetching data from server!</h3>";
-    chrome.runtime.sendMessage(_data, function (response) {
+    chrome.runtime.sendMessage(_data, function(response) {
         console.log(response);
         addStatistics(response);
     });
@@ -24,8 +24,12 @@ async function addStatistics(_stats) {
     stats_div.innerHTML += `<section id="criminality_card"></section>`;
     stats_div.innerHTML += `<section id="living_cost_card"></section>`;
     stats_div.innerHTML += `<section id="restaurants_card"></section>`;
+    stats_div.innerHTML += `<section id="healthcare_card"></section>`;
+    stats_div.innerHTML += `<section id="food_card"></section>`;
     stats_div.innerHTML += `<section id="rating"></section>`;
 
+    addFood(_stats.food);
+    addHealthcare(_stats.healthcare);
     addRestaurants(_stats.restaurants);
     addCostOfLiving(_stats.living_cost, _stats.gasoline);
     addRating(_stats.rating);
@@ -181,8 +185,7 @@ function addCovidChart(covid_data) {
         type: "line",
         data: {
             labels: labels,
-            datasets: [
-                {
+            datasets: [{
                     label: "New cases",
                     fill: false,
                     lineTension: 0.1,
@@ -229,16 +232,12 @@ function addCovidChart(covid_data) {
         options: {
             responsive: true,
             scales: {
-                xAxes: [
-                    {
-                        stacked: true,
-                    },
-                ],
-                yAxes: [
-                    {
-                        stacked: true,
-                    },
-                ],
+                xAxes: [{
+                    stacked: true,
+                }, ],
+                yAxes: [{
+                    stacked: true,
+                }, ],
             },
             plugins: {
                 legend: {
@@ -528,4 +527,103 @@ async function addrestaurantsItem(restaurants_container, text, value) {
     `;
 
     restaurants_container.innerHTML += restaurants_item;
+}
+
+async function addHealthcare(healthcare) {
+    let healthcare_container = document.getElementById("healthcare_card");
+
+    if (!healthcare) {
+        healthcare = {
+            skillAndCompetencyOfMedicalStaff: "N/A",
+            speedInCompletingExaminationAndReports: "N/A",
+            equipmentForModernDiagnosisAndTreatment: "N/A",
+            accuracyAndCompletenessInFillingOutReports: "N/A",
+            friendlinessAndCourtesyOfTheStaff: "N/A",
+            satisfactionWithResponsivenessInMedicalInstitutions: "N/A",
+            satisfactionWithCostToYou: "N/A",
+            convenienceOfLocationForYou: "N/A",
+        };
+    }
+
+    let container = `
+    <table>
+        <tbody id="healthcare_card__container">
+            <tr id="healthcare_first"></tr>
+            <tr id="healthcare_second"></tr>
+        </tbody>
+    </table>
+    <img id="healthcare_icon" src="" alt="healthcare">
+    `;
+
+    healthcare_container.innerHTML += container;
+
+    let healthcare_icon = document.getElementById("healthcare_icon");
+    healthcare_icon.src = chrome.runtime.getURL("src/images/healthcare.png");
+
+    healthcare_container = document.getElementById("healthcare_first");
+
+    addhealthcareItem(healthcare_container, "skill and competency", healthcare.skillAndCompetencyOfMedicalStaff);
+    addhealthcareItem(healthcare_container, "examination reports", healthcare.speedInCompletingExaminationAndReports);
+    addhealthcareItem(healthcare_container, "modern diagnosis", healthcare.equipmentForModernDiagnosisAndTreatment);
+    addhealthcareItem(healthcare_container, "report filling", healthcare.accuracyAndCompletenessInFillingOutReports);
+
+    healthcare_container = document.getElementById("healthcare_second");
+
+    addhealthcareItem(healthcare_container, "friendliness", healthcare.friendlinessAndCourtesyOfTheStaff);
+    addhealthcareItem(healthcare_container, "satisfaction with responsivness", healthcare.satisfactionWithResponsivenessInMedicalInstitutions);
+    addhealthcareItem(healthcare_container, "satisfaction to you", healthcare.satisfactionWithCostToYou);
+    addhealthcareItem(healthcare_container, "convenience", healthcare.convenienceOfLocationForYou);
+}
+
+async function addhealthcareItem(healthcare_container, text, value) {
+    let healthcare_item = `
+    <td>
+        <div class="healthcare_card__content">
+            <p>${text}</p>
+            <p class="healthcare_card__content__value"><b>${value}</b></p>
+        </div>
+    </td>
+    `;
+
+    healthcare_container.innerHTML += healthcare_item;
+}
+
+async function addFood(food) {
+    let food_container = document.getElementById("food_card");
+
+    let container = `
+    <table>
+        <tbody id="food_card__container">
+            <tr id="food_first"></tr>
+            <tr id="food_second"></tr>
+        </tbody>
+    </table>
+    <img id="food_icon" src="" alt="food">
+    `;
+
+    food_container.innerHTML += container;
+
+    let food_icon = document.getElementById("food_icon");
+    food_icon.src = chrome.runtime.getURL("src/images/groceries.png");
+
+    food_container1 = document.getElementById("food_first");
+    food_container2 = document.getElementById("food_second");
+
+    for (i = 0; i < 4; i++) {
+        addfoodItem(food_container1, food[i].name, food[i].price);
+        addfoodItem(food_container2, food[4 + i].name, food[4 + i].price);
+    }
+}
+
+async function addfoodItem(food_container, text, value) {
+    let food_item = `
+    <td>
+        <div class="food_card__content">
+            <p>${text}</p>
+            <p class="food_card__content__value"><b>${value}</b></p>
+        </div>
+    </td>
+    `;
+
+    food_container.innerHTML += food_item;
 }

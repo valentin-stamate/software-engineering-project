@@ -5,7 +5,7 @@ chrome.runtime.onInstalled.addListener(() => {
 });
 
 //example of using a message handler from the inject scripts
-chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     if (!request.sendStatistics) {
         var _data = {
             hotelName: request.hotelName,
@@ -35,10 +35,12 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
             url_living_cost: host_url + "costofliving_statistics?locations=" + request.hotelLocation,
             url_restaurants: host_url + "restaurants?locations=" + request.hotelLocation,
             url_gasoline: host_url + "gasoline_price?countries=" + request.country,
+            url_healthcare: host_url + "healthcare?locations=" + request.hotelLocation,
+            url_food: host_url + "food_price?location=" + request.hotelLocation
         };
 
         responses = fetchDataAboutLocation(uris)
-            .then(function (results) {
+            .then(function(results) {
                 let responses = {
                     covid: results.covid[0],
                     covid_news: results.covidNews[0].results,
@@ -49,6 +51,8 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
                     living_cost: results.livingCost[0],
                     restaurants: results.restaurants[0],
                     gasoline: results.gasoline[0],
+                    healthcare: results.healthcare[0],
+                    food: results.food
                 };
                 sendResponse(responses);
             })
@@ -61,8 +65,8 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 
 function fetchStatisticsFrom(url, msg = "Fetch failed") {
     return fetch(url, {
-        method: "GET",
-    })
+            method: "GET",
+        })
         .then((response) => response.json())
         .catch((err) => {
             console.log(err);
@@ -81,6 +85,8 @@ async function fetchDataAboutLocation(uris) {
         livingCostResp,
         restaurantsResp,
         gasolineResp,
+        healthcareResp,
+        foodResp
     ] = await Promise.all([
         fetchStatisticsFrom(uris.url_forecast, "Forecast request failed"),
         fetchStatisticsFrom(uris.url_covid, "Covid statistics request failed"),
@@ -91,6 +97,8 @@ async function fetchDataAboutLocation(uris) {
         fetchStatisticsFrom(uris.url_living_cost, "living cost request failed"),
         fetchStatisticsFrom(uris.url_restaurants, "restaurants request failed"),
         fetchStatisticsFrom(uris.url_gasoline, "gasoline request failed"),
+        fetchStatisticsFrom(uris.url_healthcare, "healthcare request failed"),
+        fetchStatisticsFrom(uris.url_food, "healthcare request failed")
     ]);
 
     const results = {
@@ -103,6 +111,8 @@ async function fetchDataAboutLocation(uris) {
         livingCost: livingCostResp,
         restaurants: restaurantsResp,
         gasoline: gasolineResp,
+        healthcare: healthcareResp,
+        food: foodResp
     };
 
     return results;
