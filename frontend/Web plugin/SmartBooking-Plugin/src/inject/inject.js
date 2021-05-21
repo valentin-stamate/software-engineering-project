@@ -1,50 +1,13 @@
-function getHotelAdress() {
-    var location_element = document.getElementsByClassName("hp_address_subtitle");
-    var adress = location_element[0].innerText;
-    return adress.trim().replace("\n", "");
-};
-
-function getName() {
-    var name_element = document.getElementById('hp_hotel_name');
-    var name = name_element ? name_element.childNodes[2].nodeValue : "";
-    return name.trim().replace("\n", "");
-}
-
-var hotelName = getName();
-var hotelAdress = getHotelAdress();
-console.log("Hotel name = " + hotelName);
-console.log("Hotel adress = " + hotelAdress);
-
-function addPopupHtml() {
-    let popup_str =
-        `<div id="main-popup">
-	<header class="header">
-		<button id="hide-btn">&#8213</button>
-	</header>
-	<div id="popup">
-		<div id="statistics-container"></div>
-		<button id="send-btn" style="cursor:pointer">Add preference</button>
-	</div>
-</div>`
-    document.body.getElementsByClassName("hp-description")[0].insertAdjacentHTML('beforebegin', popup_str);
-    document.getElementById("send-btn").addEventListener('click', sendPreferences);
-    document.getElementById("hide-btn").addEventListener('click', hidePopup);
-}
-addPopupHtml();
-
 async function getStatistics() {
     console.log("requesting statistics");
     var _data = {
         sendStatistics: true,
         hotelLocation: destination,
-        hotelIdentifier: identifier
-    }
-    chrome.runtime.sendMessage(_data, function(response) {
+        hotelIdentifier: identifier,
+        country: "Romania",
+    };
+    chrome.runtime.sendMessage(_data, function (response) {
         console.log(response);
-        //forecast:         response.forecast
-        //covid:            response.covid
-        //covid_news:       response.covid_news
-        //air_pollution:    response.airPollution
         addStatistics(response);
     });
 }
@@ -81,8 +44,7 @@ async function addCovidStatistics(covid) {
 
 async function addCovidNews(covid_news) {
     let news = covid_news[0];
-    if (!news)
-        return;
+    if (!news) return;
     let covidNews = document.getElementById("covid-news");
 
     let covidNewsCard = `<h4 style="padding:0; margin:2px 0;">${news.title}</h4>
@@ -108,7 +70,7 @@ async function addForecastCards(forecast) {
             j++;
         }
         card_info.push(list[j]);
-        j++
+        j++;
         addForecastItem(card_info);
         curr_date.setDate(curr_date.getDate() + 1);
     }
@@ -116,7 +78,7 @@ async function addForecastCards(forecast) {
 
 async function addForecastItem(_forecast) {
     let index = Math.floor(_forecast.length / 2);
-    let days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    let days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
     let day = days[new Date(_forecast[0].dt * 1000).getDay()];
 
     let avg_temp = (_forecast[index].main.temp - 273.15).toFixed(2);
@@ -137,8 +99,7 @@ async function addForecastItem(_forecast) {
         }
     }
 
-    let weatherCard =
-        `<div class="weather_card">
+    let weatherCard = `<div class="weather_card">
     <h2 class="weather_card__day">${day}</h2>
     <div class="weather_card__info_main">
         <h3 class="weather_card__description">${title}</h3>
@@ -184,36 +145,6 @@ async function addForecastItem(_forecast) {
     weatherInfo.innerHTML += weatherCard;
 }
 
-var show = true;
-
-// button events
-function hidePopup() {
-    var popup = document.getElementById("popup");
-    var btn = document.getElementById("hide-btn");
-    if (show) {
-        btn.innerHTML = "+"
-        popup.style.display = "none";
-    } else {
-        btn.innerHTML = "&#8213";
-        popup.style.display = "block";
-    }
-    show = !show;
-}
-
-function sendPreferences() {
-    console.log("sending preference");
-    let hotel_path = window.location.pathname;
-    var _data = {
-        sendStatistics: false,
-        hotelName: hotelName,
-        hotelLocation: destination,
-        hotelPath: hotel_path
-    }
-    chrome.runtime.sendMessage(_data, function(response) {
-        console.log(JSON.stringify(response));
-    });
-}
-
 // covid chart section
 var labels = [];
 var nrCovidDays = 14;
@@ -222,11 +153,11 @@ function setGlobalLabel() {
     for (var i = nrCovidDays - 1; i >= 0; i--) {
         var today = new Date();
         today.setDate(today.getDate() - i - 1);
-        var day = (today.getDate() < 10) ? '0' + today.getDate() : today.getDate();
-        var month = (today.getMonth() + 1 < 10) ? '0' + (today.getMonth() + 1) : (today.getMonth() + 1);
+        var day = today.getDate() < 10 ? "0" + today.getDate() : today.getDate();
+        var month = today.getMonth() + 1 < 10 ? "0" + (today.getMonth() + 1) : today.getMonth() + 1;
         var year = today.getFullYear();
 
-        var result = day + '/' + month + '/' + year;
+        var result = day + "/" + month + "/" + year;
         labels.push(result);
     }
 }
@@ -238,26 +169,27 @@ function initializeCovidData(covid_data) {
     covid_data.forEach((item) => {
         randomPossibleCase.push(item.newCases);
         randomDeathCases.push(item.newDeaths);
-    })
+    });
 }
 
 function addCovidChart(covid_data) {
     initializeCovidData(covid_data);
     const ch = document.getElementById("covid-chart");
     let chart = new Chart(ch, {
-        type: 'line',
+        type: "line",
         data: {
             labels: labels,
-            datasets: [{
+            datasets: [
+                {
                     label: "New cases",
                     fill: false,
                     lineTension: 0.1,
                     backgroundColor: "rgba(0, 0, 255, 0.5)",
                     borderColor: "rgba(0, 0, 255, 1)",
-                    borderCapStyle: 'butt',
+                    borderCapStyle: "butt",
                     broderDash: [],
                     borderDashOffset: 0.0,
-                    borderJoinStyle: 'mitter',
+                    borderJoinStyle: "mitter",
                     pointBorderColor: "rgba(92, 86, 110, 1)",
                     pointBackgoundColor: "#fff",
                     pointBorderWidth: 1,
@@ -275,10 +207,10 @@ function addCovidChart(covid_data) {
                     lineTension: 0.1,
                     backgroundColor: "rgba(255, 0, 0, 0.5)",
                     borderColor: "rgba(255, 0, 0, 1)",
-                    borderCapStyle: 'butt',
+                    borderCapStyle: "butt",
                     broderDash: [],
                     borderDashOffset: 0.0,
-                    borderJoinStyle: 'mitter',
+                    borderJoinStyle: "mitter",
                     pointBorderColor: "rgba(92, 86, 110, 1)",
                     pointBackgoundColor: "#fff",
                     pointBorderWidth: 1,
@@ -289,30 +221,34 @@ function addCovidChart(covid_data) {
                     pointRadius: 1,
                     pointHitRadius: 10,
                     data: randomDeathCases,
-                }
-            ]
+                },
+            ],
         },
         options: {
             responsive: true,
             scales: {
-                xAxes: [{
-                    stacked: true
-                }],
-                yAxes: [{
-                    stacked: true
-                }]
+                xAxes: [
+                    {
+                        stacked: true,
+                    },
+                ],
+                yAxes: [
+                    {
+                        stacked: true,
+                    },
+                ],
             },
             plugins: {
                 legend: {
                     display: true,
-                    position: 'top',
-                    align: 'center'
+                    position: "top",
+                    align: "center",
                 },
                 title: {
-                    display: false
-                }
+                    display: false,
+                },
             },
-        }
+        },
     });
 }
 
@@ -321,15 +257,15 @@ async function addPolution(airPollution) {
 
     if (!airPollution) {
         airPollution = {
-            airQualityIndex: 'N/A',
-            pm10ValueIndex: 'N/A',
-            pm25ValueIndex: 'N/A',
-            waterPollutionIndex: 'N/A',
-            o3ValueIndex: 'N/A',
-            no2ValueIndex: 'N/A',
-            so2ValueIndex: 'N/A',
-            covalueIndex: 'N/A',
-        }
+            airQualityIndex: "N/A",
+            pm10ValueIndex: "N/A",
+            pm25ValueIndex: "N/A",
+            waterPollutionIndex: "N/A",
+            o3ValueIndex: "N/A",
+            no2ValueIndex: "N/A",
+            so2ValueIndex: "N/A",
+            covalueIndex: "N/A",
+        };
     }
 
     let image = `
@@ -345,48 +281,44 @@ async function addPolution(airPollution) {
     let pollution_icon = document.getElementById("pollution_icon");
     pollution_icon.src = chrome.runtime.getURL("src/images/air_polution.png");
 
-
     pollution_container = document.getElementById("pollution_first");
-    addPolutionItem(pollution_container, 'air quality index', airPollution.airQualityIndex);
-    addPolutionItem(pollution_container, 'pm10 value', airPollution.pm10ValueIndex);
-    addPolutionItem(pollution_container, 'pm25 value', airPollution.pm25ValueIndex);
-    addPolutionItem(pollution_container, 'water pollution', airPollution.waterPollutionIndex);
+    addPolutionItem(pollution_container, "air quality index", airPollution.airQualityIndex);
+    addPolutionItem(pollution_container, "pm10 value", airPollution.pm10ValueIndex);
+    addPolutionItem(pollution_container, "pm25 value", airPollution.pm25ValueIndex);
+    addPolutionItem(pollution_container, "water pollution", airPollution.waterPollutionIndex);
 
     pollution_container = document.getElementById("pollution_second");
-    addPolutionItem(pollution_container, 'O3 value', airPollution.o3ValueIndex);
-    addPolutionItem(pollution_container, 'NO2 value', airPollution.no2ValueIndex);
-    addPolutionItem(pollution_container, 'SO2 value', airPollution.so2ValueIndex);
-    addPolutionItem(pollution_container, 'CO value', airPollution.covalueIndex);
-
-
+    addPolutionItem(pollution_container, "O3 value", airPollution.o3ValueIndex);
+    addPolutionItem(pollution_container, "NO2 value", airPollution.no2ValueIndex);
+    addPolutionItem(pollution_container, "SO2 value", airPollution.so2ValueIndex);
+    addPolutionItem(pollution_container, "CO value", airPollution.covalueIndex);
 }
 
 async function addPolutionItem(pollution_container, text, value) {
     let pollution_item = ` <td>
     <div class="pollution_card__content">
         <p>${text}</p>
-        <p class="pollution_card__content__value"><b>${(value == null)?'N/A':value}</b></p>
+        <p class="pollution_card__content__value"><b>${value == null ? "N/A" : value}</b></p>
     </div></td>
     `;
 
     pollution_container.innerHTML += pollution_item;
-
 }
 
 async function addCriminality(criminality) {
     let criminality_container = document.getElementById("criminality_card");
 
-    if (criminality === null) {
+    if (!criminality) {
         criminality = {
-            crimeIndex: 'N/A',
-            robbingIndex: 'N/A',
-            brokenHomesIndex: 'N/A',
-            stolenCarsIndex: 'N/A',
-            attackedIndex: 'N/A',
-            drugsIndex: 'N/A',
-            violentCrimesIndex: 'N/A',
-            insultedIndex: 'N/A'
-        }
+            crimeIndex: "N/A",
+            robbingIndex: "N/A",
+            brokenHomesIndex: "N/A",
+            stolenCarsIndex: "N/A",
+            attackedIndex: "N/A",
+            drugsIndex: "N/A",
+            violentCrimesIndex: "N/A",
+            insultedIndex: "N/A",
+        };
     }
 
     let image = `
@@ -407,17 +339,17 @@ async function addCriminality(criminality) {
 
     criminality_container = document.getElementById("criminality_first");
 
-    addCriminalityItem(criminality_container, 'crime index', criminality.crimeIndex);
-    addCriminalityItem(criminality_container, 'robbing index', criminality.robbingIndex);
-    addCriminalityItem(criminality_container, 'broken homes index', criminality.brokenHomesIndex);
-    addCriminalityItem(criminality_container, 'stolen cars index', criminality.stolenCarsIndex);
+    addCriminalityItem(criminality_container, "crime index", criminality.crimeIndex);
+    addCriminalityItem(criminality_container, "robbing index", criminality.robbingIndex);
+    addCriminalityItem(criminality_container, "broken homes index", criminality.brokenHomesIndex);
+    addCriminalityItem(criminality_container, "stolen cars index", criminality.stolenCarsIndex);
 
     criminality_container = document.getElementById("criminality_second");
 
-    addCriminalityItem(criminality_container, 'attacked index', criminality.attackedIndex);
-    addCriminalityItem(criminality_container, 'drugs index', criminality.drugsIndex);
-    addCriminalityItem(criminality_container, 'violent crimes index', criminality.violentCrimesIndex);
-    addCriminalityItem(criminality_container, 'insulted index', criminality.insultedIndex);
+    addCriminalityItem(criminality_container, "attacked index", criminality.attackedIndex);
+    addCriminalityItem(criminality_container, "drugs index", criminality.drugsIndex);
+    addCriminalityItem(criminality_container, "violent crimes index", criminality.violentCrimesIndex);
+    addCriminalityItem(criminality_container, "insulted index", criminality.insultedIndex);
 }
 
 async function addCriminalityItem(criminality_container, text, value) {
@@ -434,10 +366,9 @@ async function addCriminalityItem(criminality_container, text, value) {
 }
 
 async function addRating(reviews) {
-
     if (reviews.message == "Hotel not found") {
         reviews = {
-            length: 0
+            length: 0,
         };
     }
 
@@ -465,16 +396,33 @@ async function addRating(reviews) {
         let checked = i <= mean;
         addStar(rating_stars, checked);
     }
-
 }
 
 async function addStar(rating_stars_container, checked = false) {
-    let star_file_name = checked ? 'checked_star.png' : 'unchecked_star.png';
-    let source = chrome.runtime.getURL('src/images/' + star_file_name);
-    rating_stars_container.innerHTML += `<img class="rating_star" src="${source}" alt=""></img>`
+    let star_file_name = checked ? "checked_star.png" : "unchecked_star.png";
+    let source = chrome.runtime.getURL("src/images/" + star_file_name);
+    rating_stars_container.innerHTML += `<img class="rating_star" src="${source}" alt=""></img>`;
 }
 
 async function addCostOfLiving(living_cost, gasoline) {
+    if (!living_cost) {
+        living_cost = {
+            gasolinePrice: "N/A",
+            domesticBeerPrice: "N/A",
+            waterPrice: "N/A",
+            cigarettesPrice: "N/A",
+            busTicketPrice: "N/A",
+            taxiKmPrice: "N/A",
+            monthlyPersonCost: "N/A",
+        };
+    }
+
+    if (!gasoline) {
+        gasoline = {
+            price: "N/A",
+            measure: "N/A",
+        };
+    }
 
     let living_cost_container = document.getElementById("living_cost_card");
 
@@ -495,17 +443,17 @@ async function addCostOfLiving(living_cost, gasoline) {
 
     living_cost_container = document.getElementById("living_cost_first");
 
-    addliving_costItem(living_cost_container, 'gasoline price', living_cost.gasolinePrice + " /l");
-    addliving_costItem(living_cost_container, 'gasoline price country', gasoline.price + " " + gasoline.measure);
-    addliving_costItem(living_cost_container, 'domestic beer', living_cost.domesticBeerPrice);
-    addliving_costItem(living_cost_container, 'water price', living_cost.waterPrice);
+    addliving_costItem(living_cost_container, "gasoline price", living_cost.gasolinePrice + " /l");
+    addliving_costItem(living_cost_container, "gasoline price country", gasoline.price + " " + gasoline.measure);
+    addliving_costItem(living_cost_container, "domestic beer", living_cost.domesticBeerPrice);
+    addliving_costItem(living_cost_container, "water price", living_cost.waterPrice);
 
     living_cost_container = document.getElementById("living_cost_second");
 
-    addliving_costItem(living_cost_container, 'cigarettes price', living_cost.cigarettesPrice);
-    addliving_costItem(living_cost_container, 'bus ticket', living_cost.busTicketPrice);
-    addliving_costItem(living_cost_container, 'taxi', living_cost.taxiKmPrice + "/km");
-    addliving_costItem(living_cost_container, 'monthly cost', living_cost.monthlyPersonCost);
+    addliving_costItem(living_cost_container, "cigarettes price", living_cost.cigarettesPrice);
+    addliving_costItem(living_cost_container, "bus ticket", living_cost.busTicketPrice);
+    addliving_costItem(living_cost_container, "taxi cost", living_cost.taxiKmPrice + "/km");
+    addliving_costItem(living_cost_container, "monthly cost", living_cost.monthlyPersonCost);
 }
 
 async function addliving_costItem(living_cost_container, text, value) {
@@ -521,10 +469,21 @@ async function addliving_costItem(living_cost_container, text, value) {
     living_cost_container.innerHTML += living_cost_item;
 }
 
-
 async function addRestaurants(restaurants) {
-
     let restaurants_container = document.getElementById("restaurants_card");
+
+    if (!restaurants) {
+        restaurants = {
+            simpleMeal1PersonPrice: "N/A",
+            fullMeal2PersonsPrice: "N/A",
+            beerDraughtPrice: "N/A",
+            beerBottlePrice: "N/A",
+            cappuccinoPrice: "N/A",
+            waterPrice: "N/A",
+            mcMealPrice: "N/A",
+            cokePrice: "N/A",
+        };
+    }
 
     let container = `
     <table>
@@ -543,17 +502,17 @@ async function addRestaurants(restaurants) {
 
     restaurants_container = document.getElementById("restaurants_first");
 
-    addrestaurantsItem(restaurants_container, 'simple 1 person meal', restaurants.simpleMeal1PersonPrice);
-    addrestaurantsItem(restaurants_container, 'full 2 persons meal', restaurants.fullMeal2PersonsPrice);
-    addrestaurantsItem(restaurants_container, 'beer draught', restaurants.beerDraughtPrice);
-    addrestaurantsItem(restaurants_container, 'beer bottle', restaurants.beerBottlePrice);
+    addrestaurantsItem(restaurants_container, "simple 1 person meal", restaurants.simpleMeal1PersonPrice);
+    addrestaurantsItem(restaurants_container, "full 2 persons meal", restaurants.fullMeal2PersonsPrice);
+    addrestaurantsItem(restaurants_container, "beer draught", restaurants.beerDraughtPrice);
+    addrestaurantsItem(restaurants_container, "beer bottle", restaurants.beerBottlePrice);
 
     restaurants_container = document.getElementById("restaurants_second");
 
-    addrestaurantsItem(restaurants_container, 'capucciono', restaurants.cappuccinoPrice);
-    addrestaurantsItem(restaurants_container, 'water', restaurants.waterPrice);
-    addrestaurantsItem(restaurants_container, 'mc meal', restaurants.mcMealPrice);
-    addrestaurantsItem(restaurants_container, 'coke', restaurants.cokePrice);
+    addrestaurantsItem(restaurants_container, "capucciono", restaurants.cappuccinoPrice);
+    addrestaurantsItem(restaurants_container, "water price", restaurants.waterPrice);
+    addrestaurantsItem(restaurants_container, "mc meal", restaurants.mcMealPrice);
+    addrestaurantsItem(restaurants_container, "coke price", restaurants.cokePrice);
 }
 
 async function addrestaurantsItem(restaurants_container, text, value) {
