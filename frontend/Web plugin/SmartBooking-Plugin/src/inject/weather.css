@@ -9,11 +9,11 @@
     margin-right: 5px;
     display: inline-block;
     padding: 5px 5px;
-    width: 140px;
+    width: 170px;
     height: 230px;
     border-radius: 3px;
     background-color: #fff;
-    box-shadow: 1px 2px 10px rgba(0, 0, 0, .2);
+    box-shadow: 1px 2px 10px rgba(0, 0, 0, 0.2);
 }
 
 .weather_card__main {
@@ -28,7 +28,7 @@
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    background-color: #03A9F4;
+    background-color: #03a9f4;
 }
 
 .weather_card__sky img {
@@ -41,7 +41,7 @@
     color: #666;
     font-weight: 300;
     font-size: 2em;
-    line-height: .2em;
+    line-height: 0.2em;
 }
 
 .weather_card__info_main {
@@ -58,7 +58,7 @@
     color: #777;
     font-weight: 400;
     font-size: 0.85em;
-    margin: 0;
+    margin: 2px;
     padding: 0;
     width: 100%;
 }
@@ -106,7 +106,7 @@
     background: white;
     color: #666;
     margin-top: 10px;
-    padding: 0;
+    padding: 2px;
 }
 
 #pollution_card td {
@@ -124,13 +124,15 @@
     height: 75px;
 }
 
-.pollution_card__content__value b {
-    font-size: 2em;
-}
-
 .pollution_card__content p {
     padding: 5px;
+    padding-bottom: 1px;
     margin: 0;
+}
+
+.pollution_card__content__value b {
+    font-size: 2em;
+    padding: 5px;
 }
 
 #criminality_card {
@@ -142,7 +144,7 @@
     background: white;
     color: #666;
     margin-top: 10px;
-    padding: 0;
+    padding: 2px;
 }
 
 #criminality_card td {
@@ -164,13 +166,15 @@
     height: 75px;
 }
 
-.criminality_card__content__value b {
-    font-size: 2em;
-}
-
 .criminality_card__content p {
     padding: 5px;
+    padding-bottom: 1px;
     margin: 0;
+}
+
+.criminality_card__content__value b {
+    font-size: 2em;
+    padding: 5px;
 }
 
 #rating {
@@ -204,7 +208,7 @@
     background: white;
     color: #666;
     margin-top: 10px;
-    padding: 0;
+    padding: 2px;
 }
 
 #living_cost_card td {
@@ -226,13 +230,15 @@
     height: 75px;
 }
 
-.living_cost_card__content__value b {
-    font-size: 2em;
-}
-
 .living_cost_card__content p {
     padding: 5px;
+    padding-bottom: 1px;
     margin: 0;
+}
+
+.living_cost_card__content__value b {
+    font-size: 2em;
+    padding: 5px;
 }
 
 #restaurants_card {
@@ -244,7 +250,7 @@
     background: white;
     color: #666;
     margin-top: 10px;
-    padding: 0;
+    padding: 2px;
 }
 
 #restaurants_card td {
@@ -266,11 +272,13 @@
     height: 75px;
 }
 
-.restaurants_card__content__value b {
-    font-size: 2em;
-}
-
 .restaurants_card__content p {
     padding: 5px;
+    padding-bottom: 1px;
     margin: 0;
+}
+
+.restaurants_card__content__value b {
+    font-size: 2em;
+    padding: 5px;
 }

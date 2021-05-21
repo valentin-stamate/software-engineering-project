@@ -240,21 +240,21 @@ public class NumbeoAPI {
         // Parsing data on restaurant container
         container = htmlParser.select("table[class=\"table_builder_with_value_explanation data_wide_table\"]").get(0);
         elements = container.select("td[class=\"indexValueTd\"]");
-        healthCareStatistics.setSkillAndCompetencyOfMedicalStaff(Float.parseFloat(elements.get(1).text()));
-        healthCareStatistics.setSpeedInCompletingExaminationAndReports(Float.parseFloat(elements.get(2).text()));
-        healthCareStatistics.setEquipmentForModernDiagnosisAndTreatment(Float.parseFloat(elements.get(3).text()));
-        healthCareStatistics.setAccuracyAndCompletenessInFillingOutReports(Float.parseFloat(elements.get(4).text()));
-        healthCareStatistics.setFriendlinessAndCourtesyOfTheStaff(Float.parseFloat(elements.get(5).text()));
-        healthCareStatistics.setSatisfactionWithResponsivenessInMedicalInstitutions(Float.parseFloat(elements.get(6).text()));
-        healthCareStatistics.setSatisfactionWithCostToYou(Float.parseFloat(elements.get(7).text()));
-        healthCareStatistics.setConvenienceOfLocationForYou(Float.parseFloat(elements.get(8).text()));
+        healthCareStatistics.setSkillAndCompetencyOfMedicalStaff(Float.parseFloat(elements.get(0).text()));
+        healthCareStatistics.setSpeedInCompletingExaminationAndReports(Float.parseFloat(elements.get(1).text()));
+        healthCareStatistics.setEquipmentForModernDiagnosisAndTreatment(Float.parseFloat(elements.get(2).text()));
+        healthCareStatistics.setAccuracyAndCompletenessInFillingOutReports(Float.parseFloat(elements.get(3).text()));
+        healthCareStatistics.setFriendlinessAndCourtesyOfTheStaff(Float.parseFloat(elements.get(4).text()));
+        healthCareStatistics.setSatisfactionWithResponsivenessInMedicalInstitutions(Float.parseFloat(elements.get(5).text()));
+        healthCareStatistics.setSatisfactionWithCostToYou(Float.parseFloat(elements.get(6).text()));
+        healthCareStatistics.setConvenienceOfLocationForYou(Float.parseFloat(elements.get(7).text()));
 
         return healthCareStatistics;
     }
     public static HealthCareStatistics requestHealthCareStatistics(String cityName) throws IOException {
         // Requesting HTML page
         cityName = cityName.substring(0, 1).toUpperCase() + cityName.substring(1);
-        String command = "curl https://www.numbeo.com/cost-of-living/in/" + cityName + "/";
+        String command = "curl https://www.numbeo.com/health-care/in/" + cityName + "/";
 
         String data = getTextFromCommand(command);
 
