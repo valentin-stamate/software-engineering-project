@@ -5,7 +5,7 @@ chrome.runtime.onInstalled.addListener(() => {
 });
 
 //handle the request from inject.js (script injected on booking.com/hotel)
-chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     if (!request.sendStatistics) {
         var _data = {
             hotelName: request.hotelName,
@@ -34,7 +34,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
             url_restaurants: host_url + "restaurants?locations=" + request.hotelLocation,
             url_gasoline: host_url + "gasoline_price?countries=" + request.country,
             url_healthcare: host_url + "healthcare?locations=" + request.hotelLocation,
-            url_food: host_url + "food_price?location=" + request.hotelLocation
+            url_food: host_url + "food_price?locations=" + request.hotelLocation
         };
 
         responses = fetchDataAboutLocation(uris)
@@ -99,7 +99,7 @@ async function fetchDataAboutLocation(uris) {
         fetchStatisticsFrom(uris.url_restaurants, "restaurants request failed"),
         fetchStatisticsFrom(uris.url_gasoline, "gasoline request failed"),
         fetchStatisticsFrom(uris.url_healthcare, "healthcare request failed"),
-        fetchStatisticsFrom(uris.url_food, "healthcare request failed")
+        fetchStatisticsFrom(uris.url_food, "food request failed")
     ]);
 
     const results = {
