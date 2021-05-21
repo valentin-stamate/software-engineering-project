@@ -25,19 +25,4 @@ public class HotelJSON {
         this.price = price;
     }
 
-    @Override
-    public String toString() {
-        return "HotelJSON{" +
-                "id=" + id +
-                ", identifier='" + identifier + '\'' +
-                ", hotelUrl='" + hotelUrl + '\'' +
-                ", hotelName='" + hotelName + '\'' +
-                ", locationName='" + locationName + '\'' +
-                ", averageRating=" + averageRating +
-                ", votes=" + votes +
-                ", photoLink='" + photoLink + '\'' +
-                ", description='" + description + '\'' +
-                ", price=" + price +
-                '}';
-    }
 }
