@@ -17,10 +17,19 @@ getStatistics();
 
 async function addStatistics(_stats) {
     let stats_div = document.getElementById("statistics-container");
-    stats_div.innerHTML = `<section id="covid-statistics"><canvas id="covid-chart"></canvas></section>`;
+    stats_div.innerHTML = `
+    <button style="cursor:pointer; width:96%; margin:auto; margin-top: 1px;" id="show_covid">
+        <b>Toggle covid status chart</b> </button>
+    <section class="hidden" id="covid-statistics">
+    <canvas id="covid-chart"></canvas></section>`;
     stats_div.innerHTML += `<section id="covid-news"></section>`;
     stats_div.innerHTML += `<section id="weather-statistics"></section>`;
     stats_div.innerHTML += `<section id="pollution_card"></section>`;
+    stats_div.innerHTML += `
+    <button style="cursor:pointer; width:96%; margin:auto; margin-top: 1px;" id="show_co2">
+        <b>Toggle CO2 emissions chart</b> </button>
+    <section class="hidden" id="co2-statistics">
+    <canvas id="co2_statistics-chart"></canvas></section>`;
     stats_div.innerHTML += `<section id="criminality_card"></section>`;
     stats_div.innerHTML += `<section id="living_cost_card"></section>`;
     stats_div.innerHTML += `<section id="restaurants_card"></section>`;
@@ -28,24 +37,48 @@ async function addStatistics(_stats) {
     stats_div.innerHTML += `<section id="food_card"></section>`;
     stats_div.innerHTML += `<section id="rating"></section>`;
 
-    addFood(_stats.food);
-    addHealthcare(_stats.healthcare);
-    addRestaurants(_stats.restaurants);
-    addCostOfLiving(_stats.living_cost, _stats.gasoline);
-    addRating(_stats.rating);
-    addCriminality(_stats.criminality);
-    addPolution(_stats.airPollution);
+
+    document.getElementById("show_co2").onclick = toggleCo2PollutionChart;
+    document.getElementById("show_covid").onclick = toggleCovidPollutionChart;
+
     addCovidStatistics(_stats.covid);
     addCovidNews(_stats.covid_news);
     addForecastCards(_stats.forecast);
+    addPolution(_stats.airPollution);
+    addCo2Emissions(_stats.co2Pollution);
+    addCriminality(_stats.criminality);
+    addCostOfLiving(_stats.living_cost, _stats.gasoline);
+    addRestaurants(_stats.restaurants);
+    addFood(_stats.food);
+    addHealthcare(_stats.healthcare);
+    addRating(_stats.rating);
 }
 
 //add covid info section
 async function addCovidStatistics(covid) {
-    //TO DO
-    setGlobalLabel();
+    setCovidGlobalLabel();
     let covid_data = covid.items.slice(-nrCovidDays);
     addCovidChart(covid_data);
+}
+
+function toggleCovidPollutionChart() {
+    let poll_chart = document.getElementById("covid-statistics");
+    poll_chart.classList.toggle("hidden");
+}
+
+function toggleCo2PollutionChart() {
+    let poll_chart = document.getElementById("co2-statistics");
+    poll_chart.classList.toggle("hidden");
+}
+
+var co2labels = [];
+var co2quantity = [];
+async function addCo2Emissions(co2) {
+    co2.forEach((item) => {
+        co2labels.push(item.year);
+        co2quantity.push(item.quantity);
+    });
+    addCo2Chart();
 }
 
 async function addCovidNews(covid_news) {
@@ -152,10 +185,10 @@ async function addForecastItem(_forecast) {
 }
 
 // covid chart section
-var labels = [];
+var covidlabels = [];
 var nrCovidDays = 14;
 
-function setGlobalLabel() {
+function setCovidGlobalLabel() {
     for (var i = nrCovidDays - 1; i >= 0; i--) {
         var today = new Date();
         today.setDate(today.getDate() - i - 1);
@@ -164,7 +197,7 @@ function setGlobalLabel() {
         var year = today.getFullYear();
 
         var result = day + "/" + month + "/" + year;
-        labels.push(result);
+        covidlabels.push(result);
     }
 }
 
@@ -178,14 +211,73 @@ function initializeCovidData(covid_data) {
     });
 }
 
+function addCo2Chart() {
+    const poll_chart = document.getElementById("co2_statistics-chart");
+    let chart = new Chart(poll_chart, {
+        type: "line",
+        data: {
+            labels: co2labels,
+            datasets: [
+                {
+                    label: "Co2 quantity in tones",
+                    fill: false,
+                    lineTension: 0.1,
+                    backgroundColor: "rgba(0, 0, 255, 0.5)",
+                    borderColor: "rgba(0, 0, 255, 1)",
+                    borderCapStyle: "butt",
+                    broderDash: [],
+                    borderDashOffset: 0.0,
+                    borderJoinStyle: "mitter",
+                    pointBorderColor: "rgba(92, 86, 110, 1)",
+                    pointBackgoundColor: "#fff",
+                    pointBorderWidth: 1,
+                    pointHoverRadius: 5,
+                    pointHoverBackgroundColor: "rgba(208, 86, 165, 0.86)",
+                    pointHoverBorderColor: "rgba(208, 86, 10, 0.86)",
+                    pointHoverBorderWidth: 2,
+                    pointRadius: 1,
+                    pointHitRadius: 10,
+                    data: co2quantity,
+                },
+            ],
+        },
+        options: {
+            responsive: true,
+            scales: {
+                xAxes: [
+                    {
+                        stacked: true,
+                    },
+                ],
+                yAxes: [
+                    {
+                        stacked: true,
+                    },
+                ],
+            },
+            plugins: {
+                legend: {
+                    display: true,
+                    position: "top",
+                    align: "center",
+                },
+                title: {
+                    display: false,
+                },
+            },
+        },
+    });
+}
+
 function addCovidChart(covid_data) {
     initializeCovidData(covid_data);
     const ch = document.getElementById("covid-chart");
     let chart = new Chart(ch, {
         type: "line",
         data: {
-            labels: labels,
-            datasets: [{
+            labels: covidlabels,
+            datasets: [
+                {
                     label: "New cases",
                     fill: false,
                     lineTension: 0.1,

@@ -96,6 +96,11 @@ public class NumbeoAPI {
         else
             costOfLivingStatistics.setMonthlyPersonCost(elements.get(1).text());
 
+        String monthlyPersonCost = costOfLivingStatistics.getMonthlyPersonCost();
+        monthlyPersonCost = monthlyPersonCost.substring(0, monthlyPersonCost.length() - 3) + " lei";
+
+        costOfLivingStatistics.setMonthlyPersonCost(monthlyPersonCost);
+
         // Parsing data on data container
         container = htmlParser.select("table[class=\"data_wide_table new_bar_table\"]").get(0);
         elements = container.select("span[class=\"first_currency\"]");
@@ -186,8 +191,8 @@ public class NumbeoAPI {
         // Parsing data on restaurant container
         container = htmlParser.select("table[class=\"data_wide_table new_bar_table\"]").get(0);
         elements = container.select("span[class=\"first_currency\"]");
-        restaurantsStatistics.setSimpleMeal1PersonPrice((elements.get(1).text()).replaceAll("&nbsp;", " "));
-        restaurantsStatistics.setFullMeal2PersonsPrice((elements.get(2).text()).replaceAll("&nbsp;", " "));
+        restaurantsStatistics.setSimpleMeal1PersonPrice((elements.get(2).text()).replaceAll("&nbsp;", " "));
+        restaurantsStatistics.setFullMeal2PersonsPrice((elements.get(1).text()).replaceAll("&nbsp;", " "));
         restaurantsStatistics.setMcMealPrice((elements.get(3).text()).replaceAll("&nbsp;", " "));
         restaurantsStatistics.setBeerDraughtPrice((elements.get(4).text()).replaceAll("&nbsp;", " "));
         restaurantsStatistics.setBeerBottlePrice((elements.get(5).text()).replaceAll("&nbsp;", " "));

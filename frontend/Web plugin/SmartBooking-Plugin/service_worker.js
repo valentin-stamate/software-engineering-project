@@ -4,8 +4,8 @@ chrome.runtime.onInstalled.addListener(() => {
     chrome.storage.sync.set({ locations: locations });
 });
 
-//example of using a message handler from the inject scripts
-chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+//handle the request from inject.js (script injected on booking.com/hotel)
+chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     if (!request.sendStatistics) {
         var _data = {
             hotelName: request.hotelName,
@@ -22,14 +22,12 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
             sendResponse({ message: "preference sent successfully" });
         });
     } else {
-        //json experimental cu statistici
-        //var url = "https://betonrats.000webhostapp.com/hotel.json";
-
         let uris = {
             url_forecast: host_url + "forecast?locations=" + request.hotelLocation,
             url_covid: host_url + "covid_statistics?countries=" + request.country,
             url_covid_news: host_url + "covid_news?locations=" + request.hotelLocation + "&max_results=2",
             url_pollution: host_url + "pollution?locations=" + request.hotelLocation,
+            url_co2: host_url + "co2_emissions?countries=" + request.country,
             url_criminality: host_url + "criminality_statistics?locations=" + request.hotelLocation,
             url_rating: host_url + "hotel/reviews?hotel_identifier=" + request.hotelIdentifier,
             url_living_cost: host_url + "costofliving_statistics?locations=" + request.hotelLocation,
@@ -46,6 +44,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
                     covid_news: results.covidNews[0].results,
                     forecast: results.forecast[0],
                     airPollution: results.airPollution[0],
+                    co2Pollution: results.co2[0].list,
                     criminality: results.criminality[0],
                     rating: results.rating,
                     living_cost: results.livingCost[0],
@@ -80,6 +79,7 @@ async function fetchDataAboutLocation(uris) {
         covidResp,
         covidNewsResp,
         airPollutionResp,
+        co2Resp,
         criminalityResp,
         ratingResp,
         livingCostResp,
@@ -92,6 +92,7 @@ async function fetchDataAboutLocation(uris) {
         fetchStatisticsFrom(uris.url_covid, "Covid statistics request failed"),
         fetchStatisticsFrom(uris.url_covid_news, "Covid news request failed"),
         fetchStatisticsFrom(uris.url_pollution, "Air pollution request failed"),
+        fetchStatisticsFrom(uris.url_co2, "CO2 pollution request failed"),
         fetchStatisticsFrom(uris.url_criminality, "criminality request failed"),
         fetchStatisticsFrom(uris.url_rating, "reviews request failed"),
         fetchStatisticsFrom(uris.url_living_cost, "living cost request failed"),
@@ -106,6 +107,7 @@ async function fetchDataAboutLocation(uris) {
         covid: covidResp,
         covidNews: covidNewsResp,
         airPollution: airPollutionResp,
+        co2: co2Resp,
         criminality: criminalityResp,
         rating: ratingResp,
         livingCost: livingCostResp,
