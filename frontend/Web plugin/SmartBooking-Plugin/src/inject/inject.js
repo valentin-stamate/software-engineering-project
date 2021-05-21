@@ -6,6 +6,8 @@ async function getStatistics() {
         hotelIdentifier: identifier,
         country: "Romania",
     };
+    let stats_div = document.getElementById("statistics-container");
+    stats_div.innerHTML = "<h3>Still fetching data from server!</h3>";
     chrome.runtime.sendMessage(_data, function (response) {
         console.log(response);
         addStatistics(response);
