@@ -6,7 +6,7 @@ public class FoodPrice {
 
     public FoodPrice(String name, String price) {
         this.name = name;
-        this.price = price;
+        setPrice(price);
     }
 
     public String getName() {
@@ -22,6 +22,9 @@ public class FoodPrice {
     }
 
     public void setPrice(String price) {
+        try {
+            price = price.substring(0, price.indexOf(".") + 3);
+        } catch (Exception e) { }
         this.price = price;
     }
 }

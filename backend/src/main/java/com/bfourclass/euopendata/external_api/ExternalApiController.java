@@ -23,7 +23,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.text.ParseException;
 import java.time.LocalDate;
@@ -248,16 +247,16 @@ public class ExternalApiController {
     }
 
     @GetMapping("/food_price")
-    public ResponseEntity<Object> getLocationFoodPrice(@RequestParam(name = "location") String locationSring) {
+    public ResponseEntity<Object> getLocationFoodPrice(@RequestParam(name = "locationString") String locationString) {
 
-        List<FoodPrice> foodPrices = foodCache.verifyLocation(locationSring);
+        List<FoodPrice> foodPrices = foodCache.verifyLocation(locationString);
 
         if(foodPrices != null){
             return new ResponseEntity<>(foodPrices, HttpStatus.OK);
         }
 
-        foodPrices = ExternalAPI.getFoodPrice(locationSring);
-        foodCache.addLocationPrice(locationSring,foodPrices);
+        foodPrices = ExternalAPI.getFoodPrice(locationString);
+        foodCache.addLocationPrice(locationString,foodPrices);
 
         return new ResponseEntity<>(foodPrices,HttpStatus.OK);
 
