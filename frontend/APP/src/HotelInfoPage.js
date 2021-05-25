@@ -11,6 +11,7 @@ class HotelInfoPage extends react.Component{
     constructor(props){
         super(props);
         this.state={
+            searchLoc:'',
             client:JSON.parse(localStorage.user).user,
             reviewMessage:'',
             reviewRating:10,
@@ -69,6 +70,13 @@ class HotelInfoPage extends react.Component{
         this.setState({refreshReviews:true});
     }
 
+    search = (event) =>{
+        if(event.keyCode!=13){
+            return;
+        }
+        window.location="/search?location="+this.state.searchLoc;
+    }
+
     render(){
         if(this.state.refreshReviews){
             this.items=[];
@@ -104,10 +112,11 @@ class HotelInfoPage extends react.Component{
 
 <div class="hotel-info">
 <div class="topnav">
-        <a class="active" href="#home">Home</a>
-        <a href="#">See Favorites </a>
-        <a href="#">Sign Out</a>
-        <input type="text" placeholder="Search location"/>
+        <a class="active" href="/">Home</a>
+        <a href="/statistics">Statistics</a>
+        <a href="/fav">See Favorites </a>
+        <a href="/login">Sign Out</a>
+        <input type="text" placeholder="Search location" name="searchLoc" onKeyUp={this.search} onChange={this.myChangeHandler}/>
     </div>
 <div class="col-sm-12 col-md-12 col-lg-12">
     <div class="product-content product-wrap clearfix product-deatil">
@@ -149,34 +158,9 @@ class HotelInfoPage extends react.Component{
                 </h2>
                 
                 <hr />
-                <span class="badge">Most Popular Facilities:</span>
-                <div class="certified">
-                    <ul>
-                        <li>
-                            <i class="fas fa-utensils"><span>{this.hotelInfo.facilities}</span></i>
-                        </li>
-                        <li>
-                            <i class="fas fa-swimming-pool"><span> Swimming Pool</span></i>
-                        </li>
-                        <li>
-                            <i class="fas fa-dumbbell"><span>Fitness Center</span></i>
-                        </li>
-                        <li>
-                            <i class="fas fa-paw"><span>Pet friendly</span></i>
-                        </li>
-                        
-                        
-                    </ul>
-                    
-                </div>
-                <div class="row">
-                    <div class="col-sm-12 col-md-6 col-lg-6">
-                        <a href="javascript:void(0);" class="btn btn-primary btn-lg">Book Now</a>
-                    </div>
-                    </div>
                 
                 <hr />
-                <div class="description description-tabs">
+                <div class="description description-tabs" >
                     <ul id="myTab" class="nav nav-pills">
                         <li class="active"><a href="#more-information" data-toggle="tab" class="no-margin"> Description </a></li>
                         <li class=""><a href="#weather" data-toggle="tab">Weather</a></li>
@@ -184,7 +168,7 @@ class HotelInfoPage extends react.Component{
                         <li class=""><a href="#reviews" data-toggle="tab">Reviews</a></li>
                     </ul>
                     <div id="myTabContent" class="tab-content">
-                        <div class="tab-pane fade active in" id="more-information">
+                        <div class="tab-pane fade active in" id="more-information" style={{fontSize:'20px'}}>
                             <br />
                             <strong>Hotel Description</strong>
                             {this.hotelInfo.desc}

@@ -18,8 +18,6 @@ class HotelAdmin extends User{
             price: hotel.price
         };
 
-        alert(JSON.stringify(data));
-
         var response = FetchData.makeAuthRequest("https://euopendata.herokuapp.com/hotel/add_hotel", "POST", data, this.auth);
         return response; // return response.message;
     }

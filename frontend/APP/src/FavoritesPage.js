@@ -7,12 +7,26 @@ class FavoritesPage extends react.Component{
     constructor(props){
         super(props);
         this.state={
+            searchLoc:'',
             client:JSON.parse(localStorage.user).user,
             items:[],
             hotels:[],
             requestMade:false
         };
         this.client=new Client(this.state.client.username,this.state.client.email,this.state.client.profilePic,this.state.client.auth);
+    }
+
+    search = (event) =>{
+        if(event.keyCode!=13){
+            return;
+        }
+        window.location="/search?location="+this.state.searchLoc;
+    }
+
+    myChangeHandler = (event) => {
+        let nam = event.target.name;
+        let val = event.target.value;
+        this.setState({[nam] : val});
     }
 
     removeHotel = (id) => {
@@ -41,6 +55,8 @@ class FavoritesPage extends react.Component{
         return newArr;
     }
 
+
+
     render(){
         if(!this.state.requestMade){
             this.state.hotels=this.client.getAllFavorites();
@@ -65,17 +81,17 @@ class FavoritesPage extends react.Component{
             </div>
         </div>)
         }
-        this.state.requestMade=true;
+        this.setState({requestMade:true});
     }
 
 
         return(
 <div class="fav-page">
 <div class="topnav">
-        <a class="active" href="#home">Home</a>
-        <a href="#">See Recommendation</a>
-        <a href="#">My Profile</a>
-        <input type="text" placeholder="Search location"/>
+        <a class="active" href="/">Home</a>
+        <a href="/statistics">Statistics</a>
+        <a href="/profile">Your Profile</a>
+        <input type="text" placeholder="Search location" name="searchLoc" onKeyUp={this.search} onChange={this.myChangeHandler}/>
     </div>
     <section class="ftco-section bg-light">
         <div class="container">

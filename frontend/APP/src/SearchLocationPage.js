@@ -63,7 +63,7 @@ class SearchLocationPage extends react.Component{
 <div class="topnav">
 
 <a class="active" href="/">Home</a>
-<a href="#about">See Statistics</a>
+<a href="/statistics">See Statistics</a>
 <a href="/profile" class="user"> <i class="fas fa-user"></i></a>
 </div>
 <div class="container">
@@ -72,62 +72,6 @@ class SearchLocationPage extends react.Component{
         <div class="grid search">
             <div class="grid-body">
                 <div class="row">
-                    <div class="col-md-3">
-                        <h2 class="grid-title"><i class="fa fa-filter"></i> Filters</h2>
-                        <hr/>
-
-                        <h4>Categories:</h4>
-                        <div class="checkbox">
-                            <label><input type="checkbox" class="icheck" /> Hotel</label>
-                        </div>
-                        <div class="checkbox">
-                            <label><input type="checkbox" class="icheck"/> Motel</label>
-                        </div>
-                        <div class="checkbox">
-                            <label><input type="checkbox" class="icheck"/> Apartament</label>
-                        </div>
-                        <div class="checkbox">
-                            <label><input type="checkbox" class="icheck"/> Pension</label>
-                        </div>
-                        <div class="checkbox">
-                            <label><input type="checkbox" class="icheck"/> House</label>
-                        </div>
-
-                        <div class="padding"></div>
-
-                        <h4>Date:</h4>
-
-                        <div class="form-item">
-                            <label for="checkin-date">Check In Date: </label>
-                            <input type="date" id="chekin-date"/>
-                        </div>
-                        <div class="form-item">
-                            <label for="checkout-date">Check Out Date: </label>
-                            <input type="date" id="chekout-date"/>
-                        </div>
-
-                        <div class="padding"></div>
-                        <h4>Price (per night):</h4>
-
-                        <div class="checkbox">
-                            <label><input type="checkbox" class="icheck"/> &lt; 50$ </label>
-                        </div>
-                        <div class="checkbox">
-                            <label><input type="checkbox" class="icheck"/> 50-100$</label>
-                        </div>
-                        <div class="checkbox">
-                            <label><input type="checkbox" class="icheck"/> 101-200$</label>
-                        </div>
-                        <div class="checkbox">
-                            <label><input type="checkbox" class="icheck"/> 201-500$</label>
-                        </div>
-                        <div class="checkbox">
-                            <label><input type="checkbox" class="icheck"/> 501-1000$</label>
-                        </div>
-                        <div class="checkbox">
-                            <label><input type="checkbox" class="icheck"/> &gt;1000$</label>
-                        </div>
-                    </div>
                     <div class="col-md-9">
                         <h2><i class="fa fa-bed" aria-hidden="true"></i> Result</h2>
                         <hr/>
@@ -142,19 +86,6 @@ class SearchLocationPage extends react.Component{
                         <div class="padding"></div>
 
                         <div class="row">
-                            <div class="col-sm-6">
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-            Order by <span class="caret"></span>
-          </button>
-                                    <ul class="dropdown-menu" role="menu">
-                                        <li><a href="#">Price</a></li>
-                                        <li><a href="#">Name</a></li>
-                                        <li><a href="#">Rating</a></li>
-                                        <li><a href="#">Statistics</a></li>
-                                    </ul>
-                                </div>
-                            </div>
 
                     
                         </div>

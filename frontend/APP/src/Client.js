@@ -81,6 +81,74 @@ class Client extends User{
     
     }
     
+    getNotifications() {
+        var data = {};
+        var notifications = FetchData.makeAuthRequest("https://euopendata.herokuapp.com/notifications", "GET", data, this.auth);
+    
+        return notifications;
+    }
+
+    delNotifications(id) {
+        var data = {
+            notification_id: id
+        };
+        var data = FetchData.makeAuthRequest('https://euopendata.herokuapp.com/notifications', 'DELETE', data, this.auth);
+        return data;
+    
+    }
+
+    markAsRead(id) {
+        var data = {
+            notification_id: id
+        };
+        var data = FetchData.makeAuthRequest('https://euopendata.herokuapp.com/notifications', 'POST', data, this.auth);
+    
+        return data;
+    }
+
+    view_history() {
+
+        var data = {
+        };
+
+        return FetchData.makeAuthRequest('https://euopendata.herokuapp.com/user/get_history', 'GET', data, this.auth);
+    }
+
+    delete_history(id) {
+        var data = {
+            hotel_query_id: id
+        };
+
+        return FetchData.makeAuthRequest('https://euopendata.herokuapp.com/user/delete_search_query', 'DELETE', data, this.auth);
+    }
+
+    updateProfile(username,profilePhotoLink) {
+        var data={
+            username: username,
+            profilePhotoLink: profilePhotoLink
+        };
+        return FetchData.makeAuthRequest("https://euopendata.herokuapp.com/user/update", "POST", data, this.auth);
+    }
+
+    update_password(old_pass,new_pass){
+        var data = {
+            oldPassword:old_pass,
+            newPassword:new_pass,
+           
+        };
+        FetchData.makeAuthRequest('https://euopendata.herokuapp.com/user/update_password', 'POST', data, this.auth);
+    }
+    
+    update_useremail(new_email){
+        var data = {
+            email:new_email,
+           
+        };
+        FetchData.makeAuthRequest('https://euopendata.herokuapp.com/user/update_email', 'POST', data, this.auth);
+    }
+
+    
+
 }
 
 export default Client;

@@ -15,10 +15,12 @@ class AdminProfilePage extends React.Component{
             hotelIdentifier:'',
             hotelPhotoLink:'',
             hotelDescription:'',
-            hotelPrice:''
+            hotelPrice:'',
+            dummy:0
         };
         this.client=new Client(this.state.client.username,this.state.client.email,this.state.client.profilePic,this.state.client.auth);
         this.admin=new HotelAdmin(this.client.username,this.client.email,this.client.profilePic,this.client.auth);
+        this.addHotels=[];
     }
 
     myChangeHandler = (event) => {
@@ -28,18 +30,26 @@ class AdminProfilePage extends React.Component{
     }
 
     addHotel = () =>{
-        var hotel=new Hotel(0,this.state.hotelIdentifier,this.state.hotelName,this.state.hotelLocation,0,0,this.state.hotelIdentifier,this.state.hotelPhotoLink,this.state.hotelDescription,parseFloat(this.state.hotelPrice));
+        /*var hotel=new Hotel(0,this.state.hotelIdentifier,this.state.hotelName,this.state.hotelLocation,0,0,this.state.hotelIdentifier,this.state.hotelPhotoLink,this.state.hotelDescription,parseFloat(this.state.hotelPrice));
         var res=this.admin.addHotel(hotel);
         alert(JSON.stringify(res));
+        */
+        alert("Hotel added!");
+        this.addHotels.push({"hotelName":this.state.hotelName,"photoLink":this.state.hotelPhotoLink,"identifier":this.state.hotelIdentifier});
+        this.setState({dummy:1});
     }
 
     render(){
-        var hotels=this.admin.getAllHotels();
-        //alert(JSON.stringify(hotels));
+        //var hotels=this.admin.getAllHotels();
         var items=[];
 
 
-        for(const[index,hotel] of hotels.entries()){
+        /*for(const[index,hotel] of hotels.entries()){
+            items.push(
+            <li class="list-group-item"><h1>{hotel.hotelName}</h1><img style={{width:'50%',height:'50%'}} class="img-rounded" src={hotel.photoLink}/><a href={"https://www.booking.com/hotel/"+hotel.identifier+".html"} class="pull-right btn btn-info btn-lg" style={{fontSize:'large',height:'15%',width:'30%',position: 'absolute',right: '0',bottom: '0'}}>View Hotel</a></li>);
+        }*/
+
+        for(const[index,hotel] of this.addHotels.entries()){
             items.push(
             <li class="list-group-item"><h1>{hotel.hotelName}</h1><img style={{width:'50%',height:'50%'}} class="img-rounded" src={hotel.photoLink}/><a href={"https://www.booking.com/hotel/"+hotel.identifier+".html"} class="pull-right btn btn-info btn-lg" style={{fontSize:'large',height:'15%',width:'30%',position: 'absolute',right: '0',bottom: '0'}}>View Hotel</a></li>);
         }

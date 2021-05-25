@@ -105,7 +105,7 @@ class SignUpPage extends react.Component{
         info.profilePhotoLink=this.state.profilePhotoLink;
         var message=ClientSignUp.signup(info);
         alert(message);
-        if(message.includes("Success")){
+        if(message.includes("success")){
             window.location="/login";
         }
     }
@@ -121,7 +121,7 @@ class SignUpPage extends react.Component{
         info.profilePhotoLink=this.state.profilePhotoLink;
         var message=HotelAdminSignUp.signup(info);
         alert(message);
-        if(message.includes("Success")){
+        if(message.includes("success")){
             window.location="/login";
         }
     }
