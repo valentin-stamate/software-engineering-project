@@ -1,5 +1,6 @@
 package com.bfourclass.euopendata.user.auth;
 
+import com.bfourclass.euopendata.user.UserModel;
 import com.bfourclass.euopendata.user.UserService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -23,7 +24,7 @@ public class InMemorySecurityContext implements SecurityContext {
 
     @Override
     public String extractUsername(String token){
-        return extractClaim(token, Claims::getSubject);
+        return tokens.getOrDefault(token, "");
     }
 
     public <T> T extractClaim(String token, Function<Claims,T> claimsResolver){
@@ -47,16 +48,20 @@ public class InMemorySecurityContext implements SecurityContext {
     }
 
     @Override
-    public String generateToken(String username){
-        return Jwts.builder().setSubject(username).setIssuedAt(new Date(System.currentTimeMillis()))
+    public String generateToken(UserModel user){
+        Map<String, Object> claims = new HashMap<>();
+        final String role = user.isOwner() ? "owner" : user.isAdmin() ? "admin" : "user";
+        claims.put("role", role);
+        return Jwts.builder().setSubject(user.getUsername()).setIssuedAt(new Date(System.currentTimeMillis()))
+                .setClaims(claims)
                 .setExpiration(new Date(System.currentTimeMillis()+ 1000*60*60*12))
                 .signWith(SignatureAlgorithm.HS256,SECRET_KEY).compact();
     }
 
     @Override
-    public String authenticateUserReturnToken(String username) {
-        String token = generateToken(username);
-        tokens.put(token, username);
+    public String authenticateUserReturnToken(UserModel user) {
+        String token = generateToken(user);
+        tokens.put(token, user.getUsername());
         return token;
     }
 

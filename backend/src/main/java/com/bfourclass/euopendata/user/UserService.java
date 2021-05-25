@@ -87,8 +87,8 @@ public class UserService {
         userRepository.save(userModel);
     }
 
-    public String loginUserReturnToken(String username) {
-        return securityContext.authenticateUserReturnToken(username);
+    public String loginUserReturnToken(UserModel user) {
+        return securityContext.authenticateUserReturnToken(user);
     }
 
     public boolean userExists(String login) {

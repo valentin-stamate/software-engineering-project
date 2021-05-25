@@ -123,7 +123,7 @@ public class UserController {
             return new ResponseEntity<>(new ResponseError("Account not activated"), HttpStatus.UNAUTHORIZED);
         }
 
-        String token = userService.loginUserReturnToken(userModel.getUsername());
+        String token = userService.loginUserReturnToken(userModel);
 
         return new ResponseEntity<>(new UserJSON(userModel.getUsername(), userModel.getEmail(), userModel.getProfilePhotoLink(), token), HttpStatus.OK);
     }

@@ -23,7 +23,10 @@ public class UserServiceTests {
 
     @Test
     public void checkTokenIsValid() {
-        String token = userService.loginUserReturnToken("user");
+        UserModel user = new UserModel();
+        user.setUsername("user");
+        user.setOwner(true);
+        String token = userService.loginUserReturnToken(user);
         Assert.isTrue(userService.checkTokenIsValid(token), "");
     }
 
@@ -41,7 +44,10 @@ public class UserServiceTests {
     @Test
     public void getUserFromToken() {
         UserModel userModel = new UserModel("user","emi@ta.com","emithau","");
-        String token = userService.loginUserReturnToken("user");
+        UserModel user = new UserModel();
+        user.setUsername("user");
+        user.setOwner(true);
+        String token = userService.loginUserReturnToken(user);
         assertEquals(userModel.getUsername(), userService.getUserFromToken(token).getUsername());
     }
 }
