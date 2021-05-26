@@ -98,7 +98,7 @@ public class HotelController {
     }
 
     /*TODO implement update hotel endpoint*/
-    @PutMapping("hotel/update_hotel")
+    @PostMapping("hotel/update_hotel")
     public ResponseEntity<Object> updateHotel(@RequestBody HotelJSON hotelJSON, @RequestHeader(name = "Authorization") String token) {
         HotelModel hotelModel = hotelService.getHotelById(hotelJSON.id);
         ResponseEntity<Object> errorResponse = userService.checkUserToken(token);
