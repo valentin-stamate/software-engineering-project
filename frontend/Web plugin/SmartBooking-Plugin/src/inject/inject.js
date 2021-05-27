@@ -24,17 +24,17 @@ async function addStatistics(_stats) {
     <canvas id="covid-chart"></canvas></section>`;
     stats_div.innerHTML += `<section id="covid-news"></section>`;
     stats_div.innerHTML += `<section id="weather-statistics"></section>`;
-    stats_div.innerHTML += `<section id="pollution_card"></section>`;
+    stats_div.innerHTML += `<section id="pollution_statistics"></section>`;
     stats_div.innerHTML += `
     <button style="cursor:pointer; width:96%; margin:auto; margin-top: 1px;" id="show_co2">
         <b>Toggle CO2 emissions chart</b> </button>
     <section class="hidden" id="co2-statistics">
     <canvas id="co2_statistics-chart"></canvas></section>`;
-    stats_div.innerHTML += `<section id="criminality_card"></section>`;
-    stats_div.innerHTML += `<section id="living_cost_card"></section>`;
-    stats_div.innerHTML += `<section id="restaurants_card"></section>`;
-    stats_div.innerHTML += `<section id="healthcare_card"></section>`;
-    stats_div.innerHTML += `<section id="food_card"></section>`;
+    stats_div.innerHTML += `<section id="criminality_statistics"></section>`;
+    stats_div.innerHTML += `<section id="living_cost_statistics"></section>`;
+    stats_div.innerHTML += `<section id="restaurants_statistics"></section>`;
+    stats_div.innerHTML += `<section id="healthcare_statistics"></section>`;
+    stats_div.innerHTML += `<section id="food_statistics"></section>`;
     stats_div.innerHTML += `<section id="rating"></section>`;
 
 
@@ -217,43 +217,37 @@ function addCo2Chart() {
         type: "line",
         data: {
             labels: co2labels,
-            datasets: [
-                {
-                    label: "Co2 quantity in tones",
-                    fill: false,
-                    lineTension: 0.1,
-                    backgroundColor: "rgba(0, 0, 255, 0.5)",
-                    borderColor: "rgba(0, 0, 255, 1)",
-                    borderCapStyle: "butt",
-                    broderDash: [],
-                    borderDashOffset: 0.0,
-                    borderJoinStyle: "mitter",
-                    pointBorderColor: "rgba(92, 86, 110, 1)",
-                    pointBackgoundColor: "#fff",
-                    pointBorderWidth: 1,
-                    pointHoverRadius: 5,
-                    pointHoverBackgroundColor: "rgba(208, 86, 165, 0.86)",
-                    pointHoverBorderColor: "rgba(208, 86, 10, 0.86)",
-                    pointHoverBorderWidth: 2,
-                    pointRadius: 1,
-                    pointHitRadius: 10,
-                    data: co2quantity,
-                },
-            ],
+            datasets: [{
+                label: "Co2 quantity in tones",
+                fill: false,
+                lineTension: 0.1,
+                backgroundColor: "rgba(0, 0, 255, 0.5)",
+                borderColor: "rgba(0, 0, 255, 1)",
+                borderCapStyle: "butt",
+                broderDash: [],
+                borderDashOffset: 0.0,
+                borderJoinStyle: "mitter",
+                pointBorderColor: "rgba(92, 86, 110, 1)",
+                pointBackgoundColor: "#fff",
+                pointBorderWidth: 1,
+                pointHoverRadius: 5,
+                pointHoverBackgroundColor: "rgba(208, 86, 165, 0.86)",
+                pointHoverBorderColor: "rgba(208, 86, 10, 0.86)",
+                pointHoverBorderWidth: 2,
+                pointRadius: 1,
+                pointHitRadius: 10,
+                data: co2quantity,
+            }, ],
         },
         options: {
             responsive: true,
             scales: {
-                xAxes: [
-                    {
-                        stacked: true,
-                    },
-                ],
-                yAxes: [
-                    {
-                        stacked: true,
-                    },
-                ],
+                xAxes: [{
+                    stacked: true,
+                }, ],
+                yAxes: [{
+                    stacked: true,
+                }, ],
             },
             plugins: {
                 legend: {
@@ -276,8 +270,7 @@ function addCovidChart(covid_data) {
         type: "line",
         data: {
             labels: covidlabels,
-            datasets: [
-                {
+            datasets: [{
                     label: "New cases",
                     fill: false,
                     lineTension: 0.1,
@@ -346,7 +339,7 @@ function addCovidChart(covid_data) {
 }
 
 async function addPolution(airPollution) {
-    let pollution_container = document.getElementById("pollution_card");
+    let pollution_container = document.getElementById("pollution_statistics");
 
     if (!airPollution) {
         airPollution = {
@@ -360,15 +353,18 @@ async function addPolution(airPollution) {
             covalueIndex: "N/A",
         };
     }
-
     let image = `
+    <h1 class="card_title">Pollution</h1>
+    <div id="pollution_card">
     <table>
         <tbody id="polution_card__container">
             <tr id="pollution_first"></tr>
             <tr id="pollution_second"></tr>
         </tbody>
     </table>
-    <img id="pollution_icon" src="" alt="criminality">`;
+    <img id="pollution_icon" src="" alt="criminality">
+    </div>
+    `;
 
     pollution_container.innerHTML += image;
     let pollution_icon = document.getElementById("pollution_icon");
@@ -399,7 +395,7 @@ async function addPolutionItem(pollution_container, text, value) {
 }
 
 async function addCriminality(criminality) {
-    let criminality_container = document.getElementById("criminality_card");
+    let criminality_container = document.getElementById("criminality_statistics");
 
     if (!criminality) {
         criminality = {
@@ -415,6 +411,8 @@ async function addCriminality(criminality) {
     }
 
     let image = `
+    <h1 class="card_title">Criminality</h1>
+    <div id="criminality_card">
     <table>
         <tbody id="criminality_card__container">
             <tr id="criminality_first"></tr>
@@ -422,6 +420,7 @@ async function addCriminality(criminality) {
         </tbody>
     </table>
     <img id="criminality_icon" src="" alt="criminality">
+    </div>
     `;
 
     criminality_container.innerHTML += image;
@@ -517,9 +516,11 @@ async function addCostOfLiving(living_cost, gasoline) {
         };
     }
 
-    let living_cost_container = document.getElementById("living_cost_card");
+    let living_cost_container = document.getElementById("living_cost_statistics");
 
     let container = `
+    <h1 class="card_title">Living cost</h1>
+    <div id="living_cost_card">
     <table>
         <tbody id="living_cost_card__container">
             <tr id="living_cost_first"></tr>
@@ -527,6 +528,7 @@ async function addCostOfLiving(living_cost, gasoline) {
         </tbody>
     </table>
     <img id="living_cost_icon" src="" alt="living_cost">
+    </div>
     `;
 
     living_cost_container.innerHTML += container;
@@ -563,7 +565,7 @@ async function addliving_costItem(living_cost_container, text, value) {
 }
 
 async function addRestaurants(restaurants) {
-    let restaurants_container = document.getElementById("restaurants_card");
+    let restaurants_container = document.getElementById("restaurants_statistics");
 
     if (!restaurants) {
         restaurants = {
@@ -579,6 +581,8 @@ async function addRestaurants(restaurants) {
     }
 
     let container = `
+    <h1 class="card_title">Restaurant prices</h1>
+    <div id="restaurants_card">
     <table>
         <tbody id="restaurants_card__container">
             <tr id="restaurants_first"></tr>
@@ -586,6 +590,7 @@ async function addRestaurants(restaurants) {
         </tbody>
     </table>
     <img id="restaurants_icon" src="" alt="restaurants">
+    </div>
     `;
 
     restaurants_container.innerHTML += container;
@@ -622,7 +627,7 @@ async function addrestaurantsItem(restaurants_container, text, value) {
 }
 
 async function addHealthcare(healthcare) {
-    let healthcare_container = document.getElementById("healthcare_card");
+    let healthcare_container = document.getElementById("healthcare_statistics");
 
     if (!healthcare) {
         healthcare = {
@@ -638,6 +643,8 @@ async function addHealthcare(healthcare) {
     }
 
     let container = `
+    <h1 class="card_title">Healthcare</h1>
+    <div id="healthcare_card">
     <table>
         <tbody id="healthcare_card__container">
             <tr id="healthcare_first"></tr>
@@ -645,6 +652,7 @@ async function addHealthcare(healthcare) {
         </tbody>
     </table>
     <img id="healthcare_icon" src="" alt="healthcare">
+    </div>
     `;
 
     healthcare_container.innerHTML += container;
@@ -681,16 +689,19 @@ async function addhealthcareItem(healthcare_container, text, value) {
 }
 
 async function addFood(food) {
-    let food_container = document.getElementById("food_card");
+    let food_container = document.getElementById("food_statistics");
 
     let container = `
-    <table>
-        <tbody id="food_card__container">
-            <tr id="food_first"></tr>
-            <tr id="food_second"></tr>
-        </tbody>
-    </table>
-    <img id="food_icon" src="" alt="food">
+    <h1 class="card_title">Grocery prices</h1>
+    <div id="food_card">
+        <table>
+            <tbody id="food_card__container">
+                <tr id="food_first"></tr>
+                <tr id="food_second"></tr>
+            </tbody>
+        </table>
+        <img id="food_icon" src="" alt="food">
+    </div>
     `;
 
     food_container.innerHTML += container;

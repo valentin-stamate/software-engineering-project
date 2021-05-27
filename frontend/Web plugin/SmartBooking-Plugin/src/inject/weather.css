@@ -97,16 +97,21 @@
     padding-top: 10px;
 }
 
-#pollution_card {
-    display: inline-flex;
-    justify-content: space-evenly;
-    align-items: center;
+#pollution_statistics {
     width: 96%;
     box-shadow: 0px 0.2em 0.4em rgb(0, 0, 0, 0.6);
     background: white;
     color: #666;
     margin-top: 10px;
     padding: 2px;
+    display: inline-block;
+}
+
+#pollution_card {
+    width: 100%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-evenly;
 }
 
 #pollution_card td {
@@ -135,16 +140,21 @@
     padding: 5px;
 }
 
-#criminality_card {
-    display: inline-flex;
-    align-items: center;
-    justify-content: space-evenly;
+#criminality_statistics {
     width: 96%;
     box-shadow: 0px 0.2em 0.4em rgb(0, 0, 0, 0.6);
     background: white;
     color: #666;
     margin-top: 10px;
     padding: 2px;
+    display: inline-block;
+}
+
+#criminality_card {
+    width: 100%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-evenly;
 }
 
 #criminality_card td {
@@ -199,16 +209,21 @@
     height: 45px;
 }
 
-#living_cost_card {
-    display: inline-flex;
-    align-items: center;
-    justify-content: space-evenly;
+#living_cost_statistics {
     width: 96%;
     box-shadow: 0px 0.2em 0.4em rgb(0, 0, 0, 0.6);
     background: white;
     color: #666;
     margin-top: 10px;
     padding: 2px;
+    display: inline-block;
+}
+
+#living_cost_card {
+    width: 100%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-evenly;
 }
 
 #living_cost_card td {
@@ -241,16 +256,21 @@
     padding: 5px;
 }
 
-#restaurants_card {
-    display: inline-flex;
-    align-items: center;
-    justify-content: space-evenly;
+#restaurants_statistics {
     width: 96%;
     box-shadow: 0px 0.2em 0.4em rgb(0, 0, 0, 0.6);
     background: white;
     color: #666;
     margin-top: 10px;
     padding: 2px;
+    display: inline-block;
+}
+
+#restaurants_card {
+    width: 100%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-evenly;
 }
 
 #restaurants_card td {
@@ -283,16 +303,21 @@
     padding: 5px;
 }
 
-#healthcare_card {
-    display: inline-flex;
-    align-items: center;
-    justify-content: space-evenly;
+#healthcare_statistics {
     width: 96%;
     box-shadow: 0px 0.2em 0.4em rgb(0, 0, 0, 0.6);
     background: white;
     color: #666;
     margin-top: 10px;
     padding: 2px;
+    display: inline-block;
+}
+
+#healthcare_card {
+    width: 100%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-evenly;
 }
 
 #healthcare_card td {
@@ -325,16 +350,21 @@
     padding: 5px;
 }
 
-#food_card {
-    display: inline-flex;
-    align-items: center;
-    justify-content: space-evenly;
+#food_statistics {
     width: 96%;
     box-shadow: 0px 0.2em 0.4em rgb(0, 0, 0, 0.6);
     background: white;
     color: #666;
     margin-top: 10px;
     padding: 2px;
+    display: inline-block;
+}
+
+#food_card {
+    width: 100%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-evenly;
 }
 
 #food_card td {
@@ -365,4 +395,11 @@
 .food_card__content__value b {
     font-size: 2em;
     padding: 5px;
+}
+
+.card_title {
+    text-align: center;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    font-size: 2.5em;
 }
