@@ -4,7 +4,7 @@ async function getStatistics() {
         sendStatistics: true,
         hotelLocation: destination,
         hotelIdentifier: identifier,
-        country: "Romania",
+        country: country,
     };
     let stats_div = document.getElementById("statistics-container");
     stats_div.innerHTML = "<h3>Still fetching data from server!</h3>";
@@ -371,21 +371,111 @@ async function addPolution(airPollution) {
     pollution_icon.src = chrome.runtime.getURL("src/images/air_polution.png");
 
     pollution_container = document.getElementById("pollution_first");
-    addPolutionItem(pollution_container, "air quality index", airPollution.airQualityIndex);
-    addPolutionItem(pollution_container, "pm10 value", airPollution.pm10ValueIndex);
-    addPolutionItem(pollution_container, "pm25 value", airPollution.pm25ValueIndex);
-    addPolutionItem(pollution_container, "water pollution", airPollution.waterPollutionIndex);
+
+    let air_quality_description = `
+the air quality index runs from 0 to 500.
+The higher the index value, the greater the level of air pollution and the greater the health concern.
+For example, an index value of 50 or below represents good air quality, while
+an index value over 300 represents hazardous air quality.
+`;
+
+    addPolutionItem(pollution_container, "air quality index", airPollution.airQualityIndex, air_quality_description);
+
+    let pm10_description = `
+PM1.0 refers to atmospheric particulate matter (PM) that have
+a diameter of less than 1.0 micrometers, which is about 1% the
+diameter of a human hair.
+
+0 to 12.0	    Good
+12.1 to 35.4	Moderate
+35.5 to 55.4	Unhealthy for Sensitive Groups
+55.5 to 150.4	Unhealthy
+`;
+
+
+    addPolutionItem(pollution_container, "pm1.0 value", airPollution.pm10ValueIndex, pm10_description);
+
+    let pm25_description = `
+PM2.5 refers to atmospheric particulate matter (PM) that have
+a diameter of less than 2.5 micrometers, which is about 3% the
+diameter of a human hair.
+
+0 to 12.0	    Good
+12.1 to 35.4	Moderate
+35.5 to 55.4	Unhealthy for Sensitive Groups
+55.5 to 150.4	Unhealthy
+`;
+
+    addPolutionItem(pollution_container, "pm2.5 value", airPollution.pm25ValueIndex, pm25_description);
+
+    let water_pollution_description = `
+Water pollution index is used for streams,
+black waters (natural tea- and coffee-colored waters),
+and springs, while TSI is used for lakes and estuaries.
+
+0-45	Good
+45-60	Fair
+ >60    Poor
+`;
+
+    addPolutionItem(pollution_container, "water pollution", airPollution.waterPollutionIndex, water_pollution_description);
 
     pollution_container = document.getElementById("pollution_second");
-    addPolutionItem(pollution_container, "O3 value", airPollution.o3ValueIndex);
-    addPolutionItem(pollution_container, "NO2 value", airPollution.no2ValueIndex);
-    addPolutionItem(pollution_container, "SO2 value", airPollution.so2ValueIndex);
-    addPolutionItem(pollution_container, "CO value", airPollution.covalueIndex);
+
+    let o3_description = `
+Ozone in the air we breathe can harm our health, especially
+on hot sunny days when ozone can reach unhealthy levels.
+
+  0 - 50	Good
+ 51 - 100	Moderate
+101 – 150	Unhealthy for Sensitive Groups
+151 – 200	Unhealthy
+`;
+
+    addPolutionItem(pollution_container, "O3 value", airPollution.o3ValueIndex, o3_description);
+
+    let no2_description = `
+Nitrogen dioxide comes from vehicles, power plants,
+industrial emissions and off-road sources such as 
+construction, lawn and gardening equipment.
+
+ 0-40       Good
+90-120      Moderate
+ >120       Unhealthy
+`;
+
+    addPolutionItem(pollution_container, "NO2 value", airPollution.no2ValueIndex, no2_description);
+
+
+    let so2_description = `
+SO2 is the component of greatest concern and
+is used as the indicator for the larger group
+of gaseous sulfur oxides.
+
+  0-100     Good
+200-350     Moderate
+  >350      Unhealthy
+`;
+
+    addPolutionItem(pollution_container, "SO2 value", airPollution.so2ValueIndex, so2_description);
+
+    let co2_description = `
+Carbon dioxide (CO2) is a colourless, odourless and
+non-poisonous gas formed by combustion
+of carbon and in the respiration of living organisms
+and is considered a greenhouse gas.
+
+  0-100     Good
+200-350     Moderate
+  >350      Unhealthy
+`;
+
+    addPolutionItem(pollution_container, "CO value", airPollution.covalueIndex, co2_description);
 }
 
-async function addPolutionItem(pollution_container, text, value) {
+async function addPolutionItem(pollution_container, text, value, description = "") {
     let pollution_item = ` <td>
-    <div class="pollution_card__content">
+    <div title="${description}" class="pollution_card__content">
         <p>${text}</p>
         <p class="pollution_card__content__value"><b>${value == null ? "N/A" : value}</b></p>
     </div></td>
@@ -445,9 +535,15 @@ async function addCriminality(criminality) {
 }
 
 async function addCriminalityItem(criminality_container, text, value) {
+    let description = `
+The ${text} is based on the crime rate per 1,000 population
+for all crimes in a specific neighborhood or city.
+The crime index of ${value} means the neighborhood
+is safer than ${value}% of the neighborhoods.
+`
     let criminality_item = `
     <td>
-        <div class="criminality_card__content">
+        <div title = "${description}" class="criminality_card__content">
             <p>${text}</p>
             <p class="criminality_card__content__value"><b>${value}</b></p>
         </div>
@@ -676,9 +772,17 @@ async function addHealthcare(healthcare) {
 }
 
 async function addhealthcareItem(healthcare_container, text, value) {
+    let description = `
+The ${text} index is an estimation of the overall
+quality of the health care system.
+The ${text} index of ${value} means the healthcare
+is better than ${value}% of the neighborhoods.
+`;
+
+
     let healthcare_item = `
     <td>
-        <div class="healthcare_card__content">
+        <div title="${description}" class="healthcare_card__content">
             <p>${text}</p>
             <p class="healthcare_card__content__value"><b>${value}</b></p>
         </div>

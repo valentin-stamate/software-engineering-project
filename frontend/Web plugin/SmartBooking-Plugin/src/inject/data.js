@@ -68,6 +68,13 @@ function getName() {
     return name.trim().replace("\n", "");
 }
 
+function getCountry() {
+    let bar = document.getElementById('breadcrumb');
+    let country = bar.childNodes[1].childNodes[9].childNodes[1].childNodes[1].innerHTML;
+    return country.trim().replace("\n", "");
+}
+
+var country = getCountry();
 var hotelName = getName();
 var hotelAdress = getHotelAdress();
 console.log("Hotel name = " + hotelName);
@@ -110,9 +117,9 @@ function sendPreferences() {
         sendStatistics: false,
         hotelName: hotelName,
         hotelLocation: destination,
-        hotelPath: hotel_path,
+        hotelPath: hotel_path
     };
-    chrome.runtime.sendMessage(_data, function (response) {
+    chrome.runtime.sendMessage(_data, function(response) {
         console.log(JSON.stringify(response));
     });
 }
