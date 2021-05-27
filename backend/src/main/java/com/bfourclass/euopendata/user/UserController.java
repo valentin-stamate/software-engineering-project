@@ -279,7 +279,9 @@ public class UserController {
         userModel.setProfilePhotoLink(userJSON.profilePhotoLink);
         userModel.setUsername(userJSON.username);
         userService.updateUser(userModel);
-        return new ResponseEntity(new ResponseSucces("User update with success"), HttpStatus.OK);
+
+        String newToken = userService.loginUserReturnToken(userModel);
+        return new ResponseEntity(new ResponseSucces(newToken), HttpStatus.OK);
 
     }
 
