@@ -5,19 +5,16 @@ let map, heatmap;
 async function initCovidMap() {
     await sleep(500);
 
-    const location = 'Iasi';
+    const county = 'Iasi';
     const country = 'Romania';
 
-    const locationCoords = await getLocationCoordinates(location);
-
-    // const pollutionIndex = await getLocationPollutionIndex(location);
+    const locationCoords = await getLocationCoordinates(county);
     const covidCases = await getCovidCases(country);
 
     /* TODO, do something if undefined, aka location/country was not found */
 
     const locationPoint = new google.maps.LatLng(locationCoords.lat, locationCoords.lng);
-    const gradientIndex = calculateIndex(covidCases.minCases, covidCases.cases, covidCases.maxCases);
-
+    const gradientIndex = calculateIndex(covidCases.minCases, covidCases.cases, covidCases.maxCases, 4);
 
     heatmap.setOptions({data: [{location: locationPoint, weight: 1}]});
     map.setOptions({center: locationPoint});
@@ -25,7 +22,22 @@ async function initCovidMap() {
 }
 
 async function initPollutionMap() {
-    console.log("Comming soon");
+    await sleep(500);
+
+    const county = 'Iasi';
+    const country = 'Romania';
+
+    const locationCoords = await getLocationCoordinates(county);
+    const pollutionIndex = await getPollutionIndex(county);
+
+    const maxPollutionIndex = 220; /* */
+
+    const locationPoint = new google.maps.LatLng(locationCoords.lat, locationCoords.lng);
+    const gradientIndex = calculateIndex(0, pollutionIndex, 170, 4);
+
+    heatmap.setOptions({data: [{location: locationPoint, weight: 1}]});
+    map.setOptions({center: locationPoint});
+    pollutionHeatmap(gradientIndex);
 }
 
 initCovidMap();
@@ -57,7 +69,7 @@ function calculateIndex(minValue, value, maxValue, n) {
     const dist = maxValue / n;
 
     for (let i = 0; i < n; i++) {
-        if (dist * i <= value && dist * (i + 1) < value) {
+        if (dist * i <= value && value < dist * (i + 1)) {
             return i;
         }
     }
@@ -90,7 +102,7 @@ async function getLocationCoordinates(location) {
     return coords;
 }
 
-async function getLocationPollutionIndex(location) {
+async function getPollutionIndex(location) {
     const response = await sendFetchRequest(DEPLOY + `/pollution?locations=${location}`, 'GET');
     let payload = {};
 
