@@ -4,7 +4,7 @@ async function getStatistics() {
         sendStatistics: true,
         hotelLocation: destination,
         hotelIdentifier: identifier,
-        country: "Romania",
+        country: country,
     };
     let stats_div = document.getElementById("statistics-container");
     stats_div.innerHTML = "<h3>Still fetching data from server!</h3>";

@@ -10,7 +10,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
         var _data = {
             hotelName: request.hotelName,
             hotelLocation: request.hotelLocation,
-            hotelPath: request.hotelPath,
+            hotelPath: request.hotelPath
         };
         chrome.storage.sync.get("locations", (value) => {
             locations = value.locations;
