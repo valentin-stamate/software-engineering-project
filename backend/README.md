@@ -19,6 +19,6 @@ We used the following api's in our integration:
 * [OpenWeather](https://openweathermap.org/api) : weather, forecast
 * [Google Custom Search](https://developers.google.com/custom-search?) : covid news, hotel search
 * [Covid Dataset](https://covid.ourworldindata.org/data/owid-covid-data.csv) : [covid statistics](https://covid.ourworldindata.org/data/owid-covid-data.csv), [co2 emissions](https://ourworldindata.org/grapher/annual-co2-emissions-per-country)
-* [WorldBank](https://data.worldbank.org) [pump gasoline price](https://ourworldindata.org/grapher/annual-co2-emissions-per-country)  
-* [Numbeo](https://www.numbeo.com) criminality, pollution, restaurants, healthcare, cost of living, food prices
-* [Weatherbit](https://api.weatherbit.io) statistical weather
+* [WorldBank](https://data.worldbank.org) : [pump gasoline price](https://ourworldindata.org/grapher/annual-co2-emissions-per-country)  
+* [Numbeo](https://www.numbeo.com) : criminality, pollution, restaurants, healthcare, cost of living, food prices
+* [Weatherbit](https://api.weatherbit.io) : statistical weather
