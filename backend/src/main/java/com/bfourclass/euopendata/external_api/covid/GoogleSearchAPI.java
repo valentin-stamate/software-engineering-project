@@ -18,8 +18,6 @@ public abstract class GoogleSearchAPI {
         query = query.replace(" ", "%20");
         String requestURL = "https://www.googleapis.com/customsearch/v1?key=" + Secrets.GOOGLE_CUSTOM_SEARCH_API_KEY + "&cx=183e9c932cf280453&q=" + query;
 
-        System.out.println(requestURL);
-
         ObjectMapper mapper = new ObjectMapper();
 
         try (CloseableHttpClient client = HttpClients.createDefault()) {
@@ -30,10 +28,7 @@ public abstract class GoogleSearchAPI {
 
             List<SearchResultJSON> info = new ArrayList<>();
 
-            System.out.println("Response items" + response.items);
-
             if (response.items != null) {
-                System.out.println("Len: " + response.items);
                 for (int i = 0; i < results && i < response.items.size(); i++) {
                     Item item = response.items.get(i);
                     info.add(new SearchResultJSON(item.title, item.link, item.displayLink, item.snippet));
