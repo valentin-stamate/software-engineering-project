@@ -56,6 +56,11 @@ async function addStatistics(_stats) {
 
 //add covid info section
 async function addCovidStatistics(covid) {
+    if (!covid) {
+        covid = {
+            "items" : []
+        }
+    }
     setCovidGlobalLabel();
     let covid_data = covid.items.slice(-nrCovidDays);
     addCovidChart(covid_data);
@@ -74,10 +79,10 @@ function toggleCo2PollutionChart() {
 var co2labels = [];
 var co2quantity = [];
 async function addCo2Emissions(co2) {
-    co2.forEach((item) => {
-        co2labels.push(item.year);
-        co2quantity.push(item.quantity);
-    });
+    for (let i = co2.length; i >= 50; i--){
+        co2labels.push(co2[i].year);
+        co2quantity.push(co2[i].quantity);
+    }
     addCo2Chart();
 }
 
@@ -102,7 +107,7 @@ async function addForecastCards(forecast) {
     let curr_date = new Date();
 
     let j = 0;
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 4; i++) {
         let card_info = [];
         while (sameDay(curr_date, new Date(list[j].dt * 1000))) {
             card_info.push(list[j]);

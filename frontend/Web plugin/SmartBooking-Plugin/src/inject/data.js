@@ -79,6 +79,7 @@ var hotelName = getName();
 var hotelAdress = getHotelAdress();
 console.log("Hotel name = " + hotelName);
 console.log("Hotel adress = " + hotelAdress);
+console.log("Country = " + country);
 
 function addPopupHtml() {
     let popup_str = `<div id="main-popup">

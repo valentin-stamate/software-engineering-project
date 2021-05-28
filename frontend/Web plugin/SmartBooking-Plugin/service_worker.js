@@ -44,7 +44,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
                     covid_news: results.covidNews[0].results,
                     forecast: results.forecast[0],
                     airPollution: results.airPollution[0],
-                    co2Pollution: results.co2[0].list,
+                    co2Pollution: (results.co2[0])?results.co2[0].list : [],
                     criminality: results.criminality[0],
                     rating: results.rating,
                     living_cost: results.livingCost[0],

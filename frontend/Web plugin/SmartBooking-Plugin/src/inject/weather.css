@@ -115,8 +115,8 @@
 }
 
 #pollution_card td {
-    padding-left: 15px;
-    padding-right: 15px;
+    padding-left: 5px;
+    padding-right: 5px;
 }
 
 .pollution_card__content {
@@ -158,8 +158,8 @@
 }
 
 #criminality_card td {
-    padding-left: 10px;
-    padding-right: 10px;
+    padding-left: 5px;
+    padding-right: 5px;
 }
 
 #criminality_card__container {
@@ -227,8 +227,8 @@
 }
 
 #living_cost_card td {
-    padding-left: 10px;
-    padding-right: 10px;
+    padding-left: 5px;
+    padding-right: 5px;
 }
 
 #living_cost_card__container {
@@ -274,8 +274,8 @@
 }
 
 #restaurants_card td {
-    padding-left: 10px;
-    padding-right: 10px;
+    padding-left: 5px;
+    padding-right: 5px;
 }
 
 #restaurants_card__container {
@@ -321,8 +321,8 @@
 }
 
 #healthcare_card td {
-    padding-left: 10px;
-    padding-right: 10px;
+    padding-left: 5px;
+    padding-right: 5px;
 }
 
 #healthcare_card__container {
@@ -368,8 +368,8 @@
 }
 
 #food_card td {
-    padding-left: 10px;
-    padding-right: 10px;
+    padding-left: 5px;
+    padding-right: 5px;
 }
 
 #food_card__container {
