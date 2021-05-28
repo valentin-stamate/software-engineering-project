@@ -26,7 +26,7 @@ public class EuopendataApplication {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**").allowedOrigins("http://localhost:63343", "http://localhost:3000", "https://smart-booking-ba548.web.app", "https://heatmap-dc0da.web.app");
+                registry.addMapping("/**").allowedOrigins("*");
             }
         };
     }
