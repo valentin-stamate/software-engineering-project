@@ -6,6 +6,11 @@
     overflow: hidden;
 }
 
+html, body {
+    padding: 0;
+    margin: 0;
+}
+
 #map {
     width: 720px;
     height: 512px;

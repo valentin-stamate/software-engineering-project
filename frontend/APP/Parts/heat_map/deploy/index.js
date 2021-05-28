@@ -2,11 +2,13 @@
 
 let map, heatmap;
 
+const queryParams = new URLSearchParams(window.location.search);
+const county = queryParams.get('location');
+const country = queryParams.get('country');
+
 async function initCovidMap() {
     await sleep(500);
 
-    const county = 'Iasi';
-    const country = 'Romania';
 
     const locationCoords = await getLocationCoordinates(county);
     const covidCases = await getCovidCases(country);
@@ -23,9 +25,6 @@ async function initCovidMap() {
 
 async function initPollutionMap() {
     await sleep(500);
-
-    const county = 'Iasi';
-    const country = 'Romania';
 
     const locationCoords = await getLocationCoordinates(county);
     const pollutionIndex = await getPollutionIndex(county);
@@ -84,7 +83,7 @@ function getHeatmapRadius(latitude, zoomLevel) {
     return desiredRadiusInMeters / metersPerPx;
 }
 
-const DEPLOY = "http://localhost:8082";
+const DEPLOY = "https://euopendata.herokuapp.com";
 async function getLocationCoordinates(location) {
     const response = await sendFetchRequest(DEPLOY + `/weather?locations=${location}`, 'GET');
     let payload = {};
