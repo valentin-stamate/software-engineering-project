@@ -3,17 +3,21 @@ export default class UserController {
     static autoLogin = true;
     static async login(login = "", password = "") {
         let url = host_url + "user/login";
+        console.log(login);
+        console.log(password);
 
         let _data = {
             "login": login,
             "password": password
         };
 
+        console.log(_data);
+
         let logged = await fetch(url, {
             method: "POST",
             body: JSON.stringify(_data),
             headers: {
-                "Content-type": "application/json; charset=UTF-8"
+                "Content-Type": "application/json; charset=UTF-8"
             }
         }).then(response => {
             return handleLoginResponse(response);
@@ -98,6 +102,7 @@ export default class UserController {
 }
 
 async function handleLoginResponse(response) {
+    console.log(response);
     return await response.json().then(function(json) {
         if (response.status == 200) {
             console.log(json);

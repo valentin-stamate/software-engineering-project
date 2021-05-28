@@ -58,7 +58,7 @@ async function addStatistics(_stats) {
 async function addCovidStatistics(covid) {
     if (!covid) {
         covid = {
-            "items" : []
+            "items": []
         }
     }
     setCovidGlobalLabel();
@@ -79,7 +79,8 @@ function toggleCo2PollutionChart() {
 var co2labels = [];
 var co2quantity = [];
 async function addCo2Emissions(co2) {
-    for (let i = co2.length; i >= 50; i--){
+    console.log(co2);
+    for (let i = co2.length - 50; i < co2.length; i++) {
         co2labels.push(co2[i].year);
         co2quantity.push(co2[i].quantity);
     }
