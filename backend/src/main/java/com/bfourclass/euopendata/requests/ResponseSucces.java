@@ -1,9 +1,0 @@
-package com.bfourclass.euopendata.requests;
-
-public class ResponseSucces {
-    public final String message;
-
-    public ResponseSucces(String message) {
-        this.message = message;
-    }
-}
