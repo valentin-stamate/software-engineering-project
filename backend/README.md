@@ -1,4 +1,4 @@
-# EU Open Data (Smart Booking) Backend
+# Smart Booking Backend
 
 ## About
 API Host Url: ` https://smartbooking-app.herokuapp.com`
