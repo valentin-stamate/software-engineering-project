@@ -1,12 +1,24 @@
 # EU Open Data (Smart Booking) Backend
 
 ## About
-The backend is available at this url : `https://euopendata.herokuapp.com`
+API Host Url: ` https://smartbooking-app.herokuapp.com`
+
+
+## How to run?
+
+If you want to run this project locally you have to create a package called `secrets` that will contain
+a class called `Secrets`. There you should put your own api keys. 
+
+In application.properties you have `=` with nothing after it. There you have to put your credentials
+regarding database connection and email account for using smtp. 
+
+Also, there are some datasets in `resources/static/statistics` that are not in the repository. All of them under [this](https://drive.google.com/drive/folders/1WwM0rzAdXeilLiSOF7Hgq6tdMEV2gy_C?usp=sharing)
+link.
 
 ## API Endpoints
-In order to access user data, the client must log in first and for every request it should have an "Authorization" header, with the value containing the token.
+In order to access user data, the client must log in first and for every request it should have an "Authorization" header, with the value containing the jwt token.
 
-For example, the header could be "`Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9`" if the token received from logging in is "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9".
+For example, the header could be "`Authorization: YOUR_JWT_TOKEN`" if the token received from logging in is `YOUR_JWT_TOKEN`.
 
 The api documentation can be found below.
 
