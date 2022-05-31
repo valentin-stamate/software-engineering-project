@@ -1,4 +1,4 @@
-# EU Open Data (Smart Booking)
+# Smart Booking
 
 ## Modules
 
